@@ -1,0 +1,17 @@
+#!/bin/sh
+
+roficlip
+xdotool sleep 0.100 key --clearmodifiers ctrl+v
+
+# clip=$(roficlip)
+# if [ -z "$clip" ]
+# then
+# 	echo 'exit'
+#     exit 1
+# else
+# 	xdotool sleep 0.100 key --clearmodifiers ctrl+v
+# fi
+
+# current_wid=$(xdo id)
+# xclip -selection clipboard 
+# xdotool key --window $current_wid --clearmodifiers ctrl+v

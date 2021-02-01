@@ -1,0 +1,10 @@
+#!/bin/bash
+
+lines=$(rofi -dmenu -p "join clipboard ")
+
+if [ -z "$lines" ]
+then
+	exit 1
+else
+	clipster -ocn $lines | xclip -sel clip
+fi

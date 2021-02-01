@@ -1,0 +1,49 @@
+#EXTM3U
+#EXTINF:0, - Radio TOK FM (Feed 128 kb/s, 48kHz, stereo) from AMS
+http://poznan6.radio.pionier.net.pl:8000/radiotok.ogg
+#EXTINF:0, - Radio TOK FM (Feed 64 kb/s, 48kHz, stereo) from AMS
+http://poznan6.radio.pionier.net.pl:8000/radiotok2.ogg
+#EXTINF:0,Radio TOK FM - posłuchaj, aby zrozumieć
+http://poznan6.radio.pionier.net.pl:8000/radiotok3.ogg
+#EXTINF:0, - Radio TOK FM (Feed 32 kb/s, 22kHz, stereo) from AMS
+http://poznan6.radio.pionier.net.pl:8000/radiotok4.ogg
+#EXTINF:0, - http://91.121.94.66:7000
+http://91.121.94.66:7000
+#EXTINF:0, - (#1 - 122/300) ))) POLSKASTACJA .PL ))) - Ballady Rockowe / Rock Ballads (Polskie Radio)
+http://91.121.103.183:6200
+#EXTINF:-1,http://chilli-pl-02.eurozet.pl:8300/
+http://chilli-pl-02.eurozet.pl:8300/
+#EXTINF:-1,http://polskastacja.pl/play/aac_chillout.pls
+http://polskastacja.pl/play/aac_chillout.pls
+#EXTINF:-1,http://antyballads-02.eurozet.pl:8100/
+http://antyballads-02.eurozet.pl:8100/
+#EXTINF:-1,http://antygreatest-01.eurozet.pl:8000/
+http://antygreatest-01.eurozet.pl:8000/
+#EXTINF:-1,http://antyclassix-01.eurozet.pl:8000/
+http://antyclassix-01.eurozet.pl:8000/
+#EXTINF:-1,http://stream.polskieradio.pl/program1
+http://stream.polskieradio.pl/program1
+#EXTINF:-1,http://stream.polskieradio.pl/program2
+http://stream.polskieradio.pl/program2
+#EXTINF:-1,http://stream.polskieradio.pl/program3
+http://stream.polskieradio.pl/program3
+#EXTINF:-1,http://stream.polskieradio.pl/euro
+http://stream.polskieradio.pl/euro
+#EXTINF:-1,http://217.74.72.3:8000/rmf_classic_rock
+http://217.74.72.3:8000/rmf_classic_rock
+#EXTINF:-1,http://www.polskieradio.pl/st/program4.asx
+http://www.polskieradio.pl/st/program4.asx
+#EXTINF:-1,http://zet-rockrap-01.eurozet.pl:8000/
+http://zet-rockrap-01.eurozet.pl:8000/
+#EXTINF:-1,http://217.74.72.3:8000/rmf_polski_rock
+http://217.74.72.3:8000/rmf_polski_rock
+#EXTINF:-1,http://poznan5.radio.pionier.net.pl:8000/eskarock.mp3
+http://poznan5.radio.pionier.net.pl:8000/eskarock.mp3
+#EXTINF:Radio Zet
+http://91.121.179.221:8050
+#EXTINF:Zet Classic Rock
+http://zetclassicrock-02.eurozet.pl:8100/
+#EXTINF:Zet Classic
+http://zetclassic-01.eurozet.pl:8100/ 
+#EXTINF:Zet Dance
+http://zetdance-01.eurozet.pl:8000/

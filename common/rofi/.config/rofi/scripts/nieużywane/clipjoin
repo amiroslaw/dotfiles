@@ -1,0 +1,3 @@
+#!/bin/bash
+
+clipster -ocn $1 | while read OUTPUT; do xclip -sel clip; done

@@ -1,0 +1,63 @@
+#EXTM3U
+#EXTINF:-1,poznan radiotok
+http://poznan6.radio.pionier.net.pl:8000/radiotok.ogg
+#EXTINF:-1,wroclaw radiotok
+http://wroclaw.radio.pionier.net.pl:8000/pl/radiotok
+#EXTINF:-1,Akademickie radio centrum
+http://62.93.41.75:8000/
+#EXTINF:-1,Akademickie radio index
+http://shoutcast2.index.uz.zgora.pl:8000
+#EXTINF:-1,Akademickie radio kampus
+http://193.0.98.66:8005/
+#EXTINF:-1,Akademickie radio luz
+http://radioluz.pwr.wroc.pl:8000/luzhifi.mp3
+#EXTINF:-1, Antyradio
+http://94.23.89.48:7300
+#EXTINF:-1,bemowo
+http://195.74.79.54:6138
+#EXTINF:-1,openfm hity lata
+http://gr-relay-3.gaduradio.pl/3
+#EXTINF:-1,planeta fm
+http://pla-net-02.cdn.eurozet.pl:8700/
+#EXTINF:-1,classic rock fajne
+http://188.165.22.29:9400
+#EXTINF:-1,polskie radio kraków
+http://stream3.nadaje.com:9118/radiokrakow
+#EXTINF:-1,polskie radio lublin
+http://94.230.19.202:8000/32k
+#EXTINF:-1,radio afera wrocław
+http://wroclaw.radio.pionier.net.pl:8000/pl/afera.ogg
+#EXTINF:-1,radio bunt
+http://hubble.shoutca.st:8282/
+#EXTINF:-1,centrum
+http://5.201.13.191/live
+#EXTINF:-1,Radio_eR
+http://stream.radioer.pl:8000/Radio_eR
+#EXTINF:-1,radiofreee
+http://178.33.50.240:8000/radiofreee
+#EXTINF:-1,KRK fm
+http://stream4.nadaje.com:11770/test
+#EXTINF:-1,asymetry festival
+http://panel.nadaje.com:9666
+#EXTINF:-1,chillout
+http://panel.nadaje.com:9004
+#EXTINF:-1,city sounds
+http://panel.nadaje.com:8050
+#EXTINF:-1,festival ambientalny
+http://panel.nadaje.com:9702
+#EXTINF:-1,ram
+http://stream4.nadaje.com:9220/ram
+#EXTINF:-1,uwm fm
+http://213.184.18.156:8000/
+#EXTINF:-1,radio wolna strefa
+http://s6.radiohost.pl:8870
+#EXTINF:-1,zet
+http://radiozetmp3-07.eurozet.pl:8400/
+#EXTINF:-1,reggae
+http://sc3.carihost.com:7002
+#EXTINF:-1,rmf_classic
+http://31.192.216.5:8000/rmf_classic
+#EXTINF:-1,rmf_fm
+http://31.192.216.4:8000/rmf_fm
+#EXTINF:-1,radio żak
+http://olsztyn.radio.pionier.net.pl:8000/z/radiozak.ogg

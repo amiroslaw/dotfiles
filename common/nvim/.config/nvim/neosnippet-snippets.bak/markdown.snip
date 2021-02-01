@@ -1,0 +1,145 @@
+snippet link
+abbr [link]()
+options word
+    [${1}](${2})
+
+snippet linkid
+abbr [link][id]
+options word
+    [${1:#:link}][${2:id}]${3}
+
+snippet linkemail
+abbr [link](email)
+options word
+    [${1:#:link}](mailto:${2:#:email})${3}
+
+snippet linkurltitle
+abbr [link](url "title")
+options word
+    [${1:#:link}](${2:#:url} "${3:#:title}")${4}
+
+snippet idurl
+abbr [id]: url "title"
+options word
+    [${1:#:id}]: http://${2:#:url} "${3:#:title}"
+
+snippet imgid
+abbr ![img][id]
+options word
+    ![${1:#:alt}][${2:#:id}]${3}
+
+snippet img
+abbr ![alt](url)
+options word
+    ![${1:#:alt}](${2:#:url})${3}
+
+snippet imgurltitle
+abbr ![alt](url "title")
+options word
+    ![${1:#:alt}](${2:#:url} "${3:#:title}")${4}
+
+snippet emp
+abbr *italic*
+options word
+    *${1}*${2}
+
+snippet italic
+abbr _italic_
+options word
+    _${1}_${2}
+
+snippet bold
+abbr **strong**
+options word
+    **${1}**${2}
+
+snippet strong
+abbr __strong__
+options word
+    __${1}__${2}
+
+snippet code
+abbr `code`
+options word
+    \`${1}\`${2}
+
+snippet codeblock
+abbr code block
+options head
+    \`\`\`${1:#:language}
+    ${2:#:code }
+    \`\`\`
+
+snippet java
+abbr code java
+options head
+    \`\`\`java
+    ${2:#:code }
+    \`\`\`
+
+snippet jscode
+abbr code js
+options head
+    \`\`\`javascript
+    ${2:#:code }
+    \`\`\`
+
+snippet htmlcode
+abbr code html
+options head
+    \`\`\`html
+    ${2:#:code }
+    \`\`\`
+
+snippet tab23
+abbr tab2x3
+options word
+    | ${1} | ${2} |
+    |----------|----------|
+    | ${3} | ${4} |
+    | ${5} | ${6} |  
+snippet tab33
+abbr tab3x3
+options word
+    | ${1} | ${2} | ${3} |
+    |----------|----------|----------|
+    | ${4} | ${5} | ${6} |
+    | ${7} | ${8} | ${9} |  
+snippet tab43
+abbr tab4x3
+options word
+    | ${1} | ${2} | ${3} | ${4} |
+    |----------|----------|----------|----------|
+    | ${5} | ${6} | ${7} | ${8} |
+    | ${9} | ${10} | ${11} | ${12} |  
+
+snippet h1
+abbr head 1
+        # ${1}
+snippet h2
+abbr head 2
+        ## ${1}
+snippet h3
+abbr head 3
+        ### ${1}
+snippet h4
+abbr head 4
+        #### ${1}
+snippet h5
+abbr head 5
+        ##### ${1}
+snippet h6
+abbr head 6
+        ###### ${1}
+
+snippet zad
+abbr zadanie
+        - [ ] ${1:zadanie}
+
+snippet zadtag
+abbr zadanie + tag
+        - [ ] ${1:zadanie}    @${2:tag}
+
+snippet     date
+options     word
+    `strftime("%Y-%m-%d")`${0}

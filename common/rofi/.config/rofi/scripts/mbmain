@@ -1,0 +1,218 @@
+#!/bin/env python3
+
+import os
+import sys
+
+
+mbmain_path = os.path.dirname(os.path.realpath(sys.argv[0]))
+scripts_path = mbmain_path
+enabled_path = os.path.join(mbmain_path, "enabled")
+SCRIPTS_IGNORE = ['mbmain', 'README.md', 'config.example']
+
+from helpers import mbrofi
+
+show_mesg = True
+bind_enable = 'alt-e'
+bind_disable = 'alt-d'
+script_id = 'mbmain'
+config = mbrofi.parse_config()
+if script_id in config:
+    lconf = config[script_id]
+    show_mesg = lconf.getboolean("show_mesg", fallback=True)
+    bind_enable = lconf.get("bind_enable", fallback='alt-e')
+    bind_disable = lconf.get("bind_disable", fallback='alt-d')
+
+bindings=['alt-h', bind_enable, bind_disable]
+mesg = "Run script. Press " + bindings[0] + " for help."
+prompt = "mbrun:"
+sel=""
+filt=""
+index=0
+
+launcher_args = {}
+launcher_args['prompt'] = prompt
+if show_mesg:
+    launcher_args['mesg'] = mesg
+launcher_args['filter'] = filt
+launcher_args['bindings'] = bindings
+launcher_args['index'] = index
+
+
+def print_help():
+    print("mbmain - mbrun management script.\n")
+    print("SYNOPSIS\n\tmbmain [COMMAND] [ARGUMENT]\n")
+
+    print("DESCRIPTION")
+    print("\tAllows enabling/disabling of scripts to be shown in the global")
+    print("\tmbrun rofi menu. If no command is specified, then the rofi menu")
+    print("\twill spawn. This rofi menu can be used to run the selected")
+    print("\tscript, and enable/disable scripts interactively.\n")
+
+    print("CONFIG\n\t~/.config/mbrun/config\n")
+
+    print("COMMAND")
+    print("\t-h, --help, help")
+    print("\t\tShow this help menu.\n")
+    print("\tlist")
+    print("\t\tList all scripts.\n")
+    print("\tenable [scriptname]")
+    print("\t\tEnable [scriptname].\n")
+    print("\tenable all")
+    print("\t\tEnable all scripts.\n")
+    print("\tdisable [scriptname]")
+    print("\t\tDisable [scriptname].\n")
+    print("\tdisable all")
+    print("\t\tDisable all scripts.\n")
+
+
+
+
+def get_scripts(path):
+    slist = []
+    displaylist = []
+    for f in os.scandir(path):
+        if not f.name.startswith('.') and f.is_file():
+            if f.name not in SCRIPTS_IGNORE:
+                slist.append(f.name)
+                if '.' in f.name:
+                    displaylist.append(f.name.split('.')[0])
+    return(slist, displaylist)
+
+
+def enable_script(scriptname):
+    valid_scripts, d = get_scripts(scripts_path)
+    if (scriptname not in valid_scripts ):
+        print("'" + scriptname + "' not a valid script. Valid scripts:")
+        for s in valid_scripts:
+            print(s)
+        sys.exit(1)
+    spath = os.path.join(scripts_path, scriptname)
+    epath = os.path.join(enabled_path, scriptname)
+    if not os.path.isfile(spath):
+        print("Script '" + scriptname + "' does not exist in " + scripts_path)
+        sys.exit(1)
+    if os.path.isfile(epath):
+        print("Script '" + scriptname + "' already enabled.")
+    else:
+        os.symlink(spath, epath)
+        print("Script '" + scriptname + "' was enabled.")
+
+
+def disable_script(scriptname):
+    valid_scripts, d = get_scripts(scripts_path)
+    enabled_scripts, d = get_scripts(enabled_path)
+    if (scriptname not in valid_scripts ):
+        print("'" + scriptname + "' not a valid script. Valid scripts:")
+        for s in valid_scripts:
+            print(s)
+        sys.exit(1)
+    if (scriptname not in enabled_scripts):
+        print("'" + scriptname + "'is not enabled.")
+        sys.exit(0)
+    epath = os.path.join(enabled_path, scriptname)
+    os.remove(epath)
+    print("Script '" + scriptname + "' was disabled.")
+
+
+def main_function(mlist=[]):
+    ans, exit = mbrofi.rofi(mlist, launcher_args)
+    if exit == 1:
+        return(False, False, False, 1)
+    index, filt, sel = ans.strip().split(';')
+    return(index, filt, sel, exit)
+
+
+if __name__ == "__main__":
+    if not (os.path.isdir(enabled_path)):
+        os.makedirs(enabled_path)
+    if len(sys.argv) == 1:
+        while True:
+            enabledfiles, displaynames = get_scripts(enabled_path)
+            index, filt, sel, exit = main_function(displaynames)
+            if (exit == 0):
+                # Run script selected
+                if int(index) != -1:
+                    mbrofi.run_mbscript(os.path.join(enabled_path
+                                                , enabledfiles[int(index)]))
+                elif filt:
+                    filt_list = filt.split()
+                    script_name = filt_list[0]
+                    args = filt_list[1:]
+                    for efile in enabledfiles:
+                        if script_name in efile:
+                            script_path = os.path.join(enabled_path, efile)
+                            mbrofi.run_mbscript(script_path, args)
+                            break
+
+                break
+            elif (exit == 1):
+                sys.exit(1)
+            elif (exit == 10):
+                helpl = ['help menu', 'enable script[s]'
+                        , 'disable selected script']
+                mbrofi.rofi_help(bindings, helpl)
+            elif (exit == 11):
+                # list scripts to enable
+                while True:
+                    newlist = []
+                    scriptfiles, sdn = get_scripts(scripts_path)
+                    for sn in scriptfiles:
+                        if sn not in enabledfiles:
+                            newlist.append(sn)
+                    elaunchargs = launcher_args.copy()
+                    elaunchargs['mesg'] = "Enable script. Tab to enable"
+                    elaunchargs['mesg'] += " more than one. "
+                    elaunchargs['mesg'] += bindings[1] + " to go back."
+                    elaunchargs['prompt'] = 'mbrun enable:'
+                    elaunchargs['bindings'] = [bindings[1]]
+                    elaunchargs['format'] = 's'
+                    additional = ['-multi-select', 
+                                  '-kb-row-tab', '',
+                                  '-kb-accept-alt', 'Tab',
+                                  '-matching', 'fuzzy']
+                    ans,exit = mbrofi.rofi(newlist, elaunchargs, additional)
+                    if exit == 0:
+                        ans = ans.strip()
+                        for scriptname in ans.split("\n"):
+                            enable_script(scriptname.strip())
+                        break
+                    elif exit == 1:
+                        sys.exit(0)
+                    else:
+                        break
+
+            elif (exit == 12):
+                disable_script(enabledfiles[int(index)])
+            else:
+                sys.exit(0)
+    else:
+        if sys.argv[1] == 'enable':
+            if len(sys.argv) != 3:
+                print("Invalid number of arguments. 'enable <scriptname>'")
+                sys.exit(1)
+            if sys.argv[2] == 'all':
+                scriptsfiles, sdn = get_scripts(scripts_path)
+                for f in scriptsfiles:
+                    enable_script(f)
+            else:
+                scriptname = sys.argv[2]
+                enable_script(scriptname)
+        elif sys.argv[1] == 'disable':
+            if len(sys.argv) != 3:
+                print("Invalid number of arguments. 'disable <scriptname>'")
+                sys.exit(1)
+            if sys.argv[2] == 'all':
+                enabledfiles, dpn = get_scripts(enabled_path)
+                for f in enabledfiles:
+                    disable_script(f)
+            else:
+                scriptname = sys.argv[2]
+                disable_script(scriptname)
+        elif sys.argv[1] == 'list':
+            for s in get_scripts(scripts_path)[0]:
+                print(s)
+        elif sys.argv[1] in ['-h', '--help', 'help']:
+            print_help()
+        else:
+            print("Invalid argument. Choose between enable/disable")
+            sys.exit(1)

@@ -1,0 +1,201 @@
+# You can edit this file by hand, but it's recommended not to do that.
+
+# Marks:
+'A
+	/etc/apt
+	..
+1525471182
+'C
+	/media/winC
+	..
+1525820396
+'D
+	/media/winD
+	..
+1525820396
+'H
+	/home/miro/
+	..
+1525464096
+'I
+	/home/miro/Documents/Nauka/inwestycje
+	..
+1525471182
+'N
+	/home/miro/Documents/notatki
+	..
+1525471182
+'P
+	/home/miro/Code/Projekty
+	..
+1525820396
+'a
+	/home/miro/Code/moje
+	..
+1525471182
+'b
+	/home/miro/bin/
+	..
+1525464096
+'c
+	/home/miro/Code
+	..
+1525471182
+'d
+	/home/miro/Documents
+	..
+1525471182
+'e
+	/home/miro/Exe
+	..
+1525471182
+'h
+	/home/miro
+	..
+1525471182
+'j
+	/home/miro/Code/JAVA
+	..
+1525471182
+'m
+	/media/multi
+	..
+1525820396
+'n
+	/home/miro/Documents/notebook_md
+	..
+1526048960
+'o
+	/home/miro/Pictures
+	..
+1525820396
+'p
+	/home/miro/Downloads
+	..
+1525471182
+'s
+	/home/miro/Code/SourceCode
+	..
+1525820396
+'t
+	/home/miro/.vifm/Trash
+	..
+1525471182
+'u
+	/home/miro/Documents/Ustawienia
+	..
+1525471182
+'v
+	/home/miro/Videos
+	..
+1525820396
+
+# Command line history (oldest to newest):
+:command! fzf :execute '!fzf 2>&0 %%IU' | normal! gf cat
+:command! fzf :execute '!fzf 2>&0 %%IU' | normal! gf xamp
+:command! fzf :execute '!fzf 2>&0 %%IU' | normal! gf 
+:fzfd
+:unselect
+:mkdir  conky
+:mkdir  harmattan
+:touch  
+:mkdir  Exe
+:cd .config/nvim/
+:mkdir  backup blog
+:mkdir "neosnippet-snippets.bak"
+:f /usr/bin/vivaldi-stable
+:mkdir  weekly
+:mkdir  daily
+:touch  jfisfjds
+:mkdir  fjidsf
+:touch  fdsf
+:mkdir  fjdis
+:sudo chmod +x image-info
+:!sudo chmod +x image-info
+:!sudo chmod +x key-handler
+:cd .config/
+:mkdir  back
+:mkdir  Downloads
+:mkdir  Videos
+:mkdir  vifm
+:mkdir  nvim
+:find  fasd
+:f nvim
+:pwd
+:ls
+:!ls
+:find  
+:millerview
+:set millerview
+:set millerview false
+:only
+:grep  
+:cd .i3/
+:mkdir  i3
+:touch  fjids
+:find  ntfs
+:mkdir  test
+:mkdir  guygyug
+:f smplayer
+:find  Robo*
+:fzf
+:view
+
+# Search history (oldest to newest):
+/markd
+/cro
+/ran
+/ali
+/oh
+/fas
+/font
+/droi
+/rang
+/rofi
+/pur
+/rtorr
+/rto
+/fs
+/ntfs
+/clip
+/fon
+/profi
+/my
+
+# Prompt history (oldest to newest):
+pmmand! fzf :execute '!fzf 2>&0 %%IU' | normal! gf
+pharmattan-themes
+pharmattan-assets
+pconkyrc
+pconkyHarmattan
+p.harmattan-assets
+p.harmattan-themes
+p.conkyrcok
+pconkyrcDark
+pVideos
+pDownloads
+pMusics
+pBooks
+pbackup
+pPictures
+p.aliases
+p.fzf
+pfzf
+p.fzf.zsh
+pconfig.old
+p.vim
+p.tmux
+p.vimrc
+p.easystroke
+pi3laptop
+pi3_help_manjaro
+p.rtorrent
+pconfigi3pc
+pconfig
+ptaskCoach.bak
+pTaskCoach.new
+pprofile
+p.profile
+ptypes TS
+
+# Trash content:

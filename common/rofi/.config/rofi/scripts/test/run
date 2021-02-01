@@ -1,0 +1,14 @@
+#!/bin/bash
+# do not work
+# copy=$(rofi -modi clip:$ROFI/clip/clip,join:$ROFI/clip/clipjoin -show clip -run-command '{cmd}' -sidebar-mode -terminal st)
+copy=$(rofi -modi clip:$ROFI/clip/clip -show clip -sidebar-mode -terminal st)
+echo $copy
+
+
+# wm
+ctrl + shift + z
+	$ROFI/clip/clip
+	# clipster -sc && xdotool sleep 0.100 key --clearmodifiers ctrl+v
+super + c ; {s,p,r,R,j}
+	{clipster -sc, $ROFI/clip/roficlip-primary, clipster -cr, clipster -r, $ROFI/clip/join}
+	# clipster -s && xdotool click --clearmodifiers 2 - nie czeka na program

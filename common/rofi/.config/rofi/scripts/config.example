@@ -1,0 +1,53 @@
+[mbmain]
+show_mesg = False
+bind_enable = alt-e
+bind_disable = alt-d
+browser = firefox
+file_manager = st -e ranger
+
+[define]
+dictionary_file = dictd_www.dict.org_gcide
+thesaurus_file = Moby Thesaurus II
+rofi_lines = 25
+bind_toggle = alt-t
+bind_openweb = alt-o
+
+[screenshots]
+screenshot_directory = ~/Pictures/screenshots/
+bind_upload = alt-u
+bind_preview = alt-p
+bind_rename = alt-r
+bind_sortname = alt-1
+bind_sortdate = alt-2
+bind_sortsize = alt-3
+
+[sshot]
+screenshot_directory = ~/Pictures/screenshots/
+bind_upload = alt+u
+bind_delay = alt+d
+bind_interactive = alt+i
+entry_order = selection,all,displays
+upload = False
+maim_bordersize = 3
+maim_color = 0.7,0.3,0.7,1.0
+
+[lutris]
+bind_install = alt-u
+bind_steam = alt-s
+steam_only = False
+lutris_exe = lutris
+
+[bookmarks]
+bookmark_directory = ~/bookmarks/
+bind_new = alt-n
+bind_del = alt-d
+bind_rename = alt-r
+bind_chgurl = alt-u
+
+[mount]
+ignore_devices = sda,/dev/mapper
+bind_mount = alt-m
+bind_unmount = alt-u
+bind_refresh = alt-r
+bind_open = alt-o
+bind_eject = alt-e

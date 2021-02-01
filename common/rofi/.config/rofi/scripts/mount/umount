@@ -1,0 +1,45 @@
+#!/bin/sh
+# A dmenu prompt to unmount drives.
+# Provides you with mounted partitions, select one to unmount.
+# Drives mounted at /, /boot and /home will not be options to unmount.
+
+unmountusb() {
+	[ -z "$drives" ] && exit
+	chosen=$(echo "$drives" | rofi -dmenu -i -p "Unmount which drive?" | awk '{print $1}')
+	[ -z "$chosen" ] && exit
+	 umount "$chosen" && notify-send "💻 USB unmounting" "$chosen unmounted."
+	}
+
+unmountandroid() { \
+	chosen=$(awk '/simple-mtpfs/ {print $2}' /etc/mtab | dmenu -i -p "Unmount which device?")
+	[ -z "$chosen" ] && exit
+	 umount -l "$chosen" && notify-send "🤖 Android unmounting" "$chosen unmounted."
+	}
+
+asktype() { \
+	case "$(printf "USB\\nAndroid" | dmenu -i -p "Unmount a USB drive or Android device?")" in
+		USB) unmountusb ;;
+		Android) unmountandroid ;;
+	esac
+	}
+
+# czasami usb ma disk type jako part np. sdd1 i wtedy trzeba to wybierać a czasami jako disk sdd 
+# disk /dev/sdc; part /dev/sdc1
+# wykluczam moje dyski ssd i hdd po wielkości
+drives=$(lsblk -nrpo "name,type,rm,size,mountpoint" | awk '$5!~/\/boot|\/home$|SWAP/&&length($5)>1&&$3==1{printf "%s (%s)\n",$5,$4}')
+# drives=$(lsblk -nrpo "name,type,size,mountpoint" | awk '$2=="disk"&&$4!~/\/boot|\/home$|SWAP/&&length($4)>1{printf "%s (%s)\n",$4,$3}')
+
+if ! grep simple-mtpfs /etc/mtab; then
+	[ -z "$drives" ] && echo "No drives to unmount." &&  exit
+	echo "Unmountable USB drive detected."
+	unmountusb
+else
+	if [ -z "$drives" ]
+	then
+		echo "Unmountable Android device detected."
+	       	unmountandroid
+	else
+		echo "Unmountable USB drive(s) and Android device(s) detected."
+		asktype
+	fi
+fi

@@ -1,0 +1,9 @@
+sleep 500 && megasync &
+clipster -d &
+redshift -l 51.2:22.6 &
+trackball &
+nm-applet &
+
+#clipit &
+#easystroke &
+#tmux new-session -d -s tor rtorrent &

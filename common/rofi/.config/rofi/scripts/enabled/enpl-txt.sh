@@ -1,0 +1,1 @@
+/home/miro/Documents/Ustawienia/sync/rofi/scripts/enpl-txt.sh

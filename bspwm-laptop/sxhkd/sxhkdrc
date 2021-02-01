@@ -1,0 +1,388 @@
+﻿# bspwm hotkeys
+# make sxhkd reload its configuration files:
+super + shift + Escape
+	pkill -USR1 -x sxhkd
+
+# Show keybindings
+super + shift + F1
+	cat ~/.config/sxhkd/sxhkdrc | awk '/^[a-z]/ && last {print $0,"\t",last} {last=""} /^#/{last=$0}' | column -t -s $'\t' | rofi -dmenu -i -no-show-icons -width 1000
+
+# In case bspwmrc fails to execute/you wish have plugged in a new monitor
+super + shift + r
+	bspwmrc
+#
+# Window manipulation
+# ______________
+
+# Close window
+super + q
+	bspc node -c
+
+# Kill window
+super + shift + q
+	bspc  node -k
+
+# Toggle tiling mode of window
+super + shift + alt + space
+	bspc node -t {pseudo_tiled,tiled}
+super + shift + space
+	{bspc node -t floating && window-placer $(bspc query -T -d | grep -o '"state":"floating"' | wc -l),bspc node -t tiled}
+# Force all windows of the desktop to tile
+super + ctrl + space
+	bspcp tile
+# Force all windows of the desktop to float and arrange them
+super + ctrl + shift + space
+	bspcp float
+	
+# Toggle monocle mode
+super + f 
+	bspc desktop -l next
+	
+# Toggle fullscreen - zasłania panel
+super + ctrl + f 
+	bspc node -t {fullscreen,tiled}	
+#### flags
+super + a ; {l,m,s,p}
+	bspc node -g {locked,marked,sticky,private}
+# send the newest marked node to the newest preselected node trzeba mieć preselected 
+super + a ; b
+	bspc node newest.marked.local -n newest.!automatic.local
+
+### Map or unmap windows (functional equivalent of "minimize")
+super + ctrl + z
+    whid dmenu
+
+super + shift + z
+    whid hide
+
+super + z
+    whid last
+
+#
+# Aplications
+# ______________    
+#
+
+# left click on the keyboard
+super + x 
+	xdotool click --clearmodifiers 1
+# clipboard selection primary
+super + v 
+	xdotool click --clearmodifiers 2
+#
+# Window moving and splitting
+# ______________    
+
+# Create a new "master area", splitting the whole desktop instead of just windows.
+#alt + Return - zły skrót i chyba nie działa akcja
+#	bspc node -n @/
+	
+# Switch to the other monitor.
+#mod3 + o
+	#bspc monitor -f next
+## Workspaces
+# Win + <Num> : Switch to workspace
+# Win + shift + <Num> : Move to workspace
+#super + {_,shift + }{1-9,0}
+#	bspc {desktop -f,node -d} '^{1-9,10}'
+## Alternative: i3 style behavior (focus nth, desktop of the focused monitor)
+super + {1-9,0}
+	focusdesktopofthismonitor {1-9,10}
+super + ctrl + {1-9,0}
+	movetodesktopofthismonitor {1-9,10}
+# move to workspace and go to it
+super + shift + {1-9,0}
+    bspc node -d '^{1-9,10}' --follow
+    # id=$(bspc query -N -n); bspc node -d ^{1-9,10}; bspc node -f ${id}
+
+# Send to monitor
+# super + shift + equal
+    # bspc node -m last --follow
+
+## Another alternative: xmonad style desktops. You have 10 desktops shared between all monitors,
+## and focusing a desktop focuses it on the currently focused monitor
+#super + {1-9,0}
+#	summondesktop.sh {1-9,10}
+#super + shift + {1-9,0}
+#	bspc node -d ^{1-9,10}
+
+# Select previous / next active desktop
+super + {p,n}
+	bspc desktop -f {prev,next}.occupied
+
+# Select previous / next desktop
+super + shift + {p,n}
+	bspc desktop -f {prev,next}.local
+
+# cycle windows in the same desktop- jest tez skrypt rofi
+alt + {_,shift + }Tab
+    bspc node -f {next,prev}.local
+
+# go to the last workspace, monitor 
+super + {_,shift + }Tab
+	bspc {desktop,monitor} -f last
+
+super + {h,j,k,l}
+    focusmover {west,south,north,east}
+
+super + {Left,Down,Up,Right}
+    focusmover {west,south,north,east}
+        	
+# Move tiled windows. Moving a tiled window to 
+# preselected one moves into preselection instead. 
+# Moving out of the screen should move the window to next monitor if possible
+
+super + shift + {h,j,k,l}
+	windowgrabber {west,south,north,east}
+	
+# Different style of movement: transplant into window in chosen direction
+super + shift + {Left,Down,Up,Right}
+	euclid_mover {west,south,north,east}
+
+super + ctrl + {h,j,k,l}
+	bspwm_resize.sh {west,south,north,east}
+	
+super + ctrl + {Left,Down,Up,Right}
+	bspwm_resize.sh {west,south,north,east}
+
+#
+# Layout manipulation/desktop level controls
+# ______________    
+
+# Balance tree
+super + b
+	bspc node @/ -B
+
+# Balance brother node. If you do this on biggest window of the desktop, it usually means balancing all windows with except the biggest.
+super + alt + b
+	bspc node @brother -B
+	
+# Undo balancing (equalize windows)
+super + ctrl + b
+	bspc node @/ -E
+
+# Toggle automatic balancing of windows ? how toggle todo
+alt + b
+	euclid_balancer
+
+# Rotate leaves of tree
+super + {bracketright,bracketleft}
+	bspc node @/ -R {90,270}
+
+# Mirror and flip leaves of tree
+super + shift + {bracketleft,bracketright}
+	bspc node @/ -F {horizontal,vertical}
+
+# Change window gap
+super + g
+	bspc config -d focused window_gap {$gap,$(($gap+$gap)),$(($gap+$gap+$gap))}
+
+super + button{4,5}
+	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+,-} 2 ))
+#
+# mouse bindings
+# __________________
+
+~button1
+	DidIClickDesktop.sh && gapgrab	
+
+~button2
+	DidIClickDesktop.sh && BspwmDesktopMenu
+#	DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/BspwmDesktopMenui
+#	DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/BspwmWindowMenui
+		
+~button3
+	DidIClickDesktop.sh && rofimenu -desktop
+#DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/LaunchMenu
+
+# Switch workspace by scrolling on the desktop. Causes scrolling issues on some systems.
+#~button4
+#	DidIClickDesktop.sh && bspc desktop -f next
+#~button5
+#	DidIClickDesktop.sh && bspc desktop -f prev
+	
+### Add or remove desktops by scrolling
+super + ctrl + button5
+    bspcp dsktp rm
+
+super + ctrl + button4
+    bspcp dsktp add
+
+# Spawn applications popup menu and manually tile selected 
+# app where your mouse was when you opened the menu. Smartsplit only chooses
+# biggest dimension of the window, MouseLaunch only cares which edge is closer.
+# mod5 is alt_gr (first key right from space) on most keyboards. 
+mod5 + @button1
+	smartsplit ; rofimenu -desktop
+#	smartsplit ; dboxmenu
+#    MouseLaunch ; mygtkmenui -- .config/GTKmenu/LaunchMenu
+
+# Spawn window manipulation menu
+# Mod1 is alt
+mod1 + @button1
+	BspwmWindowMenu
+# mygtkmenui -- .config/GTKmenu/BspwmWindowMenui
+
+
+#
+# Touchpad "gestures" (depend on your touchpad driver, very likely to be unavailable)
+#_____________________
+    
+#
+# spawn programs
+#
+
+# run applications
+#
+# ROFI
+super + d
+	rofi -modi window,drun,top,calc -show window -show-icons -sidebar-mode -terminal st
+
+super + shift + d
+	rofi -modi drun,run,window -show drun -show-icons -sidebar-mode -terminal st
+
+# rofi scripts TODO path
+super + ctrl + d
+	 $ROFI/mbmain
+# bindsym $mod+shift+d exec --no-startup-id "rofi -modi window,top,drun -show window -show-icons -sidebar-mode -terminal st"
+super + t
+	$ROFI/tran/trans-launcher.sh
+# translator with notification
+super + shift + t
+	rofi -modi dic:$ROFI/tran/dic-speak.sh,enpl:$ROFI/tran/enpl-notify.sh,plen:$ROFI/tran/plen-notify.sh -show enpl -sidebar-mode -terminal st -lines 1 -width 30
+# mount 
+super + ctrl + u
+	$ROFI/mount-launcher.sh
+# clip
+ctrl + shift + z
+	~/.config/rofi/scripts/clipster/roficlip
+	# $ROFI/clipster/roficlip
+super + c ; {s,p,r,R,j}
+	{clipster -sc, $ROFI/clipster/roficlip-primary, clipster -cr, clipster -r, $ROFI/clipster/clipjoin}
+	# s-gui; p-rofi-primary, r-remove, R-remove from primary, j-join
+	# clipster -s && xdotool click --clearmodifiers 2 - nie czeka na program
+	# clipster -sc && xdotool sleep 0.100 key --clearmodifiers ctrl+v
+# rofi locate
+super + shift + f
+	rofi-finder.sh
+ # $ROFI/locate.py
+super + F12
+	rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu
+# default-terminal vs  open-terminal-here vs $TERMINAL
+super + Return
+	$TERMINAL
+	
+super + F1
+	$BROWSER
+    		
+super + F3
+	default-terminal vifm
+#spacefm -n
+
+Pause
+	$TERMINAL -T note -d ~/Documents/notebook_md nvim
+
+Scroll_Lock
+	scrot -u '%m-%d-%H%M%S_sc.png' -e 'mv $f ~/Pictures/';exec notify-send "Screenshot saved"
+Shift + Scroll_Lock
+	scrot '%m-%d-%H%M%S_Asc.png' -e 'mv $f ~/Pictures/';exec notify-send "Screenshot saved- all monitors"
+Ctrl + Scroll_Lock
+	scrot -u '%m-%d-%H%M%S_Qsc.png' -q 90 -e 'mv $f ~/Pictures/';exec notify-send "Screenshot saved- better quality"
+# bindsym --release $mod+Print exec --no-startup-id "scrot -s '%m-%d-%H%M%S_Ssc.png' -e 'mv $f ~/Pictures/'";exec notify-send "Screenshot saved- selected area"
+
+# Toggle compositing
+super + ctrl + space
+	{pkill compton ,\
+	compton -b }
+
+
+	
+#
+# Media keys
+#
+
+XF86MonBrightness{Down,Up}
+ light -{U,A} 5 
+
+XF86Sleep
+	systemctl suspend
+
+# audio and mpd
+XF86Audio{Raise,Lower}Volume
+	pactl set-sink-volume 0 {+,-}10%
+XF86AudioMute
+	pactl set-sink-mute 0 toggle
+	# volume toggle
+super + {equal,plus}
+	pactl set-sink-volume 0 +{5,15}%
+	# ~/.i3/volume
+	# amixer sset Master {5,15}%+ && notify-send $(awk -F"[][]" '/Front Left:/ { print $2 }' <(amixer sget Master))
+# Decrease volume
+super {_,shift +} + minus
+	pactl set-sink-volume 0 -{5,15}% 
+	# ~/.i3/volume
+	# amixer sset Master {5,15}%- && notify-send $(awk -F"[][]" '/Front Left:/ { print $2 }' <(amixer sget Master))
+super + slash
+	pactl set-sink-mute 0 toggle
+	# volume toggle
+	# amixer sset Master toggle
+
+super + shift + m
+	mpd && mpc update && st -t music -n music -e ncmpcpp
+super + m
+	mpc toggle
+# Changes to next/previous tracks
+super + {comma,period}
+	mpc {prev,next}
+# Restart track
+super + shift + slash
+	mpc seek 0%
+
+# Seek foward in song
+super + shift + {comma,period}
+	mpc seek {-,+}50
+# super + {_,shift +} bracketright - zajęte
+	# mpc seek +{10,120}
+# Seek backward in song
+# super + {_,shift +} bracketleft
+	# mpc seek -{10,120}
+# Increase volume, chyba cudzysłowy nie działają 
+super + o ; {o,i,p,b}
+	notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nm-menu" && st -e {"",nmtui,ncmpcpp,bmenu}
+# ; prompt script lub rofi; sudo -A popup z hasłem 
+# ;prompt "Shutdown computer?" "sudo -A shutdown -h now"
+
+# Receptacle ok tylko dać jakieś fajne skróty
+super + semicolon ; {h,j,k,l}
+	bspc node --presel-dir \~{west,south,north,east} -i
+	
+# Autopresel (split window in its largest dimension)
+super + semicolon ; {p,semicolon}
+	{auto-presel,bspc node -i}
+# Receptacle window for splitting in certain direction
+# alt + ctrl + {h,j,k,l}
+# 	bspc node --presel-dir \~{west,south,north,east} -i
+# alt + ctrl + {Left,Down,Up,Right}
+# 	bspc node -p \~{west,south,north,east} -i
+
+ # Receptacle the desktop for splitting in certain direction
+ # alt + shift + {h,j,k,l}
+	 # bspc node @/ -p \~{west,south,north,east} -i
+ # alt + shift + {Left,Down,Up,Right}
+	 # bspc node @/ -p \~{west,south,north,east} -i
+# move window to Receptacle
+super + shift + semicolon
+	bspc node $(bspc query -N -n focused) -n $(bspc query -N -n .leaf.\!window)
+# move window to preselection
+	# bspc node -n 'last.!automatic.local'
+# Remove receptacles
+super + BackSpace
+  for i in $(bspc query -N -n .leaf.!window.local); do bspc node $i -k; done
+# Set splitting ratio of windows - prepare the space
+#alt + ctrl + {1-9}
+#	bspc node -o 0.{1-9}
+		
+# Move current window to largest space or preselected area if there is one.
+#super + Return
+#    windowpromoter
+
