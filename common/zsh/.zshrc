@@ -27,6 +27,9 @@ export ZSH_AUTOSUGGEST_USE_ASYNC=1
 HISTFILE=~/.zhistory
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
+# export EDITOR=nvim
+# export VISUAL=nvim
+# export VISUAL=mousepad
 # ignore duplicats
 export HISTCONTROL=ignoreboth
 setopt HIST_FIND_NO_DUPS
@@ -34,8 +37,14 @@ setopt HIST_FIND_NO_DUPS
 setopt INC_APPEND_HISTORY
 #setopt appendhistory
 
+# expand alias with TAB
+zstyle ':completion:*' completer _expand_alias _complete _ignored
+# bindkey "mykeybinding" _expand_alias
+
 #ZPLUG
-source ~/.config/zplug/init.zsh
+export ZPLUG_HOME=~/.config/zplug
+# install from aur
+source /usr/share/zsh/scripts/zplug/init.zsh
 # zplug "mafredri/zsh-async", from:github, defer:0
 zplug "mafredri/zsh-async", from:"github", defer:0, use:"async.zsh"
 # Syntax highlighting for commands, load last
@@ -88,7 +97,6 @@ bindkey '^j' autosuggest-execute
 bindkey '^ ' autosuggest-clear
 # dirhistory doesn't work with vi-mode; move in history via alt + arrows
 # vimode 
-
 #bindkey '^?' backward-delete-char
 #bindkey '^[[3~' delete-char
 # FZF
@@ -114,14 +122,9 @@ fzf-history-widget() {
 zle     -N   fzf-history-widget
 bindkey '^H' fzf-history-widget
 
-fi
-
 # I don't know if i use it
 eval "$(fasd --init auto)"
 
-export EDITOR=nvim
-export VISUAL=nvim
-# export VISUAL=mousepad
 
 # Edit line in vim with ctrl-e: oh-my-zsh do it by esc; v
 	# ctr e w fzf to otwieranie folderow
@@ -150,17 +153,6 @@ zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
-# Use lf to switch directories and bind it to ctrl-o
-lfcd () {
-    tmp="$(mktemp)"
-    lf -last-dir-path="$tmp" "$@"
-    if [ -f "$tmp" ]; then
-        dir="$(cat "$tmp")"
-        rm -f "$tmp"
-        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
-    fi
-}
-bindkey -s '^o' 'lfcd\n'
 
 # Use vim keys in tab complete menu:
 bindkey -M menuselect 'h' vi-backward-char
@@ -190,3 +182,4 @@ esac
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/miro/.sdkman"
 [[ -s "/home/miro/.sdkman/bin/sdkman-init.sh" ]] && source "/home/miro/.sdkman/bin/sdkman-init.sh"
+

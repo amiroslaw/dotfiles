@@ -1,0 +1,5 @@
+#!/bin/bash
+grep -E "^bindsym" ~/.i3/config | awk '{$1=""; print $0}' | sed 's/^ *//g' | grep -vE "^XF86" | column | pr -2 -w 160 -t | less
+# egrep ^bind ~/.i3/config | cut -d ''' ''' -f 2- | sed '''s/ /\t/''' | column -ts $'''\t''' | pr -2 -w 160 -t | less
+# cat ~/.i3/config | awk '/^bindsym/ {print $2 " → " $4 " " $5 | "sort -u"}'
+

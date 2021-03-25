@@ -1,0 +1,6 @@
+super + Scroll_Lock
+	$ROFI/dmmaim
+
+{_,ctrl,shift,ctrl+shift} + Scroll_Lock
+	screenshot.sh {window,quality,selection,clipboard}
+

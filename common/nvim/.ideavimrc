@@ -5,6 +5,8 @@
 " zgrupowane akcji - jak dla gita; dla refactoringu, dla czegośtam
 " zobaczyć moje mappingi z vimrc/init
 "
+" , for git
+" - for run
 "
 " przydałoby się zbindować:
 " java class diagram/ bena spring ee
@@ -73,8 +75,8 @@ nnoremap <c-o> :action Back<cr>
 nnoremap <c-i> :action Forward<cr>
 " more like search
 " c-s-f
-vnoremap ss :action FindInPath<CR> 
-nnoremap ss :action FindInPath<CR> 
+vnoremap <a-s> :action FindInPath<CR> 
+nnoremap <a-s> :action FindInPath<CR> 
 
 nma mp :action GotoPreviousBookmark<cr>
 nma mn :action GotoNextBookmark<cr>
@@ -188,18 +190,19 @@ nmap <leader>m :action Maven.Reimport <cr>
 " jakiś klient nvjm
 nmap <leader>v :action Tool_External Tools_gvim<cr>
 " nmap <leader>Q :action ReopenClosedTab<cr>
+nmap <leader>r :action Replace<cr>
 
 " nmap  :action JShell.Console
 " Building, Running and Debugging
 " nmap ,c :action CompileDirty<cr>
 " nmap ,b :action Debug<cr>
 " nmap ,c :action RunClass<cr>
-nmap <leader>r :action Run<cr>
-" TODO something else?
-nmap <leader>R :action RunAnything<cr>
-nmap <leader>d :action DebugClass<cr>
-nmap <leader>t :action RerunTests<cr>                                         
-nmap <leader>T :action RerunFailedTests<cr>
+
+nmap -r :action Run<cr>
+nmap -R :action RunAnything<cr>
+nmap -d :action Debug<cr>
+nmap -t :action RerunTests<cr>                                         
+nmap -T :action RerunFailedTests<cr>
 
 " MAPS
 " IDK what it is 
@@ -221,10 +224,11 @@ nnoremap <leader>/ :nohlsearch<cr>
 let g:EasyMotion_smartcase = 1
 map f <Plug>(easymotion-f)
 map F <Plug>(easymotion-F)
-map T <Plug>(easymotion-b)
+map <leader>T <Plug>(easymotion-b)
 " t and s is used
-map t <Plug>(easymotion-w)
-map <nowait> s <Plug>(easymotion-j)
+map <leader>t <Plug>(easymotion-w)
+" map <nowait> s <Plug>(easymotion-j)
+map s <Plug>(easymotion-j)
 map S <Plug>(easymotion-k)
 nmap <leader>. <Plug>(easymotion-repeat)
 
@@ -277,3 +281,10 @@ nmap <leader>. <Plug>(easymotion-repeat)
 " 'viminfo'        'vi'    information to remember after restart
 " 'visualbell'     'vb'    use visual bell instead of beeping
 " 'wrapscan'       'ws'    searches wrap around the end of the file
+"
+"
+" free keymap
+" nmap <leader>R :action RunAnything<cr>
+" nmap <leader>d :action DebugClass<cr>
+" nmap <leader>t :action RerunTests<cr>                                         
+" nmap <leader>T :action RerunFailedTests<cr>

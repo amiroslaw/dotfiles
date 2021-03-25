@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+#
+# Script name: dmscrot
+# Description: Choose type of screenshot to take with scrot.
+# Dependencies: dmenu, scrot, tee, xdotool, xclip
+# GitLab: https://www.gitlab.com/dwt1/dmscripts
+# License: https://www.gitlab.com/dwt1/dmscripts/LICENSE
+# Contributors: Derek Taylor
+#               Simon Ingelsson
+
+# Set with the flags "-e", "-u","-o pipefail" cause the script to fail
+# if certain things happen, which is a good thing.  Otherwise, we can
+# get hidden bugs that are hard to discover.
+set -euo pipefail
+
+# Specifying a directory to save our screenshots.
+XDG_PICTURES_DIR="$HOME/Screenshots"
+# Makes sure the directory exists.
+mkdir -p "${XDG_PICTURES_DIR}"
+
+# FIX: STAMP will be set to the time when this script was executed and not when the actual screenshot is taken
+STAMP=$(date '+%m%d-%H%M%S')
+
+SCROT_ARGS=""
+SCROT_FILE=""
+
+# Get monitors and their settings for scrot
+DISPLAYS=$(xrandr --listactivemonitors | grep '+' | awk '{print $4, $3}' | awk -F'[x/+* ]' '{print $1,$2"x"$4"+"$6"+"$7}')
+
+# What modes do we have
+declare -a modes=(
+"Fullscreen"
+"Active window"
+"Selected region"
+"Active window height quality"
+)
+
+# Add monitor data 
+IFS=$'\n'
+declare -A DISP
+for i in ${DISPLAYS}; do 
+  name=$(echo ${i}|awk '{print $1}')
+  rest="$(echo ${i}|awk '{print $2}')"
+  modes[${#modes[@]}]="${name}"
+  DISP[${name}]="${rest}"
+done
+unset IFS
+
+target=$(printf '%s\n' "${modes[@]}" | dmenu -i -l 20 -p 'Take screenshot of:') || exit 1
+case "$target" in
+  'Fullscreen')
+    SCROT_ARGS=""
+    SCROT_FILE="${XDG_PICTURES_DIR}/${STAMP}_sc.png"
+  ;;
+  'Active window')
+    SCROT_ARGS="-u"
+    SCROT_FILE="${XDG_PICTURES_DIR}/${STAMP}_sc.png"
+  ;;
+  'Selected region')
+    SCROT_ARGS="-s"
+    SCROT_FILE="${XDG_PICTURES_DIR}/${STAMP}_sc.png"
+  ;;
+  'Active window height quality')
+    SCROT_ARGS="-u -q 90"
+    SCROT_FILE="${XDG_PICTURES_DIR}/${STAMP}_sc.png"
+  ;;
+  *)
+    SCROT_ARGS="-g ${DISP[${target}]}"
+    SCROT_FILE="${XDG_PICTURES_DIR}/scrot-${target}-${STAMP}.png"
+  ;;
+esac
+
+declare -a destination=( "File" "Clipboard" "Both" )
+dest=$(printf '%s\n' "${destination[@]}" | dmenu -i -l 20 -p 'Destination:') || exit 1
+case "$dest" in
+  'File')
+	echo ${SCROT_ARGS}
+	echo ${SCROT_FILE}
+    scrot ${SCROT_ARGS} "${SCROT_FILE}"
+    echo $?
+  ;;
+  'Clipboard')
+    scrot ${SCROT_ARGS} -e 'xclip -selection clipboard -t image/png -i $f'
+  ;;
+  'Both')
+	  # dont' work
+    scrot ${SCROT_ARGS} | tee "${SCROT_FILE}" | xclip -selection clipboard -t image/png
+  ;;
+  *)
+    exit 1
+  ;;
+esac
+
+exit 0

@@ -1,13 +1,9 @@
 #!/bin/sh
-#
-# ~/.xinitrc
-#
-# Executed by startx (run your window manager from here)
 
 [[ -f ~/.Xdefaults ]] && xrdb -merge ~/.Xdefaults
 
 
-userresources=$HOME/.Xresources
+userresources=$HOME/.config/Xresources
 usermodmap=$HOME/.config/Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
@@ -38,16 +34,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     done
     unset f
 fi
-if [ $TERM = linux ] || [ -e "/etc/systemd/system/graphical.target.wants/xlogin@$(whoami).service" ] ; then
-
-	# large cursor
-# xsetroot -cursor_name left_ptr &
-picom --experimental-backends &
-sh ~/.fehbg 
-
-## Automount removable media
-devmon &
-# udiskie &
+# if [ $TERM = linux ] || [ -e "/etc/systemd/system/graphical.target.wants/xlogin@$(whoami).service" ] ; then
 
 exec dbus-launch --sh-syntax --exit-with-session bspwm
 # exec bspwm

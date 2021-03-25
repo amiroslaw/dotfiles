@@ -1,9 +1,13 @@
+; vim:ft=dosini
 ;=====================================================
 ;   To learn more about how to configure Polybar go to https://github.com/jaagr/polybar The README contains alot of information
 ; TODO wifi kliknięcie; data rozwinięcie; rezygnacja z voluem bar - za dużo miejsca 
 ; icons
 ; https://fontawesome.com/v3.2.1/cheatsheet/
+; https://fontawesome.com/cheatsheet
 ; migration to 3.5 https://polybar.readthedocs.io/en/latest/man/polybar.5.html#syntax
+; konfiguracja 
+; wlan, lan, pulseaudio 
 ;=====================================================
 [colors]
 background = #222
@@ -59,11 +63,11 @@ font-0 = "Ubuntu Nerd Font:pixelsize=9;1"
 font-1 = "RobotoMono Nerd Font:pixelsize=8;1"
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 
-modules-left = bspwm xwindow
-modules-center = mpd
-modules-right = cpu temp-amd fan-amd memory temp-nvidia fan-nvidia uptime filesystem wlan eth date weather pulseaudio powermenu updates
+modules-left = bspwm bsplayout xwindow
+modules-center = mpd currency
+modules-right = cpu temp-amd fan-amd memory temp-nvidia fan-nvidia uptime filesystem wlan date weather pulseaudio powermenu updates
 ; system-usb-udev doesn't work
-; pulseaudio alsa xbacklight wlan battery volume
+; pulseaudio alsa xbacklight battery volume eth 
 tray-position = right
 tray-padding = 0
 ;tray-transparent = true
@@ -108,9 +112,9 @@ module-margin-right = 2
 font-0 = "Ubuntu Nerd Font:pixelsize=9;1"
 font-1 = "RobotoMono Nerd Font:pixelsize=8;1"
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
-modules-left = bspwm
+modules-left = bspwm bsplayout
 modules-center = net idea pcmanfm music gpodder gnucash pidgin grywalizacja calendar
-modules-right = temp-amd fan-amd temp-nvidia fan-nvidia date pulseaudio powermenu demo
+modules-right = temp-amd fan-amd temp-nvidia fan-nvidia date pulseaudio powermenu
 tray-position = right
 tray-padding = 0
 ;tray-transparent = true
@@ -286,7 +290,7 @@ ramp-used-7 = █
 [module/eth]
 type = internal/network
 format-connected = <label-connected>
-interface = enp4s0
+interface = enp34s0
 interval = 3.0
 
 format-connected-prefix = " "
@@ -346,7 +350,7 @@ format-padding = 1
 format-foreground = ${colors.foreground}
 format-background = ${colors.background}
 format-prefix-foreground = #C1B93E
-label =  %output:0:150:%
+label =   %output:0:150:%
 format-underline = #C1B93E
 
 [module/fan-nvidia]
@@ -451,7 +455,7 @@ format-online-background = ${colors.background}
 [module/net]
 type = custom/script
 exec = echo " "
-click-left = vivaldi-stable &
+click-left = firefox &
 click-right = notify-send vivaldi &
 [module/idea]
 type = custom/script
@@ -496,7 +500,8 @@ click-right = notify-send calendar &
 
 [module/wlan]
 type = internal/network
-interface = wlp0s29u1u6
+interface = wlp42s0f3u1
+;interface = iw dev | awk '$1=="Interface"{print $2}
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
@@ -662,8 +667,6 @@ ramp-1 = 
 ramp-2 = 
 ; ramp-foreground = ${colors.foreground-alt}
 
-; vim:ft=dosini
-;
 
 
 
@@ -740,6 +743,7 @@ format-background =
 format-padding =
 
 ; FLAGS
+; label-focused-background = ${colors.primary}
 label-monocle = *
 label-pseudotiled = /
 label-locked = L
@@ -748,7 +752,18 @@ label-sticky = S
 label-sticky-foreground = #fba922
 label-private = P
 label-private-foreground = #bd2c40
-label-marked = M
+label-marked = V
+label-fullscreen = F
 ;label-tiled = T
 ;label-floating = f
-label-fullscreen = F
+
+[module/bsplayout]
+type = custom/script
+exec = ~/.config/polybar/bsplayout.sh
+tail = true
+label-foreground = ${colors.alert}
+
+[module/currency]
+type = custom/script
+exec = ~/.config/polybar/currency.sh
+interval = 3600

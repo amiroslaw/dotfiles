@@ -1,9 +1,21 @@
+#!/bin/sh
+
+## Automount removable media
+devmon &
+# udiskie &
+numlockx &
+#screen saver
+xset dpms 6000 6000 6000 s 6000 &
+
+/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 sleep 500 && megasync &
 clipster -d &
 redshift -l 51.2:22.6 &
-trackball &
+trackball.sh &
 nm-applet &
+nvidia-fan.sh -c ~/.config/nfancurve/config &
 
+abduco -n btm btm &
+abduco -n tor rtorrent &!
 #clipit &
 #easystroke &
-#tmux new-session -d -s tor rtorrent &

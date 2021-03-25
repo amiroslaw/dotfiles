@@ -1,0 +1,5 @@
+new_tab yetibot
+cd ~/Code
+title wp
+launch ping wp.pl
+

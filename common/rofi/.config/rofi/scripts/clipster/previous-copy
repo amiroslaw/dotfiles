@@ -1,0 +1,28 @@
+#!/bin/env bash
+# swap the two last entries in clipboard
+
+# Verify clipster is running, fail otherwise
+clipster -o > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  notify-send 'Failed to retrieve history from Clipster, please ensure daemon is running!'
+  exit 1
+fi
+
+if [ $0 = "primary" ]; then
+	EXACT_SELECTION=$(clipster -po0 -N 1 -m '' \
+		| tr '\0' '\n')
+else
+	echo 'else'
+	EXACT_SELECTION=$(clipster -co0 -N 1 -m '' \
+		| tr '\0' '\n')
+fi
+# Echo the selection back to clipster
+echo -n "$EXACT_SELECTION" | clipster -c 
+xdotool sleep 0.100 key --clearmodifiers ctrl+v
+
+# C_HIST="$(clipster -c -o -n $CLIPSTER_HISTORY_SIZE -0 \
+#         | gawk 'BEGIN {RS = "\0"; ORS = "\0"} NF > 0 { print substr($0, 1, 250) }' \
+#         | gawk 'BEGIN {RS = "\0"; FS="\n"; OFS=" " } { $1=$1; print $0 }'  \
+#         | sed 's/^ *//' \
+#         | gawk '{printf("%003d %s\n", NR, $0)}') | xclip -sel clip"
+
