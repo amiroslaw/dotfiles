@@ -1,13 +1,18 @@
-#!/bin/sh
+#!/bin/env bash
 while read file
 do
 	# c-x and 
         case "$1" in
         "C-x")
                 trash-put "$file" ;;
+	"c")  
+		#copy image
+		while read file; do xclip -selection clipboard -target image/png "$file"; done ;;
+        "n")
+				# copy name
+                echo -n "$file" | xclip -selection clipboard ;;
+				# xclip -in -filter | tr '\n' ' ' | xclip -in -selection clipboard ;;
         "r")
                 convert -rotate 90 "$file" "$file" ;;
-        "c")
-                echo -n "$file" | xclip -selection clipboard ;;
         esac
 done

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 # Verify clipster is running, fail otherwise
 clipster -o > /dev/null 2>&1
@@ -22,9 +22,8 @@ C_HIST="$(clipster -c -o -n $CLIPSTER_HISTORY_SIZE -0 \
         | sed 's/^ *//' \
         | gawk '{printf("%003d %s\n", NR, $0)}')"
 
-snippet=$(cat ~/.config/clipster/snippet) 
+snippet=$(cat $ROFI/clipster/snippet) 
 # Echo clipboard items to Rofi and save the selection made by user
-# notify-send '1'
   SELECTION="$(echo "$C_HIST $snippet" | rofi -dmenu -i -lines 20 -width 80 -p 'selection: ')"
 # if [[ -t 0 ]]; then
 #   SELECTION="$(echo "$C_HIST $snippet" | fzf-tmux -d 15 --prompt='selection: ')"
@@ -35,11 +34,15 @@ snippet=$(cat ~/.config/clipster/snippet)
 if [ -n "$SELECTION" ]; then
   # Retrieve the line number from the beginning of selection and remove leading zeros
   NUMBER="$(echo "$SELECTION" | cut -c1-3 | sed 's/^0*//')"
+  echo $SELECTION
+	if [ $NUMBER = "sni" ]; then
+		EXACT_SELECTION=$(echo $SELECTION | gawk '{print $2}')
+	else
   # Extract clipboard history from clipster and find the nth non-empty clip based selected line number
-  EXACT_SELECTION="$(clipster -c -o -n $CLIPSTER_HISTORY_SIZE -0 \
+	  EXACT_SELECTION="$(clipster -c -o -n $CLIPSTER_HISTORY_SIZE -0 \
                    | gawk 'BEGIN {RS = "\0"; ORS = "\0"} NF > 0 { print }' \
                    | gawk 'BEGIN {RS = "\0"}'"NR == $NUMBER { print; exit }")"
-
+	fi
   # Echo the selection back to clipster
   echo -n "$EXACT_SELECTION" | clipster -c 
   xdotool sleep 0.100 key --clearmodifiers ctrl+v

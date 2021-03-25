@@ -1,0 +1,16 @@
+[user]
+	name = amiroslaw
+	email = arek47@gmail.com
+[merge]
+	tool = meld
+[diff]
+	tool = meld
+[difftool]
+	prompt = false
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"
+[core]
+	autocrlf = input
+	editor = nvim
+[credential]
+    helper = store --file $HOME/.config/git-credentials

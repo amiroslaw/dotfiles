@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 # Verify clipster is running, fail otherwise
 clipster -o > /dev/null 2>&1
@@ -16,7 +16,7 @@ fi
 #  - Add line numbers to clip items
 # NOTE: This is all done in a single line because bash can't store a NUL byte
 #env var doesn't work
-CLIPSTER_HISTORY_SIZE=1000
+# CLIPSTER_HISTORY_SIZE=1000
 C_HIST="$(clipster -p -o -n $CLIPSTER_HISTORY_SIZE -0 \
         | gawk 'BEGIN {RS = "\0"; ORS = "\0"} NF > 0 { print substr($0, 1, 250) }' \
         | gawk 'BEGIN {RS = "\0"; FS="\n"; OFS=" " } { $1=$1; print $0 }'  \

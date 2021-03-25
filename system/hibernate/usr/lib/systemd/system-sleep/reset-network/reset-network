@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ "${1}" == "pre" ]; then
+  # Do the thing you want before suspend here, e.g.:
+  #rmmod ath9k_htc
+elif [ "${1}" == "post" ]; then
+  # Do the thing you want after resume here, e.g.:
+  modprobe ath9k_htc
+fi

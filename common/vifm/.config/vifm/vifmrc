@@ -131,16 +131,15 @@ set confirm-=delete
 set statusline="  %t%= %A %10u:%-7g %15E %20d  "
 "TOOLS
 " required apps
-" patool, feh or sxiv, meld, trash-cli, tree, du, pdfunite, udevil
+"rust - rip, fd, rg, 
+" patool lub atool, feh or sxiv, meld, trash-cli, tree, du, pdfunite, udevil
 "
-set grepprg="grep\ -n\ -H\ -I\ -r\ -i\ %i\ %a %s"
-"set findprg="find %s %a -print -type d -prune"
-set findprg="find %s %a -print -prune"
-"set findprg="find %d -iname %a -print -prune %s"
+" set grepprg="grep\ -n\ -H\ -I\ -r\ -i\ %i\ %a %s"
+" set findprg="find %s %a -print -prune"
 "
 
-" Use ripgrep instead of grep
-set grepprg=rg\ --color=never\ -Hn\ %i\ %a\ %s
+" Use ripgrep instead of grep wiht smart case
+set grepprg=rg\ --color=never\ -SHn\ %i\ %a\ %s
 " Use fd instead of find
 set findprg=fd\ --color=never\ %p\ %s
 nmap <C-A-f> :find <space> 
@@ -198,8 +197,8 @@ nmap du :!du -schL * %m<cr>
 "change name without extension
 nmap <F2> cW
 " trash-cli or rm-improved
-nmap <delete> :!rip %f<cr>
-" nmap <delete> :!trash-put %f<cr>
+nmap <delete> :!trash-put %f<cr>
+nmap DD :!rm -rf %f<cr>
 "open in file manager
 nmap <F4> :f pcmanfm %f & <cr>
 " copy files to the opposite pane
@@ -282,7 +281,8 @@ filextype *.pdf zathura %f 2>/dev/null &
 filextype *.jpg,*.jpeg,*.png,*.bmp,*.gif sxiv -fas f %f 2>/dev/null &
 " filextype *.jpg,*.jpeg,*.png,*.bmp,*.gif vimiv %f 2>/dev/null &
 filextype *.odt,*.ods,*.doc,*.docx,*.xls,*.xlsx,*.csv,*.odp,*.pptx,*.ppt libreoffice %f 2>/dev/null &
-filextype *.mobi,*.epub,*azw3 ebook-viewer %f 2>/dev/null &
+filetype *cbr,*.mobi,*.epub,*azw3,*azw,*pobi ebook-viewer %f 2>/dev/null &
+filextype *cbr,*.mobi,*.epub,*azw3,*azw,*pobi ebook-viewer %f 2>/dev/null &, zathura %f 2>/dev/null &, com.github.babluboy.bookworma %f 2>/dev/null & 
 " wazna kolejnosc czy filextype czy filetype
 " filextype *.avi,*.mp4,*f4v,*.mkv,*.webm,*m3u,*wmv,*mpg smplayer %f 2>/dev/null &
 filextype *.avi,*.mp4,*f4v,*.mkv,*.webm,*m3u,*wmv,*mpg,*ogg,*.mp3,*.wav,*.flac,*.og,*.m4v
@@ -301,10 +301,21 @@ filextype *.md,*.txt
         \ typora %f 2>/dev/null &,
         \ {Open with mousepad}
         \ mousepad %f 2>/dev/null &,
+
+filextype *.mobi,*.epub,*azw3,*azw,*pobi ebook-viewer %f 2>/dev/null &
 " PREVIEWS in second pane :view or w
 fileviewer *.tar,*.tar.gz
 	 \ tar -tvf %c
 
+" need poppler and libcaca
+fileviewer *.pdf
+  \ pdftotext %c -
+" temporary disabled TODO
+" fileviewer *.html
+ " \ w3m %c
+" fileviewer *.png,*.jpeg,*.jpg
+ " \ img2txt %c 
+ 
 " kitty 
 fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
 	\ kitty +icat --place %pwx%ph@%pxx%py  --silent %c
@@ -320,10 +331,6 @@ fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
 "          \ %pc
 "          \ imgc %px %py %pw %ph
 "
-
-
-
-
 "ueberzung
 " fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.xpm
 " 	\ vifmimg draw %px %py %pw %ph %c
@@ -347,16 +354,7 @@ fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
 " 	\ %pc
 " 	\ vifmimg clear
 
-" need poppler and libcaca
-fileviewer *.pdf
-  \ pdftotext %c -
-" temporary disabled TODO
-" fileviewer *.html
- " \ w3m %c
-" fileviewer *.png,*.jpeg,*.jpg
- " \ img2txt %c 
- 
-" devicons działa z wersją 8.2 vifm
+" DEVICONS works in > 8.2 vifm
 " file types
 set classify=' :dir:/, :exe:, :reg:, :link:'
 " various file names
@@ -385,12 +383,11 @@ mark d /home/miro/Downloads
 mark D /home/miro/Documents
 mark h /home/miro 
 mark I /home/miro/Documents/Nauka/inwestycje
-mark j /home/miro/Code/JAVA
 " mark k /media/winD/kursy/Angular
 mark m /media/multi
 mark M /media/multi/.mumia
 mark n /home/miro/Documents/notebook_md
-mark N /home/miro/Documents/notatki
+" mark N /home/miro/Documents/notatki
 mark o /home/miro/Pictures
 mark r /run/media/miro
 mark s /home/miro/Code/SourceCode
@@ -401,9 +398,12 @@ mark v /home/miro/Videos
 mark w /media/winD
 mark W /media/winC
 mark / /
-" mark e /home/miro/Exe 
+" mark e /home/miro/Ext
 " mark p /home/miro/Code/Projekty
+mark N /home/miro/eversis/projects/neo
+mark l /home/miro/eversis/projects/legacy-neo
+mark j /home/miro/eversis
 mark e /home/miro/Exe/liferay-ce-portal-src-7.2.1-ga2
 mark p /home/miro/eversis/projects
 mark l /home/miro/eversis/projects/piuw/modules
-mark b /home/miro/eversis/projects/piuw/bundles/osgi/modules
+mark b /home/miro/eversis/projects/directsales

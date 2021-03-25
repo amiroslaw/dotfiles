@@ -1,0 +1,32 @@
+#!/bin/env bash
+
+## Automount removable media
+devmon &
+# udiskie &
+numlockx &
+#screen saver
+xset dpms 6000 6000 6000 s 6000 &
+## powersaving options
+xset s off &
+xset s noblank &
+xset s noexpose &
+xset c on &
+xset -dpms &
+xbacklight -set 15 &
+
+
+sleep 500 && megasync &
+clipster -d &
+redshift -l 51.2:22.6 &
+## Run screenlock when suspending
+i3lock-wait-for-suspend &
+
+## Notify about package updates
+# update-checker 7200 &
+# sleep 500 && abduco -n tor rtorrent &
+#tmux new-session -d -s tor rtorrent &
+
+## multimonitor support. Save monitor configurations with "autorandr.sh --save <profile>"
+# srandrd atorandr.sh --change
+# /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
+#lxpolkit &

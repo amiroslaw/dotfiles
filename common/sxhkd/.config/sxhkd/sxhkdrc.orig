@@ -1,0 +1,873 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+﻿# doesn't work env vars form zsh - only form .profile
+<<<<<<< HEAD
+=======
+﻿# doesn't work env vars form zsh - only form .profile
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+# kitty ma flagi --title i --name a st tylko -t/T i -n 
+# sudo -A or gksu - popup with password
+# pattern for 3 actions
+# super + {_,shift,ctrl} + z 
+#super + {_,shift + }{1-9,0} dwa zakresy
+#	bspc {desktop -f,node -d} '^{1-9,10}'
+ # \~fullscreen toggle
+ # TOD
+ # skopiuj kod z skryptów
+ # rules from i3
+ 
+# make sxhkd reload its configuration files:
+super + Home
+<<<<<<< HEAD
+=======
+=======
+﻿#!/bin/zsh
+# doesn't work env vars form zsh - only form .profile
+>>>>>>> bd6b926 (mpd)
+# make sxhkd reload its configuration files:
+# kitty ma flagi --title i --name a st tylko -t/T i -n 
+super + shift + Escape
+>>>>>>> 11d69fc (add more dotfiles)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+	pkill -USR1 -x sxhkd
+
+# kill rofi
+super + Escape
+	{$ROFI/kill}
+<<<<<<< HEAD
+=======
+﻿# doesn't work env vars form zsh - only form .profile
+# kitty ma flagi --title i --name a st tylko -t/T i -n 
+# sudo -A or gksu - popup with password
+# pattern for 3 actions
+# super + {_,shift,ctrl} + z 
+#super + {_,shift + }{1-9,0} dwa zakresy
+#	bspc {desktop -f,node -d} '^{1-9,10}'
+ # \~fullscreen toggle
+ # TOD
+ # skopiuj kod z skryptów
+ 
+# make sxhkd reload its configuration files:
+super + Home
+	pkill -USR1 -x sxhkd
+
+<<<<<<< HEAD
+# kill rofi, xorg-xkill
+super + {_,shift + }Escape
+	{$ROFI/kill,xkill}
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+# kill rofi
+super + Escape
+	{$ROFI/kill}
+>>>>>>> 7273fcf (add scripts and opener into sxhkd)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+
+# Show keybindings
+super + shift + F1
+	$ROFI/bspwm-help
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+super + shift + F2
+	notify-send $test
+	# notify-send test "$test" $test $BROWSER
+=======
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+
+# In case bspwmrc fails to execute/you wish have plugged in a new monitor
+super + shift + r
+	bspwmrc
+#
+# Window manipulation
+# ______________
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7273fcf (add scripts and opener into sxhkd)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+# Close/kill window
+super + {_,shift} + q
+	bspc node -{c,k}
+
+# floating/all tile/all floating
+super + {_,shift,ctrl} + space
+	{bspc node -t \~floating && window-placer $(bspc query -T -d | grep -o '"state":"floating"' | wc -l), \
+	bspcp tile, bspcp float }
+# super + shift + @space - release
+	# {bspc node -t floating && window-placer $(bspc query -T -d | grep -o '"state":"floating"' | wc -l),bspc node -t tiled}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+# Toggle tiling mode of window, but save layout
+super + shift + ctrl + space
+	bspc node -t \~pseudo_tiled
+
+# Toggle monocle/fullscreen mode
+super + {_,shift} + f 
+	{bspc desktop -l next, bspc node -t \~fullscreen}
+
+<<<<<<< HEAD
+=======
+# Close window
+super + q
+	bspc node -c
+
+# Kill window
+super + shift + q
+	bspc  node -k
+
+super + shift + @space
+	{bspc node -t floating && window-placer $(bspc query -T -d | grep -o '"state":"floating"' | wc -l),bspc node -t tiled}
+# Force all windows of the desktop to tile
+super + ctrl + space
+	bspcp tile
+# Force all windows of the desktop to float and arrange them
+super + ctrl + shift + space
+	bspcp float
+	
+=======
+>>>>>>> 7273fcf (add scripts and opener into sxhkd)
+# Toggle tiling mode of window, but save layout
+super + shift + ctrl + space
+	bspc node -t \~pseudo_tiled
+
+<<<<<<< HEAD
+# Toggle monocle mode
+super + f 
+	bspc desktop -l next
+	
+<<<<<<< HEAD
+# Toggle fullscreen - zasłania panel
+super + ctrl + f 
+	bspc node -t {fullscreen,tiled}	
+>>>>>>> 11d69fc (add more dotfiles)
+=======
+# Toggle fullscreen - zasłania panel \~ toggle
+super + shift + f 
+	bspc node -t \~fullscreen
+=======
+# Toggle monocle/fullscreen mode
+super + {_,shift} + f 
+	{bspc desktop -l next, bspc node -t \~fullscreen}
+>>>>>>> 7273fcf (add scripts and opener into sxhkd)
+
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+#### flags
+# sticky works only on the one monitor
+super + a ; {l,m,s,p}
+	bspc node -g {locked,marked,sticky,private}
+# send the newest marked node to the newest preselected node trzeba mieć preselected 
+super + a ; b
+	bspc node newest.marked.local -n newest.!automatic.local
+
+# hide
+super + {_,shift,ctrl} + z
+     whid {last, hide, dmenu}
+
+
+#
+# Aplications
+# ______________    
+#
+
+# left/middle click emulation
+super + {x,y} 
+	xdotool click --clearmodifiers {1,2}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+super + F2
+	/opt/idea-IU-203.7148.57/bin/idea.sh
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+>>>>>>> 29eea88 (move mpd; add script for clipster)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+
+=======
+>>>>>>> 382a967 (add scripts and opener into sxhkd)
+#
+# Window moving and splitting
+# ______________    
+
+# Switch to the other monitor.
+#mod3 + o
+	#bspc monitor -f next
+	
+## Workspaces
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+#super + {_,shift + }{1-9,0}
+#	bspc {desktop -f,node -d} '^{1-9,10}'
+## Alternative: i3 style behavior (focus nth, desktop of the focused monitor)
+	# focusdesktopofthismonitor {1-9,10}
+>>>>>>> 7273fcf (add scripts and opener into sxhkd)
+=======
+>>>>>>> 382a967 (add scripts and opener into sxhkd)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+super + {1-9,0}
+	bspc desktop -f "$(bspc query -D | sed -n "{1-9,10} p")"
+# move to workspace and go to it
+super + shift + {1-9,0}
+    bspc node -d '^{1-9,10}' --follow
+    # id=$(bspc query -N -n); bspc node -d ^{1-9,10}; bspc node -f ${id}
+super + ctrl + {1-9,0}
+	bspc node -d "$(bspc query -D -m | sed -n "{1-9,10} p")"
+	# movetodesktopofthismonitor {1-9,10}
+# move to trze next monitor; prev will do tehe sam in 2 monitors	
+super + shift + {n,p}
+    id=$(bspc query -N -n focused); \
+    bspc node -m {prev,next}; \
+    bspc node -f ${id}
+
+# move to next and go to it
+# bspc node -d {prev,next}.local -follow
+# Send to last
+# super + shift + equal
+    # bspc node -m last --follow
+
+
+# Select previous / next active desktop
+super + {p,n}
+	bspc desktop -f {prev,next}.occupied
+
+# Select previous / next desktop
+super + shift + {p,n}
+	bspc desktop -f {prev,next}.local
+
+# cycle windows in the same desktop- jest tez skrypt rofi
+alt + {_,shift} + Tab
+    bspc node -f {next,prev}.local
+
+# go to the last workspace, monitor 
+super + {_,shift} + Tab
+	bspc {desktop,monitor} -f last
+
+super + {h,j,k,l}
+    focusmover {west,south,north,east}
+	# bspc node -f {west,south,north,east}
+
+super + {Left,Down,Up,Right}
+    focusmover {west,south,north,east}
+        	
+# Move tiled windows. Moving a tiled window to 
+# preselected one moves into preselection instead. 
+# Moving out of the screen should move the window to next monitor if possible
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+# breaks in floating windows
+=======
+super + shift + {h,j,k,l}
+=======
+# breaks in floating windows
+super + shift + {Left,Down,Up,Right}
+>>>>>>> 5f2f642 (add tg scripts)
+	bspc node -s {west,south,north,east}
+	
+<<<<<<< HEAD
+# Different style of movement: transplant into window in chosen direction
+>>>>>>> 11d69fc (add more dotfiles)
+=======
+# breaks in floating windows
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+super + shift + {Left,Down,Up,Right}
+	bspc node -s {west,south,north,east}
+	
+# moves floating windows instead of changing 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+# moves floating windows instead of changing 
+# sprawdź różnice w kodzie - skopiuj kod 
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+>>>>>>> 7273fcf (add scripts and opener into sxhkd)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+super + shift + {h,j,k,l}
+	euclid_mover {west,south,north,east}
+	# windowgrabber {west,south,north,east}
+	
+# resize	
+super + ctrl + {h,j,k,l}
+	bspwm_resize.sh {west,south,north,east}
+
+super + ctrl + {Left,Down,Up,Right}
+	bspwm_resize.sh {west,south,north,east}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+super + shift + ctrl + {h,j,k,l}
+	xdo move {-x -30,-y +30,-y -30,-x +30} # or with xdotool
+>>>>>>> bd6b926 (mpd)
+=======
+# move a floating window
+# with euclid_mover moving is not necessary 
+# super + shift + ctrl + {h,j,k,l}
+    # bspc node -v {-30 0,0 30,0 -30,30 0}
+	# xdo move {-x -30,-y +30,-y -30,-x +30} # or with xdotool
+
+# super + shift + ctrl + {Left,Down,Up,Right}
+    # bspc node -v {-30 0,0 30,0 -30,30 0}
+	# xdo move {-x -30,-y +30,-y -30,-x +30}
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+>>>>>>> 7273fcf (add scripts and opener into sxhkd)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+
+#
+# Layout manipulation/desktop level controls
+# ______________    
+
+# Balance tree
+super + b
+	bspc node @/ -B
+
+# Balance brother node. If you do this on biggest window of the desktop, it usually means balancing all windows with except the biggest.
+super + alt + b
+	bspc node @brother -B
+	
+# Undo balancing (equalize windows)
+super + ctrl + b
+	bspc node @/ -E
+
+# Toggle automatic balancing of windows ? how toggle todo
+alt + b
+	euclid_balancer
+
+# Rotate leaves of tree
+super + {bracketright,bracketleft}
+	bspc node @/ -R {90,270}
+
+# Mirror and flip leaves of tree
+super + shift + {bracketleft,bracketright}
+	bspc node @/ -F {horizontal,vertical}
+
+# Change window gap
+super + g
+	bspc config -d focused window_gap {$gap,$(($gap+$gap)),$(($gap+$gap+$gap))}
+
+super + button{4,5}
+	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+,-} 2 ))
+
+###### RECEPTACLE  and PRESELECTION
+# in preselection new window will be display in preselected area 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+
+# Receptacle ok tylko dać jakieś fajne skróty
+super + semicolon ; {h,j,k,l}
+	bspc node --presel-dir \~{west,south,north,east} -i
+	
+# Autopresel (split window in its largest dimension) - p preselection 
+super + semicolon ; {p,semicolon}
+	{auto-presel,bspc node -i}
+
+# move window to Receptacle
+super + shift + semicolon
+	bspc node $(bspc query -N -n focused) -n $(bspc query -N -n .leaf.\!window)
+# Remove receptacles
+super + shift + BackSpace
+	for i in $(bspc query -N -n .leaf.!window.local); do bspc node $i -k; done
+
+F12
+	tdrop -m --wm bspwm -w -4 -y "$PANEL_HEIGHT" kitty --name dropdown --title dropdown
+
+
+# APPLICATIONS
+
+super + Return
+	$TERM
+
+super + shift + Return
+	$TERM_LT
+
+super + {_,shift} + i
+	{gksu net-restart.sh, \
+	nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
+	
+super + F{1,2,3,4,7,10,11,12}
+	{$BROWSER, /opt/idea-IU-*/bin/idea.sh, $TERM vifm, pcmanfm, sh -c 'cd $NOTE; $TERM_LT -t note nvim', pamac-manager, sh -c $(ls ~/.bin | rofi -dmenu), rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu }
+# super + F6 surf https://clockify.me/tracker,
+
+super + {_,shift,ctrl} + Delete 
+	{rmmpv-playing.sh, rmmpd-playing.sh, xkill}
+
+super + BackSpace
+	$TERM_LT -t top -n top -e btm
+
+# rofi locate
+super + ctrl + f 
+	$ROFI/locate-video.py
+	# rofi-finder.sh
+ # $ROFI/locate.py
+
+# tui
+super + o ; {o,i,p,b,t}
+	$TERM_LT -e {notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nm-menu\nt-telegram", \
+		nmtui,ncmpcpp,bmenu,tg}
+
+# script in background
+super + s ; {s,m,v,a,y,n}
+	{dunstify options: "m-magnet\nv-video\na-audio yt\ny-yt video\nn-add note", \
+    magnet.sh $(xclip -o -sel clip), \
+    mpv $(xclip -o -sel clip), \
+    cd ~/Music/PODCASTS && youtube-dl -f bestaudio -x --audio-format mp3 $(xclip -o -sel clip), \
+    cd ~/Videos/YouTube && youtube-dl $(xclip -o -sel clip), \
+    xclip -o -selection clip >> $NOTE/clip.md 
+}
+
+# clipster
+super + c ; {c,g,p,d,r,j,n,s}
+	{dunstify options: "g-gui\np-primary\nd-remove clip\nr-remove primary\nj-join\nn-previous clip\ns-second primary", \
+	clipster -sc, \
+	$ROFI/clipster/roficlip-primary, \
+	clipster -r, \
+	clipster -cr, \
+	$ROFI/clipster/clipjoin, \
+	$ROFI/clipster/previous-copy, \
+	$ROFI/clipster/previous-copy primary}
+<<<<<<< HEAD
+
+
+=======
+
+# Receptacle ok tylko dać jakieś fajne skróty
+super + semicolon ; {h,j,k,l}
+	bspc node --presel-dir \~{west,south,north,east} -i
+	
+# Autopresel (split window in its largest dimension) - p preselection 
+super + semicolon ; {p,semicolon}
+	{auto-presel,bspc node -i}
+
+# move window to Receptacle
+super + shift + semicolon
+	bspc node $(bspc query -N -n focused) -n $(bspc query -N -n .leaf.\!window)
+# Remove receptacles
+super + shift + BackSpace
+	for i in $(bspc query -N -n .leaf.!window.local); do bspc node $i -k; done
+
+F12
+	tdrop -m --wm bspwm -w -4 -y "$PANEL_HEIGHT" kitty --name dropdown --title dropdown
+
+
+# APPLICATIONS
+<<<<<<< HEAD
+#
+>>>>>>> 11d69fc (add more dotfiles)
+=======
+
+super + Return
+	$TERMINAL
+
+super + shift + Return
+	$TERM_LT
+
+super + {_,shift} + i
+	{gksu net-restart.sh, \
+	nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
+	
+super + F{1,2,3,4,7,10,11,12}
+	{$BROWSER, /opt/idea-IU-*/bin/idea.sh, $TERMINAL vifm, pcmanfm, sh -c 'cd $NOTE; $TERM_LT -t note nvim', pamac-manager, sh -c $(ls ~/.bin | rofi -dmenu), rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu }
+# super + F6 surf https://clockify.me/tracker,
+
+super + {_,shift,ctrl} + Delete 
+	{rmmpv-playing.sh, rmmpd-playing.sh, xkill}
+
+super + BackSpace
+	$TERM_LT -t top -n top -e btm
+
+# rofi locate
+super + ctrl + f 
+	$ROFI/locate-video.py
+	# rofi-finder.sh
+ # $ROFI/locate.py
+
+# tui
+super + o ; {o,i,p,b,t}
+	$TERM_LT -e {notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nm-menu\nt-telegram", \
+		nmtui,ncmpcpp,bmenu,tg}
+
+# script in background
+super + s ; {s,m,v,a,y,n}
+	{dunstify options: "m-magnet\nv-video\na-audio yt\ny-yt video\nn-add note", \
+    magnet.sh $(xclip -o -sel clip), \
+    mpv $(xclip -o -sel clip), \
+    cd ~/Music/PODCASTS && youtube-dl -f bestaudio -x --audio-format mp3 $(xclip -o -sel clip), \
+    cd ~/Videos/YouTube && youtube-dl $(xclip -o -sel clip), \
+    xclip -o -selection clip >> $NOTE/clip.md 
+}
+
+# clipster
+super + c ; {c,g,p,d,r,j,n,s}
+	{dunstify options: "g-gui\np-primary\nd-remove clip\nr-remove primary\nj-join\nn-previous clip\ns-second primary", \
+	clipster -sc, \
+	$ROFI/clipster/roficlip-primary, \
+	clipster -r, \
+	clipster -cr, \
+	$ROFI/clipster/clipjoin, \
+	$ROFI/clipster/previous-copy, \
+	$ROFI/clipster/previous-copy primary}
+
+
+>>>>>>> 29eea88 (move mpd; add script for clipster)
+=======
+
+
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+# ROFI 
+# rofi top and calc are in aur repo
+super + d
+	rofi -modi window,drun,top,calc -show window -show-icons -sidebar-mode -terminal st
+
+super + shift + d
+	rofi -modi drun,run,window -show drun -show-icons -sidebar-mode -terminal st
+
+# rofi scripts TODO path
+super + ctrl + d
+	 $ROFI/mbmain
+# bindsym $mod+shift+d exec --no-startup-id "rofi -modi window,top,drun -show window -show-icons -sidebar-mode -terminal st"
+super + t
+	$ROFI/tran/trans-launcher.sh
+# translator with notification
+super + shift + t
+	rofi -modi dic:$ROFI/tran/dic-speak.sh,enpl:$ROFI/tran/enpl-notify.sh,plen:$ROFI/tran/plen-notify.sh -show enpl -sidebar-mode -terminal $TERM_LT -lines 1 -width 30
+# mount 
+super + ctrl + u
+	$ROFI/mount-launcher.sh
+# clip
+ctrl + shift + z
+	$ROFI/clipster/roficlip
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	# $ROFI/clipster/roficlip
+super + c ; {s,p,r,R,j}
+	{clipster -sc, $ROFI/clipster/roficlip-primary, clipster -cr, clipster -r, $ROFI/clipster/clipjoin}
+=======
+
+<<<<<<< HEAD
+super + c ; {c,g,p,d,r,j,n,s}
+	{dunstify options: "g-gui\np-primary\nd-remove clip\nr-remove primary\nj-join\nn-previous clip\ns-second primary", clipster -sc, $ROFI/clipster/roficlip-primary, clipster -r, clipster -cr, $ROFI/clipster/clipjoin, $ROFI/clipster/previous-copy, $ROFI/clipster/previous-copy primary}
+>>>>>>> 29eea88 (move mpd; add script for clipster)
+	# s-gui; p-rofi-primary, r-remove, R-remove from primary, j-join
+	# clipster -s && xdotool click --clearmodifiers 2 - nie czeka na program
+	# clipster -sc && xdotool sleep 0.100 key --clearmodifiers ctrl+v
+# rofi locate
+super + ctrl + f 
+	# rofi-finder.sh
+ # $ROFI/locate.py
+ 
+super + F12
+	rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu
+
+super + F11
+	sh $(ls ~/.bin | rofi -dmenu)
+
+# Toggle compositing
+# super + ctrl + space
+# 	{pkill compton ,\
+# 	compton -b }
+>>>>>>> 11d69fc (add more dotfiles)
+
+=======
+>>>>>>> 7273fcf (add scripts and opener into sxhkd)
+=======
+
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+#
+# Media keys
+#
+
+# audio and mpd
+XF86Audio{Raise,Lower}Volume
+	pactl set-sink-volume 0 {+,-}10%
+XF86AudioMute
+	pactl set-sink-mute 0 toggle
+	# volume toggle
+super + {equal,plus}
+	pactl set-sink-volume 0 +{5,15}%
+	# ~/.i3/volume
+	# amixer sset Master {5,15}%+ && notify-send $(awk -F"[][]" '/Front Left:/ { print $2 }' <(amixer sget Master))
+# Decrease volume
+super {_,shift +} + minus
+	pactl set-sink-volume 0 -{5,15}% 
+	# ~/.i3/volume
+	# amixer sset Master {5,15}%- && notify-send $(awk -F"[][]" '/Front Left:/ { print $2 }' <(amixer sget Master))
+super + slash
+	pactl set-sink-mute 0 toggle
+	# volume toggle
+	# amixer sset Master toggle
+
+super + shift + m
+	mpd && $TERM_LT -t music -n music -e ncmpcpp && mpc update
+
+super + m
+	mpc toggle
+# Changes to next/previous tracks
+super + {comma,period}
+	mpc {prev,next}
+# Restart track
+super + shift + slash
+	mpc seek 0%
+
+# Seek foward in song
+super + shift + {comma,period}
+	mpc seek {-,+}50
+# super + {_,shift +} bracketright - zajęte
+	# mpc seek +{10,120}
+# Seek backward in song
+# super + {_,shift +} bracketleft
+	# mpc seek -{10,120}
+# Increase volume, chyba cudzysłowy nie działają 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+#
+# mouse bindings
+# __________________
+=======
+super + o ; {o,i,p,b}
+	$TERM_LT -e {notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nm-menu",nmtui,ncmpcpp,bmenu}
+# ; prompt script lub rofi; sudo -A popup z hasłem 
+# ;prompt "Shutdown computer?" "sudo -A shutdown -h now"
+>>>>>>> 29eea88 (move mpd; add script for clipster)
+
+<<<<<<< HEAD
+=======
+#
+# mouse bindings
+# __________________
+
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+~button1
+	DidIClickDesktop.sh && gapgrab	
+
+~button2
+	DidIClickDesktop.sh && BspwmDesktopMenu
+#	DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/BspwmDesktopMenui
+#	DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/BspwmWindowMenui
+		
+~button3
+	DidIClickDesktop.sh && rofimenu -desktop
+#DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/LaunchMenu
+
+# Switch workspace by scrolling on the desktop. Causes scrolling issues on some systems.
+#~button4
+#	DidIClickDesktop.sh && bspc desktop -f next
+#~button5
+#	DidIClickDesktop.sh && bspc desktop -f prev
+	
+### Add or remove desktops by scrolling
+super + ctrl + button5
+    bspcp dsktp rm
+
+super + ctrl + button4
+    bspcp dsktp add
+
+# Spawn applications popup menu and manually tile selected 
+# app where your mouse was when you opened the menu. Smartsplit only chooses
+# biggest dimension of the window, MouseLaunch only cares which edge is closer.
+# mod5 is alt_gr (first key right from space) on most keyboards. 
+mod5 + @button1
+	smartsplit ; rofimenu -desktop
+#	smartsplit ; dboxmenu
+#    MouseLaunch ; mygtkmenui -- .config/GTKmenu/LaunchMenu
+
+# Spawn window manipulation menu
+# Mod1 is alt
+mod1 + @button1
+	BspwmWindowMenu
+# mygtkmenui -- .config/GTKmenu/BspwmWindowMenui
+
+
+#
+# Touchpad "gestures" (depend on your touchpad driver, very likely to be unavailable)
+#_____________________
+#
+# ALTERNATIVETES
+    
+#super + {_,shift + }{1-9,0}
+#	bspc {desktop -f,node -d} '^{1-9,10}'
+## Alternative: i3 style behavior (focus nth, desktop of the focused monitor)
+	# focusdesktopofthismonitor {1-9,10}
+## Another alternative: xmonad style desktops. You have 10 desktops shared between all monitors,
+## and focusing a desktop focuses it on the currently focused monitor
+#super + {1-9,0}
+#	summondesktop.sh {1-9,10}
+#super + shift + {1-9,0}
+#	bspc node -d ^{1-9,10}
+#
+
+# move a floating window
+# with euclid_mover moving is not necessary 
+# super + shift + ctrl + {h,j,k,l}
+    # bspc node -v {-30 0,0 30,0 -30,30 0}
+	# xdo move {-x -30,-y +30,-y -30,-x +30} # or with xdotool
+# super + shift + ctrl + {Left,Down,Up,Right}
+    # bspc node -v {-30 0,0 30,0 -30,30 0}
+	# xdo move {-x -30,-y +30,-y -30,-x +30}
+
+<<<<<<< HEAD
+# Receptacle window for splitting in certain direction
+# alt + ctrl + {h,j,k,l}
+# 	bspc node --presel-dir \~{west,south,north,east} -i
+# alt + ctrl + {Left,Down,Up,Right}
+# 	bspc node -p \~{west,south,north,east} -i
+
+<<<<<<< HEAD
+ # Receptacle the desktop for splitting in certain direction
+ # alt + shift + {h,j,k,l}
+	 # bspc node @/ -p \~{west,south,north,east} -i
+ # alt + shift + {Left,Down,Up,Right}
+	 # bspc node @/ -p \~{west,south,north,east} -i
+# move window to preselection
+	# bspc node -n 'last.!automatic.local'
+# Set splitting ratio of windows - prepare the space
+#alt + ctrl + {1-9}
+#	bspc node -o 0.{1-9}
+=======
+=======
+super + s
+	sh -c $(ls .bin | rofi -dmenu)
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+>>>>>>> 7273fcf (add scripts and opener into sxhkd)
+#
+# mouse bindings
+# __________________
+
+~button1
+	DidIClickDesktop.sh && gapgrab	
+
+~button2
+	DidIClickDesktop.sh && BspwmDesktopMenu
+#	DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/BspwmDesktopMenui
+#	DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/BspwmWindowMenui
+>>>>>>> 11d69fc (add more dotfiles)
+		
+~button3
+	DidIClickDesktop.sh && rofimenu -desktop
+#DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/LaunchMenu
+
+# Switch workspace by scrolling on the desktop. Causes scrolling issues on some systems.
+#~button4
+#	DidIClickDesktop.sh && bspc desktop -f next
+#~button5
+#	DidIClickDesktop.sh && bspc desktop -f prev
+	
+### Add or remove desktops by scrolling
+super + ctrl + button5
+    bspcp dsktp rm
+
+super + ctrl + button4
+    bspcp dsktp add
+
+<<<<<<< HEAD
+# bindsym $mod+i exec i3-msg 'workspace $ws4;exec --no-startup-id libreoffice ~/interview\ questions.odt; workspace $ws8; exec zathura ~/Arkadiusz_Mirosław_CV.pdf; workspace $ws4'
+=======
+# Spawn applications popup menu and manually tile selected 
+# app where your mouse was when you opened the menu. Smartsplit only chooses
+# biggest dimension of the window, MouseLaunch only cares which edge is closer.
+# mod5 is alt_gr (first key right from space) on most keyboards. 
+mod5 + @button1
+	smartsplit ; rofimenu -desktop
+#	smartsplit ; dboxmenu
+#    MouseLaunch ; mygtkmenui -- .config/GTKmenu/LaunchMenu
+
+# Spawn window manipulation menu
+# Mod1 is alt
+mod1 + @button1
+	BspwmWindowMenu
+# mygtkmenui -- .config/GTKmenu/BspwmWindowMenui
+
+
+#
+# Touchpad "gestures" (depend on your touchpad driver, very likely to be unavailable)
+#_____________________
+#
+# ALTERNATIVETES
+    
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 11d69fc (add more dotfiles)
+=======
+=======
+#super + {_,shift + }{1-9,0}
+#	bspc {desktop -f,node -d} '^{1-9,10}'
+## Alternative: i3 style behavior (focus nth, desktop of the focused monitor)
+	# focusdesktopofthismonitor {1-9,10}
+>>>>>>> 382a967 (add scripts and opener into sxhkd)
+## Another alternative: xmonad style desktops. You have 10 desktops shared between all monitors,
+## and focusing a desktop focuses it on the currently focused monitor
+#super + {1-9,0}
+#	summondesktop.sh {1-9,10}
+#super + shift + {1-9,0}
+#	bspc node -d ^{1-9,10}
+#
+
+# move a floating window
+# with euclid_mover moving is not necessary 
+# super + shift + ctrl + {h,j,k,l}
+    # bspc node -v {-30 0,0 30,0 -30,30 0}
+	# xdo move {-x -30,-y +30,-y -30,-x +30} # or with xdotool
+# super + shift + ctrl + {Left,Down,Up,Right}
+    # bspc node -v {-30 0,0 30,0 -30,30 0}
+	# xdo move {-x -30,-y +30,-y -30,-x +30}
+
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+# Receptacle window for splitting in certain direction
+# alt + ctrl + {h,j,k,l}
+# 	bspc node --presel-dir \~{west,south,north,east} -i
+# alt + ctrl + {Left,Down,Up,Right}
+# 	bspc node -p \~{west,south,north,east} -i
+
+ # Receptacle the desktop for splitting in certain direction
+ # alt + shift + {h,j,k,l}
+	 # bspc node @/ -p \~{west,south,north,east} -i
+ # alt + shift + {Left,Down,Up,Right}
+	 # bspc node @/ -p \~{west,south,north,east} -i
+# move window to preselection
+	# bspc node -n 'last.!automatic.local'
+# Set splitting ratio of windows - prepare the space
+#alt + ctrl + {1-9}
+#	bspc node -o 0.{1-9}
+		
+# Move current window to largest space or preselected area if there is one.
+#super + Return
+#    windowpromoter
+
+# bindsym $mod+i exec i3-msg 'workspace $ws4;exec --no-startup-id libreoffice ~/interview\ questions.odt; workspace $ws8; exec zathura ~/Arkadiusz_Mirosław_CV.pdf; workspace $ws4'
+<<<<<<< HEAD
+>>>>>>> 7273fcf (add scripts and opener into sxhkd)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698

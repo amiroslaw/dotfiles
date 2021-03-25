@@ -1,0 +1,9 @@
+#EXTM3U
+#EXTINF:0, - Radio TOK FM (Feed 128 kb/s, 48kHz, stereo) from AMS
+http://poznan6.radio.pionier.net.pl:8000/radiotok.ogg
+#EXTINF:0, - Radio TOK FM (Feed 64 kb/s, 48kHz, stereo) from AMS
+http://poznan6.radio.pionier.net.pl:8000/radiotok2.ogg
+#EXTINF:0, - Radio TOK FM (Feed 32 kb/s, 22kHz, stereo) from AMS
+http://poznan6.radio.pionier.net.pl:8000/radiotok4.ogg
+#EXTINF:0, Ballady Rockowe / Rock Ballads (Polskie Radio)
+http://91.121.103.183:6200

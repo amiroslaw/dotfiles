@@ -28,18 +28,32 @@ unset MANPATH
 
 
 # paths
-export ROFI="$HOME/.config/rofi/scripts/"
+export XDG_CONFIG_HOME="$HOME/.config"
+export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+export ROFI="$HOME/.config/rofi/scripts"
 export GRAVEYARD="$HOME/.local/share/Trash"
-
+export TOR_WATCH="$HOME/Downloads/.torrenty"
+export TOR_DIR="/media/multi/Downloads"
+export NOTE="$HOME/Documents/notebook_md"
+export PRIVATE="$HOME/Documents/dotfiles/private"
+export GUI_EDITOR=/usr/bin/micro-st
+export ABDUCO_SOCKET_DIR="$HOME/.config/abduco"
 # Default Apps
+export USER_HOME="/home/miro"
 export EDITOR="nvim"
 export READER="zathura"
 export VISUAL="nvim"
-export TERMINAL="kitty"
-export TERM_LT="sterminal"
+export TERM="kitty"
+export TERM_LT="st"
 export BROWSER="firefox"
 export VIDEO="smplayer"
 export IMAGE="sxiv"
 export OPENER="xdg-open"
 export PAGER="less"
 export WM="bspwm"
+export MPD_PORT=6666
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# export MANPAGER="nvim -c 'set ft=man' -"
+
+# vars
+CLIPSTER_HISTORY_SIZE=1000

@@ -1,0 +1,111 @@
+[Default Applications]
+x-scheme-handler/http=firefox.desktop
+x-scheme-handler/https=firefox.desktop
+x-scheme-handler/ftp=firefox.desktop
+x-scheme-handler/chrome=firefox.desktop
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+text/html=nvim.desktop;firefox.desktop
+=======
+text/html=firefox.desktop
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+text/html=micro.desktop;firefox.desktop
+>>>>>>> 868242d (delete bspwm-laptop)
+=======
+text/html=nvim.desktop;firefox.desktop
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+application/x-extension-htm=firefox.desktop
+application/x-extension-html=firefox.desktop
+application/x-extension-shtml=firefox.desktop
+application/xhtml+xml=firefox.desktop
+application/x-extension-xhtml=firefox.desktop
+application/x-extension-xht=firefox.desktop
+image/jpeg=sxiv.desktop;viewnior.desktop
+image/png=sxiv.desktop;viewnior.desktop
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+text/plain=nvim.desktop;micro.desktop;
+=======
+text/plain=micro.desktop;nvim.desktop;
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+text/plain=nvim.desktop;micro.desktop;
+>>>>>>> 868242d (delete bspwm-laptop)
+=======
+text/plain=nvim.desktop;micro.desktop;
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+x-scheme-handler/mailto=userapp-Thunderbird.desktop
+message/rfc822=userapp-Thunderbird.desktop
+application/pdf=org.pwmt.zathura-pdf-mupdf.desktop;xreader.desktop
+x-scheme-handler/postman=Postman.desktop
+x-scheme-handler/msteams=teams.desktop
+x-schema-handler/msteams=teams.desktop
+video/mp4=smplayer.desktop
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+x-scheme-handler/etcher=balena-etcher-electron.desktop
+
+[Added Associations]
+text/plain=nvim.desktop;micro.desktop;libreoffice-writer.desktop;
+application/x-shellscript=nvim.desktop;
+image/svg+xml=firefox.desktop;
+text/x-scheme=nvim.desktop;
+<<<<<<< HEAD
+=======
+=======
+x-scheme-handler/etcher=balena-etcher-electron.desktop
+>>>>>>> afd5ecf (delete fonts add i3 to old)
+
+[Added Associations]
+text/plain=nvim.desktop;micro.desktop;libreoffice-writer.desktop;
+application/x-shellscript=micro.desktop;
+image/svg+xml=firefox.desktop;
+text/x-scheme=micro.desktop;
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+application/xml=firefox.desktop;
+application/pdf=xreader.desktop;libreoffice-draw.desktop;
+image/png=xviewer.desktop;
+image/jpeg=xviewer.desktop;
+x-scheme-handler/http=firefox.desktop;
+x-scheme-handler/https=firefox.desktop;
+x-scheme-handler/ftp=firefox.desktop;
+x-scheme-handler/chrome=firefox.desktop;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+text/html=nvim.desktop;firefox.desktop;
+=======
+text/html=firefox.desktop;
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+text/html=micro.desktop;firefox.desktop;
+>>>>>>> 868242d (delete bspwm-laptop)
+=======
+text/html=nvim.desktop;firefox.desktop;
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+application/x-extension-htm=firefox.desktop;
+application/x-extension-html=firefox.desktop;
+application/x-extension-shtml=firefox.desktop;
+application/xhtml+xml=firefox.desktop;
+application/x-extension-xhtml=firefox.desktop;
+application/x-extension-xht=firefox.desktop;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+application/pgp-signature=nvim.desktop;
+=======
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+application/pgp-signature=nvim.desktop;
+>>>>>>> afd5ecf (delete fonts add i3 to old)
+=======
+application/pgp-signature=nvim.desktop;
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698

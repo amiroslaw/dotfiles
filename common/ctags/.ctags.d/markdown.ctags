@@ -1,0 +1,9 @@
+--langdef=markdowntags
+--langmap=markdown:.mkd.md
+--regex-markdown=/^#[ \t]+(.*)/1 \1/h/
+--regex-markdown=/^##[ \t]+(.*)/2 . \1/h/
+--regex-markdown=/^###[ \t]+(.*)/3 . . \1/h/
+--regex-markdown=/^####[ \t]+(.*)/4 . . . \1/h/
+--regex-markdown=/^#####[ \t]+(.*)/5 . . . . \1/h/
+--regex-markdown=/^######[ \t]+(.*)/6 . . . . . \1/h/
+--mline-regex-markdown=/(^|[[:space:]])@@(\w\S*)/\2/t/{mgroup=1}

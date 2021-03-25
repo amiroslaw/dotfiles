@@ -1,0 +1,64 @@
+#dla rtgui
+# scgi_port = 127.0.0.1:5000
+# W tym katalogu będą zapisywane ustawienia torrentów;
+
+# oraz plik, który blokuje wielokrotne załączanie rTorrenta;
+## Default session directory. Make sure you don't run multiple instance of rtorrent using the same session directory.
+# session = ~/.config/rtorrent/rtorrent.session
+session = /home/miro/Downloads/.pobierane
+
+# DHT
+dht = on
+
+## UDP port to use for DHT.
+dht_port = 6881
+# Gdzie będą ściągane pliki;
+
+directory = /home/miro/Downloads
+
+# Domyślna prędkość wysyłania (0 dla nieograniczonej);
+
+upload_rate = 1 
+
+# Domyślna prędkość ściągania (0 dla nieograniczonej);
+
+download_rate = 400
+
+# Czy rTorrent ma korzystać z UDP;
+
+# use_udp_trackers = yes
+
+# Maksymalna liczba uploadów na jeden torrent;
+
+max_uploads = 20 
+
+# Zakres portów z których rTorrent będzie próbował się łączyć;
+
+port_range = 6892-6892
+
+# Minimalna i maksymalna liczba połączeń do jednego torrenta;
+
+min_peers=10
+
+max_peers=400 
+
+# Przestaje wysyłać, gdy ratio wyniesie 2.0 przy przynajmniej 100MB
+
+# wysłanych lub gdy ratio przekroczy 5.0;
+
+#schedule = ratio,60,60,stop_on_ratio=200,200M,500
+
+# Przestaje ściągać, gdy miejsce na dysku wyniesie poniżej 20MB;
+
+schedule = low_diskspace,5,60,close_low_diskspace=20M
+
+# Z tego katalogu torrenty będą automatycznie dodawane do listy ściągania;
+
+schedule = watch_directory,5,5,"load.start=/home/miro/Downloads/.torrenty/*.torrent"
+
+# Po usunięciu ściągania z listy będą usuwane pliki .torrent;
+
+schedule = untied_directory,5,5,stop_untied=
+#schedule = watch_directory,5,5,"load.start=/mnt/torrent/watch/*.torrent"
+#schedule = untied_directory,5,5,stop_untied=
+#schedule = tied_directory,5,5,start_tied=

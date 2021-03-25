@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+# remove zshenv?
+export CLIPSTER_HISTORY_SIZE=1000
+
+export test="z zshenv"
+<<<<<<< HEAD
+>>>>>>> 11d69fc (add more dotfiles)
+=======
+
+export BT_SSH="mPOGbSMnd3Tz"
+>>>>>>> bd6b926 (mpd)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698

@@ -1,0 +1,15 @@
+--langdef=asciidoctor
+--langmap=asciidoc:.ad.adoc.asciidoc
+--regex-asciidoc=/^=[ \t]+(.*)/1 \1/h/
+--regex-asciidoc=/^==[ \t]+(.*)/2 . \1/h/
+--regex-asciidoc=/^===[ \t]+(.*)/3 . . \1/h/
+--regex-asciidoc=/^====[ \t]+(.*)/4 . . . \1/h/
+--regex-asciidoc=/^=====[ \t]+(.*)/5 . . . . \1/h/
+--regex-asciidoc=/^======[ \t]+(.*)/6 . . . . . \1/h/
+--regex-asciidoc=/^=======[ \t]+(.*)/7 . . . . . . \1/h/
+--regex-asciidoc=/\[\[([^]]+)\]\]/\1/a/
+--regex-asciidoc=/^\.([^ \t].+)/\1/t/
+--regex-asciidoc=/image::([^\[]+)/\1/i/
+--regex-asciidoc=/image:([^:][^\[]+)/\1/I/
+--regex-asciidoc=/include::([^\[]+)/\1/n/
+--mline-regex-asciidoc=/(^|[[:space:]])@@(\w\S*)/\2/t/{mgroup=1}

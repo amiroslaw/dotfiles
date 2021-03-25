@@ -1,0 +1,203 @@
+# vim:fileencoding=utf-8:ft=conf
+
+kitty_mod ctrl+shift
+
+# font_family      Fira Code Regular Nerd Font Complete
+# italic_font      Fira Code Regular Nerd Font Complete
+# bold_font        Fira Code Bold Nerd Font Complete
+# bold_italic_font Fira Code Bold Nerd Font Complete
+
+font_family    Source Code Pro
+bold_font    Source Code Pro Bold
+bold_italic_font    Source Code Pro Bold Italic
+italic_font    Source Code Pro Italic
+
+# Font size (in pts)
+# font_size        18.0
+
+# The cursor color
+cursor           #8fee96
+
+# The interval (in seconds) at which to blink the cursor. Set to zero to
+# disable blinking.
+cursor_blink_interval     0.5
+
+# Stop blinking cursor after the specified number of seconds of keyboard inactivity. Set to
+# zero or a negative number to never stop blinking.
+cursor_stop_blinking_after 15.0
+
+# Number of lines of history to keep in memory for scrolling back
+scrollback_lines 10000
+
+# Program with which to view scrollback in a new window. The scrollback buffer is passed as
+# STDIN to this program. If you change it, make sure the program you use can
+# handle ANSI escape sequences for colors and text formatting.
+scrollback_pager less --chop-long-lines --RAW-CONTROL-CHARS +INPUT_LINE_NUMBER
+# scrollback_pager less +G -R
+
+# Wheel scroll multiplier (modify the amount scrolled by the mouse wheel)
+wheel_scroll_multiplier 5.0
+
+# Characters considered part of a word when double clicking. In addition to these characters
+# any character that is marked as an alpha-numeric character in the unicode
+# database will be matched.
+select_by_word_characters :@-./_~?&=%+#
+
+# Hide mouse cursor after the specified number of seconds of the mouse not being used. Set to
+# zero or a negative number to disable mouse cursor hiding.
+mouse_hide_wait 3.0
+
+# If enabled, the window size will be remembered so that new instances of kitty will have the same
+# size as the previous instance. If disabled, the window will initially have size configured
+# by initial_window_width/height, in pixels.
+remember_window_size   no
+initial_window_width   640
+initial_window_height  400
+
+# Delay (in milliseconds) between screen updates. Decreasing it, increases fps
+# at the cost of more CPU usage. The default value yields ~100fps which is more
+# that sufficient for most uses.
+repaint_delay    5
+
+# Delay (in milliseconds) before input from the program running in the terminal
+# is processed. Note that decreasing it will increase responsiveness, but also
+# increase CPU usage and might cause flicker in full screen programs that
+# redraw the entire screen on each loop, because kitty is so fast that partial
+# screen updates will be drawn.
+input_delay 1
+
+# Visual bell duration. Flash the screen when a bell occurs for the specified number of
+# seconds. Set to zero to disable.
+visual_bell_duration 0.0
+
+# Enable/disable the audio bell. Useful in environments that require silence.
+enable_audio_bell no
+
+# The modifier keys to press when clicking with the mouse on URLs to open the URL
+open_url_modifiers kitty_mod
+
+# The program with which to open URLs that are clicked on. The special value "default" means to
+# use the operating system's default URL handler.
+open_url_with default
+
+# The value of the TERM environment variable to set
+term xterm-kitty
+
+# The width (in pts) of window borders. Will be rounded to the nearest number of pixels based on screen resolution.
+window_border_width 1
+window_margin_width 0
+
+# The color for the border of the active window
+# active_border_color #ffffff
+
+# The color for the border of inactive windows
+# inactive_border_color #cccccc
+
+# Tab-bar colors
+# active_tab_foreground #000
+# active_tab_background #eee
+# inactive_tab_foreground #444
+# inactive_tab_background #999
+
+# Symbol mapping (special font for specified unicode code points). Map the
+# specified unicode codepoints to a particular font. Useful if you need special
+# rendering for some symbols, such as for Powerline. Avoids the need for
+# patched fonts. Each unicode code point is specified in the form U+<code point
+# in hexadecimal>. You can specify multiple code points, separated by commas
+# and ranges separated by hyphens. symbol_map itself can be specified multiple times.
+# Syntax is:
+#
+# symbol_map codepoints Font Family Name
+#
+# For example:
+#
+#symbol_map U+E0A0-U+E0A2,U+E0B0-U+E0B3 PowerlineSymbols
+hide_window_decorations no
+
+allow_remote_control no
+
+
+# Key mapping
+# For a list of key names, see: http://www.glfw.org/docs/latest/group__keys.html
+# For a list of modifier names, see: http://www.glfw.org/docs/latest/group__mods.html
+# You can use the special action no_op to unmap a keyboard shortcut that is
+# assigned in the default configuration.
+
+# Clipboard
+map kitty_mod+s        paste_from_selection
+
+# Scrolling
+map kitty_mod+up        scroll_line_up
+map kitty_mod+down      scroll_line_down
+map kitty_mod+k         scroll_line_up
+map kitty_mod+j         scroll_line_down
+map kitty_mod+u		 scroll_page_up
+map kitty_mod+d		 scroll_page_down
+map kitty_mod+home      scroll_home
+map kitty_mod+end       scroll_end
+
+# Window management
+# map kitty_mod+enter    new_window
+map kitty_mod+enter    launch --cwd=current
+map kitty_mod+x        close_window
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+map kitty_mod+enter    new_window
+>>>>>>> bd6b926 (mpd)
+=======
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+map kitty_mod+i        previous_window
+map kitty_mod+o        next_window
+# map kitty_mod+]        move_window_forward
+# map kitty_mod+[        move_window_backward
+map kitty_mod+`        move_window_to_top
+map kitty_mod+1        first_window
+map kitty_mod+2        second_window
+map kitty_mod+3        third_window
+map kitty_mod+4        fourth_window
+map kitty_mod+5        fifth_window
+map kitty_mod+6        sixth_window
+map kitty_mod+7        seventh_window
+map kitty_mod+8        eighth_window
+map kitty_mod+9        ninth_window
+map kitty_mod+0        tenth_window
+
+# Tab management
+map kitty_mod+n	    next_tab
+map kitty_mod+b		previous_tab
+map kitty_mod+t        new_tab
+map kitty_mod+q        close_tab
+map kitty_mod+l        next_layout
+map kitty_mod+t        launch --cwd=current --type=tab
+# map kitty_mod+t        new_tab
+
+# Miscellaneous
+map kitty_mod+up      increase_font_size
+map kitty_mod+down    decrease_font_size
+map kitty_mod+0 restore_font_size
+
+# map kitty_mod+x kitten hints --type path --program - pcmanfm
+# def is e
+map kitty_mod+p>p pass_selection_to_program firefox
+
+# searching
+map kitty_mod+h         show_scrollback
+# itext 1
+map kitty_mod+m		create_marker
+map kitty_mod+delete	remove_marker
+map kitty_mod+.        scroll_to_mark next
+map kitty_mod+,        scroll_to_mark prev
+
+map kitty_mod+escape clear_terminal reset active
+map kitty_mod+backspace clear_terminal reset active
+# custom
+# open a new window with the same working directory as the current window
+map kitty_mod+1 new_os_window_with_cwd
+map kitty_mod+3 toggle_marker text 1 ERROR
+
+# kittens plugins
+map kitty_mod+space kitten ~/.config/kitty/kitty_grab/grab.py

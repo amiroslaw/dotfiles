@@ -1,0 +1,211 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+#!/bin/sh
+=======
+#!/bin/zsh
+	#!/bin/sh
+
+sxhkd -c $HOME/.config/sxhkd/sxhkdrc.ext $HOME/.config/sxhkd/sxhkdrc &
+
+touch ${test}
+touch ~/file-from-bspwm${test}
+echo $test > ~/file-from-bspwm
+>>>>>>> 11d69fc (add more dotfiles)
+=======
+#!/bin/sh
+
+>>>>>>> bd6b926 (mpd)
+=======
+#!/bin/env zsh
+>>>>>>> fc1b936 (add stow to the laptop)
+=======
+#!/bin/sh
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+bspc rule -r "*"
+
+gap=1
+PANEL_HEIGHT=13
+export gap
+export PANEL_HEIGHT
+
+#This creates negative padding equal to window gap so that gaps are shown only between windows and not on desktop edges.
+bspc config window_gap $gap;
+bspc config top_padding $(($PANEL_HEIGHT-$gap))
+bspc config left_padding -$gap
+bspc config right_padding -$gap
+bspc config bottom_padding -$gap
+
+#Various settings
+bspc config gapless_monocle false #Default setup uses negative padding, and gapless monocle looks really weird like that
+bspc config borderless_monocle true
+bspc config single_monocle true
+#bspc config paddingless_monocle false
+#bspc config ignore_ewmh_focus      true
+#bspc config initial_polarity second_child
+bspc config remove_disabled_monitors true
+bspc config remove_unplugged_monitors true
+## Honor size hints: do not make windows smaller than they wish to be
+#bspc config honor_size_hints true 
+
+#Settings for manual splitting
+bspc config split_ratio         0.50
+
+
+bspc monitor DVI-D-0 -d 1 2 3 4 5
+bspc monitor DVI-I-0 -d 6 7 8 9 0
+
+##Color settings
+bspc config focused_border_color "#1ABB9B"
+bspc config normal_border_color "#222D32"
+#"#000000"
+bspc config presel_feedback_color "#1ABB9B"
+#"#8F3724"
+bspc config border_width 2
+
+bspc config focus_follows_pointer true
+#bspc config pointer_follows_focus true #Some keybindings automatically enable and disable this setting
+
+###This creates and names desktops for multiple monitors.
+# workspaces_multimonitor &
+#bspc desktop I --layout monocle
+#bspc rule -a firefox desktop=I
+
+bspc rule -a screenkey --unmanage
+bspc rule -a gcolor2 state=floating center=true
+bspc rule -a lxappearance state=floating center=true
+bspc rule -a lxterminal state=floating center=true sticky=true
+#bspc rule -a urxvt state=floating center=true
+bspc rule -a viewnior state=floating center=true
+bspc rule -a floaterm state=floating center=true
+bspc rule -a spotify state=pseudo_tiled
+#bspc rule -a nautilus state=pseudo_tiled
+#bspc rule -a skype state=pseudo_tiled
+bspc rule -a file-roller state=floating center=true
+# bspc rule -a conky sticky=on manage=off lower=on
+bspc rule -a astime sticky=on
+bspc rule -a yad state=floating
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+bspc rule -a wbar layer=above
+=======
+# bspc rule -a Docky layer=above border=off manage=on
+# bspc rule -a Plank layer=above border=off manage=on
+bspc rule -a wbar layer=above
+# bspc rule -a dockbarx layer=above
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+bspc rule -a wbar layer=above
+>>>>>>> fc1b936 (add stow to the laptop)
+=======
+bspc rule -a wbar layer=above
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+bspc rule -a google-chrome-unstable private=on
+bspc rule -a google-chrome-stable private=on
+bspc rule -a chromium private=on
+bspc rule -a firefox private=on
+bspc rule -a wpa_gui state=pseudo_tiled
+bspc rule -a libreoffice state=tiled
+bspc rule -a '*:libreofficedev' state=tiled
+bspc rule -a '*:soffice' state=tiled
+<<<<<<< HEAD
+<<<<<<< HEAD
+#bspc rule -a firefox desktop=I
+bspc rule -a 9menu border=off manage=off
+bspc rule -a tint2 border=off manage=off
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+bspc rule -a KeePassXC  state=floating rectangle=800x500+0+0 center=true
+bspc rule -a megasync state=floating
+bspc rule -a '*:dropdown' state=fullscreen
+bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
+bspc rule -a Zathura state=tiled
+<<<<<<< HEAD
+
+=======
+#bspc desktop I --layout monocle
+#bspc desktop II --layout monocle
+bspc rule -a KeePassXC  state=floating rectangle=800x500+0+0
+bspc rule -a megasync state=floating
+bspc rule -a '*:dropdown' state=fullscreen
+<<<<<<< HEAD
+>>>>>>> bd6b926 (mpd)
+=======
+bspc rule -a SpeedCrunch state=floating rectangle=800x500+0+0
+=======
+=======
+#bspc rule -a firefox desktop=I
+>>>>>>> fc1b936 (add stow to the laptop)
+bspc rule -a 9menu border=off manage=off
+bspc rule -a tint2 border=off manage=off
+bspc rule -a KeePassXC  state=floating rectangle=800x500+0+0 center=true
+bspc rule -a megasync state=floating
+bspc rule -a '*:dropdown' state=fullscreen
+bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
+bspc rule -a Zathura state=tiled
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+
+>>>>>>> 0a049d0 (add picom)
+
+##  This script balances all windows when new one is spawned 
+#euclid_balancer &
+
+##Edge-switcher switches to next workspace when moves moves to the 
+##edge of the monitor (behavior similar to enlightenment)
+#edge-switcher &
+
+###External rules
+##Pseudo automatic mode: dzieli w kierunku w którym jest długość lub szerokość większa
+# bspc config external_rules_command /usr/bin/pseudo_automatic_mode
+##Adjust new window: splits biggest windows to keep windows about the same size
+#bspc config external_rules_command /usr/bin/adjust-new-window
+
+
+# Alter compton settings if using intel graphics
+GRAPHIC_CARD=$(lspci | grep -i "vga" | sed 's/.*://' | sed 's/(.*//' | sed 's/^[ \t]*//')
+#if [[ $(echo $GRAPHIC_CARD | grep -i 'intel\|lenovo') != "" ]]; then MCODE='initrd=\intel-ucode.img'
+#  sed -i 's/"xrender"/"glx"/' ~/.config/compton.conf
+#  grep -q 'vsync = "opengl-swc";' ~/.config/compton.conf || echo 'vsync = "opengl-swc";' >> ~/.config/compton.conf
+#fi
+
+#Source autostartfile. Uncomment this if you use bspwm-git
+screenlayout &
+wmname LG3D &
+~/.config/polybar/launch.sh &
+xsetroot -cursor_name left_ptr &
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+feh --no-fehbg --bg-scale '/home/miro/Pictures/Wallpapers/nebula/h0910e.jpg' &
+sxhkd -c $HOME/.config/sxhkd/sxhkdrc.ext $HOME/.config/sxhkd/sxhkdrc &
+
+picom --experimental-backends &
+
+<<<<<<< HEAD
+=======
+=======
+feh --no-fehbg --bg-scale '/home/miro/Pictures/Wallpapers/nebula/h0910e.jpg' &
+<<<<<<< HEAD
+>>>>>>> 0249a84 (change mpd port)
+=======
+sxhkd -c $HOME/.config/sxhkd/sxhkdrc.ext $HOME/.config/sxhkd/sxhkdrc &
+>>>>>>> bd6b926 (mpd)
+
+<<<<<<< HEAD
+>>>>>>> 11d69fc (add more dotfiles)
+=======
+picom --experimental-backends &
+
+>>>>>>> 0a049d0 (add picom)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+$HOME/.config/bspwm/autostart &
+

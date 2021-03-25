@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/env zsh
 bspc rule -r "*"
 
 gap=1
@@ -14,8 +14,8 @@ bspc config right_padding -$gap
 bspc config bottom_padding -$gap
 
 #Various settings
-bspc config gapless_monocle     false #Default setup uses negative padding, and gapless monocle looks really weird like that
-bspc config borderless_monocle  true
+bspc config gapless_monocle false #Default setup uses negative padding, and gapless monocle looks really weird like that
+bspc config borderless_monocle true
 bspc config single_monocle true
 #bspc config paddingless_monocle false
 #bspc config ignore_ewmh_focus      true
@@ -57,38 +57,28 @@ bspc rule -a floaterm state=floating center=true
 bspc rule -a spotify state=pseudo_tiled
 #bspc rule -a nautilus state=pseudo_tiled
 #bspc rule -a skype state=pseudo_tiled
-bspc rule -a file-roller state=pseudo_tiled
-bspc rule -a transmission-gtk state=pseudo_tiled
-bspc rule -a conky sticky=on manage=off lower=on
+bspc rule -a file-roller state=floating center=true
+# bspc rule -a conky sticky=on manage=off lower=on
 bspc rule -a astime sticky=on
 bspc rule -a yad state=floating
-bspc rule -a Docky layer=above border=off manage=on
-bspc rule -a Plank layer=above border=off manage=on
 bspc rule -a wbar layer=above
-bspc rule -a dockbarx layer=above
 bspc rule -a google-chrome-unstable private=on
 bspc rule -a google-chrome-stable private=on
 bspc rule -a chromium private=on
 bspc rule -a firefox private=on
-bspc rule -a midori private=on
-bspc rule -a gnome-pie border=off manage=off
 bspc rule -a wpa_gui state=pseudo_tiled
 bspc rule -a libreoffice state=tiled
 bspc rule -a '*:libreofficedev' state=tiled
 bspc rule -a '*:soffice' state=tiled
 #bspc rule -a firefox desktop=I
-#bspc rule -a calibre desktop=II
-#bspc rule -a geany desktop=II
-#bspc rule -a deluge desktop=III
 bspc rule -a 9menu border=off manage=off
 bspc rule -a tint2 border=off manage=off
-#bspc desktop I --layout monocle
-#bspc desktop II --layout monocle
+bspc rule -a KeePassXC  state=floating rectangle=800x500+0+0 center=true
+bspc rule -a megasync state=floating
+bspc rule -a '*:dropdown' state=fullscreen
+bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
+bspc rule -a Zathura state=tiled
 
-
-##  Autogap adjusts windowgap automatically according to the number of
-##  windows on the desktop. Using it disables negative window gap.
-#autogap &
 
 ##  This script balances all windows when new one is spawned 
 #euclid_balancer &
@@ -103,6 +93,7 @@ bspc rule -a tint2 border=off manage=off
 ##Adjust new window: splits biggest windows to keep windows about the same size
 #bspc config external_rules_command /usr/bin/adjust-new-window
 
+
 # Alter compton settings if using intel graphics
 GRAPHIC_CARD=$(lspci | grep -i "vga" | sed 's/.*://' | sed 's/(.*//' | sed 's/^[ \t]*//')
 #if [[ $(echo $GRAPHIC_CARD | grep -i 'intel\|lenovo') != "" ]]; then MCODE='initrd=\intel-ucode.img'
@@ -111,14 +102,15 @@ GRAPHIC_CARD=$(lspci | grep -i "vga" | sed 's/.*://' | sed 's/(.*//' | sed 's/^[
 #fi
 
 #Source autostartfile. Uncomment this if you use bspwm-git
-#. $HOME/.config/bspwm/autostart
-# autostart
-wmname LG3D &
-sxhkd -c $HOME/.config/sxhkd/sxhkdrc.laptop $HOME/.config/sxhkd/sxhkdrc &
 
-sleep 900 && xmodmap ~/.config/Xmodmap &
-# xsetroot -cursor_name left_ptr &
-# xmodmap ~/.Xmodmap &
-# sleep 20 && xmodmap ~/.config/Xmodmap &
-# było w skrypcie  jest odpowiedzialne za super i przełączanie na float mode
-# xcape -e 'Super_L=Super_L|Shift_L|space' &
+wmname LG3D &
+polybar main -c $HOME/.config/polybar/config &
+xsetroot -cursor_name left_ptr &
+feh --no-fehbg --bg-scale '/home/miro/Pictures/wallpapers/4k-wallpaper-background-beautiful-853199.jpg' &
+sxhkd -c $HOME/.config/sxhkd/sxhkdrc.ext $HOME/.config/sxhkd/sxhkdrc &
+picom --experimental-backends &
+
+# sleep 900 && xmodmap ~/.config/Xmodmap &
+
+$HOME/.config/bspwm/autostart &
+

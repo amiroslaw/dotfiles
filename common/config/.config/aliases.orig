@@ -1,0 +1,738 @@
+# todo
+# clipster --nul -ocn 2 | xclip -sel clip - nie wiem czy -nul nie dodaje specjalnego znaku 
+# WAŻNE jak podajemy ścieżkę to po = nie dawać spacji
+#alias =''
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+# Dependencies
+#{{{
+# devour
+# dragon-drag-and-drop
+# borg
+# xprop
+# xrandr
+# stow
+# vifm
+# youtube-dl
+# atool
+# trans
+# gcalcli
+# exa
+# broot
+#}}}
+
+<<<<<<< HEAD
+=======
+>>>>>>> 54033ee (add ctags)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+#variables
+#{{{
+path_script=~/Documents/Ustawienia/skrypty/moje
+path_conf=~/Documents/Ustawienia/sync
+path_note=~/Documents/notebook_md
+java8=~/.sdkman/candidates/java/8.0.171-oracle/bin/java
+#}}}
+
+# scripts
+#{{{
+alias dlfile='~/Documents/Ustawienia/skrypty/dlfile'
+alias remind='$path_script/remind.sh'
+alias mag='$path_script/magnet.sh $(xclip -o -selection clipboard)'
+#backup
+alias backdaily='$path_script/borg/daily.sh'
+alias backweekly='$path_script/borg/weekly.sh'
+alias backmonthly='$path_script/borg/monthly.sh'
+#}}}
+
+# config files
+# {{{
+alias batalias='bat ~/.config/aliases'
+alias cfaliases='nvim ~/.config/aliases'
+alias cfvi='nvim ~/.config/nvim/init.vim'
+alias cfvifm='nvim ~/.config/vifm/vifmrc'
+alias cftermite='nvim ~/.config/termite/config'
+alias cfpolybar='nvim ~/.config/polybar/config'
+alias cfmpd='nvim ~/.config/mpd/mpd.conf'
+alias cfncmpcpp='nvim ~/.ncmpcpp/config'
+alias cfzsh='nvim ~/.zshrc'
+alias cftmux='nvim ~/.tmux.conf'
+alias cfsxiv='nvim ~/.config/sxiv/exec/key-handler'
+alias cfconky='nvim ~/.config/conky/conky_todo'
+alias cfbspwm='nvim ~/.config/bspwm/bspwmrc'
+alias cfautostart='nvim ~/.config/bspwm/autostart'
+alias cfsxhkd='nvim ~/.config/sxhkd/sxhkdrc'
+alias cfkitty='nvim ~/.config/kitty/kitty.conf'
+#}}}
+
+#RÓŹNE
+alias weather='curl wttr.in/lubartów'
+alias cl='clear'
+alias se='sudoedit'
+alias permissionX='sudo chmod -R +x'
+alias zathuraBlist='less ~/.local/share/zathura/bookmarks'
+alias zadView='cat $path_note/ZADANIA/today.todo'
+# grepextend pattern path/.
+alias grepextend='grep -inrC 3'
+<<<<<<< HEAD
+<<<<<<< HEAD
+alias history-count='cut -f1 -d" " ~/.zhistory | sort | uniq -c | sort -nr | head -n 30'
+alias ifrestart='sudo ifconfig wlp3s0f0u2 down && sudo ifconfig wlp3s0f0u2 up'
+alias psa='ps -A | grep '
+# swallow?
+alias sw='devour xdg-open '
+=======
+alias history-count='cut -f1 -d" " ~/.bash_history | sort | uniq -c | sort -nr | head -n 30'
+alias ifrestart='sudo ifconfig wlp3s0f0u2 down && sudo ifconfig wlp3s0f0u2 up'
+alias psa='ps -A | grep '
+# swallow?
+alias op='devour xdg-open '
+>>>>>>> 54033ee (add ctags)
+=======
+alias history-count='cut -f1 -d" " ~/.zhistory | sort | uniq -c | sort -nr | head -n 30'
+alias ifrestart='sudo ifconfig wlp3s0f0u2 down && sudo ifconfig wlp3s0f0u2 up'
+alias psa='ps -A | grep '
+# swallow?
+alias sw='devour xdg-open '
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+alias timer='hyperfine'
+
+#get class name
+alias xpro='xprop | grep CLASS'
+alias monitoron='xrandr --output DVI-I-0 --auto --right-of DVI-D-0 && polybar ext &'
+alias monitoroff='xrandr --output DVI-I-0 --off'
+
+# FZF
+alias fzfp='rg --files | fzf --preview="bat {} --color=always"'
+
+# abduco
+alias tor='abduco -A tor rtorrent'
+
+# SYSTEM
+#{{{
+alias shut='sudo shutdown -h now'
+# get error messages from journalctl
+alias journal="journalctl -p 3 -xb"
+
+alias sysstat='systemctl status '
+alias sysrestart='sudo systemctl restart '
+alias sysstop='sudo systemctl stop '
+
+# pacman
+# alias yay='paru'
+alias update='sudo pacman -Syyu'
+alias updateyay='paru -Syyu'
+alias remove='sudo pacman -Rns'
+alias removeyay='paru -Rns'
+alias search='pacman -Ss'
+#}}}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+#Programs alias
+#{{{
+alias bookworm='com.github.babluboy.bookworm'
+alias vi='nvim'
+alias vim='nvim'
+alias viswap_rm= 'rm ~/.local/share/nvim/swap/*'
+=======
+#i3
+alias xpro='xprop | grep CLASS'
+
+#Programy aliasy
+alias vi='nvim'
+alias vim='nvim'
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+#Programs alias
+#{{{
+alias vi='nvim'
+alias vim='nvim'
+alias viswap_rm= 'rm ~/.local/share/nvim/swap/*'
+>>>>>>> 54033ee (add ctags)
+=======
+#Programs alias
+#{{{
+alias bookworm='com.github.babluboy.bookworm'
+alias vi='nvim'
+alias vim='nvim'
+alias viswap_rm= 'rm ~/.local/share/nvim/swap/*'
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+alias stown='stow -nvSt ~ '
+alias stow='stow -vSt ~ '
+alias stowd='stow -vDt ~ '
+alias fm='vifm'
+alias js='~/.sdkman/candidates/java/10.0.1-oracle/bin/jshell'
+alias exodus='~/Exe/program_files/Exodus/Exodus &'
+alias gry='$java8 -jar ~/Documents/Ustawienia/sync/grywalizacja/Grywalizacja.jar &'
+alias duh='du -sh '
+alias dudepth='du -h --max-depth'
+alias gs='groovysh'
+alias coin='coinmon -p ~/.config/coinmon/portfolio.json -s 1,2,3,4,5,7 -c pln'
+alias df='df -h --output=source,fstype,size,used,avail,pcent,target -x tmpfs -x devtmpfs'
+alias speed='speedtest'
+alias music='ncmpcpp'
+alias dragon='dragon-drag-and-drop -t'
+<<<<<<< HEAD
+<<<<<<< HEAD
+alias open='xdg-open '
+alias op='xdg-open '
+=======
+alias open='xdg-open'
+>>>>>>> 54033ee (add ctags)
+=======
+alias open='xdg-open '
+alias op='xdg-open '
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+#}}}
+
+#Programy coś wykonują
+#{{{
+alias yt='youtube-viewer -C'
+alias yts='youtube-viewer -C -SV'
+alias ytm='youtube-viewer -C -n'
+alias ytaudio='youtube-dl -x --audio-format mp3 '
+alias ytlisten='mpv --no-video $(xclip -o -selection clipboard)'
+alias kindlecp-run='cp /run/media/miro/Kindle/documents/My\ Clippings.txt ~/'
+alias kindlecp-media='cp /media/Kindle/documents/My\ Clippings.txt ~/'
+alias torrentRm='rm /media/multi/Downloads/.pobierane/rtorrent.lock'
+alias scan='sudo clamscan -r --bell -i '
+alias lamp-start='sudo /opt/lampp/lampp start'
+alias lamp-stop='sudo /opt/lampp/lampp stop'
+alias lamp-manager='sudo /opt/lampp/manager-linux-x64.run &'
+alias rozpakuj='atool extract'
+alias pakuj='atool create'
+alias pl='atool list'
+alias ffmpeg-speed-up='for i in *.mp3; do ffmpeg -i $i -filter:a "atempo=1.3" -vn sp-$i; done'
+alias ffmpeg-segment='for i in *.mp3; do ffmpeg -i "$i" -f segment -segment_time 900 -c copy "${i%%.*}-%02d.mp3"; done'
+alias icat='kitty +kitten icat '
+#slowniki
+# alias plen='~/.local/share/trans -shell pl:en -show-original n  -show-prompt-message n -show-languages n -play'
+alias plen='trans -shell pl:en -show-original n  -show-prompt-message n -show-languages n -play'
+alias enpl='trans -shell en:pl -show-original n  -show-prompt-message n -show-languages n -play -speak'
+alias dic='trans -sp en: -show-prompt-message n -show-languages n'
+alias irr='cat $path_note/Home/angielski/irregular.md | grep'
+#}}}
+<<<<<<< HEAD
+
+# GIT
+# {{{
+alias addup='git add -u'
+alias addall='git add .'
+alias branch='git branch'
+alias checkout='git checkout'
+alias clone='git clone'
+alias commit='git commit -am'
+alias fetch='git fetch'
+alias pull='git pull origin'
+alias push='git push origin'
+alias stat='git status'  # 'status' is protected name so using 'stat' instead
+# }}}
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+# gcalcli {{{
+alias kal='gcalcli quick'
+alias kalw='gcalcli calw --config-folder="/home/miro/.config/gcalcli"'
+alias kalm='gcalcli calm --config-folder="/home/miro/.config/gcalcli"'
+alias kala='gcalcli agenda --config-folder="/home/miro/.config/gcalcli"'
+=======
+# gcalcli
+#{{{
+alias kal='gcalcli quick'
+alias kalw='gcalcli calw --military'
+alias kalm='gcalcli calm --military'
+alias kala='gcalcli agenda --military'
+>>>>>>> 54033ee (add ctags)
+=======
+
+# gcalcli {{{
+alias kal='gcalcli quick'
+alias kalw='gcalcli calw --config-folder="/home/miro/.config/gcalcli"'
+alias kalm='gcalcli calm --config-folder="/home/miro/.config/gcalcli"'
+alias kala='gcalcli agenda --config-folder="/home/miro/.config/gcalcli"'
+>>>>>>> 589fff0 (change dunst ctags)
+alias kals='gcalcli search'
+#}}}
+
+=======
+
+# GIT
+# {{{
+alias addup='git add -u'
+alias addall='git add .'
+alias branch='git branch'
+alias checkout='git checkout'
+alias clone='git clone'
+alias commit='git commit -am'
+alias fetch='git fetch'
+alias pull='git pull origin'
+alias push='git push origin'
+alias stat='git status'  # 'status' is protected name so using 'stat' instead
+# }}}
+
+# gcalcli {{{
+alias kal='gcalcli quick'
+alias kalw='gcalcli calw --config-folder="/home/miro/.config/gcalcli"'
+alias kalm='gcalcli calm --config-folder="/home/miro/.config/gcalcli"'
+alias kala='gcalcli agenda --config-folder="/home/miro/.config/gcalcli"'
+alias kals='gcalcli search'
+#}}}
+
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+# go to 
+#{{{
+alias cdt='cd ~/.local/share/Trash'
+alias cdhtdoc='cd /opt/lampp/htdocs/'
+alias cdn='cd ~/Documents/notebook_md && nvim'
+alias nv='cd ~/Documents/notebook_md && vim'
+alias cdd='cd ~/Documents'
+alias cdp='cd ~/Downloads'
+alias cdv='cd ~/Videos'
+alias cdM='cd /media/multi'
+alias cdm='cd ~/Musics'
+alias cdD='cd /media/winD'
+alias cdC='cd /media/winC'
+alias cdh='cd ~'
+alias cdc='cd ~/Code'
+alias cds='cd ~/Code/SourceCode'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+#}}}
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+# list of the files/directories
+#{{{
+alias la='exa --icons -la'
+alias ll='exa --icons -l' #long
+alias lt='exa --icons --tree'
+alias lr='exa --icons --recurse'
+alias ld='exa --only-dirs'
+alias tree='tree -Ch'
+# sort by size
+alias lls='exa --icons -l -ssize --reverse'
+alias brs='br --sizes'
+alias brh='br --hidden'
+#}}}
+
+=======
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+
+# list of the files/directories
+#{{{
+alias la='exa --icons -la'
+alias ll='exa --icons -l' #long
+alias lt='exa --icons --tree'
+alias lr='exa --icons --recurse'
+alias ld='exa --only-dirs'
+alias tree='tree -Ch'
+# sort by size
+alias lls='exa --icons -l -ssize --reverse'
+alias brs='br --sizes'
+alias brh='br --hidden'
+#}}}
+
+<<<<<<< HEAD
+>>>>>>> 54033ee (add ctags)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+# potwierdzenie/progres
+#{{{
+alias Cp='cp -v'
+alias Rm='rm -iv'
+alias rmdir='rm -Irv'
+alias Mv='mv -iv'
+#}}}
+
+# FASD
+# {{{
+# fasd search from opened files, paths
+# im and select a file will open in sxiv
+alias n='f -e nvim'  
+alias i='f -e sxiv'  
+alias m='f -e smplayer'  
+alias p='f -e zathura'  
+alias lo='f -e libreoffice'  
+### default
+# from oh-my-zsh v; o; 
+# alias a='fasd -a'        # any  
+# alias d='fasd -d'        # directory  
+# alias f='fasd -f'        # file  
+# alias s='fasd -si'       # show / search / select  
+# alias sd='fasd -sid'     # interactive directory selection  
+# alias sf='fasd -sif'     # interactive file selection  
+# alias z='fasd_cd -d'     # cd, same functionality as j in autojump  
+# alias zz='fasd_cd -d -i' # cd with interactive selection  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+#}}}
+=======
+#
+# get error messages from journalctl
+alias journal="journalctl -p 3 -xb"
+
+# git
+alias addup='git add -u'
+alias addall='git add .'
+alias branch='git branch'
+alias checkout='git checkout'
+alias clone='git clone'
+alias commit='git commit -am'
+alias fetch='git fetch'
+alias pull='git pull origin'
+alias push='git push origin'
+alias stat='git status'  # 'status' is protected name so using 'stat' instead
+
+# config files
+alias cfaliases='nvim ~/.config/aliases'
+alias cfvi='nvim ~/.config/nvim/init.vim'
+alias cfvifm='nvim ~/.config/vifm/vifmrc'
+alias cftermite='nvim ~/.config/termite/config'
+alias cfpolybar='nvim ~/.config/polybar/config'
+alias cfmpd='nvim ~/.config/mpd/mpd.conf'
+alias cfncmpcpp='nvim ~/.ncmpcpp/config'
+alias cfzsh='nvim ~/.zshrc'
+alias cftmux='nvim ~/.tmux.conf'
+alias cfi3lap='nvim $path_conf/i3/configi3lap'
+alias cfi3pc='nvim $path_conf/i3/configi3pc'
+alias cfmoc='nvim ~/.moc/config'
+alias cfsxiv='nvim ~/.config/sxiv/exec/key-handler'
+alias cfconky='nvim ~/.config/conky/conky_todo'
+alias cfbspwm='nvim ~/.config/bspwm/bspwmrc'
+alias cfautostart='nvim ~/.config/bspwm/autostart'
+alias cfsxhkd='nvim ~/.config/sxhkd/sxhkdrc'
+alias cfkitty='nvim ~/.config/kitty/kitty.conf'
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+#}}}
+>>>>>>> 54033ee (add ctags)
+=======
+#}}}
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+
+#ZSH
+#ZSH extensions 
+# {{{
+# sxiv => girl.jpg
+alias -s tex=nvim
+alias -s txt=nvim
+alias -s md=nvim
+alias -s html=w3m
+alias -s avi=smplayer
+alias -s mp4=smplayer
+alias -s webm=smplayer
+alias -s m3u=smplayer
+alias -s mkv=smplayer
+alias -s mp3=mocp
+alias -s flac=mocp
+alias -s og=mocp
+alias -s pdf=zathura
+alias -s jpg=sxiv 
+alias -s jpeg=sxiv 
+alias -s png=sxiv 
+alias -s gif=sxiv 
+alias -s odt=libreoffice
+alias -s odp=libreoffice 
+alias -s ods=libreoffice 
+alias -s doc=libreoffice 
+alias -s docx=libreoffice 
+alias -s xls=libreoffice 
+alias -s xlsx=libreoffice 
+alias -s ppt=libreoffice 
+alias -s pptx=libreoffice 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 54033ee (add ctags)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+#}}}
+
+#ZSH global
+# {{{
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+# add fzf
+# append previous command
+alias -g R='!-1'
+# append all previous arguments
+<<<<<<< HEAD
+=======
+#ZSH globalne
+=======
+>>>>>>> 54033ee (add ctags)
+# add fzf
+# append previous comment
+alias -g R='!-1'
+<<<<<<< HEAD
+>>>>>>> bd6b926 (mpd)
+=======
+# append all previous arguments
+>>>>>>> 54033ee (add ctags)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+alias -g A='!*'
+
+alias -g G='| grep'
+alias -g H='| head'
+alias -g T='| tail'
+alias -g SN='| sort -n'
+alias -g L='| less'
+# copy terminal output into clipboard
+alias -g C='| xclip -sel clip'
+# copy line np. ls | yank -l or yank < file.txt
+alias -g CL='| yank -l'
+alias -g P='$(xclip -o -selection clipboard)'
+alias -g PP='$(xclip -o -selection primary)'
+# czasami dać enter;  przy F można dodawać * np ls * F; D to wybór pliku/katalogu z użyciem fzf np. cat D
+alias -g F='| fzf'
+alias -g D='$(ls | fzf)'
+# http://www.zzapper.co.uk/zshtips.html
+alias -g ND='*(/om[1])' 	      # newest directory
+alias -g NF='*(.om[1])' 	      # newest file
+alias -g LL="2>&1 | less"
+alias -g NUL="> /dev/null 2>&1" # alias -g NE="2> /dev/null"
+alias -g TB="| nc termbin.com 9999" # share output of the terminal
+alias -g COL='| column -t' # format into tabelar 
+alias -g X='| xargs'
+alias -g X0='| xargs -0'  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+#}}}
+#FUNCTIONS
+#{{{
+=======
+# Automatically Expanding Global Aliases (Space key to expand)
+globalias() {
+  if [[ $LBUFFER =~ '[A-Z0-9]+$' ]]; then
+    zle _expand_alias
+    zle expand-word
+  fi
+  zle self-insert
+}
+zle -N globalias
+bindkey " " globalias                 # space key to expand globalalias
+# bindkey "^ " magic-space            # control-space to bypass completion
+bindkey "^[[Z" magic-space            # shift-tab to bypass completion
+bindkey -M isearch " " magic-space    # normal space during searches
+
+# abduco
+alias tor='abduco -A tor rtorrent'
+
+#TMUX 
+#alias tn='tmux next-window'
+#alias tp='tmux previous-window'
+#alias tkw='tmux kill-window'
+#alias tkp='tmux kill-pane'
+#alias tt='tmux new-sesion -s'
+#alias t='tmux'
+#alias ta='tmux attach -t'
+#alias moc='tmux attach -t moc'
+#alias tor='tmux attach -t tor'
+#alias g='tmux attach -t g'
+#alias gg='tmux attach -t gg'
+
+#Funkcje
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+#}}}
+#FUNCTIONS
+#{{{
+>>>>>>> 54033ee (add ctags)
+=======
+#}}}
+#FUNCTIONS
+#{{{
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+alias mkcd='take'
+# mkcd () {
+#   case "$1" in /*) :;; *) set -- "./$1";; esac
+#   mkdir -p "$1" && cd "$1"
+#   }
+function zadAdd() { 
+echo "add task"
+read task
+echo "  [ ]" $task >> ~/Documents/notebook_md/ZADANIA/today.todo
+}
+wypakuj () {
+    if [ -f $1 ] ; then
+      case $1 in
+        *.tar.bz2)   tar xjf $1     ;;
+        *.tar.gz)    tar xzf $1     ;;
+        *.bz2)       bunzip2 $1     ;;
+        *.rar)       unrar e $1     ;;
+        *.gz)        gunzip $1      ;;
+        *.tar)       tar xf $1      ;;
+        *.tbz2)      tar xjf $1     ;;
+        *.tgz)       tar xzf $1     ;;
+        *.zip)       unzip $1       ;;
+        *.Z)         uncompress $1  ;;
+        *.7z)        7z x $1        ;;
+        *)     echo "'$1' cannot be extracted via extract()" ;;
+         esac
+     else
+         echo "'$1' is not a valid file"
+     fi
+}
+#}}}
+
+# bindkey
+#{{{
+# Automatically Expanding Global Aliases (Space key to expand)
+globalias() {
+  if [[ $LBUFFER =~ '[A-Z0-9]+$' ]]; then
+    zle _expand_alias
+    zle expand-word
+  fi
+  zle self-insert
+}
+zle -N globalias
+bindkey " " globalias                 # space key to expand globalalias
+# bindkey "^ " magic-space            # control-space to bypass completion
+bindkey "^[[Z" magic-space            # shift-tab to bypass completion
+bindkey -M isearch " " magic-space    # normal space during searches
+#}}}
+
+#old
+#{{{
+alias sr='sr -browser=firefox'
+alias surfraw='surfraw -browser=w3m'
+# alias dic='python ~/Exe/ProgramFile/dictator-0.9.7/dictator_start.py&'      
+# alias kee='kpcli --kdb ~/Documents/Ustawienia/personal/KeePass2.kdbx'
+# alias pom='~/Documents/Ustawienia/sync/pomodoro/pomodoro'
+# alias pomres='~/Documents/Ustawienia/sync/pomodoro/pomodoro-resume &'
+
+# alias trelloCLI='trello card list -l 57b70b98b3285968d89b110e'
+
+# alias backup='rsync -avrP --delete'
+# alias backdaily=/etc/cron.daily/backup_daily.sh
+# alias backweekly=/etc/cron.weekly/backup_weekly.sh
+#APT
+# alias apinstall='sudo aptitude install'
+# alias purge='sudo aptitude purge'
+# alias search='aptitude search'
+# alias show='aptitude show'
+# alias update='sudo aptitude update'
+# alias remove='sudo aptitude remove'
+# alias clean='sudo apt-get clean && sudo apt-get autoclean && sudo apt-get autoremove'
+
+# alias review='java -jar ~/Documents/Ustawienia/sync/Task\ Coach/review.jar'
+# alias scrot='scrot "%m-%d_$p_sc.png"'
+# alias cl='groovy ~/Documents/Ustawienia/skrypty/moje/Clip.groovy'
+# alias zadAdd='$path_script/taskadd.sh'
+#
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+# alias copygreenclip='greenclip print | head | xclip -sel clip'
+# alias magnetcreate='cd ~/Downloads/.torrenty && magnet_to_torrent $(xclip -o -selection clipboard)'
+# from oh-my-zsh /usr/share/oh-my-zsh/lib/directories
+# alias lsa='ls -lah'
+# alias l='ls -lah'
+# alias ll='ls -lh'
+# alias la='ls -lAh'
+# alias la='lsd -la'
+# alias ll='lsd -l' #long
+# alias lt='lsd --tree'
+# alias lr='lsd -r'
+# alias ld='lsd -la | grep ^d'
+# alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/ /'\'' -e '\''s/-/|/'\'''
+# only hidden
+# alias l.='ls -dB .* --color=auto'
+# sort with human 
+# alias lh='ls -lhSsGB'
+# ls only directory
+# alias lsf='ls -Gl | grep ^d'
+# alias lsd='ls -Gal | grep ^d'
+# alias i3helper='~/.i3/helpi3'
+#
+#
+# alias mp='mocp -p'
+# alias ms='mocp -s'
+# alias mn='mocp -f'
+# alias mr='mocp -r'
+# alias pms='mpsyt'
+# alias rad='curseradio'
+#}}}
+
+#TMUX 
+#{{{
+#alias tn='tmux next-window'
+#alias tp='tmux previous-window'
+#alias tkw='tmux kill-window'
+#alias tkp='tmux kill-pane'
+#alias tt='tmux new-sesion -s'
+#alias t='tmux'
+#alias ta='tmux attach -t'
+#alias moc='tmux attach -t moc'
+#alias tor='tmux attach -t tor'
+#alias g='tmux attach -t g'
+#alias gg='tmux attach -t gg'
+#}}}
+<<<<<<< HEAD
+=======
+>>>>>>> bd6b926 (mpd)
+## job
+alias vpn='cd /home/miro/eversis/amiroslaw/eversis-pfs-node1-UDP4-1195-amiroslaw && sudo openvpn --config eversis-pfs-node1-UDP4-1195-amiroslaw.ovpn --auth-user-pass pass.txt'
+# from oh-my-zsh /usr/share/oh-my-zsh/lib/directories
+# alias lsa='ls -lah'
+# alias l='ls -lah'
+# alias ll='ls -lh'
+# alias la='ls -lAh'
+# alias la='lsd -la'
+# alias ll='lsd -l' #long
+# alias lt='lsd --tree'
+# alias lr='lsd -r'
+# alias ld='lsd -la | grep ^d'
+# alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/ /'\'' -e '\''s/-/|/'\'''
+# only hidden
+# alias l.='ls -dB .* --color=auto'
+# sort with human 
+# alias lh='ls -lhSsGB'
+# ls only directory
+# alias lsf='ls -Gl | grep ^d'
+# alias lsd='ls -Gal | grep ^d'
+# alias i3helper='~/.i3/helpi3'
+#
+#
+# alias mp='mocp -p'
+# alias ms='mocp -s'
+# alias mn='mocp -f'
+# alias mr='mocp -r'
+# alias pms='mpsyt'
+# alias rad='curseradio'
+#}}}
+
+#TMUX 
+#{{{
+#alias tn='tmux next-window'
+#alias tp='tmux previous-window'
+#alias tkw='tmux kill-window'
+#alias tkp='tmux kill-pane'
+#alias tt='tmux new-sesion -s'
+#alias t='tmux'
+#alias ta='tmux attach -t'
+#alias moc='tmux attach -t moc'
+#alias tor='tmux attach -t tor'
+#alias g='tmux attach -t g'
+#alias gg='tmux attach -t gg'
+#}}}
+=======
+## job
+alias vpn='cd /home/miro/eversis/amiroslaw/eversis-pfs-node1-UDP4-1195-amiroslaw && sudo openvpn --config eversis-pfs-node1-UDP4-1195-amiroslaw.ovpn --auth-user-pass pass.txt'
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698

@@ -1,0 +1,76 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+#!/bin/sh
+
+## Automount removable media
+devmon &
+# udiskie &
+numlockx &
+#screen saver
+xset dpms 6000 6000 6000 s 6000 &
+
+/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
+<<<<<<< HEAD
+=======
+#!/bin/zsh
+=======
+#!/bin/bash
+>>>>>>> 589fff0 (change dunst ctags)
+=======
+#!/bin/env bash
+>>>>>>> fc1b936 (add stow to the laptop)
+
+<<<<<<< HEAD
+>>>>>>> bd6b926 (mpd)
+=======
+## Automount removable media
+devmon &
+# udiskie &
+numlockx &
+#screen saver
+xset dpms 6000 6000 6000 s 6000 &
+
+<<<<<<< HEAD
+>>>>>>> 0a049d0 (add picom)
+=======
+/usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
+>>>>>>> 29eea88 (move mpd; add script for clipster)
+=======
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+sleep 500 && megasync &
+clipster -d &
+redshift -l 51.2:22.6 &
+trackball.sh &
+nm-applet &
+nvidia-fan.sh -c ~/.config/nfancurve/config &
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+abduco -n btm btm &
+abduco -n tor rtorrent &!
+=======
+abduco -n tor rtorrent &
+>>>>>>> 5f2f642 (add tg scripts)
+=======
+abduco -A tor rtorrent &
+>>>>>>> 589fff0 (change dunst ctags)
+=======
+sleep 500 && abduco -n tor rtorrent &
+>>>>>>> 29eea88 (move mpd; add script for clipster)
+=======
+abduco -n btm btm &
+abduco -n tor rtorrent &
+>>>>>>> 47cc477 (add custom folder in nvim)
+=======
+abduco -n btm btm &
+abduco -n tor rtorrent &!
+>>>>>>> 23d8beeaf9a7810ac858002fa29531bf9fac5698
+#clipit &
+#easystroke &

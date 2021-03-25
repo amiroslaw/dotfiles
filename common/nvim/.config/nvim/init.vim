@@ -40,6 +40,7 @@ Plug 'itchyny/calendar.vim'
 Plug 'potatoesmaster/i3-vim-syntax'
 Plug 'leafgarland/typescript-vim'
 
+Plug 'habamax/vim-asciidoctor'
 " markdown 
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown', 'frozen': 1}
 Plug 'kannokanno/previm', { 'for': 'markdown'}
@@ -48,7 +49,7 @@ Plug 'godlygeek/tabular', { 'for': 'markdown'}
 " http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
 " :Tab /|
 Plug 'majutsushi/tagbar'
-Plug 'lvht/tagbar-markdown'
+" Plug 'lvht/tagbar-markdown'
 
 " for neovim 
 "Plug 'euclio/vim-markdown-composer'
@@ -80,6 +81,9 @@ set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8,latin1
 set linebreak
+" foldmethod for config files but it folds when you open the file
+" set foldmethod=marker
+" set foldmarker={{{,}}}
 
 if exists('$SHELL')
     set shell=$SHELL
@@ -240,7 +244,7 @@ autocmd BufEnter term://* startinsert
 
 """""""""""""""""""
 """""" NOTE TAKING
-nnoremap <leader>t :silent !ctags -R . <CR>:redraw!<CR>:Denite tag<CR>
+nnoremap ,t :silent !ctags -R . <CR>:redraw!<CR>:Denite tag<CR>
 " open typora
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 nnoremap <leader>m :exe ':silent !typora %'<CR>
@@ -406,19 +410,49 @@ nmap <leader>g :Goyo<CR>
 " ditto' plugin that highlights overused words.
 nmap <leader>d :ToggleDitto<CR>
 """""""""""""""""""
+
+" Tagbar
+set conceallevel=2
+nmap <leader>t :TagbarToggle<CR>
+" nmap tt :Toc<CR>
+let g:tagbar_autoclose = 1
+let g:tagbar_autofocus = 1
+let g:tagbar_zoomwidth = 0
+let g:tagbar_sort = 0
+
+" asciidoctor
+" let g:asciidoctor_syntax_conceal = 2
+let g:asciidoctor_folding = 1
+" let g:asciidoctor_fold_options = 0
+let g:asciidoctor_folding_level = 6
+
+
+let g:tagbar_type_asciidoctor = {
+    \ 'ctagstype' : 'asciidoc',
+    \ 'kinds' : [
+        \ 'h:table of contents',
+        \ 'a:anchors:1',
+        \ 't:titles:1',
+        \ 'n:includes:1',
+        \ 'i:images:1',
+        \ 'I:inline images:1'
+    \ ]
+\ }
+
 "vim-markdown syntax
 " let g:vim_markdown_fenced_languages = ['java=java']
 let g:vim_markdown_toc_autofit = 1
+let g:vim_markdown_folding = 0
+let g:vim_markdown_fold_options = 0
 " let g:vim_markdown_folding_level = 6
 " let g:vim_markdown_folding_style_pythonic = 1
-set conceallevel=2
-" nmap tt :Toc<CR>
-"
-" Tagbar
-nmap tt :TagbarToggle<CR>
-let g:tagbar_autoclose = 1
-let g:tagbar_autofocus = 1
-let g:tagbar_sort = 0
+let g:tagbar_type_markdown = {
+    \ 'ctagstype' : 'markdown',
+    \ 'kinds' : [
+        \ 'h:table of contents',
+    \ ]
+\ }
+
 
 """""""""""""""""""
 " previm
@@ -428,7 +462,7 @@ nmap <leader>v :PrevimOpen <CR>
 " to change style turn 0 to 1 in previm_disable_default_css and put path to
 " your style
 let g:previm_disable_default_css = 1
-let g:previm_custom_css_path = '~/Documents/Ustawienia/sync/vim/blog.css'
+let g:previm_custom_css_path = '~/.config/nvim/custom/md-prev.css'
 
 """""""""""""""""""
 " eighties automatyczne dostosowanie okien
@@ -496,16 +530,12 @@ else
 endif
 """""""""""""""""""
 " deoplete
-"will multiply mem usage
-let g:deoplete#num_processes = 2
 "NEOCONPLETE to deople conversion 
 set runtimepath+=~/.config/nvim/plugged/deoplete.nvim/
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
-" Use smartcase.
-let g:deoplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
 let g:deoplete#sources#syntax#min_keyword_length = 3
 let g:deoplete#lock_buffer_name_pattern = '\*ku\*'
@@ -514,6 +544,13 @@ let g:deoplete#lock_buffer_name_pattern = '\*ku\*'
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " tern
 autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
+
+" deprecated
+" Use smartcase. 
+" let g:deoplete#enable_smart_case = 1
+
+"will multiply mem usage
+" let g:deoplete#num_processes = 2
 
 " Define keyword.
 " if !exists('g:deoplete#keyword_patterns')

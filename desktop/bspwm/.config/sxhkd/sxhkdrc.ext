@@ -1,0 +1,6 @@
+super + Print
+	$ROFI/dmmaim
+
+{_,ctrl,shift,ctrl+shift} + Print
+	screenshot.sh {window,quality,selection,clipboard}
+
