@@ -38,6 +38,8 @@ export NOTE="$HOME/Documents/notebook_md"
 export PRIVATE="$HOME/Documents/dotfiles/private"
 export GUI_EDITOR=/usr/bin/micro-st
 export ABDUCO_SOCKET_DIR="$HOME/.config/abduco"
+export BACKUP_LOG="$HOME/Documents/Ustawienia/logs/borg-pc"
+export BACKUP="/media/winD/backup-borg/daily"
 # Default Apps
 export USER_HOME="/home/miro"
 export EDITOR="nvim"
