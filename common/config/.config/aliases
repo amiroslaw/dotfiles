@@ -96,6 +96,7 @@ alias sysstat='systemctl status '
 alias sysrestart='sudo systemctl restart '
 alias sysstop='sudo systemctl stop '
 
+alias diskls='lsblk'
 # pacman
 # alias yay='paru'
 alias update='sudo pacman -Syyu'

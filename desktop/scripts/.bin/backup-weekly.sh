@@ -1,7 +1,7 @@
 #!/bin/sh
 # should not have any space on the first param
 # debug borg create -n --compression zlib /media/multi/backup/weekly::{hostname}-weekly-{now:%m-%dT%H}	\
-borg create --compression zlib --stats /media/winD/backup-borg/weekly::{hostname}-weekly-{now:%Y-%m-%dT%H}	\
+borg create --compression zlib --stats /media/backup/backup-borg/weekly::{hostname}-weekly-{now:%Y-%m-%dT%H}	\
 	~/Documents \
 	~/Code \
 	--exclude '/home/miro/*/.debris'	\

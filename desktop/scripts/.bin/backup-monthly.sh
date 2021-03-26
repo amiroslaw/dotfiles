@@ -1,6 +1,6 @@
 #!/bin/sh
 # should not have any space on the first param
-borg create --stats --compression lzma /media/winD/backup-borg/monthly::{hostname}-monthly-{now:%Y-%m-%dT%H} / \
+borg create --stats --compression lzma /media/backup/backup-borg/monthly::{hostname}-monthly-{now:%Y-%m-%dT%H} / \
 	--exclude .Private \
 	--exclude .cache \
 	--exclude /dev \

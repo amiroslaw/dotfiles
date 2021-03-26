@@ -1,6 +1,6 @@
 #!/bin/sh
 # should not have any space on the first param
-borg create --stats /media/winD/backup-borg/daily::{hostname}-daily-{now:%Y-%m-%dT%H}	\
+borg create --stats /media/backup/backup-borg/daily::{hostname}-daily-{now:%Y-%m-%dT%H}	\
 	~/Documents/Ustawienia \
 	~/Documents/notebook_md \
 	~/Code/Projekty \
