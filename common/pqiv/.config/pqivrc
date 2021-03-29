@@ -1,0 +1,63 @@
+[options]
+lazy-load
+hide-info-box=1
+slideshow-interval=2
+scale-mode-screen-fraction=1
+disable-backends=spectre,archive,wand,poppler
+;archive       generic archive file support
+;archive_cbx   *.cb? comic book archive support
+;libav         video support, works with ffmpeg as well
+;gdkpixbuf     images
+;poppler       PDF
+;spectre       PS/EPS
+;wand          ImageMagick, various formats, e.g. PSD
+;webp          WebP format
+
+[keybindings]
+n { goto_file_relative(1); } 
+p { goto_file_relative(-1); } 
+g { goto_file_byindex(0) }
+G { goto_file_byindex(-1) }
+<slash> { jump_dialog(); } 
+s { toggle_slideshow() }
+w { flip_horizontally(); }
+v { flip_vertically(); }
+z { rotate_left(); }
+x { rotate_right(); }
+N { toggle_negate_mode(0) }
+l { shift_x(10); } 
+k { shift_y(-10); } 
+h { shift_x(-10); } 
+j { shift_y(10); } 
+
+@MONTAGE {
+	l { montage_mode_shift_x(1); } 
+	k { montage_mode_shift_y(-1); } 
+	h { montage_mode_shift_x(-1); } 
+	j { montage_mode_shift_y(1); } 
+}
+
+;commands
+d { command(echo -n $1 | xargs -I {} trash-put {}); }
+cn { command(echo -n $1 | xclip -selection clipboard); }
+cp { command(pwd echo -n $1 | xclip -selection clipboard); }
+ci { command(|xclip -selection clipboard -target image/png); }
+e { command(echo -n $1 | xargs -I {} tesseract {} {}); }
+
+<equal> { set_scale_level_relative(1.1); }
+; doesn't work or I don't know how to do it - bulk command
+;D { command(- echo -n $1 | xargs -I {} trash-put {}); }
+
+# * Startup Actions
+[actions]
+# keep user set zoom when switching images
+# toggle_scale_mode(4)
+
+
+# comic keybindings
+;<space> { send_keys(:comic_on); }
+;:comic_on {
+; set_scale_level_absolute(1);
+; send_keys(:cycleCN);
+; bind_key(<space> { send_keys(:comic_off\); });
+;}
