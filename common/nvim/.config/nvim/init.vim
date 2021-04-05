@@ -12,10 +12,6 @@ Plug 'mbbill/undotree'
 Plug 'rking/ag.vim' " silver search I don't need it if I use 
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo'} " zen mode
 Plug 'dbmrq/vim-ditto' "plugin that highlights overused words.
-"Plug 'honza/vim-snippets'
-Plug 'shougo/neosnippet.vim' 
-Plug 'shougo/neosnippet-snippets' " examples snippets
-"Plug 'myusuf3/numbers.vim' set relativenumber
 Plug 'ryanoasis/vim-devicons'
 Plug 'vim-scripts/CSApprox'  
 Plug 'justincampbell/vim-eighties' " Automatically resizes your windows
@@ -40,7 +36,13 @@ Plug 'itchyny/calendar.vim'
 Plug 'potatoesmaster/i3-vim-syntax'
 Plug 'leafgarland/typescript-vim'
 
+" asciidoctor
 Plug 'habamax/vim-asciidoctor'
+Plug 'SirVer/ultisnips'
+" Plug 'honza/vim-snippets'
+" Plug 'shougo/neosnippet.vim' 
+" Plug 'shougo/neosnippet-snippets' " examples snippets
+"Plug 'myusuf3/numbers.vim' set relativenumber
 " markdown 
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown', 'frozen': 1}
 Plug 'kannokanno/previm', { 'for': 'markdown'}
@@ -265,19 +267,23 @@ nnoremap <C-]> ]s
 
 """""""""""""""""""
 """""" makra
-" lista numerowana n  
-let @n='ll0i1. j0'
-" lista nienumerowana i 
-let @i='0i- j0'
+"""""" adoc
+" plus na koncu linii p
+let @p='$a  +j0'
+"""""" markdown
 " dwie spacje na koncu linii s  
 let @s='$a  j0'
 " bookmarks should copy word
 let @z='ggO- (pbi#bi[po'
 " add hiperlink, start from last sing of the word
+"links
 let @h='a]()hp0i['
-
-let @l='o^[p'
 let @t='f)a kb  '
+" listy generowane z pluginu
+" lista numerowana n  
+" let @n='ll0i1. j0'
+" lista nienumerowana i 
+" let @i='0i- j0'
 " noremap <Leader>ee :%s/$/  /g <CR>  
 " don't work map <Leader>ev :'<,'>s/$/  /g <CR>  
 " vnoremap <Leader>ee :%s/\%V$/  /g  
@@ -412,19 +418,20 @@ nmap <leader>d :ToggleDitto<CR>
 """""""""""""""""""
 
 " Tagbar
-set conceallevel=2
 nmap <leader>t :TagbarToggle<CR>
 " nmap tt :Toc<CR>
 let g:tagbar_autoclose = 1
 let g:tagbar_autofocus = 1
 let g:tagbar_zoomwidth = 0
 let g:tagbar_sort = 0
-
+set conceallevel=3
 " asciidoctor
-" let g:asciidoctor_syntax_conceal = 2
+let g:asciidoctor_syntax_conceal = 1
 let g:asciidoctor_folding = 1
-" let g:asciidoctor_fold_options = 0
 let g:asciidoctor_folding_level = 6
+let g:asciidoctor_fenced_languages = ['java', 'typescript', 'javascript']
+" let g:asciidoctor_syntax_indented = 0
+" let g:asciidoctor_fold_options = 0
 
 
 let g:tagbar_type_asciidoctor = {
@@ -529,7 +536,7 @@ else
   let g:airline_symbols.linenr = ''
 endif
 """""""""""""""""""
-" deoplete
+" DEOPLETE
 "NEOCONPLETE to deople conversion 
 set runtimepath+=~/.config/nvim/plugged/deoplete.nvim/
 " Disable AutoComplPop.
@@ -541,11 +548,44 @@ let g:deoplete#sources#syntax#min_keyword_length = 3
 let g:deoplete#lock_buffer_name_pattern = '\*ku\*'
 
 " deoplete tab-complete
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+" Cycle through completion entries with tab/shift+tab
+inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
+
+inoremap <silent><expr> <TAB>
+		\ pumvisible() ? "\<C-n>" :
+		\ <SID>check_back_space() ? "\<TAB>" :
+		\ deoplete#mappings#manual_complete()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
 " tern
 autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
 
-" deprecated
+" don't copy tags
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return deoplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+
+" ultisnips
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsExpandTrigger='<c-l>'
+let g:asciidoctor_img_paste_command = 'xclip -selection clipboard -t image/png -o > %s%s'
+" shortcut to go to next position
+let g:UltiSnipsJumpForwardTrigger='<c-l>'
+" shortcut to go to previous position
+let g:UltiSnipsJumpBackwardTrigger='<c-k>'
+" let g:UltiSnipsSnippetDirectories=["custom-snip"]
+nnoremap <A-p> :AsciidoctorPasteImage<CR>
+
+" DEPRECATED
 " Use smartcase. 
 " let g:deoplete#enable_smart_case = 1
 
@@ -566,27 +606,18 @@ autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
 
 " let g:deoplete#keyword_patterns.tex = '[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ][0-9A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]\+'
 " let g:neocomplete#keyword_patterns['markdown'] = '[À-ú[:alpha:]_][À-ú[:alnum:]_]*'
+"
 """""""""""""""""""
 " neosnippet 
 " Plugin key-mappings.
-inoremap <expr><C-g>     deoplete#undo_completion()
-inoremap <expr><C-l>     deoplete#complete_common_string()
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+" inoremap <expr><C-g>     deoplete#undo_completion()
+" inoremap <expr><C-l>     deoplete#complete_common_string()
+" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " I am not sure if it is needed
 " inoremap <silent><expr><CR> pumvisible() ? deoplete#mappings#close_popup()."\<Plug>(neosnippet_expand_or_jump)" : "\<CR>"
-
-" don't copy tags
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return deoplete#close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-
-
 """""""""""""""""""
 " old PLUGINS 
 """""""""""""""""""

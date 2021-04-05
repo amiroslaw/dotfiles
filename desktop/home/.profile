@@ -4,7 +4,7 @@
 umask 022
 
 # Set our default path
-PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin"
+PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin:$HOME/.local/share/gem/ruby/2.7.0/bin"
 export PATH
 
 # Load profiles from /etc/profile.d
@@ -34,8 +34,8 @@ export ROFI="$HOME/.config/rofi/scripts"
 export GRAVEYARD="$HOME/.local/share/Trash"
 export TOR_WATCH="$HOME/Downloads/.torrenty"
 export TOR_DIR="/media/multi/Downloads"
-export NOTE="$HOME/Documents/notebook_md"
-export PRIVATE="$HOME/Documents/dotfiles/private"
+export NOTE="$HOME/Documents/notebook"
+export PRIVATE="$HOME/Documents/Ustawienia/stow-private/wifi"
 export GUI_EDITOR=/usr/bin/micro-st
 export ABDUCO_SOCKET_DIR="$HOME/.config/abduco"
 export BACKUP_LOG="$HOME/Documents/Ustawienia/logs/borg-pc"

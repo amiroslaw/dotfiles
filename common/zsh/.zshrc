@@ -45,7 +45,6 @@ zstyle ':completion:*' completer _expand_alias _complete _ignored
 export ZPLUG_HOME=~/.config/zplug
 # install from aur
 source /usr/share/zsh/scripts/zplug/init.zsh
-# zplug "mafredri/zsh-async", from:github, defer:0
 zplug "mafredri/zsh-async", from:"github", defer:0, use:"async.zsh"
 # Syntax highlighting for commands, load last
 # ohmyzsh
@@ -54,7 +53,7 @@ zplug "zsh-users/zsh-autosuggestions", defer:2
 zplug "zsh-users/zsh-syntax-highlighting", from:github, defer:3
 # Load completion library for those sweet [tab] squares
 zplug "lib/completion", from:oh-my-zsh
-zplug "plugins/git",   from:oh-my-zsh
+# zplug "plugins/git",   from:oh-my-zsh
 zplug "plugins/fasd",   from:oh-my-zsh
 zplug "plugins/sudo",   from:oh-my-zsh
 zplug "plugins/history",   from:oh-my-zsh

@@ -283,8 +283,8 @@ fileviewer {*.flac},<audio/flac> soxi
 
 " Video
 filextype {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,*.as[fx]},<video/*>
-        \ smplayer %f,
-        \ vlc %f,
+        \ smplayer %f %i,
+        \ vlc %f %i,
 		\ pqiv  %f %i,
         \ ffplay -fs -autoexit %f,
 fileviewer {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,*.as[fx]},<video/*>
@@ -323,7 +323,7 @@ fileviewer {*.docx},<application/vnd.openxmlformats-officedocument.wordprocessin
          \ docx2txt.pl %f -
 
 "e-book
-filextype {*.cbr,*cbz} pqiv  --disable-backends=spectre,archive,poppler,wand,gdkpixbuf,libav %f,
+filextype {*.cbr,*cbz} pqiv %f,
 filextype {*.mobi,*.epub,*azw3,*azw,*pobi} 
 		\ ebook-viewer %f %i, 
 		\ xreader %f %i,
@@ -347,10 +347,9 @@ filextype {*.djvu},<image/vnd.djvu>
         \ zathura %f %i,,
         \ pqiv  %f %i,
 
-
 " Images
 filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp},<image/*>
-        \ pqiv   %f %i,
+        \ pqiv %f,
         \ sxiv -fa %f %i,
 		" \ echo %f > ~/test,
 " kitty 
@@ -410,8 +409,7 @@ mark I /home/miro/Documents/Nauka/inwestycje
 " mark k /media/winD/kursy/Angular
 mark m /media/multi
 mark M /media/multi/.mumia
-mark n /home/miro/Documents/notebook_md
-" mark N /home/miro/Documents/notatki
+mark n /home/miro/Documents/notebook
 mark o /home/miro/Pictures
 mark r /run/media/miro
 mark s /home/miro/Code/SourceCode
