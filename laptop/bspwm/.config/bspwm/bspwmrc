@@ -101,16 +101,14 @@ GRAPHIC_CARD=$(lspci | grep -i "vga" | sed 's/.*://' | sed 's/(.*//' | sed 's/^[
 #  grep -q 'vsync = "opengl-swc";' ~/.config/compton.conf || echo 'vsync = "opengl-swc";' >> ~/.config/compton.conf
 #fi
 
-#Source autostartfile. Uncomment this if you use bspwm-git
+sxhkd -c $HOME/.config/sxhkd/sxhkdrc.ext $HOME/.config/sxhkd/sxhkdrc &
 
 wmname LG3D &
 polybar main -c $HOME/.config/polybar/config &
 xsetroot -cursor_name left_ptr &
 feh --no-fehbg --bg-scale '/home/miro/Pictures/wallpapers/4k-wallpaper-background-beautiful-853199.jpg' &
-sxhkd -c $HOME/.config/sxhkd/sxhkdrc.ext $HOME/.config/sxhkd/sxhkdrc &
 picom --experimental-backends &
-
-# sleep 900 && xmodmap ~/.config/Xmodmap &
+sleep 200 && xmodmap ~/.config/Xmodmap &
 
 $HOME/.config/bspwm/autostart &
 
