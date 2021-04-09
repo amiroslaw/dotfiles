@@ -418,3 +418,5 @@ rate ; oceniać
 rate ; oceniać
  ; 
 bastard ; drań
+Wednesday ; środa
+lump ; guzek

@@ -67,7 +67,7 @@ super + {_,shift,ctrl} + z
 #
 
 # left/middle click emulation
-super + {x,y} 
+super + {x,v} 
 	xdotool click --clearmodifiers {1,2}
 
 #
@@ -240,7 +240,7 @@ super + s ; {s,m,v,a,y,n}
 	{dunstify options: "m-magnet\nv-video\na-audio yt\ny-yt video\nn-add note", \
     magnet.sh $(xclip -o -sel clip), \
     mpv $(xclip -o -sel clip), \
-    cd ~/Music/PODCASTS && youtube-dl -f bestaudio -x --audio-format mp3 $(xclip -o -sel clip), \
+    cd ~/Musics/PODCASTS && youtube-dl -f bestaudio -x --audio-format mp3 $(xclip -o -sel clip), \
     cd ~/Videos/YouTube && youtube-dl $(xclip -o -sel clip), \
     xclip -o -selection clip >> $NOTE/clip.md 
 }

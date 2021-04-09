@@ -1,0 +1,345 @@
+# AsciiDoc snippets for the UltiSnips plug-in
+# Copyright (C) 2019 Jaromir Hradilek
+
+# Home Page:   https://github.com/jhradilek/vim-snippets
+# https://github.com/jhradilek/vim-snippets/blob/master/UltiSnips/asciidoc.markdown
+# Last Change: 12 September 2019
+
+# Some snippets are inspired by those included in the AsciiDoc Autocomplete
+# package for Atom [1].  Where possible,  the snippets  also follow Red Hat
+# Documentation Asciidoc Mark-up Conventions [2]  and try to  be compatible
+# with the Red Hat Modular Documentation Project [3] templates.
+#
+# References:
+#
+#   [1] https://github.com/asciidoctor/atom-autocomplete-asciidoc
+#   [2] https://github.com/redhat-documentation/asciidoc-markup-conventions
+#   [3] https://github.com/redhat-documentation/modular-docs
+
+global !p
+whitespace = re.compile('[\s_-]*\{nbsp\}[\s_-]*|[\s_-]+')
+macros     = re.compile('\\bbtn:\[|\\bkbd:\[|\\bmenu:\\b|\[[^\]]*\][\*_`#]|\{[^\}]*\}[\s_]*')
+disallowed = re.compile('[^\w\d.-]')
+
+def compose_id(string):
+	'''Converts an AsciiDoc string to a valid block ID.'''
+	temp = whitespace.sub('-', string)
+	temp = macros.sub('', temp)
+	temp = disallowed.sub('', temp)
+
+	return temp.lower()
+endglobal
+
+
+# -------------------------------------------------------------------------
+#                           Titles and Sections
+# -------------------------------------------------------------------------
+
+snippet h1 "Header 1" !b
+= ${1}
+$0
+endsnippet
+
+snippet h2 "Header 2" !b
+== ${1}
+$0
+endsnippet
+
+snippet h3 "Header 3" !b
+=== ${1}
+$0
+endsnippet
+
+snippet h4 "Header 4" !b
+==== ${1}
+$0
+endsnippet
+
+snippet h5 "Header 5" !b
+===== ${1}
+$0
+endsnippet
+
+snippet h6 "Header 6" !b
+====== ${1}
+$0
+endsnippet
+
+snippet h7 "Header 7" !b
+======= ${1}
+$0
+endsnippet
+
+# -------------------------------------------------------------------------
+#                             Block Elements
+# -------------------------------------------------------------------------
+
+# Quote block:
+snippet quote "Quote Block" !b
+____
+${VISUAL}$1
+____
+$0
+endsnippet
+
+snippet code "Source Code Block" !b
+[source,${1:java}]
+----
+${VISUAL}$2
+----
+$0
+endsnippet
+
+snippet codeclip "Code from clipboard" !b
+[source,${1:java}]
+----
+${2:`xclip -o -sel clip`}
+----
+$0
+endsnippet
+
+snippet caution "Admonition: Caution" !b
+CAUTION: ${VISUAL}$1
+$0
+endsnippet
+
+snippet important "Admonition: Important" !b
+IMPORTANT: ${VISUAL}$1
+$0
+endsnippet
+
+snippet note "Admonition: Note" !b
+NOTE: ${VISUAL}$1
+$0
+endsnippet
+
+snippet tip "Admonition: Tip" !b
+TIP: ${VISUAL}$1
+$0
+endsnippet
+
+snippet warning "Admonition: Warning" !b
+WARNING: ${VISUAL}$1
+$0
+endsnippet
+
+# -------------------------------------------------------------------------
+#                          User Interface Macros
+# -------------------------------------------------------------------------
+
+snippet btn "Button" !w
+btn:[${1:${VISUAL}}]$0
+endsnippet
+
+snippet kbd "Keyboard Shortcut" !w
+kbd:[${1:${VISUAL}}]$0
+endsnippet
+
+snippet menu "Menu Selection" !w
+menu:${1:${VISUAL}}[$2]$0
+endsnippet
+
+# -------------------------------------------------------------------------
+#                            Links and Images
+# -------------------------------------------------------------------------
+
+snippet aaa "Link" !w
+link:${1:`xclip -o -sel clip`}[${2:${VISUAL}}] $0
+endsnippet
+
+# select and copy link
+snippet asel "Link from Selection" !w
+link:${1:`xclip -o -sel clip`}[${2:`xclip -o -sel prim`}] $0
+endsnippet
+
+snippet mailto "Email" !w
+mailto:$1[${2:${VISUAL}}] $0
+endsnippet
+
+snippet img "Image" !b
+image::$1[${2:${VISUAL:alt}}] $0
+endsnippet
+
+snippet imgex "Image and atributes" !b
+.${3:Figure}
+image::$1[${2:${VISUAL:alt}},${4:width},${5:height}] $0
+endsnippet
+
+snippet imgelink "Image link after click" !b
+.${3:Figure}
+[link=${6:click link}]
+image::$1[${2:${VISUAL:alt}},${4:width},${5:height}] $0
+endsnippet
+
+snippet video "Video" !b
+video::$1[${2:${VISUAL}}] $0
+endsnippet
+
+snippet tree "Directories tree" !b
+.${3:Figure}
+[tree,file="${2:alt}"]
+${1:`xclip -o -sel clip`}
+$0
+endsnippet
+
+# -------------------------------------------------------------------------
+#                               Directives
+# -------------------------------------------------------------------------
+
+# Include directive:
+snippet includelines "Include lines" !b
+include::${1:${VISUAL}}[lines=${2:from}..${3:to}]$0
+endsnippet
+
+snippet include "Include offset" !b
+include::${1:${VISUAL}}[${2:leveloffset=+1}]$0
+endsnippet
+
+# -------------------------------------------------------------------------
+#                             Text Formatting
+# -------------------------------------------------------------------------
+
+snippet bold "Bold Text (Unconstrained)" !i
+**${1:${VISUAL}}** $0
+endsnippet
+
+snippet __ "Italic Text (Unconstrained)" !i
+__${1:${VISUAL}}__ $0
+endsnippet
+
+snippet mono "Monospace Text (Unconstrained)" !i
+\`\`${1:${VISUAL}}\`\` $0
+endsnippet
+
+snippet sup "Superscript Text" !i
+^${1:${VISUAL}}^$0
+endsnippet
+
+snippet sub "Suberscript Text" !i
+~${1:${VISUAL}}~$0
+endsnippet
+
+# Single curved quotes:
+# snippet quotes "Single Curved Quotes" !w
+# '\`${1:${VISUAL}}\`'$0
+# endsnippet
+
+# Double curved quotes:
+# snippet quotes2 "Double Curved Quotes" !w
+# "\`${1:${VISUAL}}\`"$0
+# endsnippet
+
+
+# -------------------------------------------------------------------------
+#                             Semantic Markup
+# -------------------------------------------------------------------------
+# idk adds class 
+# Application name:
+# snippet application "Application Name" !w
+# [application]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Application name - alternative version:
+# snippet app "Application Name" !w
+# [application]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Cited work title:
+# snippet citetitle "Cited Work Title" !w
+# [citetitle]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Cited work title - alternative version:
+# snippet cite "Cited Work Title" !w
+# [citetitle]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Command:
+# snippet command "Command" !w
+# [command]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Command - alternative version:
+# snippet cmd "Command" !w
+# [command]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # File name:
+# snippet filename "File Name" !w
+# [filename]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # File name - alternative version:
+# snippet file "File Name" !w
+# [filename]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Directory name - for convenience:
+# snippet directory "Directory Name" !w
+# [filename]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Directory name - alternative version:
+# snippet dir "Directory Name" !w
+# [filename]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Function name:
+# snippet function "Function Name" !w
+# [function]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Function name - alternative version:
+# snippet func "Function Name" !w
+# [function]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # GUI element name:
+# snippet gui "GUI Element Name" !w
+# [gui]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Option name:
+# snippet option "Option Name" !w
+# [option]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Option name - alternative version:
+# snippet opt "Option Name" !w
+# [option]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Package name:
+# snippet package "Package Name" !w
+# [package]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Package name - alternative version:
+# snippet pkg "Package Name" !w
+# [package]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Parameter name:
+# snippet parameter "Parameter Name" !w
+# [parameter]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # Parameter name - alternative version:
+# snippet param "Parameter Name" !w
+# [parameter]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # System item:
+# snippet systemitem "System Item" !w
+# [systemitem]\`${VISUAL}$1\`$0
+# endsnippet
+
+# # System item - alternative version:
+# snippet sys "System Item" !w
+# [systemitem]\`${VISUAL}$1\`$0
+# endsnippet
+
+
+# snippet test "System Item" !w
+# [systemitem]\`${VISUAL}$1\`$0
+# endsnippet
