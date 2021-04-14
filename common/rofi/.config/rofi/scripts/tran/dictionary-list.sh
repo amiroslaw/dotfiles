@@ -1,4 +1,4 @@
 #!/bin/bash 
 
-rofi -dmenu -input ~/.config/rofi/scripts/tran/enpl-dictionary.txt | xclip -sel clip
+rofi -dmenu -input $CONFIG/logs/dictionary/enpl-dictionary.txt | xclip -sel clip
 
