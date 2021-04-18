@@ -245,6 +245,9 @@ super + s ; {s,m,v,a,y,n}
     xclip -o -selection clip >> $NOTE/clip.md 
 }
 
+super + shift + s 
+	$ROFI/tuxi.sh	
+
 # clipster
 super + c ; {c,g,p,d,r,j,n,s}
 	{dunstify options: "g-gui\np-primary\nd-remove clip\nr-remove primary\nj-join\nn-previous clip\ns-second primary", \
