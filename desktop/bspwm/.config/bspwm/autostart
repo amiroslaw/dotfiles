@@ -14,8 +14,7 @@ redshift -l 51.2:22.6 &
 trackball.sh &
 nm-applet &
 nvidia-fan.sh -c ~/.config/nfancurve/config &
-today-gcal.sh &
-
+sleep 500 && today-gcal.sh &
 abduco -n tor rtorrent &!
 #clipit &
 #easystroke &

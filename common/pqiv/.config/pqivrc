@@ -38,11 +38,17 @@ j { shift_y(10); }
 }
 
 ;commands
+; IDK but if you dont put $1 it will add that in the end of the command
+; probably dont't put quotes "' 
+; instead of $() use xargs
 d { command(echo -n $1 | xargs -I {} trash-put {}); }
 cn { command(echo -n $1 | xclip -selection clipboard); }
 cp { command(pwd echo -n $1 | xclip -selection clipboard); }
 ci { command(|xclip -selection clipboard -target image/png); }
+;ocr image
 e { command(echo -n $1 | xargs -I {} tesseract {} {}); }
+;rename but with default png extension
+r { command(zenity --entry | xargs -I {} mv $1 {}.png); }
 1 { command(mkdir 1; mv $1 1); }
 2 { command(mkdir 2; mv $1 2); }
 3 { command(mkdir 3; mv $1 3); }
