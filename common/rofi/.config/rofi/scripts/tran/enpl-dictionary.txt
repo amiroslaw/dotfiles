@@ -420,3 +420,5 @@ rate ; oceniać
 bastard ; drań
 Wednesday ; środa
 lump ; guzek
+cat ; kot
+habit ; nawyk

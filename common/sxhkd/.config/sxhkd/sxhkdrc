@@ -334,7 +334,7 @@ super + shift + {comma,period}
 	DidIClickDesktop.sh && gapgrab	
 
 ~button2
-	DidIClickDesktop.sh && BspwmDesktopMenu
+	# DidIClickDesktop.sh && BspwmDesktopMenu
 #	DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/BspwmDesktopMenui
 #	DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/BspwmWindowMenui
 		

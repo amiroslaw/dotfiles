@@ -34,7 +34,7 @@ export ROFI="$HOME/.config/rofi/scripts"
 export GRAVEYARD="$HOME/.local/share/Trash"
 export TOR_WATCH="$HOME/Downloads/.torrenty"
 export TOR_DIR="/media/multi/Downloads"
-export NOTE="$HOME/Documents/notebook_md"
+export NOTE="$HOME/Documents/notebook"
 export PRIVATE="$HOME/Documents/dotfiles/private"
 
 # Default Apps
