@@ -263,7 +263,7 @@ super + c ; {c,g,p,d,r,j,n,s}
 # ROFI 
 # rofi top and calc are in aur repo
 super + d
-	rofi -modi window,drun,top,calc -show window -show-icons -sidebar-mode -terminal st
+	rofi -modi window,calc,drun,top -show window -show-icons -sidebar-mode -terminal st
 
 super + shift + d
 	rofi -modi drun,run,window -show drun -show-icons -sidebar-mode -terminal st

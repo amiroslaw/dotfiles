@@ -270,6 +270,7 @@ nnoremap <C-]> ]s
 """""" adoc
 " plus na koncu linii p
 let @p='$a  +j0'
+let @l='pA['
 """""" markdown
 " dwie spacje na koncu linii s  
 let @s='$a  j0'

@@ -24,7 +24,7 @@
 #{{{
 path_script=~/Documents/Ustawienia/skrypty/moje
 path_conf=~/Documents/Ustawienia/sync
-path_note=~/Documents/notebook_md
+path_note=~/Documents/notebook
 java8=~/.sdkman/candidates/java/8.0.171-oracle/bin/java
 #}}}
 
@@ -38,6 +38,7 @@ alias mag='$path_script/magnet.sh $(xclip -o -selection clipboard)'
 # config files
 # {{{
 alias batalias='bat ~/.config/aliases'
+alias cfqpiv='nvim ~/.config/pqivrc'
 alias cfaliases='nvim ~/.config/aliases'
 alias cfvi='nvim ~/.config/nvim/init.vim'
 alias cfvifm='nvim ~/.config/vifm/vifmrc'
@@ -152,7 +153,7 @@ alias icat='kitty +kitten icat '
 alias plen='trans -shell pl:en -show-original n  -show-prompt-message n -show-languages n -play'
 alias enpl='trans -shell en:pl -show-original n  -show-prompt-message n -show-languages n -play -speak'
 alias dic='trans -sp en: -show-prompt-message n -show-languages n'
-alias irr='cat $path_note/Home/angielski/irregular.md | grep'
+alias irr='cat $path_note/Home/angielski/irregular.adoc | grep'
 #}}}
 
 # GIT
