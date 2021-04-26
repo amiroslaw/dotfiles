@@ -14,7 +14,7 @@ dht = on
 dht_port = 6881
 # Gdzie będą ściągane pliki;
 
-directory = /media/multi/Downloads
+directory = /media/multimedia/Downloads
 
 # Domyślna prędkość wysyłania (0 dla nieograniczonej);
 
