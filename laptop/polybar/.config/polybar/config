@@ -60,10 +60,11 @@ font-0 = "Ubuntu Nerd Font:pixelsize=9;1"
 font-1 = "RobotoMono Nerd Font:pixelsize=8;1"
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 
-modules-left = bspwm windows
+modules-left = bspwm xwindow
+; windows - uses loop; xwindow
 ;modules-center = mpd
 modules-right = battery backlight-acpi cpu memory uptime filesystem date weather alsa wlan  powermenu updates
-; system-usb-udev doesn't work
+; system-usb-udev doesn't work, and is in loop
 ; backlight-acpi xbacklight
 ; pulseaudio alsa xbacklight wlan volume
 tray-position = right
@@ -160,7 +161,7 @@ format-prefix = " "
 
 [module/windows]
 type = custom/script
-interval = 0
+tail = true
 format = "<label>"
 format-prefix = "  "
 format-prefix-foreground = #111111
