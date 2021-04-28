@@ -113,7 +113,8 @@ font-0 = "Ubuntu Nerd Font:pixelsize=9;1"
 font-1 = "RobotoMono Nerd Font:pixelsize=8;1"
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 modules-left = bspwm windows2
-modules-center = net idea pcmanfm music gpodder gnucash pidgin grywalizacja calendar
+modules-center = net pcmanfm music screenshot
+; modules-center = net idea pcmanfm music gpodder gnucash pidgin grywalizacja calendar screenshot
 modules-right = temp-amd fan-amd temp-nvidia fan-nvidia date pulseaudio powermenu
 tray-position = right
 tray-padding = 0
@@ -145,64 +146,61 @@ margin-bottom = 0
 ############                       MODULES                      ############
 ################################################################################
 ################################################################################
-[module/i3]
-type = internal/i3
-format = <label-state> <label-mode>
-index-sort = true
-wrapping-scroll = false
-; fuzzy-match = false
-ws-icon-0 = 1:Net;
-ws-icon-1 = 2:Code;
-ws-icon-2 = 3:File;
-ws-icon-3 = 4:Media;
-ws-icon-4 = 5:Chat;
-ws-icon-5 = 6:Time;
-ws-icon-6 = 7:Note;
-ws-icon-7 = 8:Test;
-ws-icon-8 = 9:Term; 
-ws-icon-9 = 10:Set;
-ws-icon-default = ♟
+[module/bspwm]
+;https://github.com/polybar/polybar/wiki/Module:-bspwm
+type = internal/bspwm
 
-; Only show workspaces on the same output as the bar
 pin-workspaces = true
 
-label-mode-padding = 2
-label-mode-foreground = #000
-label-mode-background = ${colors.primary}
-
-; focused = Active workspace on focused monitor
-; label-focused = %index%
-label-focused = %icon% %name% 
+enable-scroll = true
+label-focused = %name%
 label-focused-background = ${colors.primary}
-label-focused-underline= ${colors.yellow}
-label-focused-padding = 2
+label-focused-underline = ${colors.yellow}
+label-focused-padding = 1
 
-; unfocused = Inactive workspace on any monitor
-; label-unfocused = %index%
-label-unfocused = %{T3}%index% %icon%
-label-unfocused-padding = ${self.label-focused-padding}
+label-occupied = %name%
+label-occupied-padding = 1
 
-; visible = Active workspace on unfocused monitor
-; label-visible = %index%
-label-visible = %{T3}%index% %icon%
-; label-visible-background = ${colors.background-alt}
-label-visible-background = ${colors.secondary}
-label-visible-underline = ${self.label-focused-underline}
-label-visible-padding = ${self.label-focused-padding}
-
-; urgent = Workspace with urgency hint set
-; label-urgent = %{T3}%index% %icon%
-label-urgent = %icon% %name% 
+label-urgent = %name%!
 label-urgent-background = ${colors.alert}
-label-urgent-padding = ${self.label-focused-padding}
-label-urgent-underline = ${self.label-focused-underline}
+label-urgent-padding = 1
 
-label-separator = |
+scroll-up = bspwm-desknext
+scroll-down = bspwm-deskprev
 
-[module/xwindow]
-type = internal/xwindow
-label = %title:0:50:...%
-format-prefix = " "
+label-empty = 
+;label-empty-foreground = ${colors.foreground-alt}
+;label-empty-padding = 1
+
+; Separator in between workspaces
+;label-separator = |
+
+; Available tags:
+;   <label-monitor>
+;   <label-state> - gets replaced with <label-(focused|urgent|occupied|empty)>
+;   <label-mode> - gets replaced with <label-(monocle|tiled|fullscreen|floating|locked|sticky|private)>
+; Default: <label-state>
+format = <label-state> <label-mode>
+format-underline =
+format-background =
+format-padding =
+
+; FLAGS
+; label-focused-background = ${colors.primary}
+label-pseudotiled = /
+label-locked = L
+label-locked-foreground = #bd2c40
+label-sticky = S
+label-sticky-foreground = #fba922
+label-private = P
+label-private-foreground = #bd2c40
+label-marked = V
+label-fullscreen = F
+; label-monocle = *
+;label-tiled = T
+;label-floating = f
+
+
 
 [module/windows1]
 type = custom/script
@@ -469,56 +467,11 @@ format-online-background = ${colors.background}
 ; bar-progress-fill-background = ${colors.background}
 ; bar-progress-indicator-foreground = ${colors.foreground}
 ; format-underline = ${colors.base10}
-################################################################################
-###############################################################################
-############                       shortcuts                      ############
-################################################################################
-################################################################################
-[module/net]
+;
+[module/currency]
 type = custom/script
-exec = echo " "
-click-left = firefox &
-click-right = notify-send vivaldi &
-[module/idea]
-type = custom/script
-exec = echo " " 
-click-left = /opt/idea-IU-*/bin/idea.sh &
-click-right = notify-send idea &
-[module/pcmanfm]
-type = custom/script
-exec = echo " "
-click-left = pcmanfm &
-click-right = notify-send pcmanfm &
-[module/gnucash]
-type = custom/script
-exec = echo " "
-click-left = gnucash &
-click-right = notify-send gnucash &
-[module/music]
-type = custom/script
-exec = echo " "
-click-left = pavucontrol &
-click-right = notify-send pavucontrol &
-[module/gpodder]
-type = custom/script
-exec = echo " "
-click-left = gpodder &
-click-right = notify-send gpodder &
-[module/pidgin]
-type = custom/script
-exec = echo " "
-click-left = skypeforlinux &
-click-right = notify-send skype &
-[module/grywalizacja]
-type = custom/script
-exec = echo " "
-click-left = "~/.sdkman/candidates/java/current/bin/java -jar ~/Documents/Ustawienia/sync/grywalizacja/Grywalizacja.jar &" 
-click-right = notify-send gamification &
-[module/calendar]
-type = custom/script
-exec = echo " "
-click-left = st -e nvim -c "Calendar" &
-click-right = notify-send calendar &
+exec = ~/.config/polybar/currency.sh
+interval = 3600
 
 [module/wlan]
 type = internal/network
@@ -543,6 +496,64 @@ ramp-signal-4 = 😃
 ramp-signal-5 = 😈
 
 ramp-signal-foreground = ${colors.yellow}
+
+
+################################################################################
+###############################################################################
+############                       shortcuts                      ############
+################################################################################
+################################################################################
+[module/net]
+type = custom/script
+exec = echo " "
+click-left = firefox &
+click-right = notify-send firefox &
+[module/pcmanfm]
+type = custom/script
+exec = echo " "
+click-left = pcmanfm &
+click-right = notify-send pcmanfm &
+[module/music]
+type = custom/script
+exec = echo " "
+click-left = pavucontrol &
+click-right = notify-send pavucontrol &
+[module/screenshot]
+type = custom/script
+exec = echo " "
+click-left = screenshot.sh monitor1
+click-right = screenshot.sh monitor2
+
+[module/idea]
+type = custom/script
+exec = echo " " 
+click-left = /opt/idea-IU-*/bin/idea.sh &
+click-right = notify-send idea &
+[module/gnucash]
+type = custom/script
+exec = echo " "
+click-left = gnucash &
+click-right = notify-send gnucash &
+[module/gpodder]
+type = custom/script
+exec = echo " "
+click-left = gpodder &
+click-right = notify-send gpodder &
+[module/pidgin]
+type = custom/script
+exec = echo " "
+click-left = skypeforlinux &
+click-right = notify-send skype &
+[module/grywalizacja]
+type = custom/script
+exec = echo " "
+click-left = "~/.sdkman/candidates/java/current/bin/java -jar ~/Documents/Ustawienia/sync/grywalizacja/Grywalizacja.jar &" 
+click-right = notify-send gamification &
+[module/calendar]
+type = custom/script
+exec = echo " "
+click-left = st -e nvim -c "Calendar" &
+click-right = notify-send calendar &
 
 ################################################################################
 ###############################################################################
@@ -691,93 +702,15 @@ ramp-2 = 
 
 
 
+################################################################################
+###############################################################################
+############                       OLD MODULES                      ############
+################################################################################
 
-[module/bspwm-org]
-type = internal/bspwm
-
-; Only show workspaces defined on the same output as the bar
-; NOTE: The bspwm and XRandR monitor names must match, which they do by default.
-; But if you rename your bspwm monitors with bspc -n this option will no longer
-; behave correctly.
-; Default: true
-pin-workspaces = true
-
-; Output mode flags after focused state label
-; Default: false
-inline-mode = false
-
-; Create click handler used to focus workspace
-; Default: true
-enable-click = true
-
-; Create scroll handlers used to cycle workspaces
-; Default: true
-enable-scroll = true
-
-; Set the scroll cycle direction 
-; Default: true
-reverse-scroll = false
-
-; Use fuzzy (partial) matching on labels when assigning 
-; icons to workspaces
-; Example: code;♚ will apply the icon to all workspaces 
-; containing 'code' in the label
-; Default: false
-fuzzy-match = true
-
-[module/bspwm]
-;https://github.com/polybar/polybar/wiki/Module:-bspwm
-type = internal/bspwm
-
-pin-workspaces = true
-
-enable-scroll = true
-label-focused = %name%
-label-focused-background = ${colors.primary}
-label-focused-underline = ${colors.yellow}
-label-focused-padding = 1
-
-label-occupied = %name%
-label-occupied-padding = 1
-
-label-urgent = %name%!
-label-urgent-background = ${colors.alert}
-label-urgent-padding = 1
-
-scroll-up = bspwm-desknext
-scroll-down = bspwm-deskprev
-
-label-empty = 
-;label-empty-foreground = ${colors.foreground-alt}
-;label-empty-padding = 1
-
-; Separator in between workspaces
-;label-separator = |
-
-; Available tags:
-;   <label-monitor>
-;   <label-state> - gets replaced with <label-(focused|urgent|occupied|empty)>
-;   <label-mode> - gets replaced with <label-(monocle|tiled|fullscreen|floating|locked|sticky|private)>
-; Default: <label-state>
-format = <label-state> <label-mode>
-format-underline =
-format-background =
-format-padding =
-
-; FLAGS
-; label-focused-background = ${colors.primary}
-label-pseudotiled = /
-label-locked = L
-label-locked-foreground = #bd2c40
-label-sticky = S
-label-sticky-foreground = #fba922
-label-private = P
-label-private-foreground = #bd2c40
-label-marked = V
-label-fullscreen = F
-; label-monocle = *
-;label-tiled = T
-;label-floating = f
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:50:...%
+format-prefix = " "
 
 [module/bsplayout]
 type = custom/script
@@ -785,7 +718,56 @@ exec = ~/.config/polybar/bsplayout.sh
 tail = true
 label-foreground = ${colors.alert}
 
-[module/currency]
-type = custom/script
-exec = ~/.config/polybar/currency.sh
-interval = 3600
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+; fuzzy-match = false
+ws-icon-0 = 1:Net;
+ws-icon-1 = 2:Code;
+ws-icon-2 = 3:File;
+ws-icon-3 = 4:Media;
+ws-icon-4 = 5:Chat;
+ws-icon-5 = 6:Time;
+ws-icon-6 = 7:Note;
+ws-icon-7 = 8:Test;
+ws-icon-8 = 9:Term; 
+ws-icon-9 = 10:Set;
+ws-icon-default = ♟
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+; label-focused = %index%
+label-focused = %icon% %name% 
+label-focused-background = ${colors.primary}
+label-focused-underline= ${colors.yellow}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+; label-unfocused = %index%
+label-unfocused = %{T3}%index% %icon%
+label-unfocused-padding = ${self.label-focused-padding}
+
+; visible = Active workspace on unfocused monitor
+; label-visible = %index%
+label-visible = %{T3}%index% %icon%
+; label-visible-background = ${colors.background-alt}
+label-visible-background = ${colors.secondary}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+; label-urgent = %{T3}%index% %icon%
+label-urgent = %icon% %name% 
+label-urgent-background = ${colors.alert}
+label-urgent-padding = ${self.label-focused-padding}
+label-urgent-underline = ${self.label-focused-underline}
+
+label-separator = |###############################################################################
