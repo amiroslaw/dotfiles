@@ -63,11 +63,11 @@ font-0 = "Ubuntu Nerd Font:pixelsize=9;1"
 font-1 = "RobotoMono Nerd Font:pixelsize=8;1"
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 
-modules-left = bspwm bsplayout xwindow
+modules-left = bspwm windows1
 modules-center = mpd currency
 modules-right = cpu temp-amd fan-amd memory temp-nvidia fan-nvidia uptime filesystem wlan date weather pulseaudio powermenu updates
 ; system-usb-udev doesn't work
-; pulseaudio alsa xbacklight battery volume eth 
+; pulseaudio alsa xbacklight battery volume eth xwindow bsplayout 
 tray-position = right
 tray-padding = 0
 ;tray-transparent = true
@@ -112,7 +112,7 @@ module-margin-right = 2
 font-0 = "Ubuntu Nerd Font:pixelsize=9;1"
 font-1 = "RobotoMono Nerd Font:pixelsize=8;1"
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
-modules-left = bspwm bsplayout
+modules-left = bspwm windows2
 modules-center = net idea pcmanfm music gpodder gnucash pidgin grywalizacja calendar
 modules-right = temp-amd fan-amd temp-nvidia fan-nvidia date pulseaudio powermenu
 tray-position = right
@@ -203,6 +203,28 @@ label-separator = |
 type = internal/xwindow
 label = %title:0:50:...%
 format-prefix = " "
+
+[module/windows1]
+type = custom/script
+tail = true
+format = "<label>"
+format-prefix = "  "
+format-prefix-foreground = #111111
+format-prefix-background = #0c9c84
+format-background = #111111
+format-foreground = #d0d060
+exec = ~/.config/polybar/taskbar.sh --monitor DVI-D-0
+
+[module/windows2]
+type = custom/script
+tail = true
+format = "<label>"
+format-prefix = "  "
+format-prefix-foreground = #111111
+format-prefix-background = #0c9c84
+format-background = #111111
+format-foreground = #d0d060
+exec = ~/.config/polybar/taskbar.sh --monitor DVI-I-0
 
 [module/weather]
 type = custom/script
@@ -744,7 +766,6 @@ format-padding =
 
 ; FLAGS
 ; label-focused-background = ${colors.primary}
-label-monocle = *
 label-pseudotiled = /
 label-locked = L
 label-locked-foreground = #bd2c40
@@ -754,6 +775,7 @@ label-private = P
 label-private-foreground = #bd2c40
 label-marked = V
 label-fullscreen = F
+; label-monocle = *
 ;label-tiled = T
 ;label-floating = f
 
