@@ -4,3 +4,7 @@ super + Scroll_Lock
 {_,ctrl,shift,ctrl+shift} + Scroll_Lock
 	screenshot.sh {window,quality,selection,clipboard}
 
+# backlight
+XF86MonBrightness{Up,Down}
+	light -{A,U} 10
+
