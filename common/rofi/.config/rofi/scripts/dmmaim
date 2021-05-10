@@ -48,7 +48,7 @@ unset IFS
 
 target=$(printf '%s\n' "${modes[@]}" | dmenu -i -l 20 -p 'Take screenshot of:') || exit 1
 case "$target" in
-  'Fullscreen')
+  'Multimonitors')
     MAIM_ARGS=""
     MAIM_FILE="${SCROTDIR}/${STAMP}_Asc.png"
   ;;
