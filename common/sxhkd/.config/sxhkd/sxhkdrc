@@ -5,7 +5,7 @@
 # super + {_,shift,ctrl} + z 
 #super + {_,shift + }{1-9,0} dwa zakresy
 #	bspc {desktop -f,node -d} '^{1-9,10}'
- # \~fullscreen toggle
+ # \~fullscreen "~\" toggle
  # TOD
  # skopiuj kod z skryptów
  # rules from i3
@@ -13,6 +13,7 @@
 # make sxhkd reload its configuration files:
 super + Home
 	pkill -USR1 -x sxhkd
+	# bspc wm -r ?
 
 # kill rofi
 super + Escape
@@ -80,15 +81,19 @@ super + {x,v}
 	
 ## Workspaces
 super + {1-9,0}
-	bspc desktop -f "$(bspc query -D | sed -n "{1-9,10} p")"
-# move to workspace and go to it
+	bspc desktop -f ^{1-9,10}
+	# bspc desktop -f "$(bspc query -D | sed -n "{1-9,10} p")"
+# move node to workspace and follow
 super + shift + {1-9,0}
     bspc node -d '^{1-9,10}' --follow
     # id=$(bspc query -N -n); bspc node -d ^{1-9,10}; bspc node -f ${id}
-super + ctrl + {1-9,0}
-	bspc node -d "$(bspc query -D -m | sed -n "{1-9,10} p")"
-	# movetodesktopofthismonitor {1-9,10}
-# move to trze next monitor; prev will do tehe sam in 2 monitors	
+	
+# Select previous / next active desktop
+super + {p,n}
+	bspc desktop -f {prev,next}.occupied
+
+# move to next monitor; prev will do tehe sam in 2 monitors	
+# Overrided it 
 super + shift + {n,p}
     id=$(bspc query -N -n focused); \
     bspc node -m {prev,next}; \
@@ -99,15 +104,19 @@ super + shift + {n,p}
 # Send to last
 # super + shift + equal
     # bspc node -m last --follow
-
-
-# Select previous / next active desktop
-super + {p,n}
-	bspc desktop -f {prev,next}.occupied
-
+	
 # Select previous / next desktop
 super + shift + {p,n}
 	bspc desktop -f {prev,next}.local
+
+# swap with the biggest/smallest node
+# todo change shortcut
+super + ctrl + {_,shift} + Tab
+	bspc node -s {biggest,smallest}.local
+
+# swap with the first window in selected desktop
+super + ctrl + {1-9,0}
+	bspc node -s $(bspc query -N -n .window -d {1-9,0})
 
 # cycle windows in the same desktop- jest tez skrypt rofi
 alt + {_,shift} + Tab
@@ -149,21 +158,10 @@ super + ctrl + {Left,Down,Up,Right}
 # Layout manipulation/desktop level controls
 # ______________    
 
-# Balance tree
-super + b
-	bspc node @/ -B
+# Toggle Balance tree
+super + {_,shift} + b
+	bspc node @/ -{B,E}
 
-# Balance brother node. If you do this on biggest window of the desktop, it usually means balancing all windows with except the biggest.
-super + alt + b
-	bspc node @brother -B
-	
-# Undo balancing (equalize windows)
-super + ctrl + b
-	bspc node @/ -E
-
-# Toggle automatic balancing of windows ? how toggle todo
-alt + b
-	euclid_balancer
 
 # Rotate leaves of tree
 super + {bracketright,bracketleft}
@@ -287,7 +285,6 @@ ctrl + shift + z
 #
 # Media keys
 #
-
 # audio and mpd
 XF86Audio{Raise,Lower}Volume
 	pactl set-sink-volume 0 {+,-}10%
@@ -423,3 +420,15 @@ mod1 + @button1
 #    windowpromoter
 
 # bindsym $mod+i exec i3-msg 'workspace $ws4;exec --no-startup-id libreoffice ~/interview\ questions.odt; workspace $ws8; exec zathura ~/Arkadiusz_Mirosław_CV.pdf; workspace $ws4'
+#
+# Balance brother node. If you do this on biggest window of the desktop, it usually means balancing all windows with except the biggest.
+# super + alt + b
+	# bspc node @brother -B
+# Toggle automatic balancing of windows ? how toggle todo
+# alt + b
+	# euclid_balancer
+
+# move node to workspace don't follow
+# super + ctrl + {1-9,0}
+	# bspc node -d "$(bspc query -D -m | sed -n "{1-9,10} p")"
+	# movetodesktopofthismonitor {1-9,10}
