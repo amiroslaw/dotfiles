@@ -238,11 +238,11 @@ super + o ; {o,i,p,b,t}
 # script in background
 super + s ; {s,m,v,a,y,n}
 	{dunstify options: "m-magnet\nv-video\na-audio yt\ny-yt video\nn-add note", \
-    magnet.sh $(xclip -o -sel clip), \
+    magnet.sh $(xclip -o -sel clip) && dunstify "download torrent", \
     mpv $(xclip -o -sel clip), \
-    cd ~/Musics/PODCASTS && youtube-dl -f bestaudio -x --audio-format mp3 $(xclip -o -sel clip), \
-    cd ~/Videos/YouTube && youtube-dl $(xclip -o -sel clip), \
-    xclip -o -selection clip >> $NOTE/clip.md 
+    cd ~/Musics/PODCASTS && youtube-dl -f bestaudio -x --audio-format mp3 $(xclip -o -sel clip) && dunstify "download audio", \
+    cd ~/Videos/YouTube && youtube-dl $(xclip -o -sel clip) && dunstify "download video", \
+    xclip -o -selection clip >> $NOTE/clip.adoc  && echo >> $NOTE/clip.adoc  && dunstify "copied to clip.adoc"
 }
 
 super + shift + s 

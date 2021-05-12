@@ -230,7 +230,7 @@ exec = ~/.config/polybar/weather.sh
 label =  %output% °C
 format-prefix = " "
 format-underline = #C1B93E
-click-left = st -e w3m wttr.in/warsaw &
+click-left = st -e w3m wttr.in/warsaw
 interval = 3600
 
 [module/updates]
