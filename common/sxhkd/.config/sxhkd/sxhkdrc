@@ -6,7 +6,7 @@
 #super + {_,shift + }{1-9,0} dwa zakresy
 #	bspc {desktop -f,node -d} '^{1-9,10}'
  # \~fullscreen "~\" toggle
- # TOD
+ # TODO
  # skopiuj kod z skryptów
  # rules from i3
  
@@ -48,8 +48,10 @@ super + shift + ctrl + space
 # Toggle monocle/fullscreen mode
 super + {_,shift} + f 
 	{bspc desktop -l next, bspc node -t \~fullscreen}
+#
+#### FLAGS
+# ______________    
 
-#### flags
 # sticky works only on the one monitor
 super + a ; {l,m,s,p}
 	bspc node -g {locked,marked,sticky,private}
@@ -61,24 +63,10 @@ super + a ; b
 super + {_,shift,ctrl} + z
      whid {last, hide, dmenu}
 
-
-#
-# Aplications
-# ______________    
-#
-
-# left/middle click emulation
-super + {x,v} 
-	xdotool click --clearmodifiers {1,2}
-
 #
 # Window moving and splitting
 # ______________    
 
-# Switch to the other monitor.
-#mod3 + o
-	#bspc monitor -f next
-	
 ## Workspaces
 super + {1-9,0}
 	bspc desktop -f ^{1-9,10}
@@ -92,23 +80,12 @@ super + shift + {1-9,0}
 super + {p,n}
 	bspc desktop -f {prev,next}.occupied
 
-# move to next monitor; prev will do tehe sam in 2 monitors	
-# Overrided it 
+# move node to next workspace and follow
 super + shift + {n,p}
     id=$(bspc query -N -n focused); \
     bspc node -m {prev,next}; \
     bspc node -f ${id}
-
-# move to next and go to it
-# bspc node -d {prev,next}.local -follow
-# Send to last
-# super + shift + equal
-    # bspc node -m last --follow
 	
-# Select previous / next desktop
-super + shift + {p,n}
-	bspc desktop -f {prev,next}.local
-
 # swap with the biggest/smallest node
 # todo change shortcut
 super + ctrl + {_,shift} + Tab
@@ -133,19 +110,15 @@ super + {h,j,k,l}
 super + {Left,Down,Up,Right}
     focusmover {west,south,north,east}
         	
-# Move tiled windows. Moving a tiled window to 
-# preselected one moves into preselection instead. 
-# Moving out of the screen should move the window to next monitor if possible
-
-# breaks in floating windows
-super + shift + {Left,Down,Up,Right}
-	bspc node -s {west,south,north,east}
-	
 # moves floating windows instead of changing 
 super + shift + {h,j,k,l}
 	euclid_mover {west,south,north,east}
 	# windowgrabber {west,south,north,east}
 	
+# breaks in floating windows
+super + shift + {Left,Down,Up,Right}
+	bspc node -s {west,south,north,east}
+
 # resize	
 super + ctrl + {h,j,k,l}
 	bspwm_resize.sh {west,south,north,east}
@@ -161,7 +134,6 @@ super + ctrl + {Left,Down,Up,Right}
 # Toggle Balance tree
 super + {_,shift} + b
 	bspc node @/ -{B,E}
-
 
 # Rotate leaves of tree
 super + {bracketright,bracketleft}
@@ -179,6 +151,8 @@ super + button{4,5}
 	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+,-} 2 ))
 
 ###### RECEPTACLE  and PRESELECTION
+# ______________    
+#
 # in preselection new window will be display in preselected area 
 
 # Receptacle ok tylko dać jakieś fajne skróty
@@ -192,21 +166,30 @@ super + semicolon ; {p,semicolon}
 # move window to Receptacle
 super + shift + semicolon
 	bspc node $(bspc query -N -n focused) -n $(bspc query -N -n .leaf.\!window)
+
 # Remove receptacles
 super + shift + BackSpace
 	for i in $(bspc query -N -n .leaf.!window.local); do bspc node $i -k; done
 
-F12
-	tdrop -m --wm bspwm -w -4 -y "$PANEL_HEIGHT" kitty --name dropdown --title dropdown
 
-
+#
 # APPLICATIONS
+# ______________    
+#
 
 super + Return
 	$TERM
 
 super + shift + Return
 	$TERM_LT
+
+# dropdown
+F12
+	tdrop -m --wm bspwm -w -4 -y "$PANEL_HEIGHT" kitty --name dropdown --title dropdown
+
+# left/middle click emulation
+super + {x,v} 
+	xdotool click --clearmodifiers {1,2}
 
 super + {_,shift} + i
 	{gksu net-restart.sh, \
@@ -257,8 +240,10 @@ super + c ; {c,g,p,d,r,j,n,s}
 	$ROFI/clipster/previous-copy, \
 	$ROFI/clipster/previous-copy primary}
 
-
+#
 # ROFI 
+# ______________    
+
 # rofi top and calc are in aur repo
 super + d
 	rofi -modi window,calc,drun,top -show window -show-icons -sidebar-mode -terminal st
@@ -283,8 +268,8 @@ ctrl + shift + z
 	$ROFI/clipster/roficlip
 
 #
-# Media keys
-#
+# MEDIA KEYS
+# ______________    
 # audio and mpd
 XF86Audio{Raise,Lower}Volume
 	pactl set-sink-volume 0 {+,-}10%
@@ -326,8 +311,9 @@ super + shift + {comma,period}
 # super + {_,shift +} bracketleft
 	# mpc seek -{10,120}
 # Increase volume, chyba cudzysłowy nie działają 
+
 #
-# mouse bindings
+# MOUSE BINDINGS
 # __________________
 
 ~button1
@@ -432,3 +418,17 @@ mod1 + @button1
 # super + ctrl + {1-9,0}
 	# bspc node -d "$(bspc query -D -m | sed -n "{1-9,10} p")"
 	# movetodesktopofthismonitor {1-9,10}
+
+# move node to next and go to it
+# bspc node -d {prev,next}.local -follow
+# Send to last
+# super + shift + equal
+    # bspc node -m last --follow
+	
+# move to next monitor; prev 
+# super + shift + {p,n}
+	# bspc desktop -f {prev,next}.local
+	
+# Switch to the other monitor.
+#mod3 + o
+	# bspc monitor -f next

@@ -232,6 +232,12 @@ nmap <s-tab> gT
 :nnoremap <A-k> <C-w>k
 :nnoremap <A-l> <C-w>l
 
+" go to the line 
+:nnoremap <A-S-j> gj
+:nnoremap <A-S-k> gk
+:inoremap <A-S-j> <Esc>gj
+:inoremap <A-S-k> <Esc>gk
+
 " Terminal
 " Make escape work in the Neovim terminal.
 tnoremap <Esc> <C-\><C-n>
