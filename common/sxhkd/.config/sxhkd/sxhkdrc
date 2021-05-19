@@ -199,6 +199,8 @@ super + F{1,2,3,4,7,10,11,12}
 	{$BROWSER, /opt/idea-IU-*/bin/idea.sh, $TERM vifm, pcmanfm, sh -c 'cd $NOTE; $TERM_LT -t note nvim', pamac-manager, sh -c $(ls ~/.bin | rofi -dmenu), rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu }
 # super + F6 surf https://clockify.me/tracker,
 
+awk 'NR==1,/Week/' $NOTE/ZADANIA/week.todo | head -n -1 | zenity --text-info
+
 super + {_,shift,ctrl} + Delete 
 	{rmmpv-playing.sh, rmmpd-playing.sh, xkill}
 
