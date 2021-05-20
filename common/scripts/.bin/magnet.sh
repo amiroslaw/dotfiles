@@ -9,7 +9,7 @@ if [ -z "$1" ]
 fi
 cd $TOR_WATCH # set your watch directory here
 [[ "$link" =~ xt=urn:btih:([^&/]+) ]] || exit;
-echo "d10:magnet-uri${#1}:${1}e" > "meta-${BASH_REMATCH[1]}.torrent"
+echo "d10:magnet-uri${#link}:${link}e" > "meta-${BASH_REMATCH[1]}.torrent"
 
 notify-send "⬇️  Start downloading File 📁"
 #używanie

@@ -31,7 +31,7 @@ fzf-file-widget() {
 zle     -N   fzf-file-widget
 bindkey '^F' fzf-file-widget
 
-# ALT-E - cd into the selected directory
+# ALT-D - cd into the selected directory
 fzf-cd-widget() {
   local cmd="${FZF_ALT_C_COMMAND:-"command find -L . \\( -path '*/\\.*' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune \
     -o -type d -print 2> /dev/null | sed 1d | cut -b3-"}"
@@ -43,7 +43,7 @@ fzf-cd-widget() {
   return $ret
 }
 zle     -N    fzf-cd-widget
-bindkey '^E' fzf-cd-widget
+bindkey '^D' fzf-cd-widget
 
 # CTRL-H - Paste the selected command from history into the command line
 fzf-history-widget() {

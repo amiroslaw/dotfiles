@@ -100,8 +100,8 @@ bindkey '^ ' autosuggest-clear
 #bindkey '^[[3~' delete-char
 # FZF
 # ZSH keybinding example; ~/.zshrc
+# export FZF_DEFAULT_COMMAND='fd --type f'
 source ~/.config/fzf/fzf.zsh
-
 # CTRL-H - Paste the selected command from history into the command line
 fzf-history-widget() {
   local selected num

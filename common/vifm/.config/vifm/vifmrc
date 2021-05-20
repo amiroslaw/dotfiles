@@ -360,12 +360,12 @@ fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
 
 	 " \ identify %f
 "
-" w3m
-" fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
-"          \ imgt %px %py %pw %ph %c
-"          \ %pc
-"          \ imgc %px %py %pw %ph
-"
+ " w3m
+ " fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
+ "          \ imgt %px %py %pw %ph %c
+ "          \ %pc
+ "          \ imgc %px %py %pw %ph
+
 "ueberzung
 " fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.xpm
 " 	\ vifmimg draw %px %py %pw %ph %c

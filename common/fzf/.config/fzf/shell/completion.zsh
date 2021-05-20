@@ -192,3 +192,4 @@ fzf-completion() {
 
 zle     -N   fzf-completion
 bindkey '^I' fzf-completion
+

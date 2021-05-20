@@ -78,8 +78,32 @@ alias monitoron='xrandr --output DVI-I-0 --auto --right-of DVI-D-0 && polybar ex
 alias monitoroff='xrandr --output DVI-I-0 --off'
 
 # FZF
-alias fzfp='rg --files | fzf --preview="bat {} --color=always"'
-
+alias fp='rg --files | fzf --preview="bat {} --color=always"'
+alias fn='nvim -o $(fd --type f | fzf)'
+alias fnh='nvim -o $(fd --hidden --type f | fzf)'
+alias fc='cd $(fd --type d | fzf)'
+alias fch='cd $(fd --hidden --type d | fzf)'
+# f mv # To move files. You can write the destination after selecting the files.
+fz() {
+    sels=( "${(@f)$(fd "${fd_default[@]}" "${@:2}"| fzf)}" )
+    test -n "$sels" && print -z -- "$1 ${sels[@]:q:q}"
+}
+# Modified version where you can press
+#   - CTRL-O to open with `open` command, edit to swallow
+#   - CTRL-E or Enter key to open with the $EDITOR
+fo() {
+  IFS=$'\n' out=("$(fzf-tmux --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)")
+  key=$(head -1 <<< "$out")
+  file=$(head -2 <<< "$out" | tail -1)
+  if [ -n "$file" ]; then
+    [ "$key" = ctrl-o ] && devour xdg-open "$file" || ${EDITOR:-vim} "$file"
+  fi
+}
+# grep
+ff() {
+  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+  rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+}
 # abduco
 alias tor='abduco -A tor rtorrent'
 
@@ -225,7 +249,7 @@ alias Mv='mv -iv'
 
 # FASD
 # {{{
-# fasd search from opened files, paths
+# fasd search from last opened files, paths
 # im and select a file will open in sxiv
 alias n='f -e nvim'  
 alias i='f -e sxiv'  
@@ -278,7 +302,6 @@ alias -s pptx=libreoffice
 
 #ZSH global
 # {{{
-# add fzf
 # append previous command
 alias -g R='!-1'
 # append all previous arguments
@@ -296,8 +319,6 @@ alias -g CL='| yank -l'
 alias -g P='$(xclip -o -selection clipboard)'
 alias -g PP='$(xclip -o -selection primary)'
 # czasami dać enter;  przy F można dodawać * np ls * F; D to wybór pliku/katalogu z użyciem fzf np. cat D
-alias -g F='| fzf'
-alias -g D='$(ls | fzf)'
 # http://www.zzapper.co.uk/zshtips.html
 alias -g ND='*(/om[1])' 	      # newest directory
 alias -g NF='*(.om[1])' 	      # newest file
@@ -307,6 +328,10 @@ alias -g TB="| nc termbin.com 9999" # share output of the terminal
 alias -g COL='| column -t' # format into tabelar 
 alias -g X='| xargs'
 alias -g X0='| xargs -0'  
+# FZF
+alias -g D='| fzf'
+alias -g F='$(fzf) '
+alias -g H='$(fd --hidden | fzf) '
 #}}}
 #FUNCTIONS
 #{{{
@@ -318,7 +343,7 @@ alias mkcd='take'
 function zadAdd() { 
 echo "add task"
 read task
-echo "  [ ]" $task >> ~/Documents/notebook_md/ZADANIA/today.todo
+echo "- [ ]" $task >> $NOTE/ZADANIA/today.todo
 }
 wypakuj () {
     if [ -f $1 ] ; then
