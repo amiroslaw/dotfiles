@@ -1,5 +1,5 @@
 #!/bin/bash
 
-echo "add task"
-read task
-echo "  [ ]" $task >> ~/Documents/notebook_md/ZADANIA/today.todo
+task=$(zenity --entry --text="Add task")
+echo "- [ ]" $task >> $NOTE/ZADANIA/week.todo
+dustify "Task added"
