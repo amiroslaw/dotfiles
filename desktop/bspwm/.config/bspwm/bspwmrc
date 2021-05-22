@@ -57,7 +57,6 @@ bspc rule -a floaterm state=floating center=true
 bspc rule -a spotify state=pseudo_tiled
 bspc rule -a file-roller state=floating center=true
 bspc rule -a astime sticky=on
-bspc rule -a yad state=floating
 bspc rule -a wbar layer=above
 bspc rule -a google-chrome-unstable private=on
 bspc rule -a google-chrome-stable private=on
@@ -75,6 +74,9 @@ bspc rule -a megasync state=floating
 bspc rule -a '*:dropdown' state=fullscreen
 bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
 bspc rule -a Zathura state=tiled
+bspc rule -a yad state=floating
+bspc rule -a zenity state=floating
+bspc rule -a reminder state=floating
 #bspc rule -a nautilus state=pseudo_tiled
 #bspc rule -a skype state=pseudo_tiled
 #bspc rule -a urxvt state=floating center=true
