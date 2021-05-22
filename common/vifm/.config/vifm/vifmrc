@@ -193,7 +193,10 @@ nmap <F2> cW
 nmap <delete> :!trash-put %f<cr>
 nmap DD :!rm -rf %f<cr>
 "open in file manager
-nmap <F4> :f pcmanfm %f & <cr>
+" nmap <F3> :! kitty -d %d %i & <cr>
+nmap <F3> :! alacritty --working-directory %d %i & <cr>
+"open in file manager
+nmap <F4> :! pcmanfm %d %i & <cr>
 " copy files to the opposite pane
 nmap <F5> :!cp -r %f %D<cr>
 " move files to the opposite pane

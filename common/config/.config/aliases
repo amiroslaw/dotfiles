@@ -81,8 +81,8 @@ alias monitoroff='xrandr --output DVI-I-0 --off'
 alias fp='rg --files | fzf --preview="bat {} --color=always"'
 alias fn='nvim -o $(fd --type f | fzf)'
 alias fnh='nvim -o $(fd --hidden --type f | fzf)'
-alias fc='cd $(fd --type d | fzf)'
-alias fch='cd $(fd --hidden --type d | fzf)'
+alias fcd='cd $(fd --type d | fzf)'
+alias fcdh='cd $(fd --hidden --type d | fzf)'
 # f mv # To move files. You can write the destination after selecting the files.
 fz() {
     sels=( "${(@f)$(fd "${fd_default[@]}" "${@:2}"| fzf)}" )

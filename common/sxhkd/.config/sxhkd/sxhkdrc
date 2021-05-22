@@ -198,7 +198,7 @@ super + {_,shift} + i
 super + F{1,2,3,4,7,8,9,10,11,12}
 	{ $BROWSER, \
 	/opt/idea-IU-*/bin/idea.sh, \
-	$TERM vifm, \
+	kitty vifm, \
 	pcmanfm, \
 	sh -c 'cd $NOTE; $TERM_LT -t note nvim', \
 	todo.sh add, \
@@ -209,6 +209,9 @@ super + F{1,2,3,4,7,8,9,10,11,12}
 	}
 # super + F6 surf https://clockify.me/tracker,
 
+# show/add into todo list; add event to the google calendar
+super + {_,shift,ctrl} + y
+	{ todo.sh show, todo.sh add, gcal-add.sh }
 
 super + {_,shift,ctrl} + Delete 
 	{rmmpv-playing.sh, rmmpd-playing.sh, xkill}
@@ -228,13 +231,14 @@ super + o ; {o,i,p,b,t}
 		nmtui,ncmpcpp,bmenu,tg}
 
 # script in background, add note should be on the end
-super + s ; {s,k,m,v,a,y,n}
-	{dunstify options: "m-magnet\nv-video\na-audio yt\ny-yt video\nn-add note\nk-kindle", \
+super + s ; {s,k,m,v,a,y,c,n}
+	{dunstify options: "m-magnet\nv-video\na-audio yt\ny-yt video\nn-add note\nc-calendar\nk-kindle", \
     kindle-send.sh && dunstify "sent to kindle", \
     magnet.sh && dunstify "download torrent", \
     mpv $(xclip -o -sel clip), \
     cd ~/Musics/PODCASTS && youtube-dl -f bestaudio -x --audio-format mp3 $(xclip -o -sel clip) && dunstify "download audio", \
     cd ~/Videos/YouTube && youtube-dl $(xclip -o -sel clip) && dunstify "download video", \
+	gcal-show.sh, \
     xclip -o -selection clip >> $NOTE/clip.adoc  && echo >> $NOTE/clip.adoc  && dunstify "copied to clip.adoc"
 }
 

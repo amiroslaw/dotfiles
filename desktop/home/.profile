@@ -4,7 +4,9 @@
 umask 022
 
 # Set our default path
-PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin:$HOME/.local/share/gem/ruby/2.7.0/bin"
+
+export GRAALVM_HOME="$HOME/.sdkman/candidates/java/21.1.0.r16-grl"
+PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin:$HOME/.local/share/gem/ruby/2.7.0/bin:$GRAALVM_HOME/bin"
 export PATH
 
 # Load profiles from /etc/profile.d
@@ -46,7 +48,7 @@ export USER_HOME="/home/miro"
 export EDITOR="nvim"
 export READER="zathura"
 export VISUAL="nvim"
-export TERM="kitty"
+export TERM="alacritty"
 export TERM_LT="st"
 export BROWSER="firefox"
 export VIDEO="smplayer"
