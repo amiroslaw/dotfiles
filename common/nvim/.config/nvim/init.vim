@@ -58,13 +58,15 @@ Plug 'majutsushi/tagbar'
 " Plug 'cazador481/fakeclip.neovim'
 Plug 'shougo/denite.nvim' "ctrlpish 
 Plug 'brooth/far.vim' "find and replace in few files
-Plug 'iCyMind/NeoSolarized'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "Plug 'BurningEther/nvimux'
 " TextYankPost insted plugin from 5 version of nvim
 Plug 'machakann/vim-highlightedyank'
+" Plug 'arcticicestudio/nord-vim', { 'branch': 'develop' }
+Plug 'https://github.com/rakr/vim-one'
+" Plug 'iCyMind/NeoSolarized'
 "completion 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -78,6 +80,32 @@ call plug#end()
 
 """"""""""""""""""""""""""
 """""" SETTINGS
+
+"""" colour settings
+" https://www.dunebook.com/best-vim-themes/
+" https://vimcolorschemes.com/top
+" ayu, nord, vim-one, one-half, drakula NeoSolarized, pepertheme
+" let g:neosolarized_italic = 1
+if (empty($TMUX))
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+endif
+" vime-one - support dark and light theme
+let g:one_allow_italics = 1 " I love italic for comments
+set background=light   
+colorscheme one
+if &term == "screen"
+  set t_Co=256
+endif
+syntax enable
+set laststatus=2
+" tmux  for version before 2.2
+" set t_8f=[38;2;%lu;%lu;%lum
+" set t_8b=[48;2;%lu;%lu;%lum
+"" Status bar
+" CSApprox plugin
+let g:CSApprox_loaded = 1
 filetype plugin indent on
 set encoding=utf-8
 set fileencoding=utf-8
@@ -134,24 +162,6 @@ set cursorcolumn
 " maybe 
 "set nobackup
 "set mouse=a
-"""" colour settings
-set termguicolors
-if &term == "screen"
-  set t_Co=256
-endif
-syntax enable
-"colorscheme orbital
-"NeoSolarized
-colorscheme NeoSolarized
-set background=dark
-let g:neosolarized_italic = 1
-set laststatus=2
-" tmux  for version before 2.2
-" set t_8f=[38;2;%lu;%lu;%lum
-" set t_8b=[48;2;%lu;%lu;%lum
-"" Status bar
-" CSApprox plugin
-let g:CSApprox_loaded = 1
 """""""""""""""""""
 """""" SHORTCUTS
 "" change leader key from \ to ;
@@ -496,7 +506,7 @@ set guifont=Monospace:h10
 " set guifont=Ubuntu\ Nerd\ Font\  10
 """""""""""""""""""
 " vim-airline
-let g:airline_theme = 'powerlineish'
+let g:airline_theme = 'one'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
