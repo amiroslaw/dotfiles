@@ -27,7 +27,7 @@ Plug 'easymotion/vim-easymotion'
 " Plug 'justinmk/vim-sneak'
 Plug 'mhinz/vim-startify' "start screen
 Plug 'kabbamine/lazyList.vim' 
-Plug 'aserebryakov/vim-todo-lists'
+Plug 'aserebryakov/vim-todo-lists', {'tag': '0.7.1'}
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'itchyny/calendar.vim'
 "tests
@@ -499,11 +499,10 @@ let g:eighties_bufname_additional_patterns = ['fugitiveblame'] " Defaults to [],
 """""""""""""""""""
 " VIM DEVICONS and gui, terminal configuration will cover it
 " fc-list :lnag=pl list of all fonts 
-set guifont=Monospace:h10
+" set guifont=Monospace:h10
 " set guifont=RoboMono\ Nerd\ Font\ 10
-" set guifont=DroidSansMono\ Nerd\ Font\ 10
-" set guifont=DroidSansMono\ Nerd\ Font\ Book\ 11
-" set guifont=Ubuntu\ Nerd\ Font\  10
+" set guifont=DroidSansMono\ Nerd\ Font\ Book:h11
+" set guifont=Ubuntu\ Nerd\ Font:h10
 """""""""""""""""""
 " vim-airline
 let g:airline_theme = 'one'

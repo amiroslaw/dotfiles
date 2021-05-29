@@ -185,7 +185,7 @@ super + shift + Return
 
 # dropdown
 F12
-	tdrop -m --wm bspwm -w -4 -y "$PANEL_HEIGHT" kitty --name dropdown --title dropdown
+	tdrop -m --wm bspwm -w -4 -y "$PANEL_HEIGHT" $TERM --title dropdown
 
 # left/middle click emulation
 super + {x,v} 
