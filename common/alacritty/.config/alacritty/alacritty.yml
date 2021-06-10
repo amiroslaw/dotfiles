@@ -111,7 +111,7 @@ cursor:
   vi_mode_style: Block
   unfocused_hollow: true
 mouse:
-  url:
+  hints:
     launcher:
       program: xdg-open
       args: []
@@ -156,18 +156,24 @@ hints:
       key: O
       mods: Control|Shift
 
-      # form 0,8 version
-    # 4. copy IP addresses
+    # 4. copy IP addresses doesn't work
   - regex: '([0-9a-f]{12,128})|([[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3})'
-  action: Copy
-  post_processing: false
+    action: Copy
+    post_processing: false
+    mouse:
+        enabled: false
+        mods: None
   binding:
-        key: I
+        key: U
         mods: Control|Shift
-  # - regex: "aaa"
-  #   command:
+
+  # - regex: '([0-9a-f]{12,128})|([[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3})'
+  #   command: 
   #       program: sh
   #       args: ["-c", "xdg-open https://github.com/koalaman/shellcheck/wiki/$0"]
+  # binding:
+  #       key: I
+  #       mods: Control|Shift
 
 import:
   - ~/.config/alacritty/themes/dracula.yml

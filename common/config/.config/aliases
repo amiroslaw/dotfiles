@@ -38,8 +38,10 @@ alias mag='$path_script/magnet.sh $(xclip -o -selection clipboard)'
 # config files
 # {{{
 alias batalias='bat ~/.config/aliases'
+alias batalias='inv ~/.config/investing/portfolio.json'
 alias cfqpiv='nvim ~/.config/pqivrc'
 alias cfaliases='nvim ~/.config/aliases'
+alias cfalacritty='nvim ~/.config/alacritty/alacritty.yml'
 alias cfvi='nvim ~/.config/nvim/init.vim'
 alias cfvifm='nvim ~/.config/vifm/vifmrc'
 alias cftermite='nvim ~/.config/termite/config'

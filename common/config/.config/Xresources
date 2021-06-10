@@ -3,8 +3,10 @@
 !reload 
 !  xrdb Xresources
 !*.font:                       9x15,xft:TerminessTTFNerdFontMono
-!st.font:	Liberation Mono:pixelsize=12:antialias=true:autohint=true;
-st.font:	CaskaydiaCove Nerd Font:pixelsize=13:antialias=true:autohint=true;
+st.font:	Noto Sans Mono:pixelsize=14:antialias=true:autohint=true;
+!st.font:	UbuntuMono Nerd Font:pixelsize=15:antialias=true:autohint=true;
+!st.font:	Liberation Mono:bold:pixelsize=12:antialias=true:autohint=true;
+!st.font:	CaskaydiaCove Nerd Font:pixelsize=13:antialias=true:autohint=true;
 /* st*renderFont: true */
 /* st*faceName: CaskaydiaCove Nerd Font */
 /* st*faceSize: 22 */
