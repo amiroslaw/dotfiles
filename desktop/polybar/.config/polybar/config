@@ -64,7 +64,7 @@ font-1 = "RobotoMono Nerd Font:pixelsize=8;1"
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 
 modules-left = bspwm windows1
-modules-center = mpd currency
+modules-center = mpd investing
 modules-right = cpu temp-amd fan-amd memory temp-nvidia fan-nvidia uptime filesystem wlan date weather pulseaudio powermenu updates
 ; system-usb-udev doesn't work
 ; pulseaudio alsa xbacklight battery volume eth xwindow bsplayout 
@@ -468,6 +468,12 @@ format-online-background = ${colors.background}
 ; bar-progress-indicator-foreground = ${colors.foreground}
 ; format-underline = ${colors.base10}
 ;
+[module/investing]
+type = custom/script
+exec = investing-cli --no-errors -o cdr,cie,btc
+click-left = investing-cli -n 
+interval = 900
+
 [module/currency]
 type = custom/script
 exec = ~/.config/polybar/currency.sh
