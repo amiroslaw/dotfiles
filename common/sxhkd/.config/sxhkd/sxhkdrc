@@ -231,14 +231,15 @@ super + o ; {o,i,p,b,t}
 		nmtui,ncmpcpp,bmenu,tg}
 
 # script in background, add note should be on the end
-super + s ; {s,k,m,v,a,y,c,n}
-	{dunstify options: "m-magnet\nv-video\na-audio yt\ny-yt video\nn-add note\nc-calendar\nk-kindle", \
+super + s ; {s,k,m,v,a,y,c,i,n}
+	{dunstify options: "m-magnet\nv-video\na-audio yt\ny-yt video\nn-add note\nc-calendar\nk-kindle\ni-investing", \
     kindle-send.sh && dunstify "sent to kindle", \
     magnet.sh && dunstify "download torrent", \
     mpv $(xclip -o -sel clip), \
     cd ~/Musics/PODCASTS && youtube-dl -f bestaudio -x --audio-format mp3 $(xclip -o -sel clip) && dunstify "download audio", \
     cd ~/Videos/YouTube && youtube-dl $(xclip -o -sel clip) && dunstify "download video", \
 	gcal-show.sh, \
+	investing-cli -n, \
     xclip -o -selection clip >> $NOTE/clip.adoc  && echo >> $NOTE/clip.adoc  && dunstify "copied to clip.adoc"
 }
 
