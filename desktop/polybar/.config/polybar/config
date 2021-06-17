@@ -472,6 +472,7 @@ format-online-background = ${colors.background}
 type = custom/script
 exec = investing-cli --no-errors -o cdr,cie,btc
 click-left = investing-cli -n 
+click-right = investing-cli --no-errors -vpn -e PLN
 interval = 900
 
 [module/currency]
