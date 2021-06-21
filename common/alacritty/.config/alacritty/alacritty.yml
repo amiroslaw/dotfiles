@@ -54,13 +54,13 @@ scrolling:
   history: 10000
   multiplier: 10 
 # Font configuration
-font:
+fon:
   normal:
     family: Source Code Pro
-    style: Regular
+    style: Regulr
   bold:
-    family: Source Code Pro
-    style: Bolod
+    family: Source Code Pro Bold
+    style: Bold
   italic:
     family: Source Code Pro
     style: Italic

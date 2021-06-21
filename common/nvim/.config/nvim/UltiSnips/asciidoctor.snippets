@@ -143,12 +143,12 @@ endsnippet
 #                            Links and Images
 # -------------------------------------------------------------------------
 
-snippet aaa "Link" !w
+snippet link "Link" !w
 link:${1:`xclip -o -sel clip`}[${2:${VISUAL}}] $0
 endsnippet
 
 # select and copy link
-snippet asel "Link from Selection" !w
+snippet lsel "Link from Selection" !w
 link:${1:`xclip -o -sel clip`}[${2:`xclip -o -sel prim`}] $0
 endsnippet
 
@@ -203,7 +203,7 @@ snippet bold "Bold Text (Unconstrained)" !i
 **${1:${VISUAL}}** $0
 endsnippet
 
-snippet __ "Italic Text (Unconstrained)" !i
+snippet italic "Italic Text (Unconstrained)" !i
 __${1:${VISUAL}}__ $0
 endsnippet
 

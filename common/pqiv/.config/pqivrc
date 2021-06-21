@@ -25,10 +25,10 @@ v { flip_vertically(); }
 z { rotate_left(); }
 x { rotate_right(); }
 N { toggle_negate_mode(0) }
-l { shift_x(10); } 
-k { shift_y(-10); } 
-h { shift_x(-10); } 
-j { shift_y(10); } 
+k { shift_x(10); } 
+l { shift_y(-10); } 
+j { shift_x(-10); } 
+h { shift_y(10); } 
 
 @MONTAGE {
 	l { montage_mode_shift_x(1); } 

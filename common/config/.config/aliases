@@ -33,7 +33,7 @@ java8=~/.sdkman/candidates/java/8.0.171-oracle/bin/java
 alias dlfile='~/Documents/Ustawienia/skrypty/dlfile'
 alias remind='$path_script/remind.sh'
 alias mag='$path_script/magnet.sh $(xclip -o -selection clipboard)'
-alias crypo='investing-cli -t CRYPTO -p -e PLN'
+alias crypto='investing-cli -t CRYPTO -p -e PLN'
 #}}}
 
 # config files
