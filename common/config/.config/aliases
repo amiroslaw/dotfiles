@@ -135,6 +135,7 @@ alias search='pacman -Ss'
 #{{{
 alias bookworm='com.github.babluboy.bookworm'
 alias vi='nvim'
+alias neofetch='fastfetch'
 alias vim='nvim'
 alias ggit='grv'
 alias viswap_rm= 'rm ~/.local/share/nvim/swap/*'
