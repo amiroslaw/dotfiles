@@ -334,8 +334,8 @@ alias -g COL='| column -t' # format into tabelar
 alias -g X='| xargs'
 alias -g X0='| xargs -0'  
 # FZF
-alias -g D='| fzf'
-alias -g F='$(fzf) '
+alias -g D='$(fd --file=d | fzf)'
+alias -g F='| fzf '
 alias -g H='$(fd --hidden | fzf) '
 #}}}
 #FUNCTIONS

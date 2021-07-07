@@ -100,6 +100,8 @@ if &term == "screen"
 endif
 syntax enable
 set laststatus=2
+" podpowiedzi
+set wildmode=longest,list,full
 " tmux  for version before 2.2
 " set t_8f=[38;2;%lu;%lu;%lum
 " set t_8b=[48;2;%lu;%lu;%lum
@@ -107,9 +109,7 @@ set laststatus=2
 " CSApprox plugin
 let g:CSApprox_loaded = 1
 filetype plugin indent on
-set encoding=utf-8
-set fileencoding=utf-8
-set fileencodings=utf-8,latin1
+set encoding=utf-8 fileencoding=utf-8 fileencodings=utf-8,latin1
 set linebreak
 " foldmethod for config files but it folds when you open the file
 " set foldmethod=marker
@@ -136,12 +136,8 @@ autocmd BufNewFile,BufRead \*.{md,mdwn,mkd,mkdn,mark,markdown\*} set filetype=ma
 " augroup END
     " autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank("Substitute", 1000)
 " IncSearch
-set ignorecase
-set smartcase
-set hlsearch
-set incsearch
-set number
-set relativenumber
+set ignorecase smartcase hlsearch incsearch
+set number relativenumber
 " substitution 
 set inccommand=split
 set clipboard^=unnamedplus
@@ -150,14 +146,11 @@ set clipboard^=unnamedplus
 " I don't work in tmux
 " set clipboard+=unnamedplus
 " set tab to 4 columns 
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
+set shiftwidth=4 tabstop=4 softtabstop=4
 
 set hidden
 "" highlighting cursor
-set cursorline
-set cursorcolumn
+set cursorline cursorcolumn
 
 " maybe 
 "set nobackup
