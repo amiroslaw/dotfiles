@@ -150,14 +150,16 @@ endsnippet
 # -------------------------------------------------------------------------
 #                            Links and Images
 # -------------------------------------------------------------------------
+# link:${1:`xclip -o -sel clip`}[${2:${VISUAL}}] $0
+# link:${1:`xclip -o -sel clip`}[${2:`xclip -o -sel prim`}] $0
 
 snippet link "Link" !w
-link:${1:`xclip -o -sel clip`}[${2:${VISUAL}}] $0
+${1:`xclip -o -sel clip`}[${2:${VISUAL}}] $0
 endsnippet
 
 # select and copy link
 snippet lsel "Link from Selection" !w
-link:${1:`xclip -o -sel clip`}[${2:`xclip -o -sel prim`}] $0
+${1:`xclip -o -sel clip`}[${2:`xclip -o -sel prim`}] $0
 endsnippet
 
 snippet mailto "Email" !w

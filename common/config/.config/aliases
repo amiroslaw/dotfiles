@@ -139,6 +139,7 @@ alias search='pacman -Ss'
 alias bookworm='com.github.babluboy.bookworm'
 alias ping='prettyping'
 alias vi='nvim'
+alias neofetch='fastfetch'
 alias vim='nvim'
 alias ggit='grv'
 alias viswap_rm= 'rm ~/.local/share/nvim/swap/*'
@@ -337,8 +338,8 @@ alias -g COL='| column -t' # format into tabelar
 alias -g X='| xargs'
 alias -g X0='| xargs -0'  
 # FZF
-alias -g D='| fzf'
-alias -g F='$(fzf) '
+alias -g D='$(fd --file=d | fzf)'
+alias -g F='| fzf '
 alias -g H='$(fd --hidden | fzf) '
 #}}}
 #FUNCTIONS
