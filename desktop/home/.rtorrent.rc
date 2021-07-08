@@ -5,7 +5,7 @@
 # oraz plik, który blokuje wielokrotne załączanie rTorrenta;
 ## Default session directory. Make sure you don't run multiple instance of rtorrent using the same session directory.
 # session = ~/.config/rtorrent/rtorrent.session
-session = ~/Downloads/.pobierane
+session = /media/multimedia/Downloads/.pobierane
 
 # DHT
 dht = on
@@ -54,7 +54,7 @@ schedule = low_diskspace,5,60,close_low_diskspace=20M
 
 # Z tego katalogu torrenty będą automatycznie dodawane do listy ściągania;
 
-schedule = watch_directory,5,5,"load.start=~/Downloads/.torrenty/*.torrent"
+schedule = watch_directory,5,5,"load.start=/media/multimedia/Downloads/.torrenty/*.torrent"
 
 # Po usunięciu ściągania z listy będą usuwane pliki .torrent;
 

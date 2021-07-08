@@ -15,6 +15,14 @@
 #   [1] https://github.com/asciidoctor/atom-autocomplete-asciidoc
 #   [2] https://github.com/redhat-documentation/asciidoc-markup-conventions
 #   [3] https://github.com/redhat-documentation/modular-docs
+# ${1:placeholder}
+# $0 ostatni tabstop - jak pójdziemy dalej to wyjdziemy poza snippet
+# Visual wkleja wcześniej zaznaczony tekst
+# ${VISUAL:default-text} - jak mamy zaznaczony text i naciśniemy tab i nazwę snippetu i tab to zostanie wklejony ten tekst. Może nie być nic zaznaczone i wtedy musimy normalnie wpisać.
+# tab to UltiSnipsExpandTrigger np. c-l
+
+# menu:${1:${VISUAL:Plik}}[$2] $0
+# menu dobry przykład - w pierszym tabstop wklejamy zaznaczenie lub domyślnie wpisujemy Plik, drugi tabstop przenosi do nawiasów i mamy ostatni tabstop
 
 global !p
 whitespace = re.compile('[\s_-]*\{nbsp\}[\s_-]*|[\s_-]+')
@@ -128,15 +136,15 @@ endsnippet
 # -------------------------------------------------------------------------
 
 snippet btn "Button" !w
-btn:[${1:${VISUAL}}]$0
+btn:[${1:${VISUAL}}] $0
 endsnippet
 
 snippet kbd "Keyboard Shortcut" !w
-kbd:[${1:${VISUAL}}]$0
+kbd:[${1:${VISUAL:Ctrl+}$2}] $0
 endsnippet
 
 snippet menu "Menu Selection" !w
-menu:${1:${VISUAL}}[$2]$0
+menu:${1:${VISUAL:Plik}}[$2] $0
 endsnippet
 
 # -------------------------------------------------------------------------

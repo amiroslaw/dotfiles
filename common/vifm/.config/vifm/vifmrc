@@ -202,8 +202,8 @@ nmap <F5> :!cp -r %f %D<cr>
 " move files to the opposite pane
 nmap <F6> :!mv %f %D &<cr>
 nmap <F7> :mkdir <space>
+" make dir from selected file name
 nmap cd :mkdir %c:r <cr> 
-nmap cd2 :mkdir %c:r <cr> 
 
 nmap <F8> :touch <space> 
 nmap cf :touch %c:r <cr> 
@@ -329,8 +329,9 @@ fileviewer {*.docx},<application/vnd.openxmlformats-officedocument.wordprocessin
 filextype {*.cbr,*cbz} pqiv %f,
 filextype {*.mobi,*.epub,*azw3,*azw,*pobi} 
 		\ ebook-viewer %f %i, 
+		\ com.github.babluboy.bookworm %f %i,
 		\ xreader %f %i,
-		\ com.github.babluboy.bookworma %f %i & 
+		" \ bookworm %f %i,
 
 filetype *.md,*.txt,*.adoc nvim
 filextype *.md,*.txt

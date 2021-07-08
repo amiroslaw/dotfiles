@@ -32,7 +32,7 @@ java8=~/.sdkman/candidates/java/8.0.171-oracle/bin/java
 #{{{
 alias dlfile='~/Documents/Ustawienia/skrypty/dlfile'
 alias remind='$path_script/remind.sh'
-alias mag='$path_script/magnet.sh $(xclip -o -selection clipboard)'
+alias mag='$path_script/magnet.sh "$(xclip -o -selection clipboard)"'
 alias crypto='investing-cli -t CRYPTO -p -e PLN'
 #}}}
 
@@ -82,16 +82,18 @@ alias monitoroff='xrandr --output DVI-I-0 --off'
 
 # FZF
 alias fp='rg --files | fzf --preview="bat {} --color=always"'
-alias fn='nvim -o $(fd --type f | fzf)'
-alias fnh='nvim -o $(fd --hidden --type f | fzf)'
-alias fcd='cd $(fd --type d | fzf)'
-alias fcdh='cd $(fd --hidden --type d | fzf)'
-alias ffh='cd $(fd --hidden --type f | fzf)'
-# f mv # To move files. You can write the destination after selecting the files.
+alias fn='nvim -o "$(fd --type f | fzf)"'
+alias fnh='nvim -o "$(fd --hidden --type f | fzf)"'
+alias fcd='cd "$(fd --type d | fzf)"'
+alias fcdh='cd "$(fd --hidden --type d | fzf)"'
+alias ffh='"$(fd --hidden --type f | fzf)"'
+# execute
+# fz mv # To move files. You can write the destination after selecting the files.
 fz() {
     sels=( "${(@f)$(fd "${fd_default[@]}" "${@:2}"| fzf)}" )
     test -n "$sels" && print -z -- "$1 ${sels[@]:q:q}"
 }
+# open
 # Modified version where you can press
 #   - CTRL-O to open with `open` command, edit to swallow
 #   - CTRL-E or Enter key to open with the $EDITOR
@@ -113,6 +115,7 @@ alias tor='abduco -A tor rtorrent'
 
 # SYSTEM
 #{{{
+alias _='sudo'
 alias shut='sudo shutdown -h now'
 # get error messages from journalctl
 alias journal="journalctl -p 3 -xb"
@@ -134,6 +137,7 @@ alias search='pacman -Ss'
 #Programs alias
 #{{{
 alias bookworm='com.github.babluboy.bookworm'
+alias ping='prettyping'
 alias vi='nvim'
 alias vim='nvim'
 alias ggit='grv'
@@ -163,7 +167,7 @@ alias yt='youtube-viewer -C'
 alias yts='youtube-viewer -C -SV'
 alias ytm='youtube-viewer -C -n'
 alias ytaudio='youtube-dl -x --audio-format mp3 '
-alias ytlisten='mpv --no-video $(xclip -o -selection clipboard)'
+alias ytlisten='mpv --no-video "$(xclip -o -selection clipboard)"'
 alias kindlecp-run='cp /run/media/miro/Kindle/documents/My\ Clippings.txt ~/'
 alias kindlecp-media='cp /media/Kindle/documents/My\ Clippings.txt ~/'
 alias torrentRm='rm /media/multi/Downloads/.pobierane/rtorrent.lock'

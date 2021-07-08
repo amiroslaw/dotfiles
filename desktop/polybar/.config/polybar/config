@@ -394,12 +394,15 @@ label-close-foreground = ${colors.foreground}
 label-separator = |
 label-separator-foreground = ${colors.foreground}
 
-menu-0-0 = 
-menu-0-0-exec = betterlockscreen -l dimblur && sleep 1
+; menu-0-0 = 
+; menu-0-0-exec = betterlockscreen -l dimblur && sleep 1
+menu-0-0 =  
+menu-0-0-exec = systemctl hibernate
 menu-0-1 = 
 menu-0-1-exec = systemctl reboot
 menu-0-2 = 
-menu-0-2-exec = betterlockscreen -l dimblur && sleep 1 && systemctl suspend
+menu-0-2-exec = systemctl suspend
+; menu-0-2-exec = betterlockscreen -l dimblur && sleep 1 && systemctl suspend
 menu-0-3 = 
 menu-0-3-exec = systemctl poweroff
 

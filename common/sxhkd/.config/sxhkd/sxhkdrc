@@ -63,6 +63,9 @@ super + a ; b
 super + {_,shift,ctrl} + z
      whid {last, hide, dmenu}
 
+super + u
+	bspc node -f any.urgent
+
 #
 # Window moving and splitting
 # ______________    

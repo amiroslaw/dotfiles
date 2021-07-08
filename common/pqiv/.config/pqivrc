@@ -25,10 +25,10 @@ v { flip_vertically(); }
 z { rotate_left(); }
 x { rotate_right(); }
 N { toggle_negate_mode(0) }
-k { shift_x(10); } 
-l { shift_y(-10); } 
-j { shift_x(-10); } 
-h { shift_y(10); } 
+l { shift_x(10); } 
+h { shift_x(-10); } 
+j { shift_y(10); } 
+k { shift_y(-10); } 
 
 @MONTAGE {
 	l { montage_mode_shift_x(1); } 
@@ -42,8 +42,11 @@ h { shift_y(10); }
 ; probably dont't put quotes "' 
 ; instead of $() use xargs
 d { command(echo -n $1 | xargs -I {} trash-put {}); }
+; copy name
 cn { command(echo -n $1 | xclip -selection clipboard); }
+; copy path
 cp { command(pwd echo -n $1 | xclip -selection clipboard); }
+; copy image
 ci { command(|xclip -selection clipboard -target image/png); }
 ;ocr image
 e { command(echo -n $1 | xargs -I {} tesseract {} {}); }

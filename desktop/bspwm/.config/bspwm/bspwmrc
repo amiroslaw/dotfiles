@@ -69,7 +69,7 @@ bspc rule -a '*:soffice' state=tiled
 #bspc rule -a firefox desktop=I
 bspc rule -a 9menu border=off manage=off
 bspc rule -a tint2 border=off manage=off
-bspc rule -a KeePassXC  state=floating rectangle=900x800+0+0 center=true
+bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
 bspc rule -a megasync state=floating
 bspc rule -a '*:dropdown' state=fullscreen
 bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
