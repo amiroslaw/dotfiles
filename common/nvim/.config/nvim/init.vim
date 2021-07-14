@@ -39,10 +39,6 @@ Plug 'leafgarland/typescript-vim'
 " asciidoctor
 Plug 'habamax/vim-asciidoctor'
 Plug 'SirVer/ultisnips'
-" Plug 'honza/vim-snippets'
-" Plug 'shougo/neosnippet.vim' 
-" Plug 'shougo/neosnippet-snippets' " examples snippets
-"Plug 'myusuf3/numbers.vim' set relativenumber
 " markdown 
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown', 'frozen': 1}
 Plug 'kannokanno/previm', { 'for': 'markdown'}
@@ -54,16 +50,17 @@ Plug 'majutsushi/tagbar'
 " Plug 'lvht/tagbar-markdown'
 
 " for neovim 
-"Plug 'euclio/vim-markdown-composer'
-" Plug 'cazador481/fakeclip.neovim'
 Plug 'shougo/denite.nvim' "ctrlpish 
 Plug 'brooth/far.vim' "find and replace in few files
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "Plug 'BurningEther/nvimux'
+"Plug 'euclio/vim-markdown-composer'
+" Plug 'cazador481/fakeclip.neovim'
 " TextYankPost insted plugin from 5 version of nvim
-Plug 'machakann/vim-highlightedyank'
+" Plug 'machakann/vim-highlightedyank'
+" colorschemes
 " Plug 'arcticicestudio/nord-vim', { 'branch': 'develop' }
 Plug 'https://github.com/rakr/vim-one'
 " Plug 'iCyMind/NeoSolarized'
@@ -130,11 +127,10 @@ autocmd BufNewFile,BufRead \*.{md,mdwn,mkd,mkdn,mark,markdown\*} set filetype=ma
 " autocmd Filetype markdown setlocal linebreak
 " autocmd Filetype markdown setlocal wrap
 " will be in 5 version of the nvim
-" augroup highlight_yank
-    " autocmd!
-    " autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank()
-" augroup END
-    " autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank("Substitute", 1000)
+augroup highlight_yank
+    autocmd!
+    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank {timeout=600}
+augroup END
 " IncSearch
 set ignorecase smartcase hlsearch incsearch
 set number relativenumber
