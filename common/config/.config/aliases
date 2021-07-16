@@ -39,7 +39,7 @@ alias crypto='investing-cli -t CRYPTO -p -e PLN'
 # config files
 # {{{
 alias batalias='bat ~/.config/aliases'
-alias batalias='inv ~/.config/investing/portfolio.json'
+alias cfportfolio='nvim ~/.config/investing/portfolio.json'
 alias cfqpiv='nvim ~/.config/pqivrc'
 alias cfaliases='nvim ~/.config/aliases'
 alias cfalacritty='nvim ~/.config/alacritty/alacritty.yml'
@@ -164,6 +164,9 @@ alias op='xdg-open '
 
 #Programy coś wykonują
 #{{{
+# curl cheat.sh/java/compute+map
+alias cht='curl cheat.sh/'
+alias chtj='curl cheat.sh/java/'
 alias yt='youtube-viewer -C'
 alias yts='youtube-viewer -C -SV'
 alias ytm='youtube-viewer -C -n'
@@ -349,11 +352,13 @@ alias mkcd='take'
 #   case "$1" in /*) :;; *) set -- "./$1";; esac
 #   mkdir -p "$1" && cd "$1"
 #   }
+#
 function zadAdd() { 
-echo "add task"
-read task
-echo "- [ ]" $task >> $NOTE/ZADANIA/today.todo
+	echo "add task"
+	read task
+	echo "- [ ]" $task >> $NOTE/ZADANIA/today.todo
 }
+
 wypakuj () {
     if [ -f $1 ] ; then
       case $1 in

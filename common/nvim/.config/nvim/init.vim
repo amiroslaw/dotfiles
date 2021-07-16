@@ -197,15 +197,15 @@ nmap P :pu<CR>
 nmap <Leader>w <Esc>:w<CR>
 
 "" insert mode
-" poruszanie linii w insert mode może powodować problemy z wklejaniem 
-inoremap II <Esc>I
-inoremap AA <Esc>A
-inoremap OO <Esc>O
 " move to the nesxt previous word
 inoremap <C-a> <C-o>b
 inoremap <C-d> <C-o>w
 "change word
 inoremap <C-e> <Esc>ciw
+" poruszanie linii w insert mode może powodować problemy z wklejaniem 
+" inoremap II <Esc>I
+" inoremap AA <Esc>A
+" inoremap OO <Esc>O
 
 " Tabs
 nnoremap <C-t> :tabnew<CR>
@@ -323,7 +323,7 @@ let g:bookmark_auto_close = 1
 nnoremap <A-u> :UndotreeToggle<cr>
 
 if has("persistent_undo")
-	set undodir=$HOME/.config/nvim/undodir
+	set undodir=$HOME/.local/share/nvim/undo
 	set undofile
 endif
 """""""""""""""""""

@@ -146,9 +146,12 @@ super + {bracketright,bracketleft}
 super + shift + {bracketleft,bracketright}
 	bspc node @/ -F {horizontal,vertical}
 
-# Change window gap
-super + g
+# search in google; Change window gap
+super + {_, shift, ctrl} + g
+	{ $BROWSER  "google.com/?q=$(xclip -o -sel primary | sed -e 's/ /+/g')", \
+	 $BROWSER "google.com/?q=$(xclip -o -sel primary | sed -e 's/ /+/g')", \
 	bspc config -d focused window_gap {$gap,$(($gap+$gap)),$(($gap+$gap+$gap))}
+}
 
 super + button{4,5}
 	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+,-} 2 ))
