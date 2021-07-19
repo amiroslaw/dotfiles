@@ -9,7 +9,6 @@ Plug 'vifm/vifm.vim'
 Plug '907th/vim-auto-save'
 " Plug 'vifm/neovim-vifm'
 Plug 'mbbill/undotree'
-Plug 'rking/ag.vim' " silver search I don't need it if I use 
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo'} " zen mode
 Plug 'dbmrq/vim-ditto' "plugin that highlights overused words.
 Plug 'ryanoasis/vim-devicons'
@@ -31,10 +30,12 @@ Plug 'aserebryakov/vim-todo-lists', {'tag': '0.7.1'}
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'itchyny/calendar.vim'
 "tests
+Plug 'rking/ag.vim' " silver search I don't need it if I use 
+Plug 'brooth/far.vim' "find and replace in few files
 " Plug 'ashisha/image.vim'
 " syntax
-Plug 'potatoesmaster/i3-vim-syntax'
-Plug 'leafgarland/typescript-vim'
+" Plug 'potatoesmaster/i3-vim-syntax'
+" Plug 'leafgarland/typescript-vim'
 
 " asciidoctor
 Plug 'habamax/vim-asciidoctor'
@@ -49,9 +50,7 @@ Plug 'godlygeek/tabular', { 'for': 'markdown'}
 Plug 'majutsushi/tagbar'
 " Plug 'lvht/tagbar-markdown'
 
-" for neovim 
 Plug 'shougo/denite.nvim' "ctrlpish 
-Plug 'brooth/far.vim' "find and replace in few files
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -257,11 +256,11 @@ silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 nnoremap <leader>m :exe ':silent !typora %'<CR>
 "slownik
 syntax spell toplevel
-au BufReadPost *.md setlocal spell spelllang=pl_pl,en_us
+au BufReadPost *.adoc,*.md setlocal spell spelllang=pl_PL,en_us
 " au BufReadPost *.txt setlocal spell spelllang=pl
 " togle spellcheck
 nmap <leader>s :set spell!<cr>
-nmap <leader>ss :setlocal spell! spelllang=pl<CR>
+nmap <leader>ss :syntax spell toplevel setlocal spell! spelllang=pl<CR>
 " nmap <leader>se :set spelllang=en_us<CR>
 nmap <leader>se :setlocal spell! spelllang=en_us<CR>
 "  
