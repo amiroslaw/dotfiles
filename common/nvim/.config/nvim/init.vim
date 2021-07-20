@@ -3,84 +3,60 @@
 
 " vim-plug plugin manager
 call plug#begin()
-" Plug 'https://github.com/ctrlpvim/ctrlp.vim'
-" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle'}
-Plug 'vifm/vifm.vim'
 Plug '907th/vim-auto-save'
-" Plug 'vifm/neovim-vifm'
 Plug 'mbbill/undotree'
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo'} " zen mode
-Plug 'dbmrq/vim-ditto' "plugin that highlights overused words.
-Plug 'ryanoasis/vim-devicons'
-Plug 'vim-scripts/CSApprox'  
 Plug 'justincampbell/vim-eighties' " Automatically resizes your windows
-Plug 'junegunn/vim-peekaboo' "extended register
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'tpope/vim-repeat'
+Plug 'MattesGroeger/vim-bookmarks'
+Plug 'majutsushi/tagbar'
+Plug 'SirVer/ultisnips'
+Plug 'mhinz/vim-startify' "start screen
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo'} " zen mode
+" Plug 'vim-scripts/YankRing.vim' " fix keybinding
+" CODE
 Plug 'tpope/vim-surround'
 Plug 'raimondi/delimitmate' "closing brackets and quotes
 Plug 'tpope/vim-commentary' 
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-" Plug 'terryma/vim-multiple-cursors' deprecated
-" Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-repeat'
-Plug 'easymotion/vim-easymotion'
-" Plug 'justinmk/vim-sneak'
-Plug 'mhinz/vim-startify' "start screen
-Plug 'kabbamine/lazyList.vim' 
-Plug 'aserebryakov/vim-todo-lists', {'tag': '0.7.1'}
-Plug 'MattesGroeger/vim-bookmarks'
-Plug 'itchyny/calendar.vim'
-"tests
-Plug 'rking/ag.vim' " silver search I don't need it if I use 
-Plug 'brooth/far.vim' "find and replace in few files
-" Plug 'ashisha/image.vim'
-" syntax
-" Plug 'potatoesmaster/i3-vim-syntax'
-" Plug 'leafgarland/typescript-vim'
 
+" NOTE
+Plug 'itchyny/calendar.vim' " problem with api
+Plug 'aserebryakov/vim-todo-lists', {'tag': '0.7.1'}
+Plug 'kabbamine/lazyList.vim' 
 " asciidoctor
 Plug 'habamax/vim-asciidoctor'
-Plug 'SirVer/ultisnips'
 " markdown 
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown', 'frozen': 1}
 Plug 'kannokanno/previm', { 'for': 'markdown'}
-Plug 'godlygeek/tabular', { 'for': 'markdown'}
-" do wyrównywania np w tabelach
+Plug 'godlygeek/tabular', { 'for': 'markdown'} " do wyrównywania np w tabelach
 " http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
 " :Tab /|
-Plug 'majutsushi/tagbar'
-" Plug 'lvht/tagbar-markdown'
 
-Plug 'shougo/denite.nvim' "ctrlpish 
-Plug 'rafi/awesome-vim-colorschemes'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-"Plug 'BurningEther/nvimux'
-"Plug 'euclio/vim-markdown-composer'
-" Plug 'cazador481/fakeclip.neovim'
-" TextYankPost insted plugin from 5 version of nvim
-" Plug 'machakann/vim-highlightedyank'
-" colorschemes
+" COLORSCHEMES
+" https://www.dunebook.com/best-vim-themes/
+" https://vimcolorschemes.com/top
+" ayu, nord, vim-one, one-half, drakula NeoSolarized, pepertheme
 " Plug 'arcticicestudio/nord-vim', { 'branch': 'develop' }
 Plug 'https://github.com/rakr/vim-one'
 " Plug 'iCyMind/NeoSolarized'
-"completion 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-" Plug 'roxma/nvim-completion-manager'
+
+" for neovim and lua
+Plug 'gennaro-tedesco/nvim-jqx'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'phaazon/hop.nvim'
+Plug 'hrsh7th/nvim-compe'
+Plug 'nvim-lua/popup.nvim' " for telescope
+Plug 'nvim-lua/plenary.nvim' " for telescope
+Plug 'nvim-telescope/telescope.nvim'
+
 call plug#end()
 
 """"""""""""""""""""""""""
 """""" SETTINGS
 
-"""" colour settings
-" https://www.dunebook.com/best-vim-themes/
-" https://vimcolorschemes.com/top
-" ayu, nord, vim-one, one-half, drakula NeoSolarized, pepertheme
 " let g:neosolarized_italic = 1
 if (empty($TMUX))
   if (has("termguicolors"))
@@ -98,12 +74,7 @@ syntax enable
 set laststatus=2
 " podpowiedzi
 set wildmode=longest,list,full
-" tmux  for version before 2.2
-" set t_8f=[38;2;%lu;%lu;%lum
-" set t_8b=[48;2;%lu;%lu;%lum
 "" Status bar
-" CSApprox plugin
-let g:CSApprox_loaded = 1
 filetype plugin indent on
 set encoding=utf-8 fileencoding=utf-8 fileencodings=utf-8,latin1
 set linebreak
@@ -182,12 +153,6 @@ nnoremap zO zo <cr>
 map <Esc><Esc> :w<CR>
 " leader to backslash \w zapisywanie jako root
 map <leader>sudo :w !sudo tee % <CR><CR>
-" NERDTree 
-" let NERDTreeShowBookmarks=1
-" map <C-n> :NERDTreeToggle <cr>
-" vifm
-map <leader>n :Vifm <cr>
-let g:vifmSplitWidth = 10
 " coping and pasting 
 nmap Y y$
 nmap P :pu<CR>
@@ -201,10 +166,6 @@ inoremap <C-a> <C-o>b
 inoremap <C-d> <C-o>w
 "change word
 inoremap <C-e> <Esc>ciw
-" poruszanie linii w insert mode może powodować problemy z wklejaniem 
-" inoremap II <Esc>I
-" inoremap AA <Esc>A
-" inoremap OO <Esc>O
 
 " Tabs
 nnoremap <C-t> :tabnew<CR>
@@ -239,18 +200,12 @@ nmap <s-tab> gT
 " Terminal
 " Make escape work in the Neovim terminal.
 tnoremap <Esc> <C-\><C-n>
-" calculator c-s-a in insert mode 2+2 alt a
-ino <M-a> <C-O>yiW<End>=<C-R>=<C-R>0<CR>
 " Prefer Neovim terminal insert mode to normal mode.
 autocmd BufEnter term://* startinsert
 
-" bookmarks
-" nnoremap mn ]'  <CR>
-" nnoremap mp ['  <CR>
 
 """""""""""""""""""
 """""" NOTE TAKING
-nnoremap ,t :silent !ctags -R . <CR>:redraw!<CR>:Denite tag<CR>
 " open typora
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 nnoremap <leader>m :exe ':silent !typora %'<CR>
@@ -293,9 +248,6 @@ let @t='f)a kb  '
 " don't work map <Leader>ev :'<,'>s/$/  /g <CR>  
 " vnoremap <Leader>ee :%s/\%V$/  /g  
 " vnoremap <Leader>ee :s/$/  /g <CR>  
-
-"adding empty line 
-" let @e='o'
 
 " AUTOSAVE I don't know if it is from plugin
 " set updatetime=200
@@ -346,82 +298,20 @@ vnoremap gl4 :LazyList '#### '<CR>
 nnoremap gl5 :LazyList '##### '<CR>
 vnoremap gl5 :LazyList '##### '<CR>
 
-" Easy Motion
-let g:EasyMotion_smartcase = 1
-map f <Plug>(easymotion-f)
-map F <Plug>(easymotion-F)
-map t <Plug>(easymotion-w)
-map T <Plug>(easymotion-b)
-map <nowait> s <Plug>(easymotion-j)
-map S <Plug>(easymotion-k)
-nmap <leader>. <Plug>(easymotion-repeat)
 
-" sneak 
-" map ' <Plug>Sneak_;
-" let g:sneak#label = 1
-" let g:sneak#s_next = 1
-" let g:sneak#use_ic_scs = 1
-" map f <Plug>Sneak_s
-" map F <Plug>Sneak_S
 """""""""""""""""""
 " startify disable changing dir
 let g:startify_change_to_dir = 0
 """""""""""""""""""
-" denite 
-" search files
-" file/rec - files under search dir
-map <c-f> :Denite grep:.<cr>
-nnoremap <c-p> :Denite buffer file/rec<cr>
-nnoremap <leader>p :Denite file/old<cr> i
-nnoremap <leader>b :Denite buffer<cr>
-" nnoremap <leader>b :Denite mark<cr>
-nnoremap <leader>r :Denite register<cr>
-" jump and lines  
-nnoremap <leader>j :Denite jump<cr>
-nnoremap <leader>l :Denite line<cr>
-" Define mappings
-autocmd FileType denite call s:denite_my_settings()
-function! s:denite_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR>
-  \ denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> p
-  \ denite#do_map('do_action', 'preview')
-  nnoremap <silent><buffer><expr> v
-  \ denite#do_map('do_action', 'vsplit')
-  nnoremap <silent><buffer><expr> h
-  \ denite#do_map('do_action', 'split')
-  nnoremap <silent><buffer><expr> t
-  \ denite#do_map('do_action', 'tabopen')
-  nnoremap <silent><buffer><expr> q
-  \ denite#do_map('quit')
-  nnoremap <silent><buffer><expr> i
-  \ denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> <Space>
-  \ denite#do_map('toggle_select').'j'
-endfunction
 
-call denite#custom#source('grep', 'max_candidates', 3000)
-
-" autocmd FileType denite-filter call s:denite_filter_my_settings()
-" function! s:denite_filter_my_settings() abort
-"   imap <silent><buffer> <C-o> <Plug>(denite_filter_quit)
-" endfunction
-
-" old version
-" call denite#custom#map('insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-" call denite#custom#map('insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
-" call denite#custom#map('insert', '<C-t>', '<denite:do_action:tabopen>', 'noremap')
-" call denite#custom#map('insert', '<C-v>', '<denite:do_action:vsplit>', 'noremap')
-" call denite#custom#map('insert', '<C-h>', '<denite:do_action:split>', 'noremap')
 """"""""""""""""""
 " repeat 
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
+
 " Goyo more readable text
 nmap <leader>g :Goyo<CR>
-" ditto' plugin that highlights overused words.
-nmap <leader>d :ToggleDitto<CR>
-"""""""""""""""""""
 
+"""""""""""""""""""
 " Tagbar
 nmap <leader>t :TagbarToggle<CR>
 " nmap tt :Toc<CR>
@@ -485,13 +375,6 @@ let g:eighties_compute = 1 " Disable this if you just want the minimum + extra
 let g:eighties_bufname_additional_patterns = ['fugitiveblame'] " Defaults to [], 'fugitiveblame' is only an example. Takes a comma delimited list of bufnames as strings.
 
 """""""""""""""""""
-" VIM DEVICONS and gui, terminal configuration will cover it
-" fc-list :lnag=pl list of all fonts 
-" set guifont=Monospace:h10
-" set guifont=RoboMono\ Nerd\ Font\ 10
-" set guifont=DroidSansMono\ Nerd\ Font\ Book:h11
-" set guifont=Ubuntu\ Nerd\ Font:h10
-"""""""""""""""""""
 " vim-airline
 let g:airline_theme = 'one'
 let g:airline#extensions#syntastic#enabled = 1
@@ -539,45 +422,8 @@ else
   let g:airline_symbols.readonly = ''
   let g:airline_symbols.linenr = ''
 endif
+
 """""""""""""""""""
-" DEOPLETE
-"NEOCONPLETE to deople conversion 
-set runtimepath+=~/.config/nvim/plugged/deoplete.nvim/
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
-" Set minimum syntax keyword length.
-let g:deoplete#sources#syntax#min_keyword_length = 3
-let g:deoplete#lock_buffer_name_pattern = '\*ku\*'
-
-" deoplete tab-complete
-" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
-" Cycle through completion entries with tab/shift+tab
-inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<tab>"
-
-inoremap <silent><expr> <TAB>
-		\ pumvisible() ? "\<C-n>" :
-		\ <SID>check_back_space() ? "\<TAB>" :
-		\ deoplete#mappings#manual_complete()
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-" tern
-autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
-
-" don't copy tags
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return deoplete#close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-
 " ultisnips
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsExpandTrigger='<c-l>'
@@ -589,64 +435,76 @@ let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 " let g:UltiSnipsSnippetDirectories=["custom-snip"]
 nnoremap <A-p> :AsciidoctorPasteImage<CR>
 
-" DEPRECATED
-" Use smartcase. 
-" let g:deoplete#enable_smart_case = 1
-
-"will multiply mem usage
-" let g:deoplete#num_processes = 2
-
-" Define keyword.
-" if !exists('g:deoplete#keyword_patterns')
-"     let g:deoplete#keyword_patterns = {}
-" endif
-" let g:deoplete#keyword_patterns['default'] = '\h\w*'
-"
-" polish characters don't work
-" if !exists('g:deoplete#keyword_patterns')
-"   let g:deoplete#keyword_patterns = {}
-" endif
-" let g:deoplete#keyword_patterns['default'] = '[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ][0-9A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]*'
-
-" let g:deoplete#keyword_patterns.tex = '[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ][0-9A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]\+'
-" let g:neocomplete#keyword_patterns['markdown'] = '[À-ú[:alpha:]_][À-ú[:alnum:]_]*'
-"
 """""""""""""""""""
-" neosnippet 
-" Plugin key-mappings.
-" inoremap <expr><C-g>     deoplete#undo_completion()
-" inoremap <expr><C-l>     deoplete#complete_common_string()
-" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" xmap <C-k>     <Plug>(neosnippet_expand_target)
+" hop, easymotion alternative
+"https://github.com/phaazon/hop.nvim
+lua require'hop'.setup()
 
-" I am not sure if it is needed
-" inoremap <silent><expr><CR> pumvisible() ? deoplete#mappings#close_popup()."\<Plug>(neosnippet_expand_or_jump)" : "\<CR>"
-"""""""""""""""""""
-" old PLUGINS 
-"""""""""""""""""""
-"fakeclip	 
-" let g:vim_fakeclip_tmux_plus=1 
-" silver search ag
-" map <C-f> :Ag!
+map f <cmd>HopChar1 <cr>
+map F <cmd>HopChar2 <cr>
+map <leader>w <cmd>HopWordAC <cr>
+map <leader>W <cmd>HopWordBC <cr>
+map s <cmd>HopLineStartAC <cr>
+map S <cmd>HopLineStartBC <cr>
+
 
 """""""""""""""""""
-" CtrlP
- " let g:ctrlp_map = '<c-p>'
- " let g:ctrlp_cmd = 'CtrlP'
+" https://github.com/hrsh7th/nvim-compe
+set completeopt=menuone,noselect
+let g:compe = {}
+let g:compe.enabled = v:true
+let g:compe.source = {}
+let g:compe.source.path = v:true
+let g:compe.source.buffer = v:true
+let g:compe.source.calc = v:true
+let g:compe.source.nvim_lsp = v:true
+let g:compe.source.nvim_lua = v:true
+let g:compe.source.ultisnips = v:true
+let g:compe.source.emoji = v:true
 
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <A-Space>     compe#close('<A-Space>')
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-j>     compe#scroll({ 'delta': +1 })
+inoremap <silent><expr> <C-k>     compe#scroll({ 'delta': -1 })
+" hard to change keymaps
+" inoremap <silent><expr> <A-Space> compe#complete()
+" inoremap <silent><expr> <C-Space>     compe#close('<C-Space>')
+" inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +5 })
+" inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -5 })
 
-" " multiple cursor fix bug 
-" func! Multiple_cursors_before()
-"   if deoplete#is_enabled()
-"     call deoplete#disable()
-"     let g:deoplete_is_enable_before_multi_cursors = 1
-"   else
-"     let g:deoplete_is_enable_before_multi_cursors = 0
-"   endif
-" endfunc
-" func! Multiple_cursors_after()
-"   if g:deoplete_is_enable_before_multi_cursors
-"     call deoplete#enable()
-"   endif
-" endfunc
+"""""""""""""""""""
+"  Telescope
+" https://github.com/nvim-telescope/telescope.nvim#pickers
+nnoremap <c-s> <cmd>Telescope live_grep<cr>
+nnoremap <c-f> <cmd>Telescope find_files<cr>
+nnoremap tl <cmd>Telescope<cr>
+nnoremap tj <cmd>Telescope jumplist<cr> 
+nnoremap tp <cmd>Telescope find_files<cr>
+nnoremap tf <cmd>Telescope file_browser<cr>
+nnoremap tz <cmd>Telescope current_buffer_fuzzy_find<cr>
+nnoremap tb <cmd>Telescope buffers<cr>
+nnoremap to <cmd>Telescope oldfiles<cr>
+nnoremap tr <cmd>Telescope registers<cr>
+nnoremap ts <cmd>Telescope spell_suggest<cr>
+nnoremap th <cmd>Telescope search_history<cr> 
+nnoremap tt :silent !ctags -R . <CR>:redraw!<cr>:Telescope current_buffer_tags<CR>
+nnoremap T :silent !ctags -R . <CR>:redraw!<cr>:Telescope tags<CR>
+nnoremap tm <cmd>Telescope marks<cr>
+nnoremap tM <cmd>Telescope man_pages<cr>
+nnoremap tg <cmd>Telescope git_status<cr>
+nnoremap tk <cmd>Telescope keymaps<cr>
+nnoremap tc <cmd>Telescope colorscheme<cr>
+" nnoremap tl <cmd>Telescope loclist<cr> doesn't work
+
+set maxmempattern=3000 " fix pattern uses more memory than 'maxmempattern', default is 2000
+
+"""""""""""""""""""
+" NvimTreeToggle https://github.com/kyazdani42/nvim-tree.lua
+nnoremap <leader>n :NvimTreeToggle<CR>
+
+"""""""""""""""""""
+" jqx https://github.com/gennaro-tedesco/nvim-jqx
+nmap <leader>x <Plug>JqxList
+
+"""""""""""""""""""
