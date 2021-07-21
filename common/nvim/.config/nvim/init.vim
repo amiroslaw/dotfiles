@@ -437,6 +437,7 @@ map S <cmd>HopLineStartBC <cr>
 set completeopt=menuone,noselect
 let g:compe = {}
 let g:compe.enabled = v:true
+let g:compe.default_pattern = '\k\+'
 let g:compe.source = {}
 let g:compe.source.path = v:true
 let g:compe.source.buffer = v:true
