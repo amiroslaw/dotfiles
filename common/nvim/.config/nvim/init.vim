@@ -3,8 +3,7 @@
 
 " vim-plug plugin manager
 call plug#begin()
-Plug '907th/vim-auto-save'
-Plug 'mbbill/undotree'
+Plug 'Pocco81/AutoSave.nvim'
 Plug 'justincampbell/vim-eighties' " Automatically resizes your windows
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-repeat'
@@ -12,25 +11,24 @@ Plug 'MattesGroeger/vim-bookmarks'
 Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
 Plug 'mhinz/vim-startify' "start screen
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'} 
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo'} " zen mode
+Plug 'j5shi/CommandlineComplete.vim' " I have shortcut for substitution
 " Plug 'vim-scripts/YankRing.vim' " fix keybinding
 " CODE
 Plug 'tpope/vim-surround'
-Plug 'raimondi/delimitmate' "closing brackets and quotes
-Plug 'tpope/vim-commentary' 
 
 " NOTE
-Plug 'itchyny/calendar.vim' " problem with api
+Plug 'itchyny/calendar.vim', {'on': 'Calendar'} " problem with api
 Plug 'aserebryakov/vim-todo-lists', {'tag': '0.7.1'}
-Plug 'kabbamine/lazyList.vim' 
+Plug 'kabbamine/lazyList.vim', { 'on': 'LazyList'}
 " asciidoctor
-Plug 'habamax/vim-asciidoctor'
+Plug 'habamax/vim-asciidoctor', {'for': 'asciidoctor'}
 " markdown 
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown', 'frozen': 1}
 Plug 'kannokanno/previm', { 'for': 'markdown'}
 Plug 'godlygeek/tabular', { 'for': 'markdown'} " do wyrównywania np w tabelach
-" http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
-" :Tab /|
+" http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ :Tab /|
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -43,14 +41,16 @@ Plug 'https://github.com/rakr/vim-one'
 " Plug 'iCyMind/NeoSolarized'
 
 " for neovim and lua
-Plug 'gennaro-tedesco/nvim-jqx'
+Plug 'gennaro-tedesco/nvim-jqx', {'for': 'json'}
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'kyazdani42/nvim-tree.lua'
+Plug 'kyazdani42/nvim-tree.lua', {'on': 'NvimTreeToggle'}
+Plug 'b3nj5m1n/kommentary', {'branch': 'main'}
+Plug 'windwp/nvim-autopairs', {'branch': 'main'}
+Plug 'NTBBloodbath/rest.nvim', {'branch': 'main'}
 Plug 'phaazon/hop.nvim'
 Plug 'hrsh7th/nvim-compe'
-Plug 'nvim-lua/popup.nvim' " for telescope
-Plug 'nvim-lua/plenary.nvim' " for telescope
-Plug 'nvim-telescope/telescope.nvim'
+" for telescope
+Plug 'nvim-lua/popup.nvim' | Plug 'nvim-lua/plenary.nvim' | Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
 
@@ -125,7 +125,6 @@ set cursorline cursorcolumn
 """""" SHORTCUTS
 "" change leader key from \ to ;
 let mapleader=";"
-" nmap <leader>/ :set hlsearch!<cr>
 nnoremap <leader>/ :nohlsearch<cr>
 " move lines up and down
 nnoremap <c-a-j> :m .+1<CR>
@@ -135,8 +134,6 @@ inoremap <c-A-k> <Esc>:m .-2<CR>==gi
 vnoremap <c-a-j> :m '>+1<CR>gv=gv
 vnoremap <c-a-k> :m '<-2<CR>gv=gv
 
-" buffers
-:nnoremap <leader>b :buffers<CR>:buffer<Space>
 " page scroll
 nnoremap <Space> <C-f> <cr> 
 nnoremap <C-k> <C-b> <cr> 
@@ -147,9 +144,7 @@ nnoremap zo zO <cr>
 nnoremap zO zo <cr> 
 " open file with folds
 " set foldlevelstart=1
-"zyy 
-" "zyyggO- (pbi#bi[po
-" zapisywanie kliknij 2x esc
+" saving 2x esc
 map <Esc><Esc> :w<CR>
 " leader to backslash \w zapisywanie jako root
 map <leader>sudo :w !sudo tee % <CR><CR>
@@ -157,25 +152,17 @@ map <leader>sudo :w !sudo tee % <CR><CR>
 nmap Y y$
 nmap P :pu<CR>
 
-"save 
-nmap <Leader>w <Esc>:w<CR>
-
 "" insert mode
-" move to the nesxt previous word
+" move to the nexst/previous word
 inoremap <C-a> <C-o>b
 inoremap <C-d> <C-o>w
 "change word
 inoremap <C-e> <Esc>ciw
 
 " Tabs
-nnoremap <C-t> :tabnew<CR>
-nnoremap th  :tabfirst<CR>
-nnoremap tj  :tabnext<CR>
-nnoremap tk  :tabprev<CR>
-nnoremap tl  :tablast<CR>
 nmap <tab> gt
 nmap <s-tab> gT
-" nnoremap tt  :tabnext<CR> - ctag
+nnoremap <C-t> :tabnew<CR>
 
 " windows split also in terminal mode
 :tnoremap <A-h> <C-\><C-N><C-w>h
@@ -202,34 +189,36 @@ nmap <s-tab> gT
 tnoremap <Esc> <C-\><C-n>
 " Prefer Neovim terminal insert mode to normal mode.
 autocmd BufEnter term://* startinsert
-
+map <F2> :vsplit term://zsh<cr>
+map <S-F2> :split term://zsh<cr>
 
 """""""""""""""""""
 """""" NOTE TAKING
 " open typora
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
-nnoremap <leader>m :exe ':silent !typora %'<CR>
-"slownik
+nnoremap <F7> :exe ':silent !typora %'<CR>
+"dictionary
 syntax spell toplevel
-au BufReadPost *.adoc,*.md setlocal spell spelllang=pl_PL,en_us
-" au BufReadPost *.txt setlocal spell spelllang=pl
-" togle spellcheck
-nmap <leader>s :set spell!<cr>
-nmap <leader>ss :syntax spell toplevel setlocal spell! spelllang=pl<CR>
+" au BufReadPost *.adoc,*.md setlocal spell spelllang=pl_PL,en_us
+"togle spellcheck
+nmap <leader>s :set spell!<cr> 
+nmap <leader>ss :setlocal spell!<cr> :syntax spell toplevel<cr> :setlocal spell! spelllang=pl<CR>
 " nmap <leader>se :set spelllang=en_us<CR>
 nmap <leader>se :setlocal spell! spelllang=en_us<CR>
-"  
 nnoremap <C-e> z= 
 nnoremap <S-e> [s 
 nnoremap <C-]> ]s
-" don't work <C-[> 
+" doesn't work <C-[> 
+"replace from selection
+vnoremap <A-r> "hy:%s/<C-r>h//g<left><left><left> 
 
 """""""""""""""""""
-"""""" makra
+"""""" MAKRA
 """""" adoc
 " plus na koncu linii p
 let @p='$a  +j0'
 let @l='pA['
+
 """""" markdown
 " dwie spacje na koncu linii s  
 let @s='$a  j0'
@@ -244,28 +233,21 @@ let @t='f)a kb  '
 " let @n='ll0i1. j0'
 " lista nienumerowana i 
 " let @i='0i- j0'
-" noremap <Leader>ee :%s/$/  /g <CR>  
-" don't work map <Leader>ev :'<,'>s/$/  /g <CR>  
-" vnoremap <Leader>ee :%s/\%V$/  /g  
-" vnoremap <Leader>ee :s/$/  /g <CR>  
 
-" AUTOSAVE I don't know if it is from plugin
-" set updatetime=200
-" autocmd CursorHoldI * silent w
 """""""""""""""""""
 """" PLUGINS
 """""""""""""""""""
+
 """""""""""""""""""
-" AutoSave plugin
-let g:auto_save = 1  " enable AutoSave on Vim startup
-let g:auto_save_silent = 1  " do not display the auto-save notification
 " calendar.vim
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
 let g:calendar_first_day = 'monday'
 
-nmap <leader>c :Calendar <CR>
-nmap <leader>cs :Calendar -view=year -split=horizontal -position=below -height=10 <CR>
+nmap <F9> :Calendar <CR>
+nmap <S-F9> :Calendar -view=year -split=horizontal -position=below -height=10 <CR>
+
+"""""""""""""""""""
 " vim-bookmarks
 let g:bookmark_auto_close = 1
 
@@ -277,6 +259,7 @@ if has("persistent_undo")
 	set undodir=$HOME/.local/share/nvim/undo
 	set undofile
 endif
+
 """""""""""""""""""
 " lazyList 
 nnoremap gll :LazyList '- '<CR>
@@ -302,17 +285,16 @@ vnoremap gl5 :LazyList '##### '<CR>
 """""""""""""""""""
 " startify disable changing dir
 let g:startify_change_to_dir = 0
-"""""""""""""""""""
 
 """"""""""""""""""
 " repeat 
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
 " Goyo more readable text
-nmap <leader>g :Goyo<CR>
+nmap <F6> :Goyo<CR>
 
 """""""""""""""""""
-" Tagbar
+" TAGBAR
 nmap <leader>t :TagbarToggle<CR>
 " nmap tt :Toc<CR>
 let g:tagbar_autoclose = 1
@@ -320,14 +302,17 @@ let g:tagbar_autofocus = 1
 let g:tagbar_zoomwidth = 0
 let g:tagbar_sort = 0
 set conceallevel=3
-" asciidoctor
+
+"""""""""""""""""""
+" vim-asciidoctor  https://github.com/habamax/vim-asciidoctor
 let g:asciidoctor_syntax_conceal = 1
 let g:asciidoctor_folding = 1
 let g:asciidoctor_folding_level = 6
 let g:asciidoctor_fenced_languages = ['java', 'typescript', 'javascript']
 " let g:asciidoctor_syntax_indented = 0
 " let g:asciidoctor_fold_options = 0
-
+let g:asciidoctor_img_paste_command = 'xclip -selection clipboard -t image/png -o > %s%s'
+nnoremap <A-p> :AsciidoctorPasteImage<CR>
 
 let g:tagbar_type_asciidoctor = {
     \ 'ctagstype' : 'asciidoc',
@@ -362,7 +347,6 @@ let g:previm_open_cmd = 'firefox'
 nmap <leader>v :PrevimOpen <CR>
 " let g:previm_enable_realtime =  1
 " to change style turn 0 to 1 in previm_disable_default_css and put path to
-" your style
 let g:previm_disable_default_css = 1
 let g:previm_custom_css_path = '~/.config/nvim/custom/md-prev.css'
 
@@ -427,14 +411,12 @@ endif
 " ultisnips
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsExpandTrigger='<c-l>'
-let g:asciidoctor_img_paste_command = 'xclip -selection clipboard -t image/png -o > %s%s'
 " shortcut to go to next position
 let g:UltiSnipsJumpForwardTrigger='<c-l>'
 " shortcut to go to previous position
 let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 " let g:UltiSnipsSnippetDirectories=["custom-snip"]
-nnoremap <A-p> :AsciidoctorPasteImage<CR>
-
+"
 """""""""""""""""""
 " hop, easymotion alternative
 "https://github.com/phaazon/hop.nvim
@@ -449,7 +431,7 @@ map S <cmd>HopLineStartBC <cr>
 
 
 """""""""""""""""""
-" https://github.com/hrsh7th/nvim-compe
+" compe https://github.com/hrsh7th/nvim-compe
 set completeopt=menuone,noselect
 let g:compe = {}
 let g:compe.enabled = v:true
@@ -457,21 +439,17 @@ let g:compe.source = {}
 let g:compe.source.path = v:true
 let g:compe.source.buffer = v:true
 let g:compe.source.calc = v:true
+let g:compe.source.emoji = v:true
 let g:compe.source.nvim_lsp = v:true
 let g:compe.source.nvim_lua = v:true
 let g:compe.source.ultisnips = v:true
-let g:compe.source.emoji = v:true
+" let g:compe.source.spell = v:true
 
 inoremap <silent><expr> <C-Space> compe#complete()
 inoremap <silent><expr> <A-Space>     compe#close('<A-Space>')
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-inoremap <silent><expr> <C-j>     compe#scroll({ 'delta': +1 })
+inoremap <silent><expr> <CR>      compe#confirm({ 'keys': '<CR>', 'select': v:true })
+inoremap <silent><expr> <C-j>     compe#scroll({ 'delta': +1 }) " doesn't work
 inoremap <silent><expr> <C-k>     compe#scroll({ 'delta': -1 })
-" hard to change keymaps
-" inoremap <silent><expr> <A-Space> compe#complete()
-" inoremap <silent><expr> <C-Space>     compe#close('<C-Space>')
-" inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +5 })
-" inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -5 })
 
 """""""""""""""""""
 "  Telescope
@@ -495,16 +473,25 @@ nnoremap tM <cmd>Telescope man_pages<cr>
 nnoremap tg <cmd>Telescope git_status<cr>
 nnoremap tk <cmd>Telescope keymaps<cr>
 nnoremap tc <cmd>Telescope colorscheme<cr>
-" nnoremap tl <cmd>Telescope loclist<cr> doesn't work
 
 set maxmempattern=3000 " fix pattern uses more memory than 'maxmempattern', default is 2000
 
 """""""""""""""""""
 " NvimTreeToggle https://github.com/kyazdani42/nvim-tree.lua
-nnoremap <leader>n :NvimTreeToggle<CR>
+" nnoremap <press Shift-F3> :NvimTreeToggle<CR>
+map <F3> :NvimTreeToggle<CR>
 
 """""""""""""""""""
 " jqx https://github.com/gennaro-tedesco/nvim-jqx
 nmap <leader>x <Plug>JqxList
 
 """""""""""""""""""
+" rest https://github.com/NTBBloodbath/rest.nvim#usage
+lua require('rest-nvim').setup()
+nmap <leader>r <Plug>RestNvim<cr>
+" nmap <leader>rp <Plug>RestNvimPreview<cr>
+
+"""""""""""""""""""
+" turn on plugins
+lua require('nvim-autopairs').setup()
+lua require('autosave').setup({ enabled = true })
