@@ -39,6 +39,8 @@ Plug 'vim-airline/vim-airline-themes'
 " Plug 'arcticicestudio/nord-vim', { 'branch': 'develop' }
 Plug 'https://github.com/rakr/vim-one'
 " Plug 'iCyMind/NeoSolarized'
+"Syntax
+Plug 'baskerville/vim-sxhkdrc'
 
 " for neovim and lua
 Plug 'gennaro-tedesco/nvim-jqx', {'for': 'json'}
@@ -113,7 +115,7 @@ set clipboard^=unnamedplus
 " set clipboard+=unnamedplus
 " set tab to 4 columns 
 set shiftwidth=4 tabstop=4 softtabstop=4
-
+set scrolloff=5 " margin
 set hidden
 "" highlighting cursor
 set cursorline cursorcolumn
