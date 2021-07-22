@@ -459,9 +459,9 @@ inoremap <silent><expr> <C-k>     compe#scroll({ 'delta': -1 })
 " https://github.com/nvim-telescope/telescope.nvim#pickers
 nnoremap <c-s> <cmd>Telescope live_grep<cr>
 nnoremap <c-f> <cmd>Telescope find_files<cr>
+nnoremap tp <cmd>Telescope find_files<cr>
 nnoremap tl <cmd>Telescope<cr>
 nnoremap tj <cmd>Telescope jumplist<cr> 
-nnoremap tp <cmd>Telescope find_files<cr>
 nnoremap tf <cmd>Telescope file_browser<cr>
 nnoremap tz <cmd>Telescope current_buffer_fuzzy_find<cr>
 nnoremap tb <cmd>Telescope buffers<cr>
@@ -477,6 +477,7 @@ nnoremap tg <cmd>Telescope git_status<cr>
 nnoremap tk <cmd>Telescope keymaps<cr>
 nnoremap tc <cmd>Telescope colorscheme<cr>
 
+lua require('telescope').setup({ defaults = { layout_strategy = 'flex', width_padding = 0, layout_config = { horizontal = { width = 0.99 } }}})
 set maxmempattern=3000 " fix pattern uses more memory than 'maxmempattern', default is 2000
 
 """""""""""""""""""
