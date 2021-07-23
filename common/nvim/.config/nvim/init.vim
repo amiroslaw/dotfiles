@@ -1,3 +1,4 @@
+" S-k - jump to help page 
 """"""""""""""""""""""""""
 """""" PLUGINS
 
