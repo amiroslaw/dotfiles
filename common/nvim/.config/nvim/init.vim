@@ -460,7 +460,7 @@ inoremap <silent><expr> <C-k>     compe#scroll({ 'delta': -1 })
 " https://github.com/nvim-telescope/telescope.nvim#pickers
 nnoremap <c-s> <cmd>Telescope live_grep<cr>
 nnoremap <c-f> <cmd>Telescope find_files<cr>
-nnoremap tp <cmd>Telescope find_files<cr>
+nnoremap tp <cmd>Telescope find_files find_command=rg,--hidden,--files<cr>
 nnoremap tl <cmd>Telescope<cr>
 nnoremap tj <cmd>Telescope jumplist<cr> 
 nnoremap tf <cmd>Telescope file_browser<cr>
@@ -470,6 +470,7 @@ nnoremap to <cmd>Telescope oldfiles<cr>
 nnoremap tr <cmd>Telescope registers<cr>
 nnoremap ts <cmd>Telescope spell_suggest<cr>
 nnoremap th <cmd>Telescope search_history<cr> 
+nnoremap tH <cmd>Telescope command_history<cr> 
 nnoremap tt :silent !ctags -R . <CR>:redraw!<cr>:Telescope current_buffer_tags<CR>
 nnoremap T :silent !ctags -R . <CR>:redraw!<cr>:Telescope tags<CR>
 nnoremap tm <cmd>Telescope marks<cr>
@@ -478,7 +479,7 @@ nnoremap tg <cmd>Telescope git_status<cr>
 nnoremap tk <cmd>Telescope keymaps<cr>
 nnoremap tc <cmd>Telescope colorscheme<cr>
 
-lua require('telescope').setup({ defaults = { layout_strategy = 'flex', width_padding = 0, layout_config = { horizontal = { width = 0.99 } }}})
+lua require('telescope').setup({ defaults = { layout_strategy = 'flex', width_padding = 0, layout_config = { horizontal = { width = 0.99, preview_width = 0.6}, vertical = {width = 0.9, height = 0.99, preview_height = 0.75 } }}})
 set maxmempattern=3000 " fix pattern uses more memory than 'maxmempattern', default is 2000
 
 """""""""""""""""""

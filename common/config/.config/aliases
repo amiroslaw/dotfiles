@@ -110,8 +110,6 @@ ff() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
   rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 }
-# abduco
-alias tor='abduco -A tor rtorrent'
 
 # SYSTEM
 #{{{
@@ -137,9 +135,11 @@ alias search='pacman -Ss'
 #Programs alias
 #{{{
 alias bookworm='com.github.babluboy.bookworm'
+alias tor='abduco -A tor rtorrent'
 alias ping='prettyping'
 alias vi='nvim'
 alias neofetch='fastfetch'
+alias rest='wuzz'
 alias vim='nvim'
 alias ggit='grv'
 alias viswap_rm= 'rm ~/.local/share/nvim/swap/*'
@@ -160,6 +160,7 @@ alias music='ncmpcpp'
 alias dragon='dragon-drag-and-drop -t'
 alias open='xdg-open '
 alias op='xdg-open '
+alias li='lua -i'
 #}}}
 
 #Programy coś wykonują
@@ -202,6 +203,7 @@ alias checkout='git checkout'
 alias clone='git clone'
 alias commit='git commit -am'
 alias fetch='git fetch'
+alias gdiff='git diff'
 alias pull='git pull origin'
 alias push='git push origin'
 alias stat='git status'  # 'status' is protected name so using 'stat' instead
