@@ -1,3 +1,4 @@
+" S-k - jump to help page 
 """"""""""""""""""""""""""
 """""" PLUGINS
 
@@ -479,7 +480,7 @@ nnoremap tg <cmd>Telescope git_status<cr>
 nnoremap tk <cmd>Telescope keymaps<cr>
 nnoremap tc <cmd>Telescope colorscheme<cr>
 
-lua require('telescope').setup({ defaults = { layout_strategy = 'flex', width_padding = 0, layout_config = { horizontal = { width = 0.99, preview_width = 0.6}, vertical = {width = 0.9, height = 0.99, preview_height = 0.75 } }}})
+lua require('telescope').setup({ defaults = { layout_strategy = 'flex', width_padding = 0, layout_config = { horizontal = { width = 0.99 }, vertical = {width = 0.9, height = 0.99, preview_height = 0.75 } }}})
 set maxmempattern=3000 " fix pattern uses more memory than 'maxmempattern', default is 2000
 
 """""""""""""""""""
