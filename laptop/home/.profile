@@ -29,6 +29,7 @@ unset MANPATH
 
 # paths
 export XDG_CONFIG_HOME="$HOME/.config"
+export CONFIG="$HOME/Documents/Ustawienia"
 export GTK2_RC_FILES="$HOME/.config/gtkrc-2.0"
 export ROFI="$HOME/.config/rofi/scripts"
 export GRAVEYARD="$HOME/.local/share/Trash"
