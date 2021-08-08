@@ -127,7 +127,8 @@ set cursorline cursorcolumn
 """""" SHORTCUTS
 "" change leader key from \ to ;
 let mapleader=";"
-nnoremap <leader>/ :nohlsearch<cr>
+nnoremap <leader>/ :hlsearch!<cr>
+map <F5> :source $HOME/.config/nvim/init.vim<cr>
 " move lines up and down
 nnoremap <c-a-j> :m .+1<CR>
 nnoremap <c-a-k> :m .-2<CR>
@@ -211,7 +212,7 @@ nnoremap <C-e> z=
 nnoremap <S-e> [s 
 nnoremap <C-]> ]s
 " doesn't work <C-[> 
-"replace from selection
+"replace from selection/ substitution
 vnoremap <A-r> "hy:%s/<C-r>h//g<left><left><left> 
 
 """""""""""""""""""
