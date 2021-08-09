@@ -106,7 +106,8 @@ augroup highlight_yank
 augroup END
 " IncSearch
 set ignorecase smartcase hlsearch incsearch
-set number relativenumber
+set number
+" set relativenumber
 " substitution 
 set inccommand=split
 set clipboard^=unnamedplus
@@ -128,7 +129,7 @@ set cursorline cursorcolumn
 """""" SHORTCUTS
 "" change leader key from \ to ;
 let mapleader=";"
-nnoremap <leader>/ :hlsearch!<cr>
+nnoremap <leader>/ :nohlsearch<cr>
 map <F5> :source $HOME/.config/nvim/init.vim<cr>
 " move lines up and down
 nnoremap <c-a-j> :m .+1<CR>

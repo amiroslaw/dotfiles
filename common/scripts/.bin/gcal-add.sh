@@ -8,7 +8,7 @@ reminder=$(zenity --forms --title="reminder" \
    --add-entry="Title" \
    --add-entry="Hour" \
    --add-entry="Minutes" \
-   --add-entry="Duration" \
+   --add-entry="Duration [h]" \
    --add-calendar="Date" \
 	--forms-date-format=%m/%d/%Y \
    --add-entry="Description" \

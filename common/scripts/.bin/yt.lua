@@ -31,7 +31,7 @@ function download(cmd)
 	end
 end
 
-local status, val = pcall(download(typeSwitch(fileType)))
+local status, val = pcall(download, typeSwitch(fileType))
 
 os.execute("dunstify '" .. val .. "'")
 

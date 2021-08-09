@@ -209,8 +209,8 @@ super + F{1,2,3,4,7,8,9,10,11,12}
 	kitty vifm, \
 	pcmanfm, \
 	sh -c 'cd $NOTE; $TERM_LT -t note nvim', \
-	todo.sh add, \
-	todo.sh show, \
+	todo.lua add, \
+	todo.lua show, \
 	pamac-manager, \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu
@@ -219,7 +219,7 @@ super + F{1,2,3,4,7,8,9,10,11,12}
 
 # show/add into todo list; add event to the google calendar
 super + {_,shift,ctrl} + y
-	{ todo.sh show, todo.sh add, gcal-add.sh }
+	{ todo.lua show, todo.lua add, gcal-add.lua }
 
 super + {_,shift,ctrl} + Delete 
 	{rmmpv-playing.sh, rmmpd-playing.sh, xkill}
