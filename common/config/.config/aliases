@@ -160,7 +160,6 @@ alias music='ncmpcpp'
 alias dragon='dragon-drag-and-drop -t'
 alias open='xdg-open '
 alias op='xdg-open '
-alias li='lua -i'
 #}}}
 
 #Programy coś wykonują

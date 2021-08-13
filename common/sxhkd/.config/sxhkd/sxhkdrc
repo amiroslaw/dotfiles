@@ -145,6 +145,7 @@ super + {bracketright,bracketleft}
 super + shift + {bracketleft,bracketright}
 	bspc node @/ -F {horizontal,vertical}
 
+# TODO add yt and dictionary in lua script base to ~/Documents/Ustawienia/skrypty/moje/selection.sh
 # search in google; dont combine shortcuts
 super + g
 	 $BROWSER  "google.com/search?q=$(xclip -o -sel primary | sed -e 's/ /+/g')"
@@ -233,39 +234,47 @@ super + ctrl + f
 	# rofi-finder.sh
  # $ROFI/locate.py
 
+super + shift + s 
+	tuxi.sh	
+
 # tui
 super + o ; {o,i,p,b,t}
 	$TERM_LT -e {notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nm-menu\nt-telegram", \
 		nmtui,ncmpcpp,bmenu,tg}
 
-# script in background, add note should be on the end
-super + s ; {s,k,m,v,a,A,y,Y,c,i,n}
-	{dunstify options: "m-magnet\nv-video\na-audio yt\ny-yt video\nn-add note\nc-calendar\nk-kindle\ni-investing", \
-    kindle-send.sh && dunstify "sent to kindle", \
-    magnet.sh && dunstify "download torrent", \
-    mpv $(xclip -o -sel clip), \
-    yt.lua 1 audio, \
-    yt.lua 10 audio, \
-    yt.lua 1 video, \
-    yt.lua 10 video, \
+# script in background - I think it reach the max command that sxhkd can handle
+# super + s ; {s,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i,n,N,c,C}
+super + s ; {s,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
+	{dunstify options: "m(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr(R)-read\nc-calendar\nk(K)-kindle\ni-investing", \
+    url.lua kindle 1,  url.lua kindle 10, \
+    url.lua tor 1,  url.lua tor 10, \
+    url.lua video 1,  url.lua video 10, \
+    url.lua audio 1,  url.lua audio 10, \
+    url.lua yt 1,  url.lua yt 10,  \
+    url.lua gallery 1,  url.lua gallery 10,  \
+    url.lua wget 1, url.lua wget 10,  \
+    url.lua read 1, url.lua read 10,  \
 	gcal-show.sh, \
-	investing-cli -n, \
-    xclip -o -selection clip >> $NOTE/clip.adoc  && echo >> $NOTE/clip.adoc  && dunstify "copied to clip.adoc"
+	investing-cli -n
 }
+ctrl + shift + z
+	$ROFI/clipster/roficlip
 
-super + shift + s 
-	tuxi.sh	
-
-# clipster
-super + c ; {c,g,p,d,r,j,n,s}
-	{dunstify options: "g-gui\np-primary\nd-remove clip\nr-remove primary\nj-join\nn-previous clip\ns-second primary", \
+# clipster and notes; add J nad fix previous-copy primary
+super + c ; {c,g,p,r,R,j,J,n,N,k,K,l,L,w}
+	{dunstify options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from sel\nl(L)-note from clip\nw -write note", \
 	clipster -sc, \
 	$ROFI/clipster/roficlip-primary, \
 	clipster -r, \
 	clipster -cr, \
 	$ROFI/clipster/clipjoin, \
+	$ROFI/clipster/clipjoin, \ 
 	$ROFI/clipster/previous-copy, \
-	$ROFI/clipster/previous-copy primary}
+	$ROFI/clipster/previous-copy primary, \
+	note.lua sel 1, note.lua sel, \
+	note.lua clip 1, note.lua clip, \
+	note.lua write
+	}
 
 #
 # ROFI 
@@ -290,10 +299,6 @@ super + shift + t
 # mount 
 super + ctrl + u
 	$ROFI/mount-launcher.sh
-# clip
-ctrl + shift + z
-	$ROFI/clipster/roficlip
-
 #
 # MEDIA KEYS
 # ______________    

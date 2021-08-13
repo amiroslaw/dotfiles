@@ -1,6 +1,6 @@
 #!/bin/bash
 
-lines=$(rofi -dmenu -p "join clipboard ")
+lines=$(rofi -monitor -4 -lines 0 -width -22 -dmenu -p "join clipboard ")
 
 if [ -z "$lines" ]
 then

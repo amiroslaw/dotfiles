@@ -2,7 +2,7 @@
 
 # peeks="dic|en-p|pl-e|txt-en-p|txt-pl-e"
 peeks="en-p|pl-e|txt-en-p|txt-pl-e|dic|list"
-peek=$(echo $peeks | rofi -width 20 -lines 8 -sep '|' -dmenu -p "Choose mode > ")
+peek=$(echo $peeks | rofi -moniotor -4 -width -24 -lines 6 -sep '|' -dmenu -p "Choose mode")
 
 case "$peek" in
 	dic) ~/.config/rofi/scripts/tran/selfrunning/dic.sh ;;
