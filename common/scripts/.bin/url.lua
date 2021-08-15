@@ -1,11 +1,14 @@
 #!/bin/luajit
--- todo: rofi with list of actions
 -- optimalization 
 -- kindle - I execute 2 times, maybe I don't need title of the article, I can useos.tmpfile - but it remove file after end of the script
+package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
+util = require('scriptsUtil')
+
 HELP = [[
 Utils for using URLs from the system clipboard.
 link.lua action [number|url] 
 List of the actions:
+		menu - show rofi with available actions
 		audio - downlad audio via youtube-dl 
 		yt - downlad video via youtube-dl 
 		tor - create torrent file form a magnetlink
@@ -17,6 +20,7 @@ List of the actions:
 
 List of the options:
 		number - number of line from clipboard-default is 1
+		input - show form input for the number
 		url - link of the website
 		-h help - show help
 
@@ -31,16 +35,6 @@ LINK_REGEX = "^https?://(([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d
 TOR_REGEX = "xt=urn:btih:([^&/]+)"
 action = arg[1]
 urlArg = arg[2] and arg[2] or 1
-
-function notify(msg)
-	print(msg)
-	os.execute("dunstify '" .. msg .. "'")
-end 
-
-function errorHandling(msg)
-	notify(msg)
-	error(msg)
-end
 
 function execXargs(args, cmd)
 	args = table.concat(args, '\n')
@@ -72,9 +66,11 @@ function sendToKindle(linkTab)
 	os.execute('mkdir -p ' .. tmpDir)
 
 	for i, link in ipairs(linkTab) do
+		print('readable -q true -p title "' .. link .. '"')
+		
 		local title = io.popen('readable -q true -p title ' .. link):read('*a'):gsub('%s', '-')
 		if #title == 0 then error("Can not get title form readable") end
-		local createFile, ss = os.execute('readable -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. title .. '.docx')
+		local createFile = os.execute('readable -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. title .. '.docx')
 		local sendFile = os.execute('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Kindle" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
 
 		if createFile ~= 0 or sendFile ~= 0 then -- readability-cli return 0 in error 
@@ -123,21 +119,25 @@ function gallery()
 	return execXargs, cmd
 end
 
+local options = {
+	["audio"]= audio,
+	["yt"]= yt,
+	["tor"]= function() return createTorrent end,
+	["kindle"]= function() return sendToKindle end,
+	["read"]= function() return readable end,
+	["wget"]= wget,
+	["video"]= function() return execXargs, "| xargs -P 0 -I {} mpv {}" end,
+	["gallery"]= gallery,
+	["-h"]= function() print(HELP); os.exit() end,
+	["#default"]= audio
+}
 local switch = (function(name,args)
-	local sw = {
-		["audio"]= audio,
-		["yt"]= yt,
-		["tor"]= function() return createTorrent end,
-		["kindle"]= function() return sendToKindle end,
-		["read"]= function() return readable end,
-		["wget"]= wget,
-		["video"]= function() return execXargs, "| xargs -P 0 -I {} mpv {}" end,
-		["gallery"]= gallery,
-		["-h"]= function() print(HELP); os.exit() end,
-		["#default"]= audio
-	}
+	local sw = options
 	return (sw[name]and{sw[name]}or{sw["#default"]})[1](args)
 end)
+if action == 'menu' then
+	action = util.menu(options)
+end
 
 function filtrLinks(clipboardStream, regex)
 	local links = {}
@@ -145,11 +145,14 @@ function filtrLinks(clipboardStream, regex)
 		local match = line:match(regex)
 		if match then table.insert(links, line) end
 	end
-	if #links  == 0 then errorHandling('No link provided') end
+	if #links  == 0 then util.errorHandling('No link provided') end
 	return links
 end
 
 linkTab = {}
+if urlArg == 'input' then
+	urlArg = util.input('No. urls')	
+end
 if action == '-h' or action == 'help' then 
 	action = '-h'
 elseif tonumber(urlArg) then
@@ -162,5 +165,5 @@ end
 
 local exec, cmd = switch(action)
 local status, val = pcall(exec, linkTab, cmd)
-notify(val)
+util.notify(val)
 

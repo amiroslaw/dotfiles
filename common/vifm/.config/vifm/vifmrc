@@ -352,7 +352,7 @@ filextype {*.djvu},<image/vnd.djvu>
         \ pqiv  %f %i,
 
 " Images
-filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp},<image/*>
+filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm},<image/*>
         \ pqiv %f,
         \ sxiv -fa %f %i,
 		" \ echo %f > ~/test,

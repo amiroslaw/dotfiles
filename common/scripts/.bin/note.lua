@@ -6,11 +6,11 @@ HELP = [[
 Utils for working with notes.
 note.lua clip|sel|write|-h [number]
 List of the options:
-clip, clipboard - clip notes from secondary clipboard 
-sel, selection - clip notes from primary (selection) clipboard 
-write - write note form form input
-number - number of clipboard history, if it will be empty, input form will appear
--h help - write help
+	clip, clipboard - clip notes from secondary clipboard 
+	sel, selection - clip notes from primary (selection) clipboard 
+	write - write note form form input
+	number - number of clipboard history, if it will be empty, input form will appear
+	-h help - write help
 
 -- dependency: rofi, clipster
 ]]

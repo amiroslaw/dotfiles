@@ -7,7 +7,7 @@ end
 
 function util.errorHandling(msg)
 	util.notify('Error: ' .. msg)
-	-- error(msg) -- does not work
+	error(msg) -- does not work
 end
 
 function util.input(prompt, width)
@@ -24,5 +24,18 @@ function util.numberInput(prompt)
 	return input
 end 
 
+function util.rofi(optionTab, prompt)
+	local prompt = prompt and prompt or 'Select'
+	local options = table.concat(optionTab, '|')
+	return io.popen('echo "' .. options .. '" | rofi -monitor -4 -i -sep "|" -dmenu -p "' .. prompt .. '"'):read('*a'):gsub('%s', '')
+end
+
+function util.menu(unorderTab)
+	local optionTab = {}
+	for name,val in pairs(unorderTab) do
+		table.insert(optionTab, name)
+	end
+	return util.rofi(optionTab)
+end
 
 return util

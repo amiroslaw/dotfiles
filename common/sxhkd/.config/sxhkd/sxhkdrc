@@ -145,14 +145,6 @@ super + {bracketright,bracketleft}
 super + shift + {bracketleft,bracketright}
 	bspc node @/ -F {horizontal,vertical}
 
-# TODO add yt and dictionary in lua script base to ~/Documents/Ustawienia/skrypty/moje/selection.sh
-# search in google; dont combine shortcuts
-super + g
-	 $BROWSER  "google.com/search?q=$(xclip -o -sel primary | sed -e 's/ /+/g')"
-
-super + shift + g
-	$BROWSER "google.com/?q=$(xclip -o -sel clip | sed -e 's/ /+/g')"
-
 #Change window gap
 super + ctrl + g
 	bspc config -d focused window_gap {$gap,$(($gap+$gap)),$(($gap+$gap+$gap))}
@@ -234,18 +226,47 @@ super + ctrl + f
 	# rofi-finder.sh
  # $ROFI/locate.py
 
-super + shift + s 
-	tuxi.sh	
+
+# search
+super + {_, shift,ctrl} + g
+	{search.lua brave primary, search.lua brave clip, search.lua google primary}
+
+super + e ; {e,h,g,G,b,B,u,U,y,Y,m,M}
+	{ dunstify options: " (capital-clipboard):\nh-help menu\ng-google\nb-brave\nu-duckduck\ny-yt\nm-maps\nw-wiki\nc-ceneo\no-cenowarka\na-allegro\nz-amazon\ns-so\nf-filmweb\nd-diki\nl-deepL\nr-translator\np-pl-en trans\ne-en-pl trans\nx-tuxi\nt-tor", \
+	search.lua menu input, \
+	search.lua google primary, search.lua google clip, \
+	search.lua brave primary, search.lua brave clip, \
+	search.lua dd primary, search.lua dd clip, \
+	search.lua yt primary, search.lua yt clip, \
+	search.lua maps primary, search.lua maps clip}
+
+super + e ; {w,W,c,C,o,O,a,A,z,Z,s,S,f,F,x,X,t,T}
+	{ search.lua wiki primary, search.lua wiki clip, \
+	search.lua ceneo primary, search.lua ceneo clip, \
+	search.lua cenowarka primary, search.lua cenowarka clip, \
+	search.lua allegro primary, search.lua allegro clip, \
+	search.lua amazon primary, search.lua amazon clip, \
+	search.lua so primary, search.lua so clip, \ 
+	search.lua filmweb primary, search.lua filmweb clip, \
+	search.lua tuxi input, search.lua tuxi clip, \
+	search.lua tor primary, search.lua tor clip }
+
+super + e ; {d,D,l,L,r,R,p,P,n,N}
+	{ search.lua diki primary, search.lua diki clip, \
+	search.lua deepl primary, search.lua deepl clip, \
+	search.lua translator primary, search.lua translator clip, \
+	search.lua plen primary, search.lua plen clip, \
+	search.lua enpl primary, search.lua enpl clip}
 
 # tui
 super + o ; {o,i,p,b,t}
 	$TERM_LT -e {notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nm-menu\nt-telegram", \
 		nmtui,ncmpcpp,bmenu,tg}
 
-# script in background - I think it reach the max command that sxhkd can handle
-# super + s ; {s,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i,n,N,c,C}
-super + s ; {s,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
-	{dunstify options: "m(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr(R)-read\nc-calendar\nk(K)-kindle\ni-investing", \
+# script in background - url.lua menu will ask for the number of the links
+super + s ; {s,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
+	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr(R)-read\nc-calendar\nk(K)-kindle\ni-investing", \
+    url.lua menu input, \
     url.lua kindle 1,  url.lua kindle 10, \
     url.lua tor 1,  url.lua tor 10, \
     url.lua video 1,  url.lua video 10, \
@@ -254,28 +275,26 @@ super + s ; {s,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
     url.lua gallery 1,  url.lua gallery 10,  \
     url.lua wget 1, url.lua wget 10,  \
     url.lua read 1, url.lua read 10,  \
-	gcal-show.sh, \
-	investing-cli -n
+	gcal-show.sh, investing-cli -n
 }
+
 ctrl + shift + z
 	$ROFI/clipster/roficlip
 
 # clipster and notes; add J nad fix previous-copy primary
 super + c ; {c,g,p,r,R,j,J,n,N,k,K,l,L,w}
-	{dunstify options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from sel\nl(L)-note from clip\nw -write note", \
+	{dunstify options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from clip\nl(L)-note from sel\nw -write note", \
 	clipster -sc, \
 	$ROFI/clipster/roficlip-primary, \
-	clipster -r, \
-	clipster -cr, \
-	$ROFI/clipster/clipjoin, \
-	$ROFI/clipster/clipjoin, \ 
-	$ROFI/clipster/previous-copy, \
-	$ROFI/clipster/previous-copy primary, \
-	note.lua sel 1, note.lua sel, \
+	clipster -r, clipster -cr, \
+	clipster.lua join clipboard, clipster.lua join primary, \
+	clipster.lua next clipboard, clipster.lua next primary, \
 	note.lua clip 1, note.lua clip, \
+	note.lua sel 1, note.lua sel, \
 	note.lua write
 	}
-
+super + shift + c 
+	clipster.lua next clipboard 
 #
 # ROFI 
 # ______________    
@@ -291,11 +310,12 @@ super + shift + d
 super + ctrl + d
 	 $ROFI/mbmain
 # bindsym $mod+shift+d exec --no-startup-id "rofi -modi window,top,drun -show window -show-icons -sidebar-mode -terminal st"
-super + t
-	$ROFI/tran/trans-launcher.sh
-# translator with notification
-super + shift + t
-	rofi -modi dic:$ROFI/tran/dic-speak.sh,enpl:$ROFI/tran/enpl-notify.sh,plen:$ROFI/tran/plen-notify.sh -show enpl -sidebar-mode -terminal $TERM_LT -lines 1 -width 30
+# translator 
+super + {_,shift,ctrl} + t
+	{	search.lua enpl primary, \
+		$ROFI/tran/trans-launcher.sh, \
+		search.lua plen primary
+	}
 # mount 
 super + ctrl + u
 	$ROFI/mount-launcher.sh
@@ -464,3 +484,12 @@ mod1 + @button1
 # Switch to the other monitor.
 #mod3 + o
 	# bspc monitor -f next
+
+
+# UNUSED shortcut
+
+# super + shift + s 
+
+# OLD
+
+	# rofi -modi dic:$ROFI/tran/dic-speak.sh,enpl:$ROFI/tran/enpl-notify.sh,plen:$ROFI/tran/plen-notify.sh -show enpl -sidebar-mode -terminal $TERM_LT -lines 1 -width 30 slow

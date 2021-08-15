@@ -131,6 +131,7 @@ set cursorline cursorcolumn
 let mapleader=";"
 nnoremap <leader>/ :nohlsearch<cr>
 map <F5> :source $HOME/.config/nvim/init.vim<cr>
+nnoremap Zz :q! <cr> 
 " move lines up and down
 nnoremap <c-a-j> :m .+1<CR>
 nnoremap <c-a-k> :m .-2<CR>
@@ -156,7 +157,6 @@ map <leader>sudo :w !sudo tee % <CR><CR>
 " coping and pasting 
 nmap Y y$
 nmap P :pu<CR>
-
 "" insert mode
 " move to the nexst/previous word
 inoremap <C-a> <C-o>b
@@ -216,6 +216,13 @@ nnoremap <C-]> ]s
 " doesn't work <C-[> 
 "replace from selection/ substitution
 vnoremap <A-r> "hy:%s/<C-r>h//g<left><left><left> 
+
+"""""""""""""""""""
+" TEXT OBJECTS
+"""""""""""""""""""
+" current line - doesn't work ^vg_ triming spaces in the end
+xnoremap il ^o$h 
+onoremap il :normal vil<CR>
 
 """""""""""""""""""
 """""" MAKRA
