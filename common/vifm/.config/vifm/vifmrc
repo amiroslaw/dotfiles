@@ -348,8 +348,8 @@ filetype *.sha512 sha512sum -c %f %S,
  
 " Djvu
 filextype {*.djvu},<image/vnd.djvu>
-        \ zathura %f %i,,
-        \ pqiv  %f %i,
+        \ pqiv %f %i,
+        \ zathura %f %i,
 
 " Images
 filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm},<image/*>

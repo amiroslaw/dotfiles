@@ -58,7 +58,6 @@ bspc rule -a spotify state=pseudo_tiled
 bspc rule -a file-roller state=floating center=true
 bspc rule -a astime sticky=on
 bspc rule -a wbar layer=above
-bspc rule -a google-chrome-unstable private=on
 bspc rule -a google-chrome-stable private=on
 bspc rule -a chromium private=on
 bspc rule -a firefox private=on
@@ -67,8 +66,6 @@ bspc rule -a libreoffice state=tiled
 bspc rule -a '*:libreofficedev' state=tiled
 bspc rule -a '*:soffice' state=tiled
 #bspc rule -a firefox desktop=I
-bspc rule -a 9menu border=off manage=off
-bspc rule -a tint2 border=off manage=off
 bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
 bspc rule -a megasync state=floating
 bspc rule -a '*:dropdown' state=fullscreen
@@ -77,6 +74,8 @@ bspc rule -a Zathura state=tiled
 bspc rule -a yad state=floating
 bspc rule -a zenity state=floating
 bspc rule -a reminder state=floating
+bspc rule -a menu state=floating
+bspc rule -a pqiv state=tiled
 #bspc rule -a nautilus state=pseudo_tiled
 #bspc rule -a skype state=pseudo_tiled
 #bspc rule -a urxvt state=floating center=true

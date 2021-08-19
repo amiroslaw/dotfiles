@@ -66,19 +66,20 @@ function sendToKindle(linkTab)
 	os.execute('mkdir -p ' .. tmpDir)
 
 	for i, link in ipairs(linkTab) do
-		print('readable -q true -p title "' .. link .. '"')
-		
-		local title = io.popen('readable -q true -p title ' .. link):read('*a'):gsub('%s', '-')
-		if #title == 0 then error("Can not get title form readable") end
-		local createFile = os.execute('readable -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. title .. '.docx')
-		local sendFile = os.execute('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Kindle" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
-
-		if createFile ~= 0 or sendFile ~= 0 then -- readability-cli return 0 in error 
+		local title = io.popen('readable -q true "' .. link .. '" -p title'):read('*a'):gsub('%s', '-')
+		if #title ~= 0 then 
+			local createFile = os.execute('readable -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. title .. '.docx')
+			local sendFile = os.execute('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Kindle" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
+			if createFile ~= 0 or sendFile ~= 0 then -- readability-cli return 0 in error 
+				table.insert(articlesWithErrors, link)
+			end
+		else
 			table.insert(articlesWithErrors, link)
 		end
+
 	end
 	if #articlesWithErrors > 0 then
-		error('Could not send ' .. table.concat(articlesWithErrors, '\n'))
+		error('Could not send ' .. #articlesWithErrors .. ' articles\n' .. table.concat(articlesWithErrors, '\n'))
 	end
 	return 'Sent ' .. #linkTab .. ' articles'
 end

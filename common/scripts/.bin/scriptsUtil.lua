@@ -6,7 +6,8 @@ function util.notify(msg)
 end 
 
 function util.errorHandling(msg)
-	util.notify('Error: ' .. msg)
+	os.execute("dunstify -u critical Error: '" .. msg .. "'")
+	-- util.notify('Error: ' .. msg .. ' ')
 	error(msg) -- does not work
 end
 

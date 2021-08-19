@@ -325,6 +325,8 @@ alias -g H='| head'
 alias -g T='| tail'
 alias -g SN='| sort -n'
 alias -g L='| less'
+alias -g W='| wc'
+
 # copy terminal output into clipboard
 alias -g C='| xclip -sel clip'
 # copy line np. ls | yank -l or yank < file.txt
