@@ -166,6 +166,7 @@ alias op='xdg-open '
 #Programy coś wykonują
 #{{{
 # curl cheat.sh/java/compute+map
+alias rmsl='find . -xtype l -delete' # remove broken symlinks form the directory
 alias cht='curl cheat.sh/'
 alias chtj='curl cheat.sh/java/'
 alias yt='youtube-viewer -C'
@@ -351,6 +352,7 @@ alias -g H='$(fd --hidden | fzf) '
 #}}}
 #FUNCTIONS
 #{{{
+alias kindlecp-media='cp "/media/Kindle/documents/My Clippings.txt" ~/'
 alias mkcd='take'
 # mkcd () {
 #   case "$1" in /*) :;; *) set -- "./$1";; esac
