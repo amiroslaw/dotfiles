@@ -42,11 +42,8 @@ function createGcalCmd(inputs)
 		gcalCmd = 'gcalcli --config-folder="' .. CONFIG .. '" --calendar "arek" add --title "' .. title .. '" --when "' .. duration .. ' ' .. hour .. ':' .. minutes .. '" --duration 60 --description "' .. description ..'" --where " " --reminder "10m popup"'
 	end
 
-	if os.execute(gcalCmd) == 0 then
-		return "Added event - "  .. title
-	else
-		error("Can not add event")
-	end
+	assert(os.execute(gcalCmd) == 0, "Can not add event")
+	return "Added event - "  .. title
 end
 
 form = zenity()

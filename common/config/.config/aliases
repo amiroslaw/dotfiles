@@ -116,7 +116,8 @@ ff() {
 alias _='sudo'
 alias shut='sudo shutdown -h now'
 # get error messages from journalctl
-alias journal="journalctl -p 3 -xb"
+alias logs='journalctl -b'
+alias logserr="journalctl -p 3 -xb"
 
 alias sysstat='systemctl status '
 alias sysrestart='sudo systemctl restart '

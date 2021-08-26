@@ -25,10 +25,15 @@ function util.numberInput(prompt)
 	return input
 end 
 
-function util.rofi(optionTab, prompt)
+function util.select(optionTab, prompt)
 	local prompt = prompt and prompt or 'Select'
-	local options = table.concat(optionTab, '|')
-	return io.popen('echo "' .. options .. '" | rofi -monitor -4 -i -sep "|" -dmenu -p "' .. prompt .. '"'):read('*a'):gsub('%s', '')
+	local options = ''
+	local lines = 0
+	for name,val in pairs(optionTab) do
+		options = options  .. val	.. '|'
+		lines = lines + 1
+	end
+	return io.popen('echo "' .. options .. '" | rofi -monitor -4 -i -lines ' .. lines .. ' -sep "|" -dmenu -p "' .. prompt .. '"'):read('*a'):gsub('%s', '')
 end
 
 function util.menu(unorderTab)
@@ -36,7 +41,15 @@ function util.menu(unorderTab)
 	for name,val in pairs(unorderTab) do
 		table.insert(optionTab, name)
 	end
-	return util.rofi(optionTab)
+	return util.select(optionTab)
+end
+
+function util.split(str, delimiter)
+    result = {};
+    for match in (str..delimiter):gmatch("(.-)"..delimiter) do
+        table.insert(result, match);
+    end
+    return result[1], result[2]
 end
 
 return util

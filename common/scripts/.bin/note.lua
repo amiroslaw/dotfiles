@@ -33,7 +33,7 @@ function clipster(clipType)
 	-- local clipElements = io.popen("clipster --output --" .. clipType .. " -n " .. clipboardAmount):read('*a') -- for LIFO order
 	local clipElements = {}
 	local clipsterOutput = io.popen("clipster --output --delim " .. delimiter .. " --" .. clipType .. " -n " .. clipboardAmount + 1):read('*a')
-	if #clipsterOutput == 0 then error("Can not get clipboard history") end
+	assert(#clipsterOutput ~= 0, "Can not get clipboard history")
 
 	for token in clipsterOutput:gmatch("(.-)" .. delimiter) do
 		table.insert(clipElements, token)

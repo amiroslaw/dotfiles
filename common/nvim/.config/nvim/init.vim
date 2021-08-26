@@ -14,7 +14,6 @@ Plug 'SirVer/ultisnips'
 Plug 'mhinz/vim-startify' "start screen
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'} 
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo'} " zen mode
-Plug 'j5shi/CommandlineComplete.vim' " I have shortcut for substitution
 " Plug 'vim-scripts/YankRing.vim' " fix keybinding
 " CODE
 Plug 'tpope/vim-surround'

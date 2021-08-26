@@ -27,7 +27,7 @@ end
 function nextClip() 
 	-- local clipsterOutput = io.popen("clipster --output -0 -N 1 -m '' --clipboard"):read('*a'):gsub('\0', '\n')
 	local clipsterOutput = io.popen("clipster --output -N 1 -m '' --" .. clipType):read('*a')
-	if #clipsterOutput == 0 then error("Can not get clipboard history") end
+	assert(#clipsterOutput ~= 0, "Can not get clipboard history")
 	
 	if os.execute('echo -n "' .. clipsterOutput .. '" | clipster --clipboard') == 0 then 
 		paste()
@@ -43,15 +43,13 @@ function join()
 	else
 		clipboardAmount = arg[3]
 	end
-	print("clipster --output --" .. clipType .. " -n " .. clipboardAmount)
 	
 	local clipsterOutput = io.popen("clipster --output --" .. clipType .. " -n " .. clipboardAmount):read('*a')
-	if #clipsterOutput == 0 then error("Can not get clipboard history") end
-	if os.execute('echo "' .. clipsterOutput .. '" | clipster --clipboard') ~= 0 then 
-		error("Can not get clipboard history") 
-	end
+	assert(#clipsterOutput ~= 0, "Can not get clipboard history")
+	assert(os.execute('echo "' .. clipsterOutput .. '" | clipster --clipboard') == 0, "Can not get clipboard history")
 	return 'Joined ' .. clipType
 end
+
 local switch = (function(name,args)
 	local sw = {
 		["next"] = nextClip,

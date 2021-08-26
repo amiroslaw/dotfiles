@@ -39,11 +39,8 @@ urlArg = arg[2] and arg[2] or 1
 function execXargs(args, cmd)
 	args = table.concat(args, '\n')
 	local status = os.execute('echo "' .. args .. '" ' .. cmd)
-	if status == 0 then
-		return "Executed"
-	else
-		error("Could not execute command")
-	end
+	assert(status == 0, "Could not execute command")
+	return "Executed"
 end
 
 function createTorrent(magnetlinks)
@@ -68,6 +65,7 @@ function sendToKindle(linkTab)
 	for i, link in ipairs(linkTab) do
 		local title = io.popen('readable -q true "' .. link .. '" -p title'):read('*a'):gsub('%s', '-')
 		if #title ~= 0 then 
+			-- converting to pdf has error in pandoc, html need to have <html> <body> tags and has problem with encoding
 			local createFile = os.execute('readable -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. title .. '.docx')
 			local sendFile = os.execute('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Kindle" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
 			if createFile ~= 0 or sendFile ~= 0 then -- readability-cli return 0 in error 
@@ -78,9 +76,7 @@ function sendToKindle(linkTab)
 		end
 
 	end
-	if #articlesWithErrors > 0 then
-		error('Could not send ' .. #articlesWithErrors .. ' articles\n' .. table.concat(articlesWithErrors, '\n'))
-	end
+	assert(#articlesWithErrors == 0, 'Could not send ' .. #articlesWithErrors .. ' articles\n' .. table.concat(articlesWithErrors, '\n'))
 	return 'Sent ' .. #linkTab .. ' articles'
 end
 
@@ -89,9 +85,7 @@ function readable(linkTab)
 	for i, link in ipairs(linkTab) do
 		local createFile = os.execute('readable -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to asciidoc --output ' .. tmpname .. '.adoc')
 		os.execute('st -t read -e nvim ' .. tmpname .. '.adoc') -- can read form evns
-		if createFile ~= 0 then 
-			error('Could not create file')
-		end
+		assert(createFile == 0, 'Could not create file')
 	end
 	return 'Created file ' .. tmpname
 end 

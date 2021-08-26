@@ -65,7 +65,7 @@ font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 
 modules-left = bspwm windows1
 modules-center = mpd investing
-modules-right = cpu temp-amd fan-amd memory temp-nvidia fan-nvidia uptime filesystem wlan date weather pulseaudio powermenu updates
+modules-right = pomodoro cpu temp-amd fan-amd memory temp-nvidia fan-nvidia uptime filesystem wlan date weather pulseaudio powermenu updates
 ; system-usb-udev doesn't work
 ; pulseaudio alsa xbacklight battery volume eth xwindow bsplayout 
 tray-position = right
@@ -470,13 +470,21 @@ format-online-background = ${colors.background}
 ; bar-progress-fill-background = ${colors.background}
 ; bar-progress-indicator-foreground = ${colors.foreground}
 ; format-underline = ${colors.base10}
-;
+
+[module/pomodoro]
+type = custom/script
+exec = pomodoro.lua status
+click-middle = dunstify $(pomodoro status)
+click-left = pomodoro.lua add
+click-right = pomodoro clear 
+interval = 60
+
 [module/investing]
 type = custom/script
-exec = investing-cli --no-errors -o cdr,cie,btc
+exec = investing-cli --no-errors -o cdr,cie,btc && investing-cli -an
 click-left = investing-cli -n 
 click-right = investing-cli --no-errors -vpn -e PLN
-interval = 900
+interval = 1800
 
 [module/currency]
 type = custom/script

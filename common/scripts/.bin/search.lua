@@ -31,7 +31,7 @@ end
 
 function browser(url)
 	local status = os.execute('xdg-open ' .. url)
-	if not status then error('Could not browse') end
+	assert(status, 'Could not browse')
 end
 
 function transShell(dictionary)
@@ -47,12 +47,9 @@ function transShell(dictionary)
 end
 
 function tuxi() --show error but work fine
-	local output = io.popen('tuxi -ra "' .. phraseArg ..'"'):read('*a')
-	if #output == 0 then 
-		error("Can not search") 
-	else
-		os.execute("st -t read -e sh -c 'echo \"" .. output .. "\" | nvim -'") -- can take terminal form env and save file into tmp
-	end
+	local output = io.popen('txi -ra "' .. phraseArg ..'"'):read('*a')
+	assert(#output ~= 0, "Can not search")
+	os.execute("st -t read -e sh -c 'echo \"" .. output .. "\" | nvim -'") -- can take terminal form env and save file into tmp
 end
 
 local options = {
