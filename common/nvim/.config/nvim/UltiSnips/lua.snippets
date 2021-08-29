@@ -19,12 +19,14 @@ endsnippet
 
 snippet pri(nt)?! "print" b
 print($2)
-$0
 endsnippet
 
 snippet sout "print" b
 print($2)
-$0
+endsnippet
+
+snippet soucop "print from copy" b
+print(${1:`xclip -o -sel clip`})
 endsnippet
 
 snippet fun(ction)?! "New function" b

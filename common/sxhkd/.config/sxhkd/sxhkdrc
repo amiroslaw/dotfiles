@@ -202,8 +202,8 @@ super + F{1,2,3,4,7,8,9,10,11,12}
 	kitty vifm, \
 	pcmanfm, \
 	sh -c 'cd $NOTE; $TERM_LT -t note nvim', \
-	todo.lua add, \
 	todo.lua show, \
+	todo.lua add, \
 	pamac-manager, \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu
@@ -212,7 +212,7 @@ super + F{1,2,3,4,7,8,9,10,11,12}
 
 # show/add into todo list; add event to the google calendar
 super + {_,shift,ctrl} + y
-	{ todo.lua show, todo.lua add, gcal-add.lua }
+	{ pomodoro.lua add, todo.lua add, gcal-add.lua }
 
 super + {_,shift,ctrl} + Delete 
 	{rmmpv-playing.sh, rmmpd-playing.sh, xkill}
@@ -226,12 +226,11 @@ super + ctrl + f
 	# rofi-finder.sh
  # $ROFI/locate.py
 
-
 # search
 super + {_, shift,ctrl} + g
 	{search.lua brave primary, search.lua brave clip, search.lua google primary}
 
-super + e ; {e,h,g,G,b,B,u,U,y,Y,m,M}
+super + s ; {s,h,g,G,b,B,u,U,y,Y,m,M}
 	{ dunstify options: " (capital-clipboard):\nh-help menu\ng-google\nb-brave\nu-duckduck\ny-yt\nm-maps\nw-wiki\nc-ceneo\no-cenowarka\na-allegro\nz-amazon\ns-so\nf-filmweb\nd-diki\nl-deepL\nr-translator\np-pl-en trans\ne-en-pl trans\nx-tuxi\nt-tor", \
 	search.lua menu input, \
 	search.lua google primary, search.lua google clip, \
@@ -240,23 +239,23 @@ super + e ; {e,h,g,G,b,B,u,U,y,Y,m,M}
 	search.lua yt primary, search.lua yt clip, \
 	search.lua maps primary, search.lua maps clip}
 
-super + e ; {w,W,c,C,o,O,a,A,z,Z,s,S,f,F,x,X,t,T}
+super + s ; {w,W,c,C,o,O,a,A,z,Z,f,F,x,X,t,T}
 	{ search.lua wiki primary, search.lua wiki clip, \
 	search.lua ceneo primary, search.lua ceneo clip, \
 	search.lua cenowarka primary, search.lua cenowarka clip, \
 	search.lua allegro primary, search.lua allegro clip, \
 	search.lua amazon primary, search.lua amazon clip, \
-	search.lua so primary, search.lua so clip, \ 
 	search.lua filmweb primary, search.lua filmweb clip, \
 	search.lua tuxi input, search.lua tuxi clip, \
 	search.lua tor primary, search.lua tor clip }
 
-super + e ; {d,D,l,L,r,R,p,P,n,N}
+super + s ; {d,D,l,L,r,R,p,P,n,N}
 	{ search.lua diki primary, search.lua diki clip, \
 	search.lua deepl primary, search.lua deepl clip, \
 	search.lua translator primary, search.lua translator clip, \
 	search.lua plen primary, search.lua plen clip, \
 	search.lua enpl primary, search.lua enpl clip}
+	# search.lua so primary, search.lua so clip, \ anti bot checker
 
 # tui
 super + o ; {o,i,p,b,t}
@@ -264,7 +263,7 @@ super + o ; {o,i,p,b,t}
 		nmtui,ncmpcpp,bmenu,tg}
 
 # script in background - url.lua menu will ask for the number of the links
-super + s ; {s,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
+super + e ; {e,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
 	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr(R)-read\nc-calendar\nk(K)-kindle\ni-investing", \
     url.lua menu input, \
     url.lua kindle 1,  url.lua kindle 10, \

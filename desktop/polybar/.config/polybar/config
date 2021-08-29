@@ -244,7 +244,7 @@ click-left = pamac-manager &
 type = custom/script
 exec = uptime | awk -F, '{sub(".*up ",x,$1);print $1}'
 label = %output%
-format-prefix = " " 
+format-prefix = " " 
 interval = 300
 ; exec = ~/.config/polybar/system-uptime-pretty.sh
 format-underline = ${colors.secondary}
@@ -474,9 +474,10 @@ format-online-background = ${colors.background}
 [module/pomodoro]
 type = custom/script
 exec = pomodoro.lua status
-click-middle = dunstify $(pomodoro status)
+click-middle = pomodoro.lua info
 click-left = pomodoro.lua add
-click-right = pomodoro clear 
+; click-left = pomodoro repeat
+click-right = pomodoro pause
 interval = 60
 
 [module/investing]
@@ -493,8 +494,8 @@ interval = 3600
 
 [module/wlan]
 type = internal/network
-interface = wlp42s0f3u1
-;interface = iw dev | awk '$1=="Interface"{print $2}
+; interface = wlp42s0f3u1
+interface = iw dev | awk '$1=="Interface"{print $2}
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
