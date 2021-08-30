@@ -70,7 +70,7 @@ function util.split(str, delimiter)
 end
 
 -- key=value format
-function getConfigProperties(path)
+function util.getConfigProperties(path)
 	assert(os.execute( "test -f " .. path ) == 0, 'Config file does not exist: ' .. path)
 	local properties = {}
 	for line in io.lines(path) do
@@ -78,6 +78,18 @@ function getConfigProperties(path)
 		properties[property[1]:gsub('%s', '')] = property[2]:gsub('%s', '')
 	end
 	return properties
+end
+
+-- for short options like -a or -abcd
+function util.splitFlags(optionsTxt)
+	local flags = {}
+	if not optionsTxt or optionsTxt == '' then return flags end
+	optionsTxt:gsub(".", function(char) 
+		if char ~= '-' then 
+			flags[char] = char 
+		end
+	end)
+	return flags
 end
 
 return util

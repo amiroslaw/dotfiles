@@ -473,12 +473,12 @@ format-online-background = ${colors.background}
 
 [module/pomodoro]
 type = custom/script
-exec = pomodoro.lua status
-click-middle = pomodoro.lua info
-click-left = pomodoro.lua add
-; click-left = pomodoro repeat
-click-right = pomodoro pause
+exec = pomodoro.lua status -ac
+click-middle = pomodoro.lua notify
+click-right = pomodoro.lua add
+click-left = pomodoro.lua pause
 interval = 60
+; click-left = pomodoro repeat
 
 [module/investing]
 type = custom/script
