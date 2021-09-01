@@ -36,7 +36,7 @@ export GRAVEYARD="$HOME/.local/share/Trash"
 export TOR_WATCH="$HOME/Downloads/.torrenty"
 export TOR_DIR="/media/multi/Downloads"
 export NOTE="$HOME/Documents/notebook"
-export PRIVATE="$HOME/Documents/dotfiles/private"
+export PRIVATE="$HOME/Documents/Ustawienia/stow-private"
 
 # Default Apps
 export USER_HOME="/home/miro"
