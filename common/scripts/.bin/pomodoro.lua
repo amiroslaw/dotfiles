@@ -1,22 +1,14 @@
 #!/bin/luajit
---[[ stop - nie ma pliku current
-running - jest plik status
-pause - duration time in status
-break - pusty plik w status
-running - jest plik z danymi o tasku ale duration jest nulem  ]]
-
 -- TODO 
--- wyświetlać daily goals
--- options - daily_goal albo zmieniać config lub czytać z linni
--- krótkie opcje -sn short format - without taskCounter, notification itp.
+-- help
+-- config - daily_goal albo zmieniać config lub czytać z linni
 -- dodawanie pomodoro przez cli
 -- przy stopie dodawać niedokończony czas - test
--- history json
 -- maybe use coroutine when when adds alert
 -- weird output
 -- 24 notyfikacja 25 → break 1; output jest po tym jak się wykona skrypt czyli będzie notyfikacja
 -- 4 notyfikacja 5 → work 0 lub
--- 5 notyfikacja 6 
+
 package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
 util = require('scriptsUtil')
 
@@ -24,7 +16,7 @@ HELP = [[
 The pomodoro app for system bar like polybar with support of the work history.
 pomodoro.lua option [-flags]
 List of the options:
-	add - add new pomodoro
+	add - add new pomodoro. If session is active it will update it, the  description and tag will remain the same if you won't provide them.
 	status - print status message 
 	duration - shows daily spent time 
 	history - display pomodoro history
@@ -40,6 +32,14 @@ flags (short options) in a format: -ca
 Examples:
 	pomodoro.lua history -j | jq '.[].tag' - prints history in the JSON format 
 	pomodoro.lua status -ac - prints current status with daily ratio of the finished tasks, gives sound alert with notification if status changed
+
+[module/pomodoro]
+type = custom/script
+exec = pomodoro.lua status -anc
+click-middle = pomodoro.lua notify
+click-right = pomodoro.lua stop -n
+click-left = pomodoro.lua pause -n
+interval = 60
 -- dependency: rofi, ffmpeg
 ]]
 POMODORO_DIR = os.getenv('XDG_CONFIG_HOME') .. '/pomodoro'
@@ -62,6 +62,7 @@ function getHistoryTasks()
 end
 
 function archiveTask(duration)
+	duration = duration and duration or config['default_pomodoro_duration']
 	local current = io.open(CURRENT_PATH):read('*a')
 	local file = io.open(HISTORY_PATH, 'a+')
 	file:write(current .. duration, '\n')
@@ -133,8 +134,7 @@ function getState()
 end
 
 function add()
-	assert(os.execute( "test -f " .. STATUS_PATH ) ~= 0, 'Task exist')
-
+	-- assert(os.execute( "test -f " .. STATUS_PATH ) ~= 0, 'Task exist')
 	local description = util.input('description')
 	local tags = {}
 	for _, line in ipairs(getHistoryTasks()) do
@@ -145,29 +145,42 @@ function add()
 	end
 	local selectedTag = util.select(tags, 'Tags')
 
-	io.open(STATUS_PATH, 'w'):write(description)
-	local file = io.open(CURRENT_PATH, 'w')
-	file:write(os.date('%Y-%m-%dT%H:%M:%S'), DELIMITER, selectedTag, DELIMITER, description, DELIMITER)
+	local file
+	local date = os.date('%Y-%m-%dT%H:%M:%S')
+	if getState() == stateEnum.STOP then 
+		file = io.open(CURRENT_PATH, 'w')
+		io.open(STATUS_PATH, 'w'):write(description)
+	else
+		file = io.open(CURRENT_PATH, 'r+')
+		local current = file:read('*a')
+		file:seek('set')
+		local taskInfo = util.split(current, DELIMITER)
+		date = taskInfo[1]
+		if selectedTag == '' then selectedTag = taskInfo[2] end
+		if description == '' then description = taskInfo[3] end
+	end
+	file:write(date, DELIMITER, selectedTag, DELIMITER, description, DELIMITER)
 	file:close()
 end
 
 function alert(msg)
-	if flags['a'] then 
-		os.execute("dunstify Pomodoro '" .. msg .. "'")
-		os.execute('ffplay -nodisp -autoexit -loglevel -8 -volume 10 ' .. ALERT_PATH)
-	end
+	if flags['n'] then os.execute("dunstify Pomodoro '" .. msg .. "'") end
+	if flags['a'] then os.execute('ffplay -nodisp -autoexit -loglevel -8 -volume 10 ' .. ALERT_PATH) end
 end
 
 function stop()
 	os.execute('rm ' .. STATUS_PATH)
+	if flags['n'] then os.execute("dunstify Pomodoro 'Finished'") end
 	stateEnum.STOP()
+	--TODO save duration when is running 
+		-- local stoppedDuration = io.open(CURRENT_PATH):read('*a')
+		-- archiveTask(stoppedDuration)
 end
 
 function pauseToggle()
 	local state = getState()
 	if state == stateEnum.BREAK then -- finish
-		local stoppedDuration = io.open(CURRENT_PATH):read('*a')
-		archiveTask(stoppedDuration)
+		archiveTask()
 		stop()
 	elseif state == stateEnum.WORK then -- pause
 		local difftime = getModifiedDateDiff()
