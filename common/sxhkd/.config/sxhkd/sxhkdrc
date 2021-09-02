@@ -6,9 +6,6 @@
 #super + {_,shift + }{1-9,0} dwa zakresy
 #	bspc {desktop -f,node -d} '^{1-9,10}'
  # \~fullscreen "~\" toggle
- # TODO
- # skopiuj kod z skryptów
- # rules from i3
  
 # make sxhkd reload its configuration files:
 super + Home

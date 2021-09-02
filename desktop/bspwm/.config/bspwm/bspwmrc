@@ -72,7 +72,7 @@ bspc rule -a '*:dropdown' state=fullscreen
 bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
 bspc rule -a Zathura state=tiled
 bspc rule -a yad state=floating
-bspc rule -a zenity state=floating
+bspc rule -a Zenity state=floating
 bspc rule -a reminder state=floating
 bspc rule -a menu state=floating
 bspc rule -a pqiv state=tiled
