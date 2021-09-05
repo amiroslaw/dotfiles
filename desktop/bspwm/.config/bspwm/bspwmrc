@@ -44,9 +44,11 @@ bspc config focus_follows_pointer true
 #bspc config pointer_follows_focus true #Some keybindings automatically enable and disable this setting
 
 ###This creates and names desktops for multiple monitors.
+# bspc rule -a appName:name → xprop WM_CLASS:WM_NAME?
 # workspaces_multimonitor &
 #bspc desktop I --layout monocle
 #bspc rule -a firefox desktop=I
+
 
 bspc rule -a screenkey --unmanage
 bspc rule -a gcolor2 state=floating center=true
@@ -56,15 +58,17 @@ bspc rule -a viewnior state=floating center=true
 bspc rule -a floaterm state=floating center=true
 bspc rule -a spotify state=pseudo_tiled
 bspc rule -a file-roller state=floating center=true
-bspc rule -a astime sticky=on
 bspc rule -a wbar layer=above
 bspc rule -a google-chrome-stable private=on
 bspc rule -a chromium private=on
-bspc rule -a firefox private=on
 bspc rule -a wpa_gui state=pseudo_tiled
 bspc rule -a libreoffice state=tiled
 bspc rule -a '*:libreofficedev' state=tiled
 bspc rule -a '*:soffice' state=tiled
+bspc rule -a firefox private=on
+bspc rule -a firefox:Toolkit  state=floating sticky=on focus=off layer=above rectangle=380x210+1540+990
+bspc rule -a '*:rsvp' state=floating sticky=on layer=above rectangle=1100x150+0+0 center=true
+
 #bspc rule -a firefox desktop=I
 bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
 bspc rule -a megasync state=floating
@@ -72,7 +76,7 @@ bspc rule -a '*:dropdown' state=fullscreen
 bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
 bspc rule -a Zathura state=tiled
 bspc rule -a yad state=floating
-bspc rule -a Zenity state=floating
+bspc rule -a '(?i)zenity' state=floating
 bspc rule -a reminder state=floating
 bspc rule -a menu state=floating
 bspc rule -a pqiv state=tiled

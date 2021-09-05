@@ -24,7 +24,7 @@ List of the options:
 		url - link of the website
 		-h help - show help
 
-dependencies: mpv, youtube-dl, gallery-dl, clipster, readability-cli (node 12), mailx
+dependencies: mpv, youtube-dl, gallery-dl, clipster, readability-cli (node 12), mailx, speedread
 ]]
 
 YT_DIR = '~/Videos/YouTube/'
@@ -84,10 +84,20 @@ function readable(linkTab)
 	local tmpname = os.tmpname()
 	for i, link in ipairs(linkTab) do
 		local createFile = os.execute('readable -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to asciidoc --output ' .. tmpname .. '.adoc')
-		os.execute('st -t read -e nvim ' .. tmpname .. '.adoc') -- can read form evns
+		os.execute('st -t read -n read -e nvim ' .. tmpname .. '.adoc') -- can read form evns
 		assert(createFile == 0, 'Could not create file')
 	end
 	return 'Created file ' .. tmpname
+end 
+
+function speed(linkTab)
+	local tmpname = os.tmpname()
+	for i, link in ipairs(linkTab) do
+		local createFile = os.execute('readable -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to plain --output ' .. tmpname)
+		os.execute('st -t rsvp -n rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 300"') 
+		assert(createFile == 0, 'Could not create file')
+	end
+	return 'RSVP finished ' .. tmpname
 end 
 
 function wget(linkTab)
@@ -120,6 +130,7 @@ local options = {
 	["tor"]= function() return createTorrent end,
 	["kindle"]= function() return sendToKindle end,
 	["read"]= function() return readable end,
+	["speed"]= function() return speed end,
 	["wget"]= wget,
 	["video"]= function() return execXargs, "| xargs -P 0 -I {} mpv {}" end,
 	["gallery"]= gallery,

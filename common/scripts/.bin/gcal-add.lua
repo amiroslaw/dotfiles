@@ -7,7 +7,7 @@ CONFIG = '/home/miro/.config/gcalcli'
 function zenity()
 	local zenityCmd = [[ zenity --forms --title="reminder" \
 	--text="adding 'a' in Hour will add event for all day \n
-	adding sting in duration [t | tomorrow | next week | mon tue wed thu fri sat sun]" \
+	adding sting in duration \n[t | tomorrow | next week | mon tue wed thu fri sat sun]" \
 	--add-entry="Title" \
 	--add-entry="Hour" \
 	--add-entry="Minutes" \

@@ -270,7 +270,7 @@ super + e ; {e,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
     url.lua yt 1,  url.lua yt 10,  \
     url.lua gallery 1,  url.lua gallery 10,  \
     url.lua wget 1, url.lua wget 10,  \
-    url.lua read 1, url.lua read 10,  \
+    url.lua speed 1, url.lua read 1,  \
 	gcal-show.sh, investing-cli -n
 }
 
@@ -297,10 +297,10 @@ super + shift + c
 
 # rofi top and calc are in aur repo
 super + d
-	rofi -modi window,calc,drun,top -show window -show-icons -sidebar-mode -terminal st
+	rofi -modi window,calc,drun,top -show window -show-icons -sidebar-mode -terminal st -monitor -4
 
 super + shift + d
-	rofi -modi drun,run,window -show drun -show-icons -sidebar-mode -terminal st
+	rofi -modi drun,run,window -show drun -show-icons -sidebar-mode -terminal st -monitor -4
 
 # rofi scripts TODO path
 super + ctrl + d

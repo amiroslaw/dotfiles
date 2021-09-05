@@ -65,20 +65,26 @@ bspc rule -a wbar layer=above
 bspc rule -a google-chrome-unstable private=on
 bspc rule -a google-chrome-stable private=on
 bspc rule -a chromium private=on
-bspc rule -a firefox private=on
 bspc rule -a wpa_gui state=pseudo_tiled
 bspc rule -a libreoffice state=tiled
 bspc rule -a '*:libreofficedev' state=tiled
 bspc rule -a '*:soffice' state=tiled
+bspc rule -a firefox private=on
+bspc rule -a firefox private=on
+bspc rule -a firefox:Toolkit  state=floating sticky=on focus=off layer=above rectangle=380x210+1540+990
+bspc rule -a '*:rsvp' state=floating sticky=on layer=above rectangle=1100x150+0+0 center=true
 #bspc rule -a firefox desktop=I
 bspc rule -a 9menu border=off manage=off
 bspc rule -a tint2 border=off manage=off
-bspc rule -a KeePassXC  state=floating rectangle=800x500+0+0 center=true
 bspc rule -a megasync state=floating
 bspc rule -a '*:dropdown' state=fullscreen
 bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
 bspc rule -a Zathura state=tiled
-
+bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
+bspc rule -a '(?i)zenity' state=floating
+bspc rule -a reminder state=floating
+bspc rule -a menu state=floating
+bspc rule -a pqiv state=tiled
 
 ##  This script balances all windows when new one is spawned 
 #euclid_balancer &

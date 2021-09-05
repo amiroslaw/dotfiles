@@ -482,7 +482,7 @@ interval = 60
 
 [module/investing]
 type = custom/script
-exec = investing-cli --no-errors -o cdr,cie,btc && investing-cli -an
+exec = investing-cli --no-errors -o 11-BIT-STUDIOS,cdr,cie,btc && investing-cli -an
 click-left = investing-cli -n 
 click-right = investing-cli --no-errors -vpn -e PLN
 interval = 1800
