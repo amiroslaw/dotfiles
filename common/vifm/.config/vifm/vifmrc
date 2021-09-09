@@ -138,14 +138,16 @@ set findprg=fd\ --color=never\ %p\ %s
 nmap <C-A-f> :find <space> 
 nmap <C-s> :grep <space>
 
-" fzf finder pliki
+" fzf finder
 " sometimes doesn't work with I param
 "command! fzf :execute '!fzf 2>&0 %%U' | normal! gf
 nmap <C-f> :fzf <cr> 
 command! fzf :execute '!fzf 2>&0 %%IU' | normal! gf
-" fzf finder  katalogi
-nmap <A-f> :fzfd 
-command! fzfd :execute '!fd -t d --color=never | fzf 2>&0 %%IU' | normal! gf
+command! fzfcdh :execute 'cd' fnameescape(term('fd --hidden --type d | fzf 2> /dev/tty'))
+nmap <A-f> :fzfcdh <cr>
+" fzf finder hidden files doesn't work
+" command! fzfd :execute '!fd -t d --color=never %p %s | fzf 2>&0 %%IU' | normal! gf
+" command! fzfd :execute '!cd "$(fd -a --hidden --type d %p %s | fzf)"'
 
 " nmap <C-f> :sk <cr> 
 " command! sk :execute '!sk 2>&0 %%IU' | normal! gf

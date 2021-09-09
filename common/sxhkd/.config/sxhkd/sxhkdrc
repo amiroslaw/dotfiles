@@ -217,11 +217,6 @@ super + {_,shift,ctrl} + Delete
 super + BackSpace
 	$TERM_LT -t top -n top -e btm
 
-# rofi locate
-super + ctrl + f 
-	$ROFI/locate-video.py
-	# rofi-finder.sh
- # $ROFI/locate.py
 
 # search
 super + {_, shift,ctrl} + g
@@ -261,7 +256,7 @@ super + o ; {o,i,p,b,t}
 
 # script in background - url.lua menu will ask for the number of the links
 super + e ; {e,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
-	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr(R)-read\nc-calendar\nk(K)-kindle\ni-investing", \
+	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr-speed reader\nR-read\nc-calendar\nk(K)-kindle\ni-investing", \
     url.lua menu input, \
     url.lua kindle 1,  url.lua kindle 10, \
     url.lua tor 1,  url.lua tor 10, \
@@ -282,7 +277,7 @@ super + c ; {c,g,p,r,R,j,J,n,N,k,K,l,L,w}
 	{dunstify options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from clip\nl(L)-note from sel\nw -write note", \
 	clipster -sc, \
 	$ROFI/clipster/roficlip-primary, \
-	clipster -r, clipster -cr, \
+	clipster -cr, clipster -r, \
 	clipster.lua join clipboard, clipster.lua join primary, \
 	clipster.lua next clipboard, clipster.lua next primary, \
 	note.lua clip 1, note.lua clip, \
@@ -297,7 +292,7 @@ super + shift + c
 
 # rofi top and calc are in aur repo
 super + d
-	rofi -modi window,calc,drun,top -show window -show-icons -sidebar-mode -terminal st -monitor -4
+	rofi -modi window,calc,top -show window -show-icons -sidebar-mode -terminal st -monitor -4
 
 super + shift + d
 	rofi -modi drun,run,window -show drun -show-icons -sidebar-mode -terminal st -monitor -4
@@ -306,6 +301,12 @@ super + shift + d
 super + ctrl + d
 	 $ROFI/mbmain
 # bindsym $mod+shift+d exec --no-startup-id "rofi -modi window,top,drun -show window -show-icons -sidebar-mode -terminal st"
+# rofi locate
+super + ctrl + f 
+	$ROFI/locate-video.py
+	# rofi-finder.sh
+ # $ROFI/locate.py
+
 # translator 
 super + {_,shift,ctrl} + t
 	{	search.lua enpl primary, \
