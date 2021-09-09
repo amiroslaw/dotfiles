@@ -1,0 +1,101 @@
+[bar/main]
+modules-left = bspwm windows
+modules-center = investing
+modules-right = pomodoro cpu temp-amd fan-amd memory temp-nvidia fan-nvidia uptime filesystem date weather pulseaudio powermenu updates
+; mpd - daemon should be launch first
+; system-usb-udev doesn't work
+; moduel/network
+windows-monitor = ~/.config/polybar/taskbar.sh --monitor DVI-D-0
+; interface = iw dev | awk '$1=="Interface"{print $2}'
+wlan = wlp3s0f0u2
+
+; font-0 = "TerminessTTF Nerd Font:pixelsize=10;1"
+font-0 = "Ubuntu Nerd Font:pixelsize=9;1"
+font-1 = "RobotoMono Nerd Font:pixelsize=8;1"
+font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
+
+monitor = ${env:MONITOR:DVI-D-0}
+width = 100%
+height = 24
+fixed-center = false
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+
+border-size = 0
+border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+tray-position = right
+tray-padding = 0
+
+scroll-up = bspwm-desknext
+scroll-down = bspwm-deskprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+;will cover bar if fullscreen needed to have 2 parameters to set 
+wm-restack = bspwm
+override-redirect = true
+
+[bar/ext]
+modules-left = bspwm windows
+modules-center = net pcmanfm music screenshot
+modules-right = temp-amd fan-amd temp-nvidia fan-nvidia date pulseaudio powermenu
+; modules-center = net idea pcmanfm music gpodder gnucash pidgin grywalizacja calendar screenshot
+windows-monitor = ~/.config/polybar/taskbar.sh --monitor DVI-I-0
+
+; font-0 = "TerminessTTF Nerd Font:pixelsize=10;1"
+font-0 = "Ubuntu Nerd Font:pixelsize=9;1"
+font-1 = "RobotoMono Nerd Font:pixelsize=8;1"
+font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
+
+monitor = ${env:MONITOR:DVI-I-0}
+width = 100%
+height = 24
+fixed-center = false
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 2
+line-color = #f00
+
+border-size = 0
+border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+tray-position = right
+tray-padding = 0
+
+scroll-up = bspwm-desknext
+scroll-down = bspwm-deskprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+;will cover bar if fullscreen needed to have 2 parameters to set 
+wm-restack = bspwm
+override-redirect = true
+
+;offset-x = 1%
+;offset-y = 1%
+; radius = 6.0
+;tray-transparent = true
+;tray-background = #0063ff
+; scroll-up = bspc desktop -f prev.occupied deesn't work
+; scroll-down = bspc desktop -f next.occupied
+
+; vim:ft=dosini

@@ -1,0 +1,238 @@
+[module/eth] - replace with module/network
+type = internal/network
+format-connected = <label-connected>
+interface = enp4s0
+interval = 3.0
+
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected =  
+label-connected-foreground = ${colors.base10}
+; label-connected = %local_ip%
+
+format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+label-disconnected = 
+label-disconnected-foreground = ${colors.alert}
+
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+format-connected-underline = ${colors.base10}
+
+[module/mpd-duration]
+type = custom/script
+exec = mpc -f  %position% | awk 'NR==2{print $3}'
+interval = 10
+label = %output%
+format-prefix = " " 
+
+[module/player-moc]
+type = custom/script
+exec = ~/.config/polybar/player-moc.sh
+interval = 5
+click-left = mocp -f
+click-right = mocp -r
+click-middle = mocp -P
+
+
+################################################################################
+###############################################################################
+############                       OLD MODULES  DESCTOP                    ############
+################################################################################
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:50:...%
+format-prefix = " "
+
+[module/bsplayout]
+type = custom/script
+exec = ~/.config/polybar/bsplayout.sh
+tail = true
+label-foreground = ${colors.alert}
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+; fuzzy-match = false
+ws-icon-0 = 1:Net;
+ws-icon-1 = 2:Code;
+ws-icon-2 = 3:File;
+ws-icon-3 = 4:Media;
+ws-icon-4 = 5:Chat;
+ws-icon-5 = 6:Time;
+ws-icon-6 = 7:Note;
+ws-icon-7 = 8:Test;
+ws-icon-8 = 9:Term; 
+ws-icon-9 = 10:Set;
+ws-icon-default = ♟
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+; label-focused = %index%
+label-focused = %icon% %name% 
+label-focused-background = ${colors.primary}
+label-focused-underline= ${colors.yellow}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+; label-unfocused = %index%
+label-unfocused = %{T3}%index% %icon%
+label-unfocused-padding = ${self.label-focused-padding}
+
+; visible = Active workspace on unfocused monitor
+; label-visible = %index%
+label-visible = %{T3}%index% %icon%
+; label-visible-background = ${colors.background-alt}
+label-visible-background = ${colors.secondary}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+; label-urgent = %{T3}%index% %icon%
+label-urgent = %icon% %name% 
+label-urgent-background = ${colors.alert}
+label-urgent-padding = ${self.label-focused-padding}
+label-urgent-underline = ${self.label-focused-underline}
+
+label-separator = |###############################################################################
+
+################################################################################
+###############################################################################
+############                       OLD MODULES  LAPTOP                    ############
+################################################################################
+
+[module/powermenu]
+type = custom/menu
+expand-right = true
+format-spacing = 1
+
+label-open = 
+label-open-foreground = ${colors.pink}
+label-close = cancel
+label-close-foreground = ${colors.pink}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+; you can use also suspend reboot 
+menu-0-0 = suspend
+menu-0-0-exec = menu-open-1
+menu-0-1 = power off
+menu-0-1-exec = menu-open-2
+menu-0-3 = reboot
+menu-0-3-exec = menu-open-3
+
+menu-1-0 = suspend
+menu-1-0-exec = systemctl suspend
+menu-1-1 = cancel
+menu-1-1-exec = menu-open-0
+
+menu-2-0 = power off
+menu-2-0-exec = systemctl poweroff
+menu-2-1 = cancel
+menu-2-1-exec = menu-open-0
+
+menu-3-0 = reboot
+menu-3-0-exec = systemctl reboot
+menu-3-1 = cancel
+menu-3-1-exec = menu-open-0
+[module/bspwm-org]
+type = internal/bspwm
+
+; Only show workspaces defined on the same output as the bar
+; NOTE: The bspwm and XRandR monitor names must match, which they do by default.
+; But if you rename your bspwm monitors with bspc -n this option will no longer
+; behave correctly.
+; Default: true
+pin-workspaces = true
+
+; Output mode flags after focused state label
+; Default: false
+inline-mode = false
+
+; Create click handler used to focus workspace
+; Default: true
+enable-click = true
+
+; Create scroll handlers used to cycle workspaces
+; Default: true
+enable-scroll = true
+
+; Set the scroll cycle direction 
+; Default: true
+reverse-scroll = false
+
+; Use fuzzy (partial) matching on labels when assigning 
+; icons to workspaces
+; Example: code;♚ will apply the icon to all workspaces 
+; containing 'code' in the label
+; Default: false
+fuzzy-match = true
+
+
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+; fuzzy-match = false
+ws-icon-0 = 1:Net;
+ws-icon-1 = 2:Code;
+ws-icon-2 = 3:File;
+ws-icon-3 = 4:Media;
+ws-icon-4 = 5:Chat;
+ws-icon-5 = 6:Time;
+ws-icon-6 = 7:Note;
+ws-icon-7 = 8:Test;
+ws-icon-8 = 9:Term; 
+ws-icon-9 = 10:Set;
+ws-icon-default = ♟
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+; label-focused = %index%
+label-focused = %icon% %name% 
+label-focused-background = ${colors.primary}
+label-focused-underline= ${colors.yellow}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+; label-unfocused = %index%
+label-unfocused = %{T3}%index% %icon%
+label-unfocused-padding = ${self.label-focused-padding}
+
+; visible = Active workspace on unfocused monitor
+; label-visible = %index%
+label-visible = %{T3}%index% %icon%
+; label-visible-background = ${colors.background-alt}
+label-visible-background = ${colors.secondary}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+; label-urgent = %{T3}%index% %icon%
+label-urgent = %icon% %name% 
+label-urgent-background = ${colors.alert}
+label-urgent-padding = ${self.label-focused-padding}
+label-urgent-underline = ${self.label-focused-underline}
+
+label-separator = |
+
+
+; vim:ft=dosini
