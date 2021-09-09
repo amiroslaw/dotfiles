@@ -47,6 +47,6 @@ cursor-scroll = ns-resize
 
 ;will cover bar if fullscreen needed to have 2 parameters to set 
 wm-restack = bspwm
-override-redirect = true
+override-redirect = false
 
 ; vim:ft=dosini

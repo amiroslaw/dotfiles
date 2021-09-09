@@ -44,7 +44,7 @@ cursor-click = pointer
 cursor-scroll = ns-resize
 ;will cover bar if fullscreen needed to have 2 parameters to set 
 wm-restack = bspwm
-override-redirect = true
+override-redirect = false
 
 [bar/ext]
 modules-left = bspwm windows
@@ -88,7 +88,7 @@ cursor-click = pointer
 cursor-scroll = ns-resize
 ;will cover bar if fullscreen needed to have 2 parameters to set 
 wm-restack = bspwm
-override-redirect = true
+override-redirect = false
 
 ;offset-x = 1%
 ;offset-y = 1%
