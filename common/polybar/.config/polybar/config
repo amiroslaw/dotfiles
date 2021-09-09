@@ -205,7 +205,8 @@ bar-volume-empty-foreground = ${colors.foreground-alt}
 [module/alsa]
 type = internal/alsa
 
-format-volume = <label-volume> <bar-volume>
+format-volume = <label-volume>
+; format-volume = <label-volume> <bar-volume>
 ; sink = alsa_output.pci-0000_00_1b.0.analog-stereo
 format-volume-prefix = " "
 label-volume = %percentage%%
