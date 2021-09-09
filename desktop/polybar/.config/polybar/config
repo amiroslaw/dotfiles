@@ -1,7 +1,10 @@
 ; vim:ft=dosini
 ;=====================================================
 ;   To learn more about how to configure Polybar go to https://github.com/jaagr/polybar The README contains alot of information
-; TODO wifi kliknięcie; data rozwinięcie; rezygnacja z voluem bar - za dużo miejsca 
+; TODO 
+; file inclusion and custom variables = split config to main and extension for desktop and laptop
+;https://github.com/polybar/polybar/wiki/Configuration
+; wifi kliknięcie; data rozwinięcie; rezygnacja z voluem bar - za dużo miejsca 
 ; icons
 ; https://fontawesome.com/v3.2.1/cheatsheet/
 ; https://fontawesome.com/cheatsheet
@@ -9,6 +12,7 @@
 ; konfiguracja 
 ; wlan, lan, pulseaudio 
 ;=====================================================
+
 [colors]
 background = #222
 background-alt = #444
@@ -34,6 +38,7 @@ base04 = #8796B0
 base05 = #80CBC4
 base06 = #80CBC4
 base07 = #FFFFFF
+
 [bar/main]
 monitor = ${env:MONITOR:DVI-D-0}
 width = 100%
@@ -62,10 +67,15 @@ module-margin-right = 2
 font-0 = "Ubuntu Nerd Font:pixelsize=9;1"
 font-1 = "RobotoMono Nerd Font:pixelsize=8;1"
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
+windows-monitor = ~/.config/polybar/taskbar.sh --monitor DVI-D-0
 
-modules-left = bspwm windows1
+; moduel/network
+; interface = iw dev | awk '$1=="Interface"{print $2}'
+wlan = wlp3s0f0u2
+
+modules-left = bspwm windows
 modules-center = mpd investing
-modules-right = pomodoro cpu temp-amd fan-amd memory temp-nvidia fan-nvidia uptime filesystem wlan date weather pulseaudio powermenu updates
+modules-right = pomodoro cpu temp-amd fan-amd memory temp-nvidia fan-nvidia uptime filesystem date weather pulseaudio powermenu updates
 ; system-usb-udev doesn't work
 ; pulseaudio alsa xbacklight battery volume eth xwindow bsplayout 
 tray-position = right
@@ -84,6 +94,8 @@ cursor-scroll = ns-resize
 ;will cover bar if fullscreen needed to have 2 parameters to set 
 ;wm-restack = bspwm
 ;override-redirect = true
+
+
 [bar/ext]
 monitor = ${env:MONITOR:DVI-I-0}
 width = 100%
@@ -112,7 +124,9 @@ module-margin-right = 2
 font-0 = "Ubuntu Nerd Font:pixelsize=9;1"
 font-1 = "RobotoMono Nerd Font:pixelsize=8;1"
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
-modules-left = bspwm windows2
+
+windows-monitor = ~/.config/polybar/taskbar.sh --monitor DVI-I-0
+modules-left = bspwm windows
 modules-center = net pcmanfm music screenshot
 ; modules-center = net idea pcmanfm music gpodder gnucash pidgin grywalizacja calendar screenshot
 modules-right = temp-amd fan-amd temp-nvidia fan-nvidia date pulseaudio powermenu
@@ -200,9 +214,7 @@ label-fullscreen = F
 ;label-tiled = T
 ;label-floating = f
 
-
-
-[module/windows1]
+[module/windows]
 type = custom/script
 tail = true
 format = "<label>"
@@ -211,18 +223,7 @@ format-prefix-foreground = #111111
 format-prefix-background = #0c9c84
 format-background = #111111
 format-foreground = #d0d060
-exec = ~/.config/polybar/taskbar.sh --monitor DVI-D-0
-
-[module/windows2]
-type = custom/script
-tail = true
-format = "<label>"
-format-prefix = "  "
-format-prefix-foreground = #111111
-format-prefix-background = #0c9c84
-format-background = #111111
-format-foreground = #d0d060
-exec = ~/.config/polybar/taskbar.sh --monitor DVI-I-0
+exec = ${root.windows-monitor}
 
 [module/weather]
 type = custom/script
@@ -492,10 +493,10 @@ type = custom/script
 exec = ~/.config/polybar/currency.sh
 interval = 3600
 
-[module/wlan]
+[module/network]
 type = internal/network
-; interface = wlp42s0f3u1
-interface = iw dev | awk '$1=="Interface"{print $2}
+interface = ${root.wlan}
+
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
@@ -507,12 +508,15 @@ format-disconnected =
 ;label-disconnected = %ifname% disconnected
 ;label-disconnected-foreground = ${colors.foreground-alt}
 format-connected-underline = #9f78e1
+
+; Only applies if <ramp-signal> is used
 ramp-signal-0 = 😱
 ramp-signal-1 = 😠
 ramp-signal-2 = 😒
 ramp-signal-3 = 😊
 ramp-signal-4 = 😃
 ramp-signal-5 = 😈
+
 
 ramp-signal-foreground = ${colors.yellow}
 
