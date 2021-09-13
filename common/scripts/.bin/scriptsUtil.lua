@@ -24,8 +24,7 @@ end
 
 function util.errorHandling(msg)
 	os.execute("dunstify -u critical Error: '" .. msg .. "'")
-	-- util.notify('Error: ' .. msg .. ' ')
-	error(msg) -- does not work
+	error(msg) -- does not work?
 end
 
 function util.input(prompt, width)

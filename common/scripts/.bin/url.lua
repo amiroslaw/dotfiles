@@ -63,10 +63,10 @@ function sendToKindle(linkTab)
 	os.execute('mkdir -p ' .. tmpDir)
 
 	for i, link in ipairs(linkTab) do
-		local title = io.popen('readable -q true "' .. link .. '" -p title'):read('*a'):gsub('%s', '-')
+		local title = io.popen('readable -A "Mozilla" -q true "' .. link .. '" -p title'):read('*a'):gsub('[^a-zA-Z0-9-_]', '-')
 		if #title ~= 0 then 
 			-- converting to pdf has error in pandoc, html need to have <html> <body> tags and has problem with encoding
-			local createFile = os.execute('readable -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. title .. '.docx')
+			local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. title .. '.docx')
 			local sendFile = os.execute('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Kindle" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
 			if createFile ~= 0 or sendFile ~= 0 then -- readability-cli return 0 in error 
 				table.insert(articlesWithErrors, link)
@@ -83,7 +83,7 @@ end
 function readable(linkTab)
 	local tmpname = os.tmpname()
 	for i, link in ipairs(linkTab) do
-		local createFile = os.execute('readable -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to asciidoc --output ' .. tmpname .. '.adoc')
+		local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to asciidoc --output ' .. tmpname .. '.adoc')
 		os.execute('st -t read -n read -e nvim ' .. tmpname .. '.adoc') -- can read form evns
 		assert(createFile == 0, 'Could not create file')
 	end
@@ -93,7 +93,7 @@ end
 function speed(linkTab)
 	local tmpname = os.tmpname()
 	for i, link in ipairs(linkTab) do
-		local createFile = os.execute('readable -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to plain --output ' .. tmpname)
+		local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to plain --output ' .. tmpname)
 		os.execute('st -t rsvp -n rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 300"') 
 		assert(createFile == 0, 'Could not create file')
 	end
@@ -103,6 +103,7 @@ end
 function wget(linkTab)
 	os.execute('mkdir -p ' .. WGET_DIR)
 	local cmd =	 "| xargs -P 0 -I {} wget -P " .. WGET_DIR .. " {}"
+ -- -U "Mozilla"
 	return execXargs, cmd
 end
 
@@ -171,5 +172,8 @@ end
 
 local exec, cmd = switch(action)
 local status, val = pcall(exec, linkTab, cmd)
-util.notify(val)
-
+if status then
+	util.notify(val)
+else
+	util.errorHandling(val)
+end
