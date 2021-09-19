@@ -25,6 +25,17 @@ xinput --set-prop "$dev" 'libinput Button Scrolling Button' 3
 # double click is right click
 xinput --set-prop "$dev" 'libinput Button Scrolling Button Lock Enabled' 0
 
+
+##### Logitech MX Vertical
+# mxVertical="Logitech MX Vertical"
+# mxVertical="$(xinput | grep "$mxVertical\s*.*pointer" | sed -r 's/.*id=(\S+)\s+.*/\1/')"
+
+# xinput --set-prop "$mxVertical" 'libinput Accel Speed' 1.0
+# https://clickspeedtest.com/scroll-test.html
+# doesn't work
+# xinput --set-prop "$mxVertical" 'libinput Scrolling Pixel Distance' 50
+# xinput --set-prop "$mxVertical" 'libinput Scrolling Pixel Distance Default' 14
+
 # Enable acceleration so it's easy to use a 4480x1080px desktop
 # (Start moving 10 times faster after we hit 6px per 10ms movement speed)
 # xset mouse 10 6

@@ -4,7 +4,7 @@
 
 " vim-plug plugin manager
 call plug#begin()
-Plug 'Pocco81/AutoSave.nvim'
+Plug 'Pocco81/AutoSave.nvim', {'branch': 'main'}
 Plug 'justincampbell/vim-eighties' " Automatically resizes your windows
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'tpope/vim-repeat'
@@ -47,7 +47,7 @@ Plug 'gennaro-tedesco/nvim-jqx', {'for': 'json'}
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua', {'on': 'NvimTreeToggle'}
 Plug 'b3nj5m1n/kommentary', {'branch': 'main'}
-Plug 'windwp/nvim-autopairs', {'branch': 'main'}
+Plug 'windwp/nvim-autopairs'
 Plug 'NTBBloodbath/rest.nvim', {'branch': 'main'}
 Plug 'phaazon/hop.nvim'
 Plug 'hrsh7th/nvim-compe'
@@ -200,7 +200,7 @@ map <S-F2> :split term://zsh<cr>
 """""" NOTE TAKING
 " open typora
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
-nnoremap <F7> :exe ':silent !typora %'<CR>
+nnoremap <F8> :exe ':silent !typora %'<CR>
 "dictionary
 syntax spell toplevel
 " au BufReadPost *.adoc,*.md setlocal spell spelllang=pl_PL,en_us
@@ -316,6 +316,7 @@ set conceallevel=3
 
 """""""""""""""""""
 " vim-asciidoctor  https://github.com/habamax/vim-asciidoctor
+nnoremap <F7> :Asciidoctor2HTML<CR>
 let g:asciidoctor_syntax_conceal = 1
 let g:asciidoctor_folding = 1
 let g:asciidoctor_folding_level = 6
