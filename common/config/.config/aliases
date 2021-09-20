@@ -65,7 +65,6 @@ alias cl='clear'
 alias se='sudoedit'
 alias permissionX='sudo chmod -R +x'
 alias zathuraBlist='less ~/.local/share/zathura/bookmarks'
-alias zadView='cat $path_note/ZADANIA/today.todo'
 # grepextend pattern path/.
 alias grepextend='grep -inrC 3'
 alias history-count='cut -f1 -d" " ~/.zhistory | sort | uniq -c | sort -nr | head -n 30'
@@ -193,6 +192,7 @@ alias plen='trans -shell pl:en -show-original n  -show-prompt-message n -show-la
 alias enpl='trans -shell en:pl -show-original n  -show-prompt-message n -show-languages n -play -speak'
 alias dic='trans -sp en: -show-prompt-message n -show-languages n'
 alias irr='cat $path_note/Home/angielski/irregular.adoc | grep'
+alias backup_note='cp -r $path_note ~/Templates/backup/note/notebook-$(date -u +"%Y-%m-%d")'
 #}}}
 
 # GIT
@@ -483,3 +483,5 @@ alias surfraw='surfraw -browser=w3m'
 #}}}
 ## job
 alias vpn='cd /home/miro/eversis/amiroslaw/eversis-pfs-node1-UDP4-1195-amiroslaw && sudo openvpn --config eversis-pfs-node1-UDP4-1195-amiroslaw.ovpn --auth-user-pass pass.txt'
+
+# alias zadView='cat $path_note/ZADANIA/today.todo' i have script for this
