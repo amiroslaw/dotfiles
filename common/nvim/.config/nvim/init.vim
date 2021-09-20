@@ -129,7 +129,7 @@ set cursorline cursorcolumn
 "" change leader key from \ to ;
 let mapleader=";"
 nnoremap <leader>/ :nohlsearch<cr>
-map <F5> :source $HOME/.config/nvim/init.vim<cr>
+map <F5> :source $HOME/.config/nvim/init.vim <cr>
 nnoremap Zz :q! <cr> 
 " move lines up and down
 nnoremap <c-a-j> :m .+1<CR>
@@ -316,7 +316,9 @@ set conceallevel=3
 
 """""""""""""""""""
 " vim-asciidoctor  https://github.com/habamax/vim-asciidoctor
-nnoremap <F7> :Asciidoctor2HTML<CR>
+" nnoremap <F7> :Asciidoctor2HTML<CR>
+nnoremap <F7> :silent !preview-ascii.sh % <CR>
+
 let g:asciidoctor_syntax_conceal = 1
 let g:asciidoctor_folding = 1
 let g:asciidoctor_folding_level = 6
