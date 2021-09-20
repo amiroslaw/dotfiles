@@ -1,3 +1,5 @@
 #!/bin/bash
 
-ls $1 | entr asciidoctor -o $NOTE/preview.html -a source-highlighter=highlightjs -a hardbreaks $1
+# killall entr
+
+ls "$NOTE/$1" | entr -n asciidoctor -o "$NOTE/preview.html" -a source-highlighter=highlightjs -a hardbreaks "$NOTE/$1" &
