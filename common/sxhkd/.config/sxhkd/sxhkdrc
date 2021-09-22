@@ -223,7 +223,7 @@ super + {_, shift,ctrl} + g
 	{search.lua brave primary, search.lua brave clip, search.lua google primary}
 
 super + s ; {s,h,g,G,b,B,u,U,y,Y,m,M}
-	{ dunstify options: " (capital-clipboard):\nh-help menu\ng-google\nb-brave\nu-duckduck\ny-yt\nm-maps\nw-wiki\nc-ceneo\no-cenowarka\na-allegro\nz-amazon\ns-so\nf-filmweb\nd-diki\nl-deepL\nr-translator\np-pl-en trans\ne-en-pl trans\nx-tuxi\nt-tor", \
+	{ dunstify options: " (capital-clipboard):\nh-help menu\ng-google\nb-brave\nu-duckduck\ny-yt\nm-maps\nw-wiki\nc-ceneo\no-cenowarka\na-allegro\nz-amazon\ns-so\nf-filmweb\nd-diki\nl-deepL\nr-translator\np-pl-en trans\ne-en-pl trans\nx-tuxi\nt-tor\ni-info from cheatsh", \
 	search.lua menu input, \
 	search.lua google primary, search.lua google clip, \
 	search.lua brave primary, search.lua brave clip, \
@@ -241,12 +241,13 @@ super + s ; {w,W,c,C,o,O,a,A,z,Z,f,F,x,X,t,T}
 	search.lua tuxi input, search.lua tuxi clip, \
 	search.lua tor primary, search.lua tor clip }
 
-super + s ; {d,D,l,L,r,R,p,P,n,N}
+super + s ; {d,D,l,L,r,R,p,P,e,E,i}
 	{ search.lua diki primary, search.lua diki clip, \
 	search.lua deepl primary, search.lua deepl clip, \
 	search.lua translator primary, search.lua translator clip, \
 	search.lua plen primary, search.lua plen clip, \
-	search.lua enpl primary, search.lua enpl clip}
+	search.lua enpl primary, search.lua enpl clip, \
+	cht.lua }
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
 # tui

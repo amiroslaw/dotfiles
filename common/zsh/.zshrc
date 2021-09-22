@@ -90,7 +90,7 @@ POWERLEVEL9K_STATUS_OK_BACKGROUND='green4'
 POWERLEVEL9K_TIME_BACKGROUND='yellow3'
 # POWERLEVEL9K_MODE='nerdfont-complete'
 
-shuf -n 1 $CONFIG/logs/dictionary/enpl-dictionary.txt
+# shuf -n 1 $CONFIG/logs/dictionary/enpl-dictionary.txt
 
 # autosuggestions
 bindkey '^l' autosuggest-accept

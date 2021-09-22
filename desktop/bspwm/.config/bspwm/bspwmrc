@@ -44,11 +44,12 @@ bspc config focus_follows_pointer true
 #bspc config pointer_follows_focus true #Some keybindings automatically enable and disable this setting
 
 ###This creates and names desktops for multiple monitors.
-# bspc rule -a appName:name → xprop WM_CLASS:WM_NAME?
+# bspc -a class_name:instance_name:name → all *
+# bspc rule -a appName:class_name → in xprop WM_CLASS(STRING) = "Toolkit"(instance_name), "firefox" (class_name)
+# in st -n = instance_name; alacritty --class = instance_name
 # workspaces_multimonitor &
 #bspc desktop I --layout monocle
 #bspc rule -a firefox desktop=I
-
 
 bspc rule -a screenkey --unmanage
 bspc rule -a gcolor2 state=floating center=true
@@ -68,6 +69,7 @@ bspc rule -a '*:soffice' state=tiled
 bspc rule -a firefox private=on
 bspc rule -a firefox:Toolkit  state=floating sticky=on focus=off layer=above rectangle=380x210+1530+980
 bspc rule -a '*:rsvp' state=floating sticky=on layer=above rectangle=1100x150+0+0 center=true
+bspc rule -a '*:cheatsh' state=floating layer=above
 
 #bspc rule -a firefox desktop=I
 bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true

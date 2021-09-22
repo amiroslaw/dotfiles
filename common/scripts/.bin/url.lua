@@ -95,6 +95,7 @@ function speed(linkTab)
 	for i, link in ipairs(linkTab) do
 		local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to plain --output ' .. tmpname)
 		os.execute('st -t rsvp -n rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 300"') 
+		-- os.execute('alacritty --class rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 300"') 
 		assert(createFile == 0, 'Could not create file')
 	end
 	return 'RSVP finished ' .. tmpname
