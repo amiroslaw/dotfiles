@@ -241,13 +241,13 @@ super + s ; {w,W,c,C,o,O,a,A,z,Z,f,F,x,X,t,T}
 	search.lua tuxi input, search.lua tuxi clip, \
 	search.lua tor primary, search.lua tor clip }
 
-super + s ; {d,D,l,L,r,R,p,P,e,E,i}
+super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 	{ search.lua diki primary, search.lua diki clip, \
 	search.lua deepl primary, search.lua deepl clip, \
 	search.lua translator primary, search.lua translator clip, \
 	search.lua plen primary, search.lua plen clip, \
 	search.lua enpl primary, search.lua enpl clip, \
-	cht.lua }
+	search.lua cheat input, search.lua cheat primary }
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
 # tui

@@ -8,7 +8,7 @@ Utils for searching.
 search.lua action [clipboard | phrase | input]
 List of the options:
 
-	actions: plen|cenowarka|tor|so|filmweb|enpl|amazon|ceneo|diki|tuxi|brave|maps|translator|dd|deepl|wiki|yt|google
+	actions: plen|cenowarka|tor|so|filmweb|enpl|amazon|ceneo|diki|tuxi|brave|maps|translator|dd|deepl|wiki|yt|google|cheat
 	menu - show rofi with available actions
 	clipboard - type of the clipboard: clip or primary (default)
 	phrase - search phrase
@@ -27,6 +27,39 @@ if not phraseArg or phraseArg == 'input' then
 end 
 if phraseArg == 'primary' or phraseArg == 'clip' then
 	phraseArg = io.popen('xclip -out -selection ' .. phraseArg):read('*a')
+end
+
+function cheat()
+	local topics = {
+		lua = "lang",
+		java = 'lang',
+		js = 'lang',
+		typescript = 'lang',
+		kotlin = 'lang',
+		css = 'lang',
+		html = 'lang',
+		bash = 'lang',
+		xargs = 'app',
+		sed = 'app',
+		awk = 'app',
+		find = 'app',
+		ls = 'app'
+	}
+
+	local tmpname = os.tmpname()
+	local topic = util.menu(topics)
+	local query = phraseArg:gsub('%s', '+')
+	local status = 1
+	if topics[topic] == 'lang' then
+		if query == '' then query = ':list' elseif query == 'l' then query = ':learn' end -- :learn; def=:list
+		status = os.execute('curl cht.sh/' .. topic .. '/' .. query .. ' > ' .. tmpname)
+	else
+		status = os.execute('curl cht.sh/' .. topic .. '~' .. query .. ' > ' .. tmpname)
+	end
+	assert(status == 0, 'Can not fetch data')
+	-- terminal = os.getenv('TERM')
+	-- ?T without ascii
+	os.execute("alacritty --class cheatsh -t cheatsh -e less -R " .. tmpname)
 end
 
 function browser(url)
@@ -71,6 +104,7 @@ local options = {
 	["plen"]= function(phrase) return transShell, 'pl:en' end,
 	["enpl"]= function(phrase) return transShell, 'en:pl' end,
 	["tuxi"]= function(phrase) return tuxi  end,
+	["cheat"]= function(phrase) return cheat end,
 	["tor"]= function(phrase) return  os.execute('~/tor.sh ' .. phrase) end,
 	["-h"]= function() print(HELP); os.exit() end,
 	["#default"] = function(phrase) return browser, 'http://google.com/search?q="' .. phrase .. '"' end
@@ -90,4 +124,3 @@ local ok, val = pcall(exec, param)
 if not ok then 
 	util.errorHandling(val)
 end
-
