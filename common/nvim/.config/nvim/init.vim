@@ -206,7 +206,7 @@ syntax spell toplevel
 " au BufReadPost *.adoc,*.md setlocal spell spelllang=pl_PL,en_us
 "togle spellcheck
 nmap <leader>s :set spell!<cr> 
-nmap <leader>ss :setlocal spell!<cr> :syntax spell toplevel<cr> :setlocal spell! spelllang=pl<CR>
+nmap <leader>ss :setlocal spell! spelllang=pl<cr> :syntax spell toplevel<cr>
 " nmap <leader>se :set spelllang=en_us<CR>
 nmap <leader>se :setlocal spell! spelllang=en_us<CR>
 nnoremap <C-e> z= 
