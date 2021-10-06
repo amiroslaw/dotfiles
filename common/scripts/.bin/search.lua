@@ -105,7 +105,7 @@ local options = {
 	["enpl"]= function(phrase) return transShell, 'en:pl' end,
 	["tuxi"]= function(phrase) return tuxi  end,
 	["cheat"]= function(phrase) return cheat end,
-	["tor"]= function(phrase) return  os.execute('~/tor.sh ' .. phrase) end,
+	["tor"]= function(phrase) return  os.execute('tor.sh ' .. phrase) end,
 	["-h"]= function() print(HELP); os.exit() end,
 	["#default"] = function(phrase) return browser, 'http://google.com/search?q="' .. phrase .. '"' end
 }
