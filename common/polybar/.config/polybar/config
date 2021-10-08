@@ -160,7 +160,7 @@ type = internal/date
 interval = 60
 
 label = %date% %time%
-date = " %d/%m"
+date = ""
 date-alt = " %Y-%m-%d"
 time = %H:%M
 time-alt = %H:%M
@@ -618,7 +618,6 @@ ramp-0 = 
 ramp-1 = 
 ramp-2 = 
 ; ramp-foreground = ${colors.foreground-alt}
-
 
 [section/base]
 ; include-file = /home/miro/Documents/dotfiles/desktop/polybar/.config/polybar/ext

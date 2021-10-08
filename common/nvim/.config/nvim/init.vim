@@ -138,7 +138,8 @@ inoremap <c-A-k> <Esc>:m .-2<CR>==gi
 vnoremap <c-a-j> :m '>+1<CR>gv=gv
 vnoremap <c-a-k> :m '<-2<CR>gv=gv
 " jump to last edited location
-nnoremap <C-i> `. <cr> 
+nnoremap <C-i> g; <cr> 
+nnoremap <C-o> g, <cr> 
 " page scroll
 nnoremap <Space> <C-f> <cr> 
 nnoremap <C-k> <C-b> <cr> 
@@ -515,4 +516,10 @@ nmap <leader>r <Plug>RestNvim<cr>
 lua require('nvim-autopairs').setup()
 lua require('autosave').setup({ enabled = true })
 
-
+"""""""""""""""""""
+" visual multi https://github.com/mg979/vim-visual-multi/wiki/Mappings
+let g:VM_maps = {}
+let g:VM_maps['Find Under']                  = '<A-n>'
+let g:VM_maps['Find Subword Under']          = '<A-n>'
+let g:VM_maps["Select All"]                  = '<C-A-n>' 
+let g:VM_maps["Visual All"]                  = '<C-A-n>' 
