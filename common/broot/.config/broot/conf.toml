@@ -23,18 +23,23 @@ shortcut = "e"
 execution = "/usr/bin/nvim {file}"
 # execution = "$EDITOR {file}"
 
+## VIMLIKE
 [[verbs]]
-key = "ctrl-c"
-execution = ":quit"
-
-[[verbs]]
-key = "alt-k"
+key = "ctrl-k"
 execution = ":line_up"
 
 [[verbs]]
 name = "line_down"
-key = "alt-j"
+key = "ctrl-j"
 execution = ":line_down"
+
+[[verbs]]
+key = "ctrl-u"
+execution = ":page_up"
+
+[[verbs]]
+key = "ctrl-d"
+execution = ":page_down"
 
 [[verbs]]
 key = "ctrl-p"
@@ -77,14 +82,6 @@ execution = ":toggle_sizes"
 # [[verbs]]
 # key = "ctrl-p"
 # execution = ":chmod"
-
-# [[verbs]]
-# key = "ctrl-u"
-# execution = ":page_up"
-
-# [[verbs]]
-# key = "ctrl-d"
-# execution = ":page_down"
 
 # If $PAGER isn't set on your computer, you should either set it
 #  or just replace it with your viewer of choice in the 'execution'
