@@ -14,7 +14,7 @@ Plug 'SirVer/ultisnips'
 Plug 'mhinz/vim-startify' "start screen
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'} 
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo'} " zen mode
-" Plug 'vim-scripts/YankRing.vim' " fix keybinding
+Plug 'vim-scripts/YankRing.vim' " fix keybinding
 " CODE
 Plug 'tpope/vim-surround'
 
@@ -105,8 +105,7 @@ augroup highlight_yank
 augroup END
 " IncSearch
 set ignorecase smartcase hlsearch incsearch
-set number
-" set relativenumber
+set number " relativenumber
 " substitution 
 set inccommand=split
 set clipboard^=unnamedplus
@@ -138,7 +137,8 @@ inoremap <c-A-j> <Esc>:m .+1<CR>==gi
 inoremap <c-A-k> <Esc>:m .-2<CR>==gi
 vnoremap <c-a-j> :m '>+1<CR>gv=gv
 vnoremap <c-a-k> :m '<-2<CR>gv=gv
-
+" jump to last edited location
+nnoremap <C-i> `. <cr> 
 " page scroll
 nnoremap <Space> <C-f> <cr> 
 nnoremap <C-k> <C-b> <cr> 
@@ -206,7 +206,8 @@ syntax spell toplevel
 " au BufReadPost *.adoc,*.md setlocal spell spelllang=pl_PL,en_us
 "togle spellcheck
 nmap <leader>s :set spell!<cr> 
-nmap <leader>ss :setlocal spell! spelllang=pl<cr> :syntax spell toplevel<cr>
+" nmap <leader>sp :setlocal spell! spelllang=pl<cr> :syntax spell toplevel<cr>
+nmap <leader>sp :setlocal spell! spelllang=pl<cr>
 " nmap <leader>se :set spelllang=en_us<CR>
 nmap <leader>se :setlocal spell! spelllang=en_us<CR>
 nnoremap <C-e> z= 
@@ -473,6 +474,7 @@ nnoremap <c-s> <cmd>Telescope live_grep<cr>
 nnoremap <c-f> <cmd>Telescope find_files<cr>
 nnoremap tp <cmd>Telescope find_files find_command=rg,--hidden,--files<cr>
 nnoremap tl <cmd>Telescope<cr>
+" nnoremap tl <cmd>Telescope loclist<cr> 
 nnoremap tj <cmd>Telescope jumplist<cr> 
 nnoremap tf <cmd>Telescope file_browser<cr>
 nnoremap tz <cmd>Telescope current_buffer_fuzzy_find<cr>
@@ -512,3 +514,5 @@ nmap <leader>r <Plug>RestNvim<cr>
 " turn on plugins
 lua require('nvim-autopairs').setup()
 lua require('autosave').setup({ enabled = true })
+
+
