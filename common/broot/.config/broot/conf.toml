@@ -18,9 +18,10 @@
 # execution = "/usr/bin/nvim {file}"
 [[verbs]]
 invocation = "edit"
-key = "ctrl-e"
+key = "enter"
 shortcut = "e"
 execution = "/usr/bin/nvim {file}"
+leave_broot = false
 # execution = "$EDITOR {file}"
 
 ## VIMLIKE
@@ -34,32 +35,51 @@ key = "ctrl-j"
 execution = ":line_down"
 
 [[verbs]]
-key = "ctrl-u"
-execution = ":page_up"
+key = "ctrl-l"
+execution = ":open_stay"
 
 [[verbs]]
-key = "ctrl-d"
-execution = ":page_down"
-
-[[verbs]]
-key = "ctrl-p"
+key = "ctrl-h"
 execution = ":parent"
 
 [[verbs]]
-key = "ctrl-r"
-execution = "rm -rf {file}"
+invocation = "top"
+key = "ctrl-u"
+execution = ":select_first"
 
 [[verbs]]
-invocation = "create {subpath}"
-execution = "nvim {directory}/{subpath}"
+invocation = "bottom"
+key = "ctrl-d"
+execution = ":select_last"
+
+##### Internal
+[[verbs]]
+invocation = "panel_new"
+key = "ctrl-o"
+internal = ":start_end_panel"
+[[verbs]]
+invocation = "panel_left"
+key = "ctrl-p"
+internal = ":panel_left"
+[[verbs]]
+invocation = "panel_right"
+key = "ctrl-n"
+internal = ":panel_right"
+
 
 # toggles
+[[verbs]]
+name = "preview"
+key = "ctrl-v"
+invocation = "preview"
+execution = ":toggle_preview"
+
 [[verbs]]
 key = "ctrl-t"
 execution = ":toggle_dates"
 
 [[verbs]]
-key = "ctrl-h"
+key = "ctrl-a"
 execution = ":toggle_hidden"
 
 [[verbs]]
@@ -74,14 +94,39 @@ execution = ":toggle_perm"
 key = "ctrl-s"
 execution = ":toggle_sizes"
 
-# don't work 
-# [[verbs]]
-# key = "F7"
-# execution = "mkdir {name}"
+##### EXECUTION
+[[verbs]]
+invocation = "remove"
+key = "ctrl-r"
+leave_broot = false
+execution = "trash-put {file}"
+# or {directory} it not match dir or file it will delete parrent!
+# execution = "rm -rf {file}"
 
-# [[verbs]]
-# key = "ctrl-p"
-# execution = ":chmod"
+[[verbs]]
+invocation = "copy to panel"
+key = "F5"
+execution = "cp -r {file} {other-panel-directory}"
+leave_broot = false
+
+[[verbs]]
+invocation = "move to panel"
+key = "F6"
+execution = "mv {file} {other-panel-directory}"
+leave_broot = false
+
+[[verbs]]
+invocation = "move to panel"
+key = "F8"
+execution = "touch {directory}/{new_file}"
+leave_broot = false
+
+[[verbs]]
+key = "F7"
+invocation = "mkdir"
+execution = "/bin/mkdir -p {directory}/{new_dir}"
+leave_broot = false
+# execution = "mkdir -p {subpath:path-from-directory}"
 
 # If $PAGER isn't set on your computer, you should either set it
 #  or just replace it with your viewer of choice in the 'execution'
@@ -89,12 +134,6 @@ execution = ":toggle_sizes"
 # Example:
 #  execution = "less {file}"
 # execution = "$PAGER {file}"
-[[verbs]]
-name = "view"
-key = "ctrl-v"
-invocation = "view"
-execution = "kitty bat {file}"
-
 #####################
 # Skin
 
