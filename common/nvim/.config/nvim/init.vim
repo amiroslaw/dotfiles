@@ -523,3 +523,10 @@ let g:VM_maps['Find Under']                  = '<A-n>'
 let g:VM_maps['Find Subword Under']          = '<A-n>'
 let g:VM_maps["Select All"]                  = '<C-A-n>' 
 let g:VM_maps["Visual All"]                  = '<C-A-n>' 
+
+"""""""""""""""""""
+" YankRing https://github.com/vim-scripts/YankRing.vim
+let g:yankring_history_dir = '~/.local/share/nvim'
+let g:yankring_min_element_length = 3
+let g:yankring_default_menu_mode = 3
+
