@@ -16,6 +16,7 @@
 #  pattern.
 # Example:
 # execution = "/usr/bin/nvim {file}"
+
 [[verbs]]
 invocation = "edit"
 key = "enter"
@@ -23,6 +24,17 @@ shortcut = "e"
 execution = "/usr/bin/nvim {file}"
 leave_broot = false
 # execution = "$EDITOR {file}"
+
+[[verbs]]
+shortcut = "f"
+invocation = "open file"
+key = "ctrl-o"
+internal = ":open_stay_filter"
+
+[[verbs]]
+invocation = "home"
+key = "ctrl-b"
+internal = ":focus ~"
 
 ## VIMLIKE
 [[verbs]]
@@ -52,11 +64,15 @@ invocation = "bottom"
 key = "ctrl-d"
 execution = ":select_last"
 
-##### Internal
+##### Panels
 [[verbs]]
 invocation = "panel_new"
-key = "ctrl-o"
+key = "ctrl-v"
 internal = ":start_end_panel"
+[[verbs]]
+invocation = "panel_close"
+key = "ctrl-c"
+internal = ":close_panel_cancel"
 [[verbs]]
 invocation = "panel_left"
 key = "ctrl-p"
@@ -70,7 +86,7 @@ internal = ":panel_right"
 # toggles
 [[verbs]]
 name = "preview"
-key = "ctrl-v"
+key = "ctrl-w"
 invocation = "preview"
 execution = ":toggle_preview"
 
@@ -181,4 +197,12 @@ leave_broot = false
 # You may find other skins on
 #  https://dystroy.org/broot/documentation/configuration/#colors
 # for example a skin suitable for white backgrounds
+
+
+
+# [[verbs]]
+# invocation = "open file"
+# key = "ctrl-o"
+# execution = "xdg-open {file}"
+# apply_to = "file"
 

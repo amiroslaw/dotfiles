@@ -27,18 +27,11 @@ Plug 'habamax/vim-asciidoctor', {'for': 'asciidoctor'}
 " markdown 
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown', 'frozen': 1}
 Plug 'kannokanno/previm', { 'for': 'markdown'}
-Plug 'godlygeek/tabular', { 'for': 'markdown'} " do wyrównywania np w tabelach
-" http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ :Tab /|
+Plug 'godlygeek/tabular', { 'for': 'markdown'} " do wyrównywania np w tabelach http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ :Tab /|
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" COLORSCHEMES
-" https://www.dunebook.com/best-vim-themes/
-" https://vimcolorschemes.com/top
-" ayu, nord, vim-one, one-half, drakula NeoSolarized, pepertheme
-" Plug 'arcticicestudio/nord-vim', { 'branch': 'develop' }
-Plug 'https://github.com/rakr/vim-one'
-" Plug 'iCyMind/NeoSolarized'
+
 "Syntax
 Plug 'baskerville/vim-sxhkdrc'
 
@@ -53,6 +46,14 @@ Plug 'phaazon/hop.nvim'
 Plug 'hrsh7th/nvim-compe'
 " for telescope
 Plug 'nvim-lua/popup.nvim' | Plug 'nvim-lua/plenary.nvim' | Plug 'nvim-telescope/telescope.nvim'
+
+" COLORSCHEMES
+" https://www.dunebook.com/best-vim-themes/
+" https://vimcolorschemes.com/top
+" ayu, nord, vim-one, one-half, drakula NeoSolarized, pepertheme
+" Plug 'arcticicestudio/nord-vim', { 'branch': 'develop' }
+Plug 'https://github.com/rakr/vim-one'
+" Plug 'iCyMind/NeoSolarized'
 
 call plug#end()
 
@@ -498,8 +499,7 @@ set maxmempattern=3000 " fix pattern uses more memory than 'maxmempattern', defa
 
 """""""""""""""""""
 " NvimTreeToggle https://github.com/kyazdani42/nvim-tree.lua
-" nnoremap <press Shift-F3> :NvimTreeToggle<CR>
-map <F3> :NvimTreeToggle<CR>
+nnoremap <F3> :NvimTreeToggle<CR>
 
 """""""""""""""""""
 " jqx https://github.com/gennaro-tedesco/nvim-jqx
@@ -529,4 +529,3 @@ let g:VM_maps["Visual All"]                  = '<C-A-n>'
 let g:yankring_history_dir = '~/.local/share/nvim'
 let g:yankring_min_element_length = 3
 let g:yankring_default_menu_mode = 3
-

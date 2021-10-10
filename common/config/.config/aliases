@@ -57,6 +57,7 @@ alias cfbspwm='nvim ~/.config/bspwm/bspwmrc'
 alias cfautostart='nvim ~/.config/bspwm/autostart'
 alias cfsxhkd='nvim ~/.config/sxhkd/sxhkdrc'
 alias cfkitty='nvim ~/.config/kitty/kitty.conf'
+alias cfbroot='nvim ~/.config/broot/conf.toml'
 #}}}
 
 #RÓŹNE
