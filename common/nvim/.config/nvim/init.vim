@@ -509,7 +509,8 @@ nmap <leader>x <Plug>JqxList
 " rest https://github.com/NTBBloodbath/rest.nvim#usage
 lua require('rest-nvim').setup()
 nmap <leader>r <Plug>RestNvim<cr>
-" nmap <leader>rp <Plug>RestNvimPreview<cr>
+nmap <leader>rr <Plug>RestNvimLast<cr>
+nmap <leader>rp <Plug>RestNvimPreview<cr>
 
 """""""""""""""""""
 " turn on plugins

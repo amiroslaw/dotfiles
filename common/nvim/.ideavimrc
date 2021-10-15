@@ -216,6 +216,7 @@ nnoremap <Space> <C-d><cr>
 " nmap <c-s-s> <s-F2>
 nmap <c-s> :action GotoNextError<cr>
 nmap <c-s-s> :action GotoPreviousError<cr>
+nnoremap <leader>c :CodeCleanup<cr>
 
 nnoremap <leader>/ :nohlsearch<cr>
 
