@@ -12,7 +12,7 @@ xset s noblank &
 xset s noexpose &
 xset c on &
 xset -dpms &
-light -S 80 &
+sleep 500 && light -S 80 &
 # xbacklight -set 15 &
 
 
