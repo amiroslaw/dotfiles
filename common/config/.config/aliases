@@ -57,6 +57,7 @@ alias cfbspwm='nvim ~/.config/bspwm/bspwmrc'
 alias cfautostart='nvim ~/.config/bspwm/autostart'
 alias cfsxhkd='nvim ~/.config/sxhkd/sxhkdrc'
 alias cfkitty='nvim ~/.config/kitty/kitty.conf'
+alias cfbroot='nvim ~/.config/broot/conf.toml'
 #}}}
 
 #RÓŹNE
@@ -225,6 +226,7 @@ alias cdhtdoc='cd /opt/lampp/htdocs/'
 alias cdn='cd ~/Documents/notebook && nvim'
 alias cdd='cd ~/Documents'
 alias cdp='cd ~/Downloads'
+alias cdb='cd ~/.bin'
 alias cdv='cd ~/Videos'
 alias cdM='cd /media/multi'
 alias cdm='cd ~/Musics'

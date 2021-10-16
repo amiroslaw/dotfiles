@@ -195,7 +195,7 @@ super + {_,shift} + i
 	
 super + F{1,2,3,4,7,8,9,10,11,12}
 	{ $BROWSER, \
-	/opt/idea-IU-*/bin/idea.sh, \
+	/opt/idea-IU-212.5284.40/bin/idea.sh, \
 	kitty vifm, \
 	pcmanfm, \
 	sh -c 'cd $NOTE; $TERM_LT -t note nvim', \
