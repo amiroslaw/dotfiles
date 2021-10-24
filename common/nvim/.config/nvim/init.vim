@@ -58,10 +58,12 @@ Plug 'https://github.com/rakr/vim-one'
 
 call plug#end()
 
-
 " COLORSCHEMES
-colorscheme dracula
+let scheme = strftime("%H") > 5 && strftime("%H") < 18 ? "one" : "dracula"
+execute 'colorscheme ' . scheme
+let &background =strftime("%H") > 5 && strftime("%H") < 18 ? "light" : "dark"
 
+" colorscheme dracula
 " vime-one - support dark and light theme
 " set background=dark
 " let g:one_allow_italics = 1 
