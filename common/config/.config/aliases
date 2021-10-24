@@ -33,7 +33,7 @@ java8=~/.sdkman/candidates/java/8.0.171-oracle/bin/java
 alias dlfile='~/Documents/Ustawienia/skrypty/dlfile'
 alias remind='$path_script/remind.sh'
 alias mag='$path_script/magnet.sh "$(xclip -o -selection clipboard)"'
-alias crypto='investing-cli -t CRYPTO -p -e PLN'
+alias crypto='investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)'
 #}}}
 
 # config files
@@ -66,6 +66,7 @@ alias cl='clear'
 alias se='sudoedit'
 alias permissionX='sudo chmod -R +x'
 alias zathuraBlist='less ~/.local/share/zathura/bookmarks'
+alias vim-remove-swap='rm ~/.local/share/nvim/swap/*'
 # grepextend pattern path/.
 alias grepextend='grep -inrC 3'
 alias history-count='cut -f1 -d" " ~/.zhistory | sort | uniq -c | sort -nr | head -n 30'
@@ -174,8 +175,8 @@ alias yts='youtube-viewer -C -SV'
 alias ytm='youtube-viewer -C -n'
 alias ytaudio='youtube-dl -x --audio-format mp3 '
 alias ytlisten='mpv --no-video "$(xclip -o -selection clipboard)"'
-alias kindlecp-run='cp /run/media/miro/Kindle/documents/My\ Clippings.txt ~/'
-alias kindlecp-media='cp /media/Kindle/documents/My\ Clippings.txt ~/'
+alias kindlecp-run='cp /run/media/miro/Kindle/documents/My\ Clippings.txt ~/Documents/notatki/kindle/clippings-$(date -u +"%Y-%m-%d").txt'
+alias kindlecp-media='cp /media/Kindle/documents/My\ Clippings.txt ~/Documents/notatki/kindle/clippings-$(date -u +"%Y-%m-%d").txt'
 alias torrentRm='rm /media/multi/Downloads/.pobierane/rtorrent.lock'
 alias scan='sudo clamscan -r --bell -i '
 alias lamp-start='sudo /opt/lampp/lampp start'
@@ -249,7 +250,7 @@ alias ll='exa --icons -l' #long
 alias lt='exa --icons --tree'
 alias lr='exa --icons --recurse'
 alias ld='exa --only-dirs'
-alias tree='tree -Ch'
+alias treeh='tree -Ch'
 # sort by size
 alias lls='exa --icons -l -ssize --reverse'
 alias brs='br --sizes'
@@ -354,7 +355,6 @@ alias -g H='$(fd --hidden | fzf) '
 #}}}
 #FUNCTIONS
 #{{{
-alias kindlecp-media='cp "/media/Kindle/documents/My Clippings.txt" ~/'
 alias mkcd='take'
 # mkcd () {
 #   case "$1" in /*) :;; *) set -- "./$1";; esac

@@ -310,9 +310,9 @@ interval = 60
 
 [module/investing]
 type = custom/script
-exec = investing-cli --no-errors -l -o 11B,cdr,cie,btc -k $(cat $PRIVATE/yahoo) && investing-cli -an -k $(cat $PRIVATE/yahoo)
+exec = investing-cli --no-errors -l -o 11B,cdr,cie,btc,xrp -k $(cat $PRIVATE/yahoo) && investing-cli -an -k $(cat $PRIVATE/yahoo)
 click-left = investing-cli -ln -k $(cat $PRIVATE/yahoo)
-click-right = crypto -n -k $(cat $PRIVATE/yahoo)
+click-right = investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)
 interval = 1800
 
 [module/currency]

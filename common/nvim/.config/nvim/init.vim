@@ -50,26 +50,30 @@ Plug 'nvim-lua/popup.nvim' | Plug 'nvim-lua/plenary.nvim' | Plug 'nvim-telescope
 " COLORSCHEMES
 " https://www.dunebook.com/best-vim-themes/
 " https://vimcolorschemes.com/top
-" ayu, nord, vim-one, one-half, drakula NeoSolarized, pepertheme
-" Plug 'arcticicestudio/nord-vim', { 'branch': 'develop' }
+" ayu, vim-one, one-half, drakula NeoSolarized, pepertheme
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'https://github.com/rakr/vim-one'
 " Plug 'iCyMind/NeoSolarized'
+" Plug 'patstockwell/vim-monokai-tasty'
 
 call plug#end()
+
+
+" COLORSCHEMES
+colorscheme dracula
+
+" vime-one - support dark and light theme
+" set background=dark
+" let g:one_allow_italics = 1 
 
 """"""""""""""""""""""""""
 """""" SETTINGS
 
-" let g:neosolarized_italic = 1
 if (empty($TMUX))
   if (has("termguicolors"))
     set termguicolors
   endif
 endif
-" vime-one - support dark and light theme
-let g:one_allow_italics = 1 " I love italic for comments
-set background=light   
-colorscheme one
 if &term == "screen"
   set t_Co=256
 endif
@@ -377,7 +381,7 @@ let g:eighties_bufname_additional_patterns = ['fugitiveblame'] " Defaults to [],
 
 """""""""""""""""""
 " vim-airline
-let g:airline_theme = 'one'
+let g:airline_theme='dracula'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1

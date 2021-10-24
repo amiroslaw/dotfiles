@@ -67,6 +67,13 @@ function sendToKindle(linkTab)
 		if #title ~= 0 then 
 			-- converting to pdf has error in pandoc, html need to have <html> <body> tags and has problem with encoding
 			local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. title .. '.docx')
+
+			--[[ 
+			append link to the article - I have to do it before pandoc
+			doc = io.open(tmpDir .. title .. '.docx', "a+")
+			doc:write(link)
+			doc:close() ]]
+
 			local sendFile = os.execute('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Kindle" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
 			if createFile ~= 0 or sendFile ~= 0 then -- readability-cli return 0 in error 
 				table.insert(articlesWithErrors, link)
