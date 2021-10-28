@@ -445,8 +445,8 @@ let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 "https://github.com/phaazon/hop.nvim
 lua require'hop'.setup()
 
-map f <cmd>HopChar1 <cr>
-map F <cmd>HopChar2 <cr>
+map F <cmd>HopChar1 <cr>
+map f <cmd>HopChar2 <cr>
 map <leader>w <cmd>HopWordAC <cr>
 map <leader>W <cmd>HopWordBC <cr>
 map s <cmd>HopLineStartAC <cr>
