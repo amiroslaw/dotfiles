@@ -39,7 +39,7 @@ alias crypto='investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)'
 # config files
 # {{{
 alias batalias='bat ~/.config/aliases'
-alias cfportfolio='nvim ~/.config/investing/portfolio.json'
+alias cfportfolio='nvim ~/.config/investing/portfolio.yaml'
 alias cfqpiv='nvim ~/.config/pqivrc'
 alias cfaliases='nvim ~/.config/aliases'
 alias cfalacritty='nvim ~/.config/alacritty/alacritty.yml'

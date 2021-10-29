@@ -227,7 +227,9 @@ vnoremap <A-r> "hy:%s/<C-r>h//g<left><left><left>
 " TEXT OBJECTS
 """""""""""""""""""
 " current line - doesn't work ^vg_ triming spaces in the end
-xnoremap il ^o$h 
+" TODO ^o$h doesn't work
+" xnoremap il ^o$h 
+xnoremap il ^vg_
 onoremap il :normal vil<CR>
 
 """""""""""""""""""
