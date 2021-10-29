@@ -12,11 +12,11 @@ xset s noblank &
 xset s noexpose &
 xset c on &
 xset -dpms &
-light -S 80 &
+sleep 200 && light -S 80 &
 # xbacklight -set 15 &
 
 
-sleep 500 && megasync &
+sleep 300 && megasync &
 clipster -d &
 redshift -l 51.2:22.6 &
 ## Run screenlock when suspending

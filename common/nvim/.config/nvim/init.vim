@@ -58,10 +58,12 @@ Plug 'https://github.com/rakr/vim-one'
 
 call plug#end()
 
-
 " COLORSCHEMES
-colorscheme dracula
+let scheme = strftime("%H") > 5 && strftime("%H") < 18 ? "one" : "dracula"
+execute 'colorscheme ' . scheme
+let &background =strftime("%H") > 5 && strftime("%H") < 18 ? "light" : "dark"
 
+" colorscheme dracula
 " vime-one - support dark and light theme
 " set background=dark
 " let g:one_allow_italics = 1 
@@ -445,8 +447,8 @@ let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 "https://github.com/phaazon/hop.nvim
 lua require'hop'.setup()
 
-map f <cmd>HopChar1 <cr>
-map F <cmd>HopChar2 <cr>
+map F <cmd>HopChar1 <cr>
+map f <cmd>HopChar2 <cr>
 map <leader>w <cmd>HopWordAC <cr>
 map <leader>W <cmd>HopWordBC <cr>
 map s <cmd>HopLineStartAC <cr>
