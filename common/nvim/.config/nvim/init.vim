@@ -239,6 +239,9 @@ onoremap il :normal vil<CR>
 let @p='$a  +j0'
 let @l='pA['
 
+"""" kindle put cursor on ===
+let @l='V3jd2j'
+
 """""" markdown
 " dwie spacje na koncu linii s  
 let @s='$a  j0'
@@ -325,8 +328,8 @@ set conceallevel=3
 
 """""""""""""""""""
 " vim-asciidoctor  https://github.com/habamax/vim-asciidoctor
-" nnoremap <F7> :Asciidoctor2HTML<CR>
 nnoremap <F7> :silent !preview-ascii.sh % <CR>
+nnoremap <S-F7> :silent Asciidoctor2DOCX<CR>
 
 let g:asciidoctor_syntax_conceal = 1
 let g:asciidoctor_folding = 1
