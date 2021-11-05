@@ -17,6 +17,7 @@ Plug 'junegunn/goyo.vim', { 'on': 'Goyo'} " zen mode
 Plug 'vim-scripts/YankRing.vim' " fix keybinding
 " CODE
 Plug 'tpope/vim-surround'
+Plug 'sbdchd/neoformat'
 
 " NOTE
 Plug 'itchyny/calendar.vim', {'on': 'Calendar'} " problem with api
@@ -541,3 +542,8 @@ let g:VM_maps["Visual All"]                  = '<C-A-n>'
 let g:yankring_history_dir = '~/.local/share/nvim'
 let g:yankring_min_element_length = 3
 let g:yankring_default_menu_mode = 3
+
+"""""""""""""""""""
+" https://github.com/sbdchd/neoformat
+noremap  <a-f> :Neoformat! java astyle <CR>
+vnoremap  <a-f> :Neoformat! java astyle <CR>
