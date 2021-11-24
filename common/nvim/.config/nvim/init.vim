@@ -16,7 +16,7 @@ Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'vim-scripts/YankRing.vim' " fix keybinding
 " CODE
 Plug 'tpope/vim-surround'
-Plug 'sbdchd/neoformat'
+Plug 'sbdchd/neoformat', { 'on': 'Neoformat'}
 Plug 'dense-analysis/ale', {'on': 'ALELint'}
 
 " NOTE

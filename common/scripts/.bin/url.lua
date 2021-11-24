@@ -64,6 +64,7 @@ function sendToKindle(linkTab)
 
 	for i, link in ipairs(linkTab) do
 		local title = io.popen('readable -A "Mozilla" -q true "' .. link .. '" -p title'):read('*a'):gsub('[^a-zA-Z0-9-_]', '-')
+
 		if #title ~= 0 then 
 			-- converting to pdf has error in pandoc, html need to have <html> <body> tags and has problem with encoding
 			local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. title .. '.docx')
