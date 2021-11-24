@@ -7,5 +7,6 @@ borg create --compression zlib --stats /media/backup/backup-borg/weekly::{hostna
 	--exclude '/home/miro/*/.debris'	\
 	--exclude **/node_modules	\
 	--exclude **/build	\
+	--exclude **/target	\
 	--exclude '*.class'	>> ~/Documents/Ustawienia/logs/borg-pc/log_weekly.txt 2>&1
 	# --exclude **/.debris	\

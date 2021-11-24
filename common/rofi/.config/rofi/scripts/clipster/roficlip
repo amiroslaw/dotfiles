@@ -45,7 +45,8 @@ if [ -n "$SELECTION" ]; then
 	fi
   # Echo the selection back to clipster
   echo -n "$EXACT_SELECTION" | clipster -c 
-  xdotool sleep 0.100 key --clearmodifiers ctrl+v
-  # midleclick is buggy
-  # xdotool sleep 0.100 click --clearmodifiers 2
+  echo -n "$EXACT_SELECTION" | clipster
+  xdotool sleep 0.100 key --clearmodifiers shift+Insert
+  sleep 0.5
+  clipster -r
 fi

@@ -245,6 +245,7 @@ alias ......='cd ../../../../..'
 
 # list of the files/directories
 #{{{
+alias l='exa --icons'
 alias la='exa --icons -la'
 alias ll='exa --icons -l' #long
 alias lt='exa --icons --tree'

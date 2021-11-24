@@ -1,7 +1,8 @@
 #!/bin/sh
 
-roficlip
+# roficlip
 xdotool sleep 0.100 key --clearmodifiers ctrl+v
+# xdotool sleep 0.100 key --clearmodifiers shift+Insert
 
 # clip=$(roficlip)
 # if [ -z "$clip" ]

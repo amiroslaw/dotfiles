@@ -13,11 +13,11 @@ Plug 'majutsushi/tagbar'
 Plug 'SirVer/ultisnips'
 Plug 'mhinz/vim-startify' "start screen
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'} 
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo'} " zen mode
 Plug 'vim-scripts/YankRing.vim' " fix keybinding
 " CODE
 Plug 'tpope/vim-surround'
 Plug 'sbdchd/neoformat'
+Plug 'dense-analysis/ale', {'on': 'ALELint'}
 
 " NOTE
 Plug 'itchyny/calendar.vim', {'on': 'Calendar'} " problem with api
@@ -45,6 +45,8 @@ Plug 'windwp/nvim-autopairs'
 Plug 'NTBBloodbath/rest.nvim', {'branch': 'main'}
 Plug 'phaazon/hop.nvim'
 Plug 'hrsh7th/nvim-compe'
+Plug 'folke/zen-mode.nvim', {'branch': 'main', 'on': 'ZenMode'}
+
 " for telescope
 Plug 'nvim-lua/popup.nvim' | Plug 'nvim-lua/plenary.nvim' | Plug 'nvim-telescope/telescope.nvim'
 
@@ -237,13 +239,13 @@ onoremap il :normal vil<CR>
 
 """""""""""""""""""
 """""" MAKRA
+"""" kindle put cursor on ===
+let @l='V3jd2j'
+
 """""" adoc
 " plus na koncu linii p
 let @p='$a  +j0'
 let @l='pA['
-
-"""" kindle put cursor on ===
-let @l='V3jd2j'
 
 """""" markdown
 " dwie spacje na koncu linii s  
@@ -316,8 +318,8 @@ let g:startify_change_to_dir = 0
 " repeat 
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
-" Goyo more readable text
-nmap <F6> :Goyo<CR>
+" ZenMode more readable text
+nmap <F6> :ZenMode <CR>
 
 """""""""""""""""""
 " TAGBAR
@@ -396,6 +398,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
 
+" ALE
+let g:airline#extensions#ale#enabled = 0
 
 "vim-airline toolbar
 let g:airline#extensions#tabline#enabled = 1
@@ -527,7 +531,7 @@ nmap <leader>rp <Plug>RestNvimPreview<cr>
 """""""""""""""""""
 " turn on plugins
 lua require('nvim-autopairs').setup()
-lua require('autosave').setup({ enabled = true })
+lua require('autosave').setup({ enabled = true, events = {"InsertLeave"} })
 
 """""""""""""""""""
 " visual multi https://github.com/mg979/vim-visual-multi/wiki/Mappings
@@ -547,3 +551,11 @@ let g:yankring_default_menu_mode = 3
 " https://github.com/sbdchd/neoformat
 noremap  <a-f> :Neoformat! java astyle <CR>
 vnoremap  <a-f> :Neoformat! java astyle <CR>
+
+
+"https://github.com/dense-analysis/ale
+" disable checking, can by run by saving or ALELint
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1

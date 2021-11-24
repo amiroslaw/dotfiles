@@ -40,7 +40,10 @@ set ideajoin
 set easymotion
 
 " visual select and then S
-set surround              
+set surround            
+" SurroundWith nie wiem czy działa                                       
+vnoremap <leader>s :action SurroundWith<cr>
+nnoremap <leader>s :action SurroundWith<cr>  
 " gcc, gc + motion, v_gc
 set commentary			
 " <A + n> , <A + x>, <A + a> 

@@ -330,12 +330,12 @@ fileviewer {*.docx},<application/vnd.openxmlformats-officedocument.wordprocessin
 "e-book
 filextype {*.cbr,*cbz} pqiv %f,
 filextype {*.mobi,*.epub,*azw3,*azw,*pobi} 
+		\ FBReader %f %i,
 		\ ebook-viewer %f %i, 
-		\ com.github.babluboy.bookworm %f %i,
 		\ xreader %f %i,
 		" \ bookworm %f %i,
 
-filetype *.md,*.txt,*.adoc,*.lua nvim
+filetype *.md,*.txt,*.adoc,*.lua,*csv nvim
 filextype *.md,*.txt
         \ {Open with typora}
         \ typora %f %i,

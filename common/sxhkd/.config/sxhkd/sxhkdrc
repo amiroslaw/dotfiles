@@ -220,7 +220,7 @@ super + BackSpace
 
 # search
 super + {_, shift,ctrl} + g
-	{search.lua brave primary, search.lua brave clip, search.lua google primary}
+	{search.lua google primary, search.lua google clip, search.lua google primary}
 
 super + s ; {s,h,g,G,b,B,u,U,y,Y,m,M}
 	{ dunstify options: " (capital-clipboard):\nh-help menu\ng-google\nb-brave\nu-duckduck\ny-yt\nm-maps\nw-wiki\nc-ceneo\no-cenowarka\na-allegro\nz-amazon\ns-so\nf-filmweb\nd-diki\nl-deepL\nr-translator\np-pl-en trans\ne-en-pl trans\nx-tuxi\nt-tor\ni-info from cheatsh", \
@@ -293,15 +293,18 @@ super + shift + c
 
 # rofi top and calc are in aur repo
 super + d
-	rofi -modi window,calc,top -show window -show-icons -sidebar-mode -terminal st -monitor -4
+	rofi -modi window,calc,top -show window -show-icons -sidebar-mode -terminal st -monitor -4 -matching fuzzy
 
 super + shift + d
-	rofi -modi drun,run,window -show drun -show-icons -sidebar-mode -terminal st -monitor -4
+	rofi -modi drun,run,window -show drun -show-icons -sidebar-mode -terminal st -monitor -4 -matching fuzzy
 
 # rofi scripts TODO path
 super + ctrl + d
 	 $ROFI/mbmain
 # bindsym $mod+shift+d exec --no-startup-id "rofi -modi window,top,drun -show window -show-icons -sidebar-mode -terminal st"
+
+alt + space
+	 $ROFI/expander/expander.sh
 # rofi locate
 super + ctrl + f 
 	$ROFI/locate-video.py

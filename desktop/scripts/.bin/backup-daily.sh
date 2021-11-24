@@ -8,6 +8,7 @@ borg create --stats /media/backup/backup-borg/daily::{hostname}-daily-{now:%Y-%m
 	--exclude **/node_modules \
 	--exclude '/home/miro/*/.debris'	\
 	--exclude **/build \
+	--exclude **/target	\
 	--exclude '*.class'	>> ~/Documents/Ustawienia/logs/borg-pc/log_daily.txt 2>&1
 
 	# --exclude **/.debris \
