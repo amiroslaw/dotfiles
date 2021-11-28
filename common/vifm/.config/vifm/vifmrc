@@ -359,13 +359,16 @@ filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm},<image/*>
         \ sxiv -fa %f %i,
 		" \ echo %f > ~/test,
 " kitty 
-fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
-	\ kitty +icat --place %pwx%ph@%pxx%py  --silent %c
-	\ %pc
-	\ kitty icat --clear --silent %pd
+" fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
+" 	\ kitty +icat --place %pwx%ph@%pxx%py  --silent %c
+" 	\ %pc
+" 	\ kitty icat --clear --silent %pd
 
 	 " \ identify %f
-"
+
+" wezterm
+fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm wezterm imgcat --width %pw --height %ph %c:p %pd
+
  " w3m
  " fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
  "          \ imgt %px %py %pw %ph %c
