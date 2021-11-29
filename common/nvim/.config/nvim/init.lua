@@ -479,12 +479,12 @@ cmp.setup {
 		end,
 	},
 	mapping = {
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-      ['<C-Space>'] = cmp.mapping.confirm({ select = true }),
+      ['<CR>'] = cmp.mapping(cmp.mapping.confirm({ select = true }), { 'i', 'c' }),
+      ['<C-Space>'] = cmp.mapping(cmp.mapping.confirm({ select = true }), { 'i', 'c' }),
 	 ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }), { 'i', 'c' }),
       ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }), { 'i', 'c' }),
 	  ['<C-w>'] = cmp.mapping({ i = cmp.mapping.abort(), c = cmp.mapping.close(), }), -- cancel autocomplation
-	  ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }), -- start popup menu
+	  ['<C-S-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }), -- start popup menu
 	  ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
   },
   sources = {
