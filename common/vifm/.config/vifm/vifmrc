@@ -335,7 +335,7 @@ filextype {*.mobi,*.epub,*azw3,*azw,*pobi}
 		\ xreader %f %i,
 		" \ bookworm %f %i,
 
-filetype *.md,*.txt,*.adoc,*.lua,*csv nvim
+filetype {*.md,*.txt,*.adoc,*.lua,*.csv} nvim
 filextype *.md,*.txt
         \ {Open with typora}
         \ typora %f %i,
@@ -352,6 +352,10 @@ filetype *.sha512 sha512sum -c %f %S,
 filextype {*.djvu},<image/vnd.djvu>
         \ pqiv %f %i,
         \ zathura %f %i,
+
+" bat viewer
+fileviewer {*.md,*.txt,*.adoc,*.lua,*.csv,*.html,*.htm,*.java,*.kt,*.kts,*.sh,*.js,*.ts,*.css,*.scss,*.json,*.yml,*.yaml,*.toml} 
+	\ bat --color always --plain %c
 
 " Images
 filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm},<image/*>
