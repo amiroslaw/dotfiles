@@ -157,10 +157,6 @@ super + button{4,5}
 # Receptacle ok tylko dać jakieś fajne skróty
 super + semicolon ; {h,j,k,l}
 	bspc node --presel-dir \~{west,south,north,east} -i
-	
-# Autopresel (split window in its largest dimension) - p preselection 
-super + semicolon ; {p,semicolon}
-	{auto-presel,bspc node -i}
 
 # move window to Receptacle
 super + shift + semicolon
@@ -170,6 +166,9 @@ super + shift + semicolon
 super + shift + BackSpace
 	for i in $(bspc query -N -n .leaf.!window.local); do bspc node $i -k; done
 
+# Autopresel (split window in its largest dimension) - p preselection 
+super + semicolon ; {p,semicolon}
+	{auto-presel,bspc node -i}
 #
 # APPLICATIONS
 # ______________    

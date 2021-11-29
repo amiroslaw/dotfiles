@@ -240,7 +240,7 @@ onoremap il :normal vil<CR>
 """""""""""""""""""
 """""" MAKRA
 """" kindle put cursor on ===
-let @l='V3jd2j'
+let @k='V3jd2j'
 
 """""" adoc
 " plus na koncu linii p
@@ -559,3 +559,4 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_save = 1
+

@@ -5,11 +5,15 @@
 	tool = meld
 [diff]
 	tool = meld
+[interactive]
+    diffFilter = delta --color-only
+
 [difftool]
 	prompt = false
 [difftool "meld"]
     cmd = meld "$LOCAL" "$REMOTE"
 [core]
+    pager = delta --side-by-side
 	autocrlf = input
 	editor = nvim
 [credential]
