@@ -1,0 +1,3 @@
+line_endings = "Unix"
+quote_style = "AutoPreferSingle"
+no_call_parentheses = true
