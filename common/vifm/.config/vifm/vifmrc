@@ -240,13 +240,10 @@ nmap O :history cmd <cr>
 nmap <C-h> :history search <cr>
 
 " VIEWS
-" jeden panel
+" one panel
 nmap <C-o> :only<cr>
-"toggle tree v 9 wychodzimy przez kliknięcie w katalog
 nmap tr :tree! <cr>
-"tree na kursorze i w katalogu 
-"nmap tt :!tree -h %m<cr> 
-"nie potrzebne już
+"tree directory under cursor with size
 nmap T :!tree -h %c %m<cr>
 "tabs
 nmap tt :tabnew <cr>

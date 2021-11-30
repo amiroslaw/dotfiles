@@ -57,9 +57,10 @@ function cheat()
 		status = os.execute('curl cht.sh/' .. topic .. '~' .. query .. ' > ' .. tmpname)
 	end
 	assert(status == 0, 'Can not fetch data')
-	-- terminal = os.getenv('TERM')
+	-- terminal = os.getenv('TERM') - won't have class or title name option
 	-- ?T without ascii
-	os.execute("alacritty --class cheatsh -t cheatsh -e less -R " .. tmpname)
+	-- os.execute("alacritty --class cheatsh -t cheatsh -e less -R " .. tmpname)
+	os.execute("wezterm start --class cheatsh -- less -R " .. tmpname)
 end
 
 function browser(url)

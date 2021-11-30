@@ -155,4 +155,3 @@ hints:
 import:
   - ~/.config/alacritty/themes/dracula.yml
   - ~/.config/alacritty/ext.yml
-

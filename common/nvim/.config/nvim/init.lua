@@ -193,14 +193,13 @@ vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
 --""""""""""""""""""
 -- TEXT OBJECTS
 --""""""""""""""""""
--- current line - doesn't work ^vg_ triming spaces in the end
--- TODO ^o$h doesn't work
--- xnoremap il ^o$h
-xmap('il', '^vg_')
+-- current line 
+-- xmap('il', '^vg_')
+xmap('il', '^og_')
 omap('il', ':normal vil<CR>')
 
 --"""""""""""""""""""
---"""""" MAKRA
+--"""""" MACROS
 --"""" kindle put cursor on ===
 vim.g['@k'] = 'V3jd2j'
 -- adoc
@@ -497,22 +496,23 @@ cmp.setup {
 	sources = {
 		-- { name = "nvim_lsp" },
 		{ name = 'buffer', keyword_length = 2, keyword_pattern = [[\k\+]] },
+
 		{ name = 'nvim_lua' },
 		{ name = 'ultisnips' },
 		{ name = 'path' },
 		{ name = 'calc' },
 	},
-	-- completion = { keyword_pattern = [[\k\+]] }
+	completion = { keyword_pattern = [[\k\+]],
+		keyword_length = 3
+}
 }
 
--- CMD mode - if you are in that mode and put / or : '
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+-- CMD mode - if you are in that mode and put / or : ' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline('/', {
 	sources = {
 		{ name = 'buffer' },
 	},
 })
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
 	sources = {
 		{ name = 'cmdline_history', keyword_length = 3 },
