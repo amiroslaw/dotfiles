@@ -1,7 +1,7 @@
 local wezterm = require 'wezterm'
 local plugins = require 'plugins'
 
-local keys = {}
+local keys = { }
 local act = wezterm.action
 local function map(key, cmd, modKey)
 	table.insert(keys, {
@@ -47,9 +47,9 @@ mapCtr('E', wezterm.action { EmitEvent = 'trigger-vim-with-scrollback' })
 map('F1', wezterm.action { EmitEvent = 'toggle-ligatures'}, 'ALT' ) -- don't work maybe cinfig is stronger
 map('F2', wezterm.action { EmitEvent = 'toggle-opacity'}, 'ALT' )
 map('F3', wezterm.action { EmitEvent = 'open-file-manager'}, 'ALT' )
-
 map('F7', wezterm.action { Search = { Regex = 'ERROR' } }, 'ALT')
-
+--disable key
+map('Enter', 'DisableDefaultAssignment', 'ALT')
 -- Must be in the end 
 return {
 	color_scheme = 'Dracula',

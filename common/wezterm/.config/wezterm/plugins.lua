@@ -30,26 +30,24 @@ wezterm.on("toggle-ligatures", function(win, pane)
 end),
 
 wezterm.on("toggle-opacity", function(win, pane)
-  local overrides = win:get_config_overrides() or {}
-  if not overrides.window_background_opacity then
-    overrides.window_background_opacity = 0.5;
-  else
-    overrides.window_background_opacity = nil
-  end
-  win:set_config_overrides(overrides)
+	local overrides = win:get_config_overrides() or {}
+	if not overrides.window_background_opacity then
+		overrides.window_background_opacity = 0.5;
+	else
+		overrides.window_background_opacity = nil
+	end
+	win:set_config_overrides(overrides)
 end),
 
 wezterm.on('open-file-manager', function(win, pane)
-	local delimeter = '/home'
-	local curentDir = pane:get_current_working_dir() .. delimeter
-	local split = {}
-	for match in curentDir:gmatch('(.-)'.. delimeter) do
-		table.insert(split, match)
-	end
-	table.remove(split, 1)
-	local dirPath = table.concat(split)
+	local f = io.popen ("/bin/hostname")
+	local hostname = f:read("*a") or ""
+	f:close()
+	local hostname = hostname:gsub("%s+", "")
 
-	local success, stdout, stderr = wezterm.run_child_process({"xdg-open", delimeter .. dirPath })
+	local curentDir = pane:get_current_working_dir() 
+	local dirPath = curentDir:gsub("file://" .. hostname, "")
+	local success, stdout, stderr = wezterm.run_child_process({"xdg-open", dirPath })
 end),
 }
 return actions
