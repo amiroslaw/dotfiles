@@ -180,13 +180,11 @@ nmap('<S-F2>', ':split term://zsh<cr>') -- TODO can't have shift
 --dictionary
 vim.cmd 'syntax spell toplevel'
 --togle spellcheck
-nmap('<leader>s', ':set spell!<cr> ')
-nmap('<leader>sp ', ':setlocal spell! spelllang=pl<cr>')
-nmap('<leader>se', ':setlocal spell! spelllang=en_us<CR>')
+nmap('<C-A-s>', ':set spell!<cr> ')
+nmap('<A-s>', ':setlocal spell spelllang=pl<cr>')
+nmap('<S-A-s>', ':setlocal spell spelllang=en_us<CR>')
 nmap('<C-e>', 'z=')
 nmap('<S-e>', '[s')
-nmap('<C-]>', ']s')
--- doesn't work <C-[>
 --replace from selection/ substitution, produce error but it's workaround for showing command line mode
 vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
 
