@@ -38,16 +38,12 @@ def compose_id(string):
 	return temp.lower()
 endglobal
 
-snippet task "Task [ ]" !b
-[ ] ${1}
-endsnippet
-
 # -------------------------------------------------------------------------
 #                           Titles and Sections
 # -------------------------------------------------------------------------
 
 snippet h1 "Header 1" !b
-= ${1}
+= $1
 $0
 endsnippet
 
@@ -84,6 +80,10 @@ endsnippet
 # -------------------------------------------------------------------------
 #                             Block Elements
 # -------------------------------------------------------------------------
+
+snippet task "Task [ ]" !b
+[ ] ${VISUAL}$1
+endsnippet
 
 # Quote block:
 snippet quote "Quote Block" !b
@@ -173,12 +173,12 @@ snippet img "Image" !b
 image::$1[${2:${VISUAL:alt}}] $0
 endsnippet
 
-snippet imgex "Image and atributes" !b
+snippet imgatr "Image and atributes" !b
 .${3:Figure}
 image::$1[${2:${VISUAL:alt}},${4:width},${5:height}] $0
 endsnippet
 
-snippet imgelink "Image link after click" !b
+snippet imglink "Image link after click" !b
 .${3:Figure}
 [link=${6:click link}]
 image::$1[${2:${VISUAL:alt}},${4:width},${5:height}] $0
@@ -216,7 +216,7 @@ snippet bold "Bold Text (Unconstrained)" !i
 **${1:${VISUAL}}** $0
 endsnippet
 
-snippet italic "Italic Text (Unconstrained)" !i
+snippet unital "Italic Text (Unconstrained)" !i
 __${1:${VISUAL}}__ $0
 endsnippet
 

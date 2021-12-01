@@ -15,6 +15,6 @@ trackball.sh &
 nm-applet &
 nvidia-fan.sh -c ~/.config/nfancurve/config &
 sleep 500 && gcal-show.sh &
-rtorrent &
 #clipit &
 easystroke &
+screen -S tor rtorrent

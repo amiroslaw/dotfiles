@@ -56,10 +56,7 @@ return {
 	-- color_scheme = "Tomorrow",
 	default_cursor_style = 'SteadyBar', -- the best in vim
 	font_size = 11,
-	font = wezterm.font_with_fallback(
-		{ 'SauceCodePro Nerd Font Mono', 'FiraCode Nerd Font Mono' },
-		{ weight = 'DemiLight' }
-	),
+	font = wezterm.font_with_fallback( { 'SauceCodePro Nerd Font Mono', 'FiraCode Nerd Font Mono' } ,{ weight = 'Regular' }),
 	hide_tab_bar_if_only_one_tab = true,
 	scrollback_lines = 10000,
 	harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, -- Disable Ligatures, can by set as toggle
@@ -79,13 +76,20 @@ return {
 			args = { 'btm' },
 		},
 		{
+			args = { 'bmenu' },
+		},
+		{
+			label = 'music',
+			args = { 'mpd', '&&', 'ncmpcpp', '&&', 'mpc', 'update' },
+		},
+		{
 			label = 'note',
 			args = { 'nvim' },
 			cwd = wezterm.home_dir .. '/Documents/notebook',
 		},
 		{
 			label = 'tor',
-			args = { 'rtorrent' },
+			args = { 'screen', '-x', 'tor'},
 		},
 	},
 	inactive_pane_hsb = {
@@ -94,7 +98,7 @@ return {
 	},
 	window_close_confirmation = 'NeverPrompt',
 	enable_wayland = false,
-	-- freetype_load_target = "HorizontalLcd", -- freetype_load_target = "Light",
+	freetype_load_target = "HorizontalLcd", -- freetype_load_target = "Light",
 	warn_about_missing_glyphs = false,
 	keys = keys,
 	-- TODO after setting

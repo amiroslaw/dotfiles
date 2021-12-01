@@ -16,9 +16,6 @@ vim.cmd 'colorscheme dracula'
 --"""""""""""""""""""""""""
 --""""" SETTINGS
 
--- if (empty($TMUX))
--- endif
---
 if vim.fn.has 'termguicolors' == 1 then
 	vim.o.termguicolors = true
 end
@@ -33,14 +30,14 @@ vim.o.encoding = 'utf-8'
 vim.o.fileencoding = 'utf-8'
 vim.o.fileencodings = 'utf-8', 'latin1'
 vim.o.linebreak = true
--- foldmethod for config files but it folds when you open the file
--- set foldmethod=marker
--- set foldmarker={{{,}}} it can by add into file
+-- vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
 
 vim.cmd [[
 	autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif 
 	au BufRead,BufNewFile *.json set filetype=json
 	autocmd BufNewFile,BufRead \*.{md,mdwn,mkd,mkdn,mark,markdown\*} set filetype=markdown
+	autocmd FileType * normal zR
+	autocmd FileType java,javascript,typescript,css,scss,lua setlocal foldmethod=syntax
 	augroup highlight_yank
 		autocmd!
 		autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank {timeout=600}
@@ -122,8 +119,8 @@ vmap('<c-a-k>', ':m .-2<CR>gv=gv')
 nmap('<Space>', '<C-f> <cr>', { nowait = true })
 nmap('<C-u>', '<C-b> <cr>')
 --folds
-nmap('zn', 'z] <cr>')
-nmap('zp', 'z[ <cr>')
+nmap('zn', ']z <cr>')
+nmap('zp', '[z <cr>')
 nmap('zo', 'zO <cr>')
 nmap('zO', 'zo <cr>')
 
@@ -277,7 +274,7 @@ nmap('<F7>', ':!preview-ascii.sh % <CR>')
 nmap('<S-F7>', ':Asciidoctor2DOCX<CR>') -- TODO shift
 
 vim.g.asciidoctor_syntax_conceal = 1
-vim.g.asciidoctor_folding = 1
+vim.g.asciidoctor_folding = 2
 vim.g.asciidoctor_folding_level = 6
 vim.g.asciidoctor_fenced_languages = { 'java', 'typescript', 'javascript', 'bash', 'html' } -- 'kotlin' add syntax TODO
 -- vim.g.asciidoctor_syntax_indented = 0
@@ -412,6 +409,10 @@ vim.g.eighties_compute = 1 -- Disable this if you just want the minimum + extra
 vim.g.eighties_bufname_additional_patterns = { 'fugitiveblame' } -- Defaults to [], 'fugitiveblame' is only an example. Takes a comma delimited list of bufnames as strings.
 
 --""""""""""""""""""
+-- surround 
+nmap('<leader>s', 'ysiW', {noremap = false}) -- surround a word
+
+--""""""""""""""""""
 -- ultisnips
 vim.g.UltiSnipsEditSplit = 'vertical'
 vim.g.UltiSnipsExpandTrigger = '<c-l>'
@@ -419,7 +420,8 @@ vim.g.UltiSnipsExpandTrigger = '<c-l>'
 vim.g.UltiSnipsJumpForwardTrigger = '<c-l>'
 -- shortcut to go to previous position
 vim.g.UltiSnipsJumpBackwardTrigger = '<c-k>'
--- vim.g.UltiSnipsSnippetDirectories={"custom-snip"}
+vim.g.UltiSnipsSnippetsDir= HOME .. "~/.config/nvim/UltiSnips"
+vim.g.UltiSnipsSnippetDirectories={"UltiSnips"}
 
 --""""""""""""""""""
 -- hop, easymotion alternative
@@ -493,16 +495,13 @@ cmp.setup {
 	},
 	sources = {
 		-- { name = "nvim_lsp" },
+		{ name = 'ultisnips', keyword_length = 1 },
 		{ name = 'buffer', keyword_length = 2, keyword_pattern = [[\k\+]] },
-
 		{ name = 'nvim_lua' },
-		{ name = 'ultisnips' },
 		{ name = 'path' },
 		{ name = 'calc' },
 	},
-	completion = { keyword_pattern = [[\k\+]],
-		keyword_length = 3
-}
+	completion = { keyword_pattern = [[\k\+]], keyword_length = 3 }
 }
 
 -- CMD mode - if you are in that mode and put / or : ' (if you enabled `native_menu`, this won't work anymore).
@@ -513,7 +512,7 @@ cmp.setup.cmdline('/', {
 })
 cmp.setup.cmdline(':', {
 	sources = {
-		{ name = 'cmdline_history', keyword_length = 3 },
+		{ name = 'cmdline_history'},
 		{ name = 'path' },
 	},
 })

@@ -28,16 +28,14 @@ path_note=~/Documents/notebook
 java8=~/.sdkman/candidates/java/8.0.171-oracle/bin/java
 #}}}
 
-# scripts
-#{{{
+#{{{ scripts
 alias dlfile='~/Documents/Ustawienia/skrypty/dlfile'
 alias remind='$path_script/remind.sh'
 alias mag='$path_script/magnet.sh "$(xclip -o -selection clipboard)"'
 alias crypto='investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)'
 #}}}
 
-# config files
-# {{{
+# {{{ config files
 alias batalias='bat ~/.config/aliases'
 alias cfportfolio='nvim ~/.config/investing/portfolio.yaml'
 alias cfqpiv='nvim ~/.config/pqivrc'
@@ -137,14 +135,13 @@ alias search='pacman -Ss'
 
 #Programs alias
 #{{{
-alias bookworm='com.github.babluboy.bookworm'
 alias tor='abduco -A tor rtorrent'
 alias ping='prettyping'
 alias vi='nvim'
 alias neofetch='fastfetch'
 alias rest='wuzz'
 alias vim='nvim'
-alias ggit='grv'
+alias lg='lazygit'
 alias viswap_rm= 'rm ~/.local/share/nvim/swap/*'
 alias stown='stow -nvSt ~ '
 alias stow='stow -vSt ~ '
@@ -489,3 +486,5 @@ alias surfraw='surfraw -browser=w3m'
 alias vpn='cd /home/miro/eversis/amiroslaw/eversis-pfs-node1-UDP4-1195-amiroslaw && sudo openvpn --config eversis-pfs-node1-UDP4-1195-amiroslaw.ovpn --auth-user-pass pass.txt'
 
 # alias zadView='cat $path_note/ZADANIA/today.todo' i have script for this
+
+# vim: foldmethod=marker

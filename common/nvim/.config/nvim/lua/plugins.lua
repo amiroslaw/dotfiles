@@ -70,11 +70,14 @@ return require('packer').startup(function()
 			{ 'hrsh7th/cmp-path' },
 			{ 'hrsh7th/cmp-calc' },
 			{ 'dmitmel/cmp-cmdline-history' },
-			{ 'quangnguyen30192/cmp-nvim-ultisnips' },
+			{ 'quangnguyen30192/cmp-nvim-ultisnips',  },
 			{ 'hrsh7th/cmp-nvim-lua' }, -- vim.api
 			{ 'hrsh7th/cmp-nvim-lsp' },
 			-- { "f3fora/cmp-spell" },
 			-- { "hrsh7th/cmp-cmdline" },
+			config = function()
+			  require("cmp-nvim-ultisnips").setup{}
+			end
 		},
 	}
 
