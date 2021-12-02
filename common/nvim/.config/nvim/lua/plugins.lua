@@ -73,7 +73,7 @@ return require('packer').startup(function()
 			{ 'quangnguyen30192/cmp-nvim-ultisnips',  },
 			{ 'hrsh7th/cmp-nvim-lua' }, -- vim.api
 			{ 'hrsh7th/cmp-nvim-lsp' },
-			-- { "f3fora/cmp-spell" },
+			-- { 'uga-rosa/cmp-dictionary' }
 			-- { "hrsh7th/cmp-cmdline" },
 			config = function()
 			  require("cmp-nvim-ultisnips").setup{}

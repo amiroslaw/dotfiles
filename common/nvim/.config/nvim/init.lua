@@ -226,6 +226,9 @@ nmap('<S-F9>', ':Calendar -view=year -split=horizontal -position=below -height=1
 --""""""""""""""""""
 -- vim-bookmarks
 vim.g.bookmark_auto_close = 1
+vim.g.bookmark_display_annotation = 1
+vim.g.bookmark_auto_save_file = HOME .. '/.local/share/nvim/vim-bookmarks'
+vim.g.bookmark_show_toggle_warning = 0
 
 --""""""""""""""""""
 -- undo tree
@@ -476,7 +479,6 @@ require('lualine').setup {
 -- nvim-cmp
 -- https://github.com/hrsh7th/nvim-cmp
 vim.o.completeopt = 'menu,menuone,noselect'
-
 local cmp = require 'cmp'
 cmp.setup {
 	snippet = {
@@ -496,12 +498,15 @@ cmp.setup {
 	sources = {
 		-- { name = "nvim_lsp" },
 		{ name = 'ultisnips', keyword_length = 1 },
-		{ name = 'buffer', keyword_length = 2, keyword_pattern = [[\k\+]] },
+		{ name = 'buffer', keyword_length = 2,
+   option = { keyword_pattern = [[\k\+]] },
+	},
 		{ name = 'nvim_lua' },
 		{ name = 'path' },
 		{ name = 'calc' },
+		{ name = 'spell' },
 	},
-	completion = { keyword_pattern = [[\k\+]], keyword_length = 3 }
+	completion = { keyword_length = 3 }
 }
 
 -- CMD mode - if you are in that mode and put / or : ' (if you enabled `native_menu`, this won't work anymore).

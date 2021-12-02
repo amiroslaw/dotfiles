@@ -286,8 +286,7 @@ alias lo='f -e libreoffice'
 #}}}
 
 #ZSH
-#ZSH extensions 
-# {{{
+# {{{ ZSH extensions 
 # sxiv => girl.jpg
 alias -s tex=nvim
 alias -s txt=nvim
@@ -317,12 +316,12 @@ alias -s ppt=libreoffice
 alias -s pptx=libreoffice 
 #}}}
 
-#ZSH global
-# {{{
-# append previous command
+# {{{ ZSH global
+# append previous command: new_string old_cmd
 alias -g R='!-1'
-# append all previous arguments
+# append all previous arguments: new_string old_arguments
 alias -g A='!*'
+
 
 alias -g G='| grep'
 alias -g H='| head'
