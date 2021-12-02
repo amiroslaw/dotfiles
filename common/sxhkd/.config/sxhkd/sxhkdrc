@@ -292,10 +292,10 @@ super + shift + c
 
 # rofi top and calc are in aur repo
 super + d
-	rofi -modi window,calc,top -show window -show-icons -sidebar-mode -terminal st -monitor -4 -matching fuzzy
+	rofi -modi window,calc,top -show window -show-icons -sidebar-mode -monitor -4 -matching fuzzy
 
 super + shift + d
-	rofi -modi drun,run,window -show drun -show-icons -sidebar-mode -terminal st -monitor -4 -matching fuzzy
+	rofi -modi drun,run,window -show drun -show-icons -sidebar-mode -monitor -4 -matching fuzzy
 
 # rofi scripts TODO path
 super + ctrl + d
