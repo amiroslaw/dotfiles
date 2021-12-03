@@ -192,7 +192,7 @@ vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
 --""""""""""""""""""
 -- TEXT OBJECTS
 --""""""""""""""""""
--- current line 
+-- current line
 -- xmap('il', '^vg_')
 xmap('il', '^og_')
 omap('il', ':normal vil<CR>')
@@ -351,9 +351,9 @@ if telescope then
 			layout_strategy = 'flex', -- center, cursor
 			width_padding = 30,
 			layout_config = {
-			 flex = {
-				flip_columns = 150, -- is less than that will act like the vertical strategy, and otherwise like the horizontal strategy.
-			  },
+				flex = {
+					flip_columns = 150, -- is less than that will act like the vertical strategy, and otherwise like the horizontal strategy.
+				},
 				horizontal = { width = 0.9, height = 0.95, preview_width = 0.7 },
 				vertical = { width = 0.99, height = 0.99, preview_height = 0.7 },
 			},
@@ -419,8 +419,8 @@ vim.g.eighties_compute = 1 -- Disable this if you just want the minimum + extra
 vim.g.eighties_bufname_additional_patterns = { 'fugitiveblame' } -- Defaults to [], 'fugitiveblame' is only an example. Takes a comma delimited list of bufnames as strings.
 
 --""""""""""""""""""
--- surround 
-nmap('<leader>s', 'ysiW', {noremap = false}) -- surround a word
+-- surround
+nmap('<leader>s', 'ysiW', { noremap = false }) -- surround a word
 
 --""""""""""""""""""
 -- ultisnips
@@ -430,8 +430,8 @@ vim.g.UltiSnipsExpandTrigger = '<c-l>'
 vim.g.UltiSnipsJumpForwardTrigger = '<c-l>'
 -- shortcut to go to previous position
 vim.g.UltiSnipsJumpBackwardTrigger = '<c-k>'
-vim.g.UltiSnipsSnippetsDir= HOME .. "~/.config/nvim/UltiSnips"
-vim.g.UltiSnipsSnippetDirectories={"UltiSnips"}
+vim.g.UltiSnipsSnippetsDir = HOME .. '~/.config/nvim/UltiSnips'
+vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' }
 
 --""""""""""""""""""
 -- hop, easymotion alternative
@@ -491,7 +491,6 @@ require('lualine').setup {
 vim.g.cmp_dictionary_async = 1
 vim.g.cmp_dictionary_exact = -1
 
-
 local cmp = require 'cmp'
 cmp.setup {
 	snippet = {
@@ -511,28 +510,28 @@ cmp.setup {
 	sources = {
 		-- { name = "nvim_lsp" },
 		{ name = 'ultisnips', keyword_length = 1 },
-		{ name = 'buffer', keyword_length = 2, option = { keyword_pattern = [[\k\+]] },
-	},
+		{ name = 'buffer', keyword_length = 2, option = { keyword_pattern = [[\k\+]] } },
 		{ name = 'nvim_lua' },
 		{ name = 'path' },
 		{ name = 'calc' },
-		{ name = 'dictionary'},
+		{ name = 'dictionary' },
 	},
-	completion = { 
-      completeopt = 'menu,menuone,noinsert',
-		keyword_length = 3 }, 
+	completion = {
+		completeopt = 'menu,menuone,noinsert',
+		keyword_length = 3,
+	},
 
 	formatting = {
 		format = function(entry, item)
 			item.kind = ' '
 			item.menu = ({
-				buffer = "", 
-				ultisnips = "",
-				nvim_lsp = "",
-				nvim_lua = "", 
-				path = "", 
-				calc = "", 
-				dictionary = "", 
+				buffer = '',
+				ultisnips = '',
+				nvim_lsp = '',
+				nvim_lua = '',
+				path = '',
+				calc = '',
+				dictionary = '',
 			})[entry.source.name]
 			return item
 		end,
@@ -547,7 +546,7 @@ cmp.setup.cmdline('/', {
 })
 cmp.setup.cmdline(':', {
 	sources = {
-		{ name = 'cmdline_history'},
+		{ name = 'cmdline_history' },
 		{ name = 'path' },
 	},
 })
