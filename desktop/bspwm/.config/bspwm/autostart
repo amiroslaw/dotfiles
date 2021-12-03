@@ -17,4 +17,4 @@ nvidia-fan.sh -c ~/.config/nfancurve/config &
 sleep 500 && gcal-show.sh &
 #clipit &
 easystroke &
-screen -S tor rtorrent
+screen -S tor rtorrent &

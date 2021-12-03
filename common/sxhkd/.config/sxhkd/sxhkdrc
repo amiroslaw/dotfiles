@@ -80,6 +80,10 @@ super + shift + {1-9,0}
 super + {p,n}
 	bspc desktop -f {prev,next}.occupied
 
+# Select previous / next active desktop
+super + ctrl + {p,n}
+	bspc desktop -f {prev,next}
+
 # move node to next workspace and follow
 super + shift + {n,p}
     id=$(bspc query -N -n focused); \

@@ -106,6 +106,11 @@ _G.packer_plugins = {
     path = "/home/miro/.local/share/nvim/site/pack/packer/start/cmp-cmdline-history",
     url = "https://github.com/dmitmel/cmp-cmdline-history"
   },
+  ["cmp-dictionary"] = {
+    loaded = true,
+    path = "/home/miro/.local/share/nvim/site/pack/packer/start/cmp-dictionary",
+    url = "https://github.com/uga-rosa/cmp-dictionary"
+  },
   ["cmp-nvim-lsp"] = {
     loaded = true,
     path = "/home/miro/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
@@ -125,11 +130,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/miro/.local/share/nvim/site/pack/packer/start/cmp-path",
     url = "https://github.com/hrsh7th/cmp-path"
-  },
-  ["cmp-spell"] = {
-    loaded = true,
-    path = "/home/miro/.local/share/nvim/site/pack/packer/start/cmp-spell",
-    url = "https://github.com/f3fora/cmp-spell"
   },
   dracula = {
     loaded = true,

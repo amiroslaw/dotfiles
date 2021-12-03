@@ -47,6 +47,10 @@ vim.cmd [[
 		autocmd BufWritePost plugins.lua source <afile> | PackerCompile
 	  augroup end
 	autocmd BufEnter term://* startinsert
+	augroup CmpDictionary
+	  au!
+	  au FileType markdown,text,asciidoctor setlocal dictionary=~/.config/rofi/scripts/expander/pl-popular,~/.config/rofi/scripts/expander/en-popular
+	augroup END
 ]]
 
 -- IncSearch
@@ -344,11 +348,14 @@ if telescope then
 	telescope.setup {
 		defaults = {
 			file_ignore_patterns = { 'tags' },
-			layout_strategy = 'flex',
-			width_padding = 0,
+			layout_strategy = 'flex', -- center, cursor
+			width_padding = 30,
 			layout_config = {
-				horizontal = { width = 0.99 },
-				vertical = { width = 0.9, height = 0.99, preview_height = 0.75 },
+			 flex = {
+				flip_columns = 150, -- is less than that will act like the vertical strategy, and otherwise like the horizontal strategy.
+			  },
+				horizontal = { width = 0.9, height = 0.95, preview_width = 0.7 },
+				vertical = { width = 0.99, height = 0.99, preview_height = 0.7 },
 			},
 			mappings = { -- https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
 				i = {
@@ -478,7 +485,13 @@ require('lualine').setup {
 
 -- nvim-cmp
 -- https://github.com/hrsh7th/nvim-cmp
-vim.o.completeopt = 'menu,menuone,noselect'
+-- vim.o.completeopt = 'menu,menuone,noselect'
+-- vim.opt.dictionary:append(HOME .. "/.config/rofi/scripts/expander/pl-popular")
+-- vim.opt.dictionary:append(HOME .. "/.config/rofi/scripts/expander/en-popular")
+vim.g.cmp_dictionary_async = 1
+vim.g.cmp_dictionary_exact = -1
+
+
 local cmp = require 'cmp'
 cmp.setup {
 	snippet = {
@@ -498,15 +511,32 @@ cmp.setup {
 	sources = {
 		-- { name = "nvim_lsp" },
 		{ name = 'ultisnips', keyword_length = 1 },
-		{ name = 'buffer', keyword_length = 2,
-   option = { keyword_pattern = [[\k\+]] },
+		{ name = 'buffer', keyword_length = 2, option = { keyword_pattern = [[\k\+]] },
 	},
 		{ name = 'nvim_lua' },
 		{ name = 'path' },
 		{ name = 'calc' },
-		{ name = 'spell' },
+		{ name = 'dictionary'},
 	},
-	completion = { keyword_length = 3 }
+	completion = { 
+      completeopt = 'menu,menuone,noinsert',
+		keyword_length = 3 }, 
+
+	formatting = {
+		format = function(entry, item)
+			item.kind = ' '
+			item.menu = ({
+				buffer = "", 
+				ultisnips = "",
+				nvim_lsp = "",
+				nvim_lua = "", 
+				path = "", 
+				calc = "", 
+				dictionary = "", 
+			})[entry.source.name]
+			return item
+		end,
+	},
 }
 
 -- CMD mode - if you are in that mode and put / or : ' (if you enabled `native_menu`, this won't work anymore).
