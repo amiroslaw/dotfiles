@@ -7,9 +7,9 @@ show-icons: true;
 
 kb-row-up:                      "Up,Control+k,Shift+Tab,Shift+ISO_Left_Tab";
 kb-row-down:                    "Down,Control+j";
-kb-accept-entry:                "Control+o,Return,KP_Enter";
-kb-mode-next:                   "Control+l,Shift+Right,Control+Tab";
-kb-mode-previous:               "Shift+Left,Control+Shift+Tab,Control+h";
+kb-accept-entry:                "Control+l,Return,KP_Enter";
+kb-mode-next:                   "Control+n,Shift+Right,Control+Tab";
+kb-mode-previous:               "Shift+Left,Control+Shift+Tab,Control+p";
 kb-remove-char-back:            "BackSpace";
 kb-page-prev: "Control+u";
 kb-page-next: "Control+d";
@@ -17,7 +17,7 @@ kb-remove-char-forward: "Delete";
 kb-toggle-case-sensitivity: "grave,dead_grave,Control+i";
 kb-toggle-sort: "Control+s";
 kb-clear-line: "Control+BackSpace";
-kb-remove-word-back: "Control+w,Control+Alt+h";
+kb-remove-word-back: "Control+w,Control+h";
 kb-mode-complete: "Control+m";
 /*	kb-row-select: "Control+space"; → autocompletion*/ 
 /*	kb-move-front: "Control+a";*/

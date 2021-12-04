@@ -83,6 +83,11 @@ _G.packer_plugins = {
     path = "/home/miro/.local/share/nvim/site/pack/packer/opt/ale",
     url = "https://github.com/dense-analysis/ale"
   },
+  ["barbar.nvim"] = {
+    loaded = true,
+    path = "/home/miro/.local/share/nvim/site/pack/packer/start/barbar.nvim",
+    url = "https://github.com/romgrk/barbar.nvim"
+  },
   ["calendar.vim"] = {
     commands = { "Calendar" },
     loaded = false,
@@ -160,6 +165,14 @@ _G.packer_plugins = {
     path = "/home/miro/.local/share/nvim/site/pack/packer/opt/lazyList.vim",
     url = "https://github.com/kabbamine/lazyList.vim"
   },
+  ["lazygit.nvim"] = {
+    commands = { "LazyGit" },
+    loaded = false,
+    needs_bufread = true,
+    only_cond = false,
+    path = "/home/miro/.local/share/nvim/site/pack/packer/opt/lazygit.nvim",
+    url = "https://github.com/kdheepak/lazygit.nvim"
+  },
   ["lualine.nvim"] = {
     loaded = true,
     path = "/home/miro/.local/share/nvim/site/pack/packer/start/lualine.nvim",
@@ -236,11 +249,6 @@ _G.packer_plugins = {
     path = "/home/miro/.local/share/nvim/site/pack/packer/opt/rest.nvim",
     url = "https://github.com/NTBBloodbath/rest.nvim"
   },
-  ["tabline.nvim"] = {
-    loaded = true,
-    path = "/home/miro/.local/share/nvim/site/pack/packer/start/tabline.nvim",
-    url = "https://github.com/kdheepak/tabline.nvim"
-  },
   tabular = {
     after_files = { "/home/miro/.local/share/nvim/site/pack/packer/opt/tabular/after/plugin/TabularMaps.vim" },
     loaded = false,
@@ -311,11 +319,6 @@ _G.packer_plugins = {
     path = "/home/miro/.local/share/nvim/site/pack/packer/opt/vim-markdown",
     url = "https://github.com/plasticboy/vim-markdown"
   },
-  ["vim-one"] = {
-    loaded = true,
-    path = "/home/miro/.local/share/nvim/site/pack/packer/start/vim-one",
-    url = "https://github.com/rakr/vim-one"
-  },
   ["vim-repeat"] = {
     loaded = true,
     path = "/home/miro/.local/share/nvim/site/pack/packer/start/vim-repeat",
@@ -372,6 +375,7 @@ time([[Config for nvim-autopairs]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file LazyGit lua require("packer.load")({'lazygit.nvim'}, { cmd = "LazyGit", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Neoformat lua require("packer.load")({'neoformat'}, { cmd = "Neoformat", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file LazyList lua require("packer.load")({'lazyList.vim'}, { cmd = "LazyList", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file NvimTreeToggle lua require("packer.load")({'nvim-tree.lua'}, { cmd = "NvimTreeToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
@@ -387,7 +391,7 @@ vim.cmd [[au!]]
 time([[Defining lazy-load filetype autocommands]], true)
 vim.cmd [[au FileType http ++once lua require("packer.load")({'rest.nvim'}, { ft = "http" }, _G.packer_plugins)]]
 vim.cmd [[au FileType asciidoctor ++once lua require("packer.load")({'vim-asciidoctor'}, { ft = "asciidoctor" }, _G.packer_plugins)]]
-vim.cmd [[au FileType markdown ++once lua require("packer.load")({'vim-markdown', 'tabular', 'previm'}, { ft = "markdown" }, _G.packer_plugins)]]
+vim.cmd [[au FileType markdown ++once lua require("packer.load")({'vim-markdown', 'previm', 'tabular'}, { ft = "markdown" }, _G.packer_plugins)]]
 vim.cmd [[au FileType json ++once lua require("packer.load")({'nvim-jqx'}, { ft = "json" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
 vim.cmd("augroup END")

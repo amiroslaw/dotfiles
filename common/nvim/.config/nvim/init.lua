@@ -219,6 +219,10 @@ vim.g['@f'] = 'f)a kb  '
 --""""""""""""""""""
 
 --""""""""""""""""""
+-- https://github.com/kdheepak/lazygit.nvim
+nmap('<leader>g', ':LazyGit <cr>')
+
+--""""""""""""""""""
 -- calendar.vim
 vim.g.calendar_google_calendar = 1
 vim.g.calendar_google_task = 1
@@ -347,6 +351,7 @@ local telescope = require 'telescope'
 if telescope then
 	telescope.setup {
 		defaults = {
+			prompt_prefix = "   ",
 			file_ignore_patterns = { 'tags' },
 			layout_strategy = 'flex', -- center, cursor
 			width_padding = 30,
@@ -443,6 +448,7 @@ nmap('<leader>W', '<cmd>HopWordBC <cr>')
 nmap('s', '<cmd>HopLineStartAC <cr>')
 nmap('S', '<cmd>HopLineStartBC <cr>')
 
+
 --""""""""""""""""""
 -- NvimTreeToggle https://github.com/kyazdani42/nvim-tree.lua
 nmap('<F3>', ':NvimTreeToggle<CR>')
@@ -466,20 +472,24 @@ vim.g.ale_lint_on_insert_leave = 1
 vim.g.ale_lint_on_enter = 0
 vim.g.ale_lint_on_save = 1
 
--- tabline https://github.com/kdheepak/tabline.nvim
-require('tabline').setup { enable = false }
--- TODO add fine maps
--- nmap('X', ':TablineBufferNext <cr>')
--- nmap('<leader><Tab>', ':TablineBufferPrevious <cr>')
+-----------------------------
+-- Status and tab bars
+-- Barbar - tabbar
+-- https://github.com/romgrk/barbar.nvim
+nmap('<leader><Tab>', ':BufferNext <cr>')
+nmap('<leader>b', ':BufferPick <cr>') -- jumping to tab, like hop
+nmap('<leader>B', ':BufferOrderByBufferNumber <cr>')
+
+vim.g.bufferline = {
+  closable = false,
+  icons = false, -- numbers, bug with true - can't see icon set
+}
+
 
 require('lualine').setup {
-	tabline = {
-		lualine_a = {},
-		lualine_b = {},
-		lualine_c = { require('tabline').tabline_buffers },
-		lualine_x = { require('tabline').tabline_tabs },
-		lualine_y = {},
-		lualine_z = {},
+	options = {
+		-- theme = 'dracula'
+		theme = 'onelight'
 	},
 }
 
@@ -500,11 +510,11 @@ cmp.setup {
 	},
 	mapping = {
 		['<CR>'] = cmp.mapping(cmp.mapping.confirm { select = true }, { 'i', 'c' }),
-		['<C-Space>'] = cmp.mapping(cmp.mapping.confirm { select = true }, { 'i', 'c' }),
+		['<C-l>'] = cmp.mapping(cmp.mapping.confirm { select = true }, { 'i', 'c' }),
 		['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert }, { 'i', 'c' }),
 		['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert }, { 'i', 'c' }),
-		['<C-w>'] = cmp.mapping { i = cmp.mapping.abort(), c = cmp.mapping.close() }, -- cancel autocomplation
-		['<C-S-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }), -- start popup menu
+		['<C-e>'] = cmp.mapping { i = cmp.mapping.abort(), c = cmp.mapping.close() }, -- cancel autocomplation
+		['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }), -- start popup menu
 		['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
 	},
 	sources = {
@@ -550,3 +560,19 @@ cmp.setup.cmdline(':', {
 		{ name = 'path' },
 	},
 })
+
+-- firevim
+-- https://github.com/glacambre/firenvim
+vim.cmd [[ 
+let g:firenvim_config = {
+   \ 'globalSettings': {
+        \ '<C-w>': 'noop',
+        \ '<C-n>': 'default',
+    \ },
+	\ 'localSettings': {
+			\ '^https?://[^/]*youtu\.?be[^/]*/': {
+					\ 'selector': '#contenteditable-root'
+			\ },
+	\ }
+\ }
+]]

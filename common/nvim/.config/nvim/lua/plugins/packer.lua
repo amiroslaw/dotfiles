@@ -89,23 +89,26 @@ return require('packer').startup(function()
 			{ 'nvim-lua/popup.nvim', opt = true },
 			{ 'tom-anders/telescope-vim-bookmarks.nvim' },
 			{ 'fhill2/telescope-ultisnips.nvim' },
-			{ 'crispgm/telescope-heading.nvim' },
+			{ 'crispgm/telescope-heading.nvim', lock = true}, -- I added asciidoc support 
 			{ 'nvim-lua/plenary.nvim', opt = true },
 		},
 	}
 
 	use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true } }
-	use { 'kdheepak/tabline.nvim', requires = { 'hoob3rt/lualine.nvim', 'kyazdani42/nvim-web-devicons' } }
+	use { 'romgrk/barbar.nvim', requires = {'kyazdani42/nvim-web-devicons', opt = true} }
+	-- use { 'kdheepak/tabline.nvim', requires = { 'hoob3rt/lualine.nvim', 'kyazdani42/nvim-web-devicons' } }
 	use {
 	    'glacambre/firenvim',
 	    run = function() vim.fn['firenvim#install'](0) end 
 	}
+
+	use {'kdheepak/lazygit.nvim', cmd = {'LazyGit'}}
 	-- COLORSCHEMES
 	-- https://www.dunebook.com/best-vim-themes/
 	-- https://vimcolorschemes.com/top
 	-- ayu, vim-one, one-half, drakula NeoSolarized, pepertheme
-	use { 'dracula/vim', as = 'dracula' }
-	use 'https://github.com/rakr/vim-one'
+	-- use {'rakr/vim-one', as = 'one'}
 	-- use 'iCyMind/NeoSolarized'
 	-- use 'patstockwell/vim-monokai-tasty'
+	use { 'dracula/vim', as = 'dracula' }
 end)
