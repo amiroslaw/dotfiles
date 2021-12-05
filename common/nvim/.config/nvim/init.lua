@@ -109,7 +109,7 @@ end
 
 vim.g.mapleader = ';'
 
-nmap('<leader>/', ':nohlsearch<cr>')
+nmap('<leader>/', ':nohlsearch<cr>') -- from nvim 0.6 it's by default c-l
 nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>')
 nmap(' Zz', ' :q! <cr> ')
 -- move lines up and down
@@ -134,7 +134,7 @@ nmap('<leader>sudo ', ':w !sudo tee % <CR><CR>') -- leader to backslash \w savin
 nmap('<S-X>', '<C-^>') -- alternate-file file that was last edited in the current window.
 
 -- coping and pasting
-nmap('Y', 'y$')
+nmap('Y', 'y$') -- from nvim 0.6 it's by default
 nmap('P', ':pu<cr>')
 nmap('<a-a>', ':%y<cr>') -- yank all text
 --" insert mode
@@ -184,8 +184,11 @@ vim.cmd 'syntax spell toplevel'
 --togle spellcheck
 nmap('<C-A-s>', ':set spell!<cr> ')
 nmap('<A-s>', ':setlocal spell spelllang=pl<cr>')
+imap('<A-s>', ':setlocal spell spelllang=pl<cr>')
 nmap('<S-A-s>', ':setlocal spell spelllang=en_us<CR>')
+imap('<S-A-s>', ':setlocal spell spelllang=en_us<CR>')
 nmap('<C-e>', 'z=')
+imap('<C-e>', 'z=')
 nmap('<S-e>', '[s')
 --replace from selection/ substitution, produce error but it's workaround for showing command line mode
 vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
