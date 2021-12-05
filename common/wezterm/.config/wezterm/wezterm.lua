@@ -51,9 +51,9 @@ map('F7', wezterm.action { Search = { Regex = 'ERROR' } }, 'ALT')
 --disable key
 map('Enter', 'DisableDefaultAssignment', 'ALT')
 -- Must be in the end 
+
 return {
-	color_scheme = 'Dracula',
-	-- color_scheme = "Tomorrow",
+	color_scheme = plugins.getColorscheme('Dracula', 'Tomorrow', 15),
 	default_cursor_style = 'SteadyBar', -- the best in vim
 	font_size = 11,
 	font = wezterm.font_with_fallback( { 'SauceCodePro Nerd Font Mono', 'FiraCode Nerd Font Mono' } ,{ weight = 'Regular' }),

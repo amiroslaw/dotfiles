@@ -49,5 +49,18 @@ wezterm.on('open-file-manager', function(win, pane)
 	local dirPath = curentDir:gsub("file://" .. hostname, "")
 	local success, stdout, stderr = wezterm.run_child_process({"xdg-open", dirPath })
 end),
+
+getColorscheme = function(dark, light, hour)
+	if not light then return dark end
+	local hour = hour and hour or 18
+	local currentHour = tonumber(os.date('%H'))
+	if currentHour > 5 and currentHour < hour then
+		return light
+	else
+		return dark
+	end
+end, 
+
 }
+
 return actions

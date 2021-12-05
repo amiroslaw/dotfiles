@@ -32,10 +32,13 @@ vim.o.fileencodings = 'utf-8', 'latin1'
 vim.o.linebreak = true
 -- vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
 
+	-- autocmd BufWinLeave * BufferOrderByBufferNumber
+	-- autocmd BufWinLeave * BufferOrderByDirectory
 vim.cmd [[
 	autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif 
 	au BufRead,BufNewFile *.json set filetype=json
 	autocmd BufNewFile,BufRead \*.{md,mdwn,mkd,mkdn,mark,markdown\*} set filetype=markdown
+	autocmd BufWinLeave * BufferOrderByDirectory
 	autocmd FileType * normal zR
 	autocmd FileType java,javascript,typescript,css,scss,lua setlocal foldmethod=syntax
 	augroup highlight_yank
@@ -563,6 +566,26 @@ cmp.setup.cmdline(':', {
 
 -- firevim
 -- https://github.com/glacambre/firenvim
+
+function IsFirenvimActive(event)
+    if vim.g.enable_vim_debug then print("IsFirenvimActive, event: ", vim.inspect(event)) end
+    if vim.fn.exists('*nvim_get_chan_info') == 0 then return 0 end
+    local ui = vim.api.nvim_get_chan_info(event.chan)
+    if vim.g.enable_vim_debug then print("IsFirenvimActive, ui: ", vim.inspect(ui)) end
+    local is_firenvim_active_in_browser = (ui['client'] ~= nil and ui['client']['name'] ~= nil)
+    if vim.g.enable_vim_debug then print("is_firenvim_active_in_browser: ", is_firenvim_active_in_browser) end
+    return is_firenvim_active_in_browser
+end
+
+function OnUIEnter(event)
+    if IsFirenvimActive(event) then
+        vim.opt.laststatus=0 -- Disable the status bar
+		vim.opt.lines = 15
+		vim.opt.columns = 100
+        -- vim.cmd 'set guifont=SauceCodePro\\ Nerd\\ Font:h18' -- Increase the font size
+    end
+end
+
 vim.cmd [[ 
 let g:firenvim_config = {
    \ 'globalSettings': {
@@ -575,4 +598,5 @@ let g:firenvim_config = {
 			\ },
 	\ }
 \ }
+autocmd UIEnter * :call luaeval('OnUIEnter(vim.fn.deepcopy(vim.v.event))')
 ]]
