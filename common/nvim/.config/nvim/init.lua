@@ -362,7 +362,7 @@ if telescope then
 				flex = {
 					flip_columns = 150, -- is less than that will act like the vertical strategy, and otherwise like the horizontal strategy.
 				},
-				horizontal = { width = 0.9, height = 0.95, preview_width = 0.7 },
+				horizontal = { width = 0.99, height = 0.99, preview_width = 0.7 },
 				vertical = { width = 0.99, height = 0.99, preview_height = 0.7 },
 			},
 			mappings = { -- https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
