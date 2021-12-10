@@ -16,9 +16,9 @@ vim.cmd 'colorscheme dracula'
 --"""""""""""""""""""""""""
 --""""" SETTINGS
 
-if vim.fn.has 'termguicolors' == 1 then
-	vim.o.termguicolors = true
-end
+-- if vim.fn.has 'termguicolors' == 1 then
+vim.o.termguicolors = true
+-- end
 vim.b.buftype = '' -- fix Cannot write buftype option is set
 vim.cmd 'syntax enable'
 vim.o.laststatus = 2
@@ -30,15 +30,13 @@ vim.o.encoding = 'utf-8'
 vim.o.fileencoding = 'utf-8'
 vim.o.fileencodings = 'utf-8', 'latin1'
 vim.o.linebreak = true
--- vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
+vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
 
-	-- autocmd BufWinLeave * BufferOrderByBufferNumber
 	-- autocmd BufWinLeave * BufferOrderByDirectory
 vim.cmd [[
 	autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif 
 	au BufRead,BufNewFile *.json set filetype=json
 	autocmd BufNewFile,BufRead \*.{md,mdwn,mkd,mkdn,mark,markdown\*} set filetype=markdown
-	autocmd BufWinLeave * BufferOrderByDirectory
 	autocmd FileType * normal zR
 	autocmd FileType java,javascript,typescript,css,scss,lua setlocal foldmethod=syntax
 	augroup highlight_yank
@@ -479,22 +477,27 @@ vim.g.ale_lint_on_save = 1
 -- Status and tab bars
 -- Barbar - tabbar
 -- https://github.com/romgrk/barbar.nvim
-nmap('<leader><Tab>', ':BufferNext <cr>')
+--[[ nmap('<leader><Tab>', ':BufferNext <cr>')
 nmap('<leader>b', ':BufferPick <cr>') -- jumping to tab, like hop
-nmap('<leader>B', ':BufferOrderByBufferNumber <cr>')
-
+nmap('<leader>B', ':BufferOrderByBufferNumber <cr>') 
 vim.g.bufferline = {
   closable = false,
   icons = false, -- numbers, bug with true - can't see icon set
 }
+]]
 
-
-require('lualine').setup {
-	options = {
-		-- theme = 'dracula'
-		theme = 'onelight'
-	},
+nmap('<leader><Tab>', ':BufferLineCycleNext <cr>')
+nmap('<leader>b', ':BufferLinePick <cr>') -- jumping to tab, like hop
+nmap('<leader>B', ':BufferLineSortByDirectory <cr>')
+require('bufferline').setup {
+  options = {
+	show_close_icon = false,
+	sort_by = 'relative_directory',
+  }, 
 }
+
+
+require('lualine').setup { options = { theme = 'dracula', component_separators = '|' }, }
 
 -- nvim-cmp
 -- https://github.com/hrsh7th/nvim-cmp

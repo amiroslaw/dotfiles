@@ -57,7 +57,7 @@ end
 time([[Luarocks path setup]], false)
 time([[try_loadstring definition]], true)
 local function try_loadstring(s, component, name)
-  local success, result = pcall(loadstring(s))
+  local success, result = pcall(loadstring(s), name, _G.packer_plugins[name])
   if not success then
     vim.schedule(function()
       vim.api.nvim_notify('packer.nvim: Error running ' .. component .. ' for ' .. name .. ': ' .. result, vim.log.levels.ERROR, {})
@@ -83,10 +83,10 @@ _G.packer_plugins = {
     path = "/home/miro/.local/share/nvim/site/pack/packer/opt/ale",
     url = "https://github.com/dense-analysis/ale"
   },
-  ["barbar.nvim"] = {
+  ["bufferline.nvim"] = {
     loaded = true,
-    path = "/home/miro/.local/share/nvim/site/pack/packer/start/barbar.nvim",
-    url = "https://github.com/romgrk/barbar.nvim"
+    path = "/home/miro/.local/share/nvim/site/pack/packer/start/bufferline.nvim",
+    url = "https://github.com/akinsho/bufferline.nvim"
   },
   ["calendar.vim"] = {
     commands = { "Calendar" },
@@ -218,6 +218,11 @@ _G.packer_plugins = {
     path = "/home/miro/.local/share/nvim/site/pack/packer/opt/nvim-tree.lua",
     url = "https://github.com/kyazdani42/nvim-tree.lua"
   },
+  ["nvim-treesitter"] = {
+    loaded = true,
+    path = "/home/miro/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
+    url = "https://github.com/nvim-treesitter/nvim-treesitter"
+  },
   ["nvim-web-devicons"] = {
     loaded = false,
     needs_bufread = false,
@@ -243,6 +248,7 @@ _G.packer_plugins = {
     url = "https://github.com/previm/previm"
   },
   ["rest.nvim"] = {
+    config = { "\27LJ\1\2‘\2\0\0\3\0\t\0\r4\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\3\0003\2\4\0:\2\5\0013\2\6\0:\2\a\0012\2\0\0:\2\b\1>\0\2\1G\0\1\0\29custom_dynamic_variables\vresult\1\0\3\19show_http_info\2\17show_headers\2\rshow_url\2\14highlight\1\0\2\fenabled\1\ftimeout\3–\1\1\0\4\20jump_to_request\1\26skip_ssl_verification\1\28result_split_horizontal\1\renv_file\t.env\nsetup\14rest-nvim\frequire\0" },
     loaded = false,
     needs_bufread = true,
     only_cond = false,
@@ -391,7 +397,7 @@ vim.cmd [[au!]]
 time([[Defining lazy-load filetype autocommands]], true)
 vim.cmd [[au FileType http ++once lua require("packer.load")({'rest.nvim'}, { ft = "http" }, _G.packer_plugins)]]
 vim.cmd [[au FileType asciidoctor ++once lua require("packer.load")({'vim-asciidoctor'}, { ft = "asciidoctor" }, _G.packer_plugins)]]
-vim.cmd [[au FileType markdown ++once lua require("packer.load")({'vim-markdown', 'previm', 'tabular'}, { ft = "markdown" }, _G.packer_plugins)]]
+vim.cmd [[au FileType markdown ++once lua require("packer.load")({'tabular', 'vim-markdown', 'previm'}, { ft = "markdown" }, _G.packer_plugins)]]
 vim.cmd [[au FileType json ++once lua require("packer.load")({'nvim-jqx'}, { ft = "json" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
 vim.cmd("augroup END")
