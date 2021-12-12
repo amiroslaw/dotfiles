@@ -50,8 +50,8 @@ set norunexec
 set noiec
 
 " Selected color scheme https://vifm.info/colorschemes.shtml
-" colorscheme Default
-colorscheme dwmlight
+colorscheme near-default
+" colorscheme gruvebox
 
 " The FUSE_HOME directory will be used as a root dir for all FUSE mounts.
 " Unless it exists with write/exec permissions set, vifm will attempt to

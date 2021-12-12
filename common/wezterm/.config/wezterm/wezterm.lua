@@ -101,9 +101,8 @@ return {
 	freetype_load_target = "HorizontalLcd", -- freetype_load_target = "Light",
 	warn_about_missing_glyphs = false,
 	keys = keys,
-	-- TODO after setting
-	-- automatically_reload_config = false,
-	check_for_updates = true,
+	automatically_reload_config = false,
+	check_for_updates = false,
 }
 
 -- TODO

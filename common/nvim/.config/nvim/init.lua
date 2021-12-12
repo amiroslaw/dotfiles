@@ -183,10 +183,10 @@ nmap('<S-F2>', ':split term://zsh<cr>') -- TODO can't have shift
 vim.cmd 'syntax spell toplevel'
 --togle spellcheck
 nmap('<C-A-s>', ':set spell!<cr> ')
-nmap('<A-s>', ':setlocal spell spelllang=pl<cr>')
-imap('<A-s>', ':setlocal spell spelllang=pl<cr>')
-nmap('<S-A-s>', ':setlocal spell spelllang=en_us<CR>')
-imap('<S-A-s>', ':setlocal spell spelllang=en_us<CR>')
+nmap('<S-A-s>', ':setlocal spell spelllang=pl<cr>')
+imap('<S-A-s>', '<cmd>setlocal spell spelllang=pl<cr>')
+nmap('<A-s>', ':setlocal spell spelllang=en_us<CR>')
+imap('<A-s>', '<cmd>setlocal spell spelllang=en_us<CR>')
 nmap('<C-e>', 'z=')
 imap('<C-e>', 'z=')
 nmap('<S-e>', '[s')

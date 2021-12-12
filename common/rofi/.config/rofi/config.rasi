@@ -1,5 +1,6 @@
+@theme "one-light"
+
 configuration {
-theme: "one-light";
 
 threads: 0;
 terminal: "rofi-sensible-terminal";

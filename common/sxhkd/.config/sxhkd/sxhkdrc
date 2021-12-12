@@ -16,9 +16,9 @@ super + Home
 super + Escape
 	{$ROFI/kill}
 
-# Show keybindings
-super + shift + F1
-	$ROFI/bspwm-help
+# Show manual; keybindings
+super + {ctrl,shift} + F1
+	{$ROFI/bspwm-help, mp rofi}
 
 # In case bspwmrc fails to execute/you wish have plugged in a new monitor
 super + shift + r
@@ -99,7 +99,7 @@ super + ctrl + {_,shift} + Tab
 super + ctrl + {1-9,0}
 	bspc node -s $(bspc query -N -n .window -d {1-9,0})
 
-# cycle windows in the same desktop- jest tez skrypt rofi
+# cycle windows in the same desktop
 alt + {_,shift} + Tab
     bspc node -f {next,prev}.local
 
