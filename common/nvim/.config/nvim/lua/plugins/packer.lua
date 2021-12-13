@@ -35,13 +35,13 @@ return require('packer').startup(function()
 	use { 'godlygeek/tabular', ft = { 'markdown' } } -- do wyrównywania np w tabelach http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ :Tab /|
 	--Syntax
 	use 'baskerville/vim-sxhkdrc'
+	use 'kyazdani42/nvim-web-devicons'
 
 	-- for neovim and lua
 	use { 'gennaro-tedesco/nvim-jqx', ft = { 'json' } }
 	use {
 		'kyazdani42/nvim-tree.lua',
 		cmd = { 'NvimTreeToggle' },
-		requires = { { 'kyazdani42/nvim-web-devicons', opt = true } },
 		config = function()
 			require('nvim-tree').setup {}
 		end,
@@ -99,8 +99,8 @@ use {
 	},
 }
 
-use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true } }
-use {'akinsho/bufferline.nvim', requires = 'kyazdani42/nvim-web-devicons'}
+use 'nvim-lualine/lualine.nvim'
+use 'akinsho/bufferline.nvim'
 -- use { 'romgrk/barbar.nvim', requires = {'kyazdani42/nvim-web-devicons', opt = true} }
 -- use { 'kdheepak/tabline.nvim', requires = { 'hoob3rt/lualine.nvim', 'kyazdani42/nvim-web-devicons' } }
 use {

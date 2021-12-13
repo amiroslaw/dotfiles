@@ -186,7 +186,7 @@ super + shift + Return
 
 # dropdown TODO show but as a normal window 
 F12
-	tdrop -m --wm bspwm -w -4 -y "$PANEL_HEIGHT" $TERM_LT -t dropdown
+	tdrop -m --wm bspwm -w -4 -y "$PANEL_HEIGHT" $TERM_LT -c dropdown
 
 # left/middle click emulation
 super + {x,v} 

@@ -504,10 +504,7 @@ require('lualine').setup { options = { theme = 'dracula', component_separators =
 
 -- nvim-cmp
 -- https://github.com/hrsh7th/nvim-cmp
--- vim.o.completeopt = 'menu,menuone,noselect'
--- vim.opt.dictionary:append(HOME .. "/.config/rofi/scripts/expander/pl-popular")
--- vim.opt.dictionary:append(HOME .. "/.config/rofi/scripts/expander/en-popular")
-vim.g.cmp_dictionary_async = 1
+vim.g.cmp_dictionary_async = true
 vim.g.cmp_dictionary_exact = -1
 
 local cmp = require 'cmp'
