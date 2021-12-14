@@ -32,7 +32,6 @@ vim.o.fileencodings = 'utf-8', 'latin1'
 vim.o.linebreak = true
 vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
 
-	-- autocmd BufWinLeave * BufferOrderByDirectory
 vim.cmd [[
 	autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif 
 	au BufRead,BufNewFile *.json set filetype=json
@@ -48,10 +47,6 @@ vim.cmd [[
 		autocmd BufWritePost plugins.lua source <afile> | PackerCompile
 	  augroup end
 	autocmd BufEnter term://* startinsert
-	augroup CmpDictionary
-	  au!
-	  au FileType markdown,text,asciidoctor setlocal dictionary=~/.config/rofi/scripts/expander/pl-popular,~/.config/rofi/scripts/expander/en-popular
-	augroup END
 ]]
 
 -- IncSearch
@@ -111,7 +106,7 @@ vim.g.mapleader = ';'
 
 nmap('<leader>/', ':nohlsearch<cr>') -- from nvim 0.6 it's by default c-l
 nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>')
-nmap(' Zz', ' :q! <cr> ')
+nmap('Zz', ' :q! <cr> ')
 -- move lines up and down
 nmap('<c-a-j>', ':m .+1<CR>')
 nmap('<c-a-k>', ':m .-2<CR>')
@@ -119,6 +114,9 @@ imap('<c-A-j>', '<Esc>:m .+1<CR>==gi')
 imap('<c-A-k>', '<Esc>:m .-2<CR>==gi')
 vmap('<c-a-j>', ":m '>+1<CR>gv-gv")
 vmap('<c-a-k>', ':m .-2<CR>gv=gv')
+
+nmap('gf', '<c-w>gF') -- open file in a new tab
+nmap('gF', '<c-w>F')
 
 -- page scroll, disable half-page because I'll use hop plugin
 nmap('<Space>', '<C-f> <cr>', { nowait = true })
@@ -233,7 +231,7 @@ vim.g.calendar_google_task = 1
 vim.g.calendar_first_day = 'monday'
 
 nmap('<F9>', ':Calendar <CR>')
-nmap('<S-F9>', ':Calendar -view=year -split=horizontal -position=below -height=10 <CR>') -- TODO shift
+nmap('<S-F9>', ':Calendar -view=year -split=horizontal -position=below -height=10 <CR>') -- TODO shift, can't be done
 
 --""""""""""""""""""
 -- vim-bookmarks
@@ -286,7 +284,7 @@ nmap('<F6>', ':ZenMode <CR>')
 --""""""""""""""""""
 -- vim-asciidoctor  https://github.com/habamax/vim-asciidoctor
 nmap('<F7>', ':!preview-ascii.sh % <CR>')
-nmap('<S-F7>', ':Asciidoctor2DOCX<CR>') -- TODO shift
+nmap('<S-F7>', ':Asciidoctor2DOCX<CR>') -- TODO shift, can't be bind
 
 vim.g.asciidoctor_syntax_conceal = 1
 vim.g.asciidoctor_folding = 2
@@ -504,8 +502,6 @@ require('lualine').setup { options = { theme = 'dracula', component_separators =
 
 -- nvim-cmp
 -- https://github.com/hrsh7th/nvim-cmp
-vim.g.cmp_dictionary_async = true
-vim.g.cmp_dictionary_exact = -1
 
 local cmp = require 'cmp'
 cmp.setup {
@@ -530,7 +526,7 @@ cmp.setup {
 		{ name = 'nvim_lua' },
 		{ name = 'path' },
 		{ name = 'calc' },
-		{ name = 'dictionary' },
+		{ name = "dictionary" },
 	},
 	completion = {
 		completeopt = 'menu,menuone,noinsert',
@@ -565,6 +561,19 @@ cmp.setup.cmdline(':', {
 		{ name = 'cmdline_history' },
 		{ name = 'path' },
 	},
+})
+local dirEn = HOME .. "/.config/rofi/scripts/expander/en-popular" 
+local dirPl = HOME .. "/.config/rofi/scripts/expander/pl-popular"
+require("cmp_dictionary").setup({
+    dic = { -- ["*"] = { dirEn, dirPl}
+        ["asciidoc"] = { dirEn, dirPl},
+        ["markdoiwn"] = { dirEn, dirPl},
+        ["text"] = { dirEn, dirPl},
+    },
+    exact = 4, -- -1 only exact the same prefix; should be gratter than keyword_length
+    async = true, 
+    capacity = 5,
+    debug = false, 
 })
 
 -- firevim

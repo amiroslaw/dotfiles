@@ -14,6 +14,7 @@ return require('packer').startup(function()
 	use 'MattesGroeger/vim-bookmarks'
 	use 'majutsushi/tagbar'
 	use 'mhinz/vim-startify' -- start screen
+	-- use { 'goolord/alpha-nvim', config = function () require'alpha'.setup(require'alpha.themes.startify'.opts) end }
 	use { 'mbbill/undotree', cmd = { 'UndotreeToggle' } }
 	-- use 'vim-scripts/YankRing.vim' -- fix keybinding
 	use 'bfredl/nvim-miniyank'
@@ -67,6 +68,9 @@ return require('packer').startup(function()
 			require('hop').setup { keys = 'etovxqpdygfblzhckisuran' }
 		end,
 	}
+	use { 'abecodes/tabout.nvim',
+			after = {'nvim-cmp'} -- if a completion plugin is using tabs load it before
+		}
 	use {
 		'hrsh7th/nvim-cmp',
 		requires = { -- https://github.com/topics/nvim-cmp list of the sources
