@@ -473,6 +473,8 @@ vim.g.ale_lint_on_text_changed = 'never'
 vim.g.ale_lint_on_insert_leave = 1
 vim.g.ale_lint_on_enter = 0
 vim.g.ale_lint_on_save = 1
+nmap('<leader>f', '<cmd> !stylua --config-path ~/.config/stylua/stylua.toml % <cr>')
+-- vim.cmd [[let b:ale_fixers = {'lua': ['stylua']}]] -- default config
 
 -----------------------------
 -- Status and tab bars
@@ -526,7 +528,7 @@ cmp.setup {
 		{ name = 'nvim_lua' },
 		{ name = 'path' },
 		{ name = 'calc' },
-		{ name = "dictionary" },
+		{ name = "dictionary", },
 	},
 	completion = {
 		completeopt = 'menu,menuone,noinsert',
@@ -566,14 +568,15 @@ local dirEn = HOME .. "/.config/rofi/scripts/expander/en-popular"
 local dirPl = HOME .. "/.config/rofi/scripts/expander/pl-popular"
 require("cmp_dictionary").setup({
     dic = { -- ["*"] = { dirEn, dirPl}
-        ["asciidoc"] = { dirEn, dirPl},
-        ["markdoiwn"] = { dirEn, dirPl},
+        ["asciidoctor"] = { dirEn, dirPl},
+        ["markdown"] = { dirEn, dirPl},
         ["text"] = { dirEn, dirPl},
     },
     exact = 4, -- -1 only exact the same prefix; should be gratter than keyword_length
     async = true, 
     capacity = 5,
     debug = false, 
+    -- debug = true, 
 })
 
 -- firevim
