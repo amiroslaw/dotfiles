@@ -21,7 +21,6 @@ return require('packer').startup(function()
 	-- CODE
 	use 'tpope/vim-surround'
 	use { 'sbdchd/neoformat', cmd = { 'Neoformat' } }
-	use { 'dense-analysis/ale', cmd = { 'ALELint', 'ALEFix' } }
 
 	-- NOTE
 	use { 'itchyny/calendar.vim', cmd = { 'Calendar' } } -- problem with api
@@ -55,6 +54,7 @@ return require('packer').startup(function()
 		end,
 	}
 	use { 'NTBBloodbath/rest.nvim', branch = 'main', ft = { 'http' }, requires = { 'nvim-lua/plenary.nvim' } }
+	use { 'jose-elias-alvarez/null-ls.nvim', branch = 'main', requires = { 'nvim-lua/plenary.nvim' } }
     use {
 		'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate', 

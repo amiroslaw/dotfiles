@@ -467,14 +467,9 @@ nmap('<A-p>', '<Plug>(miniyank-cycleback)', { noremap = false })
 -- https://github.com/sbdchd/neoformat
 vmap('<a-f>', ':Neoformat! java astyle <CR>')
 
---https://github.com/dense-analysis/ale
--- disable checking, can by run by saving or ALELint
-vim.g.ale_lint_on_text_changed = 'never'
-vim.g.ale_lint_on_insert_leave = 1
-vim.g.ale_lint_on_enter = 0
-vim.g.ale_lint_on_save = 1
-nmap('<leader>f', '<cmd> !stylua --config-path ~/.config/stylua/stylua.toml % <cr>')
--- vim.cmd [[let b:ale_fixers = {'lua': ['stylua']}]] -- default config
+-- nmap('<leader>f', '<cmd> !stylua --config-path ~/.config/stylua/stylua.toml % <cr>')
+nmap('<leader>f', '<cmd> lua vim.lsp.buf.formatting_sync() <cr>')
+vmap('<leader>f', '<cmd> lua vim.lsp.buf.range_formatting() <cr>')
 
 -----------------------------
 -- Status and tab bars
@@ -615,3 +610,23 @@ let g:firenvim_config = {
 \ }
 autocmd UIEnter * :call luaeval('OnUIEnter(vim.fn.deepcopy(vim.v.event))')
 ]]
+
+local nullLs = require("null-ls")
+local formatting = nullLs.builtins.formatting
+local diagnostics = nullLs.builtins.diagnostics
+nullLs.setup({
+    sources = {
+		diagnostics.shellcheck.with({ method = nullLs.methods.DIAGNOSTICS_ON_SAVE, }),
+		diagnostics.selene.with({ method = nullLs.methods.DIAGNOSTICS_ON_SAVE, }),
+        formatting.stylua.with({
+			-- filetypes = { "lua", "asciidoctor" },
+			filetypes = { "lua", "asciidoctor" },
+			extra_args = { "--config-path", vim.fn.expand("~/.config/stylua/stylua.toml") },
+		}),
+		formatting.prettier,
+		formatting.clang_format.with({
+			filetypes = { "java", "asciidoctor" },
+		}),
+    },
+	debug = true,
+})
