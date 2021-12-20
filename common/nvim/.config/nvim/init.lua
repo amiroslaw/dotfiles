@@ -8,7 +8,9 @@ local HOME = os.getenv 'HOME'
 --let scheme = strftime("%H") > 5 && strftime("%H") < 18 ? "one" : "dracula"
 --execute 'colorscheme ' . scheme
 --let &background =strftime("%H") > 5 && strftime("%H") < 18 ? "light" : "dark"
-vim.cmd 'colorscheme dracula'
+-- vim.cmd 'colorscheme dracula'
+vim.cmd 'colorscheme moonfly'
+
 -- vime-one - support dark and light theme
 -- set background=dark
 -- let g:one_allow_italics = 1

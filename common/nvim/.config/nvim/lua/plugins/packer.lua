@@ -109,6 +109,7 @@ use {
 	'glacambre/firenvim',
 	run = function() vim.fn['firenvim#install'](0) end 
 }
+-- use { "folke/which-key.nvim", config = function() require("which-key").setup { } end }
 
 use {'kdheepak/lazygit.nvim', cmd = {'LazyGit'}}
 -- COLORSCHEMES
@@ -119,4 +120,5 @@ use {'kdheepak/lazygit.nvim', cmd = {'LazyGit'}}
 -- use 'iCyMind/NeoSolarized'
 -- use 'patstockwell/vim-monokai-tasty'
 use { 'dracula/vim', as = 'dracula' }
+use 'bluz71/vim-moonfly-colors'
 end)
