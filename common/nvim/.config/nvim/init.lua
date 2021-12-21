@@ -355,7 +355,7 @@ local telescope = require 'telescope'
 if telescope then
 	telescope.setup {
 		defaults = {
-			prompt_prefix = "   ",
+			prompt_prefix = '   ',
 			file_ignore_patterns = { 'tags' },
 			layout_strategy = 'flex', -- center, cursor
 			width_padding = 30,
@@ -452,7 +452,6 @@ nmap('<leader>W', '<cmd>HopWordBC <cr>')
 nmap('s', '<cmd>HopLineStartAC <cr>')
 nmap('S', '<cmd>HopLineStartBC <cr>')
 
-
 --""""""""""""""""""
 -- NvimTreeToggle https://github.com/kyazdani42/nvim-tree.lua
 nmap('<F3>', ':NvimTreeToggle<CR>')
@@ -490,14 +489,13 @@ nmap('<leader><Tab>', ':BufferLineCycleNext <cr>')
 nmap('<leader>b', ':BufferLinePick <cr>') -- jumping to tab, like hop
 nmap('<leader>B', ':BufferLineSortByDirectory <cr>')
 require('bufferline').setup {
-  options = {
-	show_close_icon = false,
-	sort_by = 'relative_directory',
-  }, 
+	options = {
+		show_close_icon = false,
+		sort_by = 'relative_directory',
+	},
 }
 
-
-require('lualine').setup { options = { theme = 'dracula', component_separators = '|' }, }
+require('lualine').setup { options = { theme = 'dracula', component_separators = '|' } }
 
 -- nvim-cmp
 -- https://github.com/hrsh7th/nvim-cmp
@@ -525,7 +523,7 @@ cmp.setup {
 		{ name = 'nvim_lua' },
 		{ name = 'path' },
 		{ name = 'calc' },
-		{ name = "dictionary", },
+		{ name = 'dictionary' },
 	},
 	completion = {
 		completeopt = 'menu,menuone,noinsert',
@@ -561,41 +559,49 @@ cmp.setup.cmdline(':', {
 		{ name = 'path' },
 	},
 })
-local dirEn = HOME .. "/.config/rofi/scripts/expander/en-popular" 
-local dirPl = HOME .. "/.config/rofi/scripts/expander/pl-popular"
-require("cmp_dictionary").setup({
-    dic = { -- ["*"] = { dirEn, dirPl}
-        ["asciidoctor"] = { dirEn, dirPl},
-        ["markdown"] = { dirEn, dirPl},
-        ["text"] = { dirEn, dirPl},
-    },
-    exact = 4, -- -1 only exact the same prefix; should be gratter than keyword_length
-    async = true, 
-    capacity = 5,
-    debug = false, 
-    -- debug = true, 
-})
+local dirEn = HOME .. '/.config/rofi/scripts/expander/en-popular'
+local dirPl = HOME .. '/.config/rofi/scripts/expander/pl-popular'
+require('cmp_dictionary').setup {
+	dic = { -- ["*"] = { dirEn, dirPl}
+		['asciidoctor'] = { dirEn, dirPl },
+		['markdown'] = { dirEn, dirPl },
+		['text'] = { dirEn, dirPl },
+	},
+	exact = 4, -- -1 only exact the same prefix; should be gratter than keyword_length
+	async = true,
+	capacity = 5,
+	debug = false,
+	-- debug = true,
+}
 
 -- firevim
 -- https://github.com/glacambre/firenvim
 
 function IsFirenvimActive(event)
-    if vim.g.enable_vim_debug then print("IsFirenvimActive, event: ", vim.inspect(event)) end
-    if vim.fn.exists('*nvim_get_chan_info') == 0 then return 0 end
-    local ui = vim.api.nvim_get_chan_info(event.chan)
-    if vim.g.enable_vim_debug then print("IsFirenvimActive, ui: ", vim.inspect(ui)) end
-    local is_firenvim_active_in_browser = (ui['client'] ~= nil and ui['client']['name'] ~= nil)
-    if vim.g.enable_vim_debug then print("is_firenvim_active_in_browser: ", is_firenvim_active_in_browser) end
-    return is_firenvim_active_in_browser
+	if vim.g.enable_vim_debug then
+		print('IsFirenvimActive, event: ', vim.inspect(event))
+	end
+	if vim.fn.exists '*nvim_get_chan_info' == 0 then
+		return 0
+	end
+	local ui = vim.api.nvim_get_chan_info(event.chan)
+	if vim.g.enable_vim_debug then
+		print('IsFirenvimActive, ui: ', vim.inspect(ui))
+	end
+	local is_firenvim_active_in_browser = (ui['client'] ~= nil and ui['client']['name'] ~= nil)
+	if vim.g.enable_vim_debug then
+		print('is_firenvim_active_in_browser: ', is_firenvim_active_in_browser)
+	end
+	return is_firenvim_active_in_browser
 end
 
 function OnUIEnter(event)
-    if IsFirenvimActive(event) then
-        vim.opt.laststatus=0 -- Disable the status bar
+	if IsFirenvimActive(event) then
+		vim.opt.laststatus = 0 -- Disable the status bar
 		vim.opt.lines = 15
 		vim.opt.columns = 100
-        -- vim.cmd 'set guifont=SauceCodePro\\ Nerd\\ Font:h18' -- Increase the font size
-    end
+		-- vim.cmd 'set guifont=SauceCodePro\\ Nerd\\ Font:h18' -- Increase the font size
+	end
 end
 
 vim.cmd [[ 
@@ -613,20 +619,20 @@ let g:firenvim_config = {
 autocmd UIEnter * :call luaeval('OnUIEnter(vim.fn.deepcopy(vim.v.event))')
 ]]
 
-local nullLs = require("null-ls")
+local nullLs = require 'null-ls'
 local formatting = nullLs.builtins.formatting
 local diagnostics = nullLs.builtins.diagnostics
-nullLs.setup({
-    sources = {
-		diagnostics.shellcheck.with({ method = nullLs.methods.DIAGNOSTICS_ON_SAVE, }),
-		diagnostics.selene.with({ method = nullLs.methods.DIAGNOSTICS_ON_SAVE, }),
-        formatting.stylua.with({
-			extra_args = { "--config-path", vim.fn.expand("~/.config/stylua/stylua.toml") },
-		}),
+nullLs.setup {
+	sources = {
+		diagnostics.shellcheck.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
+		diagnostics.selene.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
+		formatting.stylua.with {
+			extra_args = { '--config-path', vim.fn.expand '~/.config/stylua/stylua.toml' },
+		},
 		formatting.prettier,
-		formatting.clang_format.with({
-			filetypes = { "java", "asciidoctor" },
-		}),
-    },
+		formatting.clang_format.with {
+			filetypes = { 'java', 'asciidoctor' },
+		},
+	},
 	debug = false,
-})
+}
