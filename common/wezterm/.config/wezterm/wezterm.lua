@@ -95,7 +95,13 @@ return {
 	inactive_pane_hsb = {
 		saturation = 0.8,
 		brightness = 0.7,
-	},
+	}, 
+	window_padding = {
+		left = "0.2cell",
+		right = "0.2cell",
+		top = "0.2cell",
+		bottom = "0.2cell",
+	  },
 	window_close_confirmation = 'NeverPrompt',
 	enable_wayland = false,
 	freetype_load_target = "HorizontalLcd", -- freetype_load_target = "Light",
