@@ -153,26 +153,13 @@ super + ctrl + g
 super + button{4,5}
 	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+,-} 2 ))
 
-###### RECEPTACLE  and PRESELECTION
-# ______________    
-#
-# in preselection new window will be display in preselected area 
+###### PRESELECTION
 
-# Receptacle ok tylko dać jakieś fajne skróty
-super + semicolon ; {h,j,k,l}
-	bspc node --presel-dir \~{west,south,north,east} -i
+# Receptacle 
+super + semicolon ; {h,j,k,l,BackSpace}
+	bspc node --presel-dir {west,south,north,east,cancel}
 
-# move window to Receptacle
-super + shift + semicolon
-	bspc node $(bspc query -N -n focused) -n $(bspc query -N -n .leaf.\!window)
 
-# Remove receptacles
-super + shift + BackSpace
-	for i in $(bspc query -N -n .leaf.!window.local); do bspc node $i -k; done
-
-# Autopresel (split window in its largest dimension) - p preselection 
-super + semicolon ; {p,semicolon}
-	{auto-presel,bspc node -i}
 #
 # APPLICATIONS
 # ______________    
@@ -497,3 +484,9 @@ mod1 + @button1
 # OLD
 
 	# rofi -modi dic:$ROFI/tran/dic-speak.sh,enpl:$ROFI/tran/enpl-notify.sh,plen:$ROFI/tran/plen-notify.sh -show enpl -sidebar-mode -terminal $TERM_LT -lines 1 -width 30 slow
+
+# super + shift + semicolon
+# 	bspc node $(bspc query -N -n focused) -n $(bspc query -N -n .leaf.\!window)
+# # Autopresel (split window in its largest dimension) - p preselection 
+# super + semicolon ; {p,semicolon}
+# 	{auto-presel,bspc node -i}
