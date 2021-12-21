@@ -621,8 +621,6 @@ nullLs.setup({
 		diagnostics.shellcheck.with({ method = nullLs.methods.DIAGNOSTICS_ON_SAVE, }),
 		diagnostics.selene.with({ method = nullLs.methods.DIAGNOSTICS_ON_SAVE, }),
         formatting.stylua.with({
-			-- filetypes = { "lua", "asciidoctor" },
-			filetypes = { "lua", "asciidoctor" },
 			extra_args = { "--config-path", vim.fn.expand("~/.config/stylua/stylua.toml") },
 		}),
 		formatting.prettier,
@@ -630,5 +628,5 @@ nullLs.setup({
 			filetypes = { "java", "asciidoctor" },
 		}),
     },
-	debug = true,
+	debug = false,
 })
