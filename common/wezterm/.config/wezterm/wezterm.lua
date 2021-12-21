@@ -98,10 +98,11 @@ return {
 	}, 
 	window_padding = {
 		left = "0.2cell",
-		right = "0.2cell",
+		right = "1cell", -- needed when scrollbar is enabled
 		top = "0.2cell",
 		bottom = "0.2cell",
 	  },
+	enable_scroll_bar = true,
 	window_close_confirmation = 'NeverPrompt',
 	enable_wayland = false,
 	freetype_load_target = "HorizontalLcd", -- freetype_load_target = "Light",
