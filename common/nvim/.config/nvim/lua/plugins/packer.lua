@@ -59,7 +59,13 @@ return require('packer').startup(function()
 		'nvim-treesitter/nvim-treesitter',
 		run = ':TSUpdate',
 		config = function()
-			require('nvim-treesitter.configs').setup { ensure_installed = 'maintained' }
+			require('nvim-treesitter.configs').setup {
+				ensure_installed = 'maintained',
+				highlight = {
+					enable = true,
+					additional_vim_regex_highlighting = false,
+				},
+			}
 		end,
 		-- {"java", "javascript", "typescript", "lua", "asciidoc", "markdown", "http", "json" }TSInstall css html
 	}
@@ -78,12 +84,12 @@ return require('packer').startup(function()
 			{ 'hrsh7th/cmp-buffer' },
 			{ 'hrsh7th/cmp-path' },
 			{ 'hrsh7th/cmp-calc' },
+			{ 'hrsh7th/cmp-cmdline' },
 			{ 'dmitmel/cmp-cmdline-history' },
 			{ 'quangnguyen30192/cmp-nvim-ultisnips' },
 			{ 'hrsh7th/cmp-nvim-lua' }, -- vim.api
 			{ 'hrsh7th/cmp-nvim-lsp' },
 			{ 'uga-rosa/cmp-dictionary' },
-			-- { "hrsh7th/cmp-cmdline" },
 			config = function()
 				require('cmp-nvim-ultisnips').setup {}
 			end,

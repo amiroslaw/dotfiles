@@ -10,7 +10,6 @@ local HOME = os.getenv 'HOME'
 --let &background =strftime("%H") > 5 && strftime("%H") < 18 ? "light" : "dark"
 -- vim.cmd 'colorscheme dracula'
 vim.cmd 'colorscheme moonfly'
-
 -- vime-one - support dark and light theme
 -- set background=dark
 -- let g:one_allow_italics = 1
@@ -372,6 +371,8 @@ if telescope then
 					['<C-k>'] = 'move_selection_previous',
 					['<C-Space>'] = 'select_default',
 					['<C-h>'] = 'which_key',
+					['<C-n>'] = 'cycle_history_next',
+					['<C-p>'] = 'cycle_history_prev',
 				},
 			},
 		},
@@ -508,7 +509,7 @@ cmp.setup {
 		end,
 	},
 	mapping = {
-		['<CR>'] = cmp.mapping(cmp.mapping.confirm { select = true }, { 'i', 'c' }),
+		-- ['<CR>'] = cmp.mapping(cmp.mapping.confirm { select = true }, { 'i', 'c' }),
 		['<C-l>'] = cmp.mapping(cmp.mapping.confirm { select = true }, { 'i', 'c' }),
 		['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert }, { 'i', 'c' }),
 		['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert }, { 'i', 'c' }),
@@ -516,7 +517,7 @@ cmp.setup {
 		['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }), -- start popup menu
 		['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
 	},
-	sources = {
+	sources = { -- order is important
 		-- { name = "nvim_lsp" },
 		{ name = 'ultisnips', keyword_length = 1 },
 		{ name = 'buffer', keyword_length = 2, option = { keyword_pattern = [[\k\+]] } },
@@ -555,6 +556,7 @@ cmp.setup.cmdline('/', {
 })
 cmp.setup.cmdline(':', {
 	sources = {
+		{ name = 'cmdline' },
 		{ name = 'cmdline_history' },
 		{ name = 'path' },
 	},

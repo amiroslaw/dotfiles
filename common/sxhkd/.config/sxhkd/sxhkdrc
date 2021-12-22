@@ -52,9 +52,6 @@ super + {_,shift} + f
 # sticky works only on the one monitor
 super + a ; {l,m,s,p}
 	bspc node -g {locked,marked,sticky,private}
-# send the newest marked node to the newest preselected node trzeba mieć preselected 
-super + a ; b
-	bspc node newest.marked.local -n newest.!automatic.local
 
 # hide
 super + {_,shift,ctrl} + z
@@ -90,15 +87,6 @@ super + shift + {n,p}
     bspc node -m {prev,next}; \
     bspc node -f ${id}
 	
-# swap with the biggest/smallest node
-# todo change shortcut
-super + ctrl + {_,shift} + Tab
-	bspc node -s {biggest,smallest}.local
-
-# swap with the first window in selected desktop
-super + ctrl + {1-9,0}
-	bspc node -s $(bspc query -N -n .window -d {1-9,0})
-
 # cycle windows in the same desktop
 alt + {_,shift} + Tab
     bspc node -f {next,prev}.local
@@ -123,6 +111,26 @@ super + shift + {h,j,k,l}
 super + shift + {Left,Down,Up,Right}
 	bspc node -s {west,south,north,east}
 
+# SWAP
+# ______________    
+
+# swap-windows, windowpromoter  Move current window to largest space or preselected area if there is one.
+super + {_,shift} + w
+	{~/.config/bspwm/bspc-swap-windows.sh, windowpromoter}
+
+# swap with the biggest/smallest node
+super + ctrl + w
+	bspc node -s smallest.local
+	# bspc node -s {biggest,smallest}.local
+
+# swap with the first window in selected desktop
+super + ctrl + {1-9,0}
+	bspc node -s $(bspc query -N -n .window -d {1-9,0})
+
+#
+# Layout manipulation/desktop level controls
+# ______________    
+
 # resize	
 super + ctrl + {h,j,k,l}
 	bspwm_resize.sh {west,south,north,east}
@@ -130,9 +138,6 @@ super + ctrl + {h,j,k,l}
 super + ctrl + {Left,Down,Up,Right}
 	bspwm_resize.sh {west,south,north,east}
 
-#
-# Layout manipulation/desktop level controls
-# ______________    
 
 # Toggle Balance tree
 super + {_,shift} + b
@@ -147,7 +152,7 @@ super + shift + {bracketleft,bracketright}
 	bspc node @/ -F {horizontal,vertical}
 
 #Change window gap
-super + ctrl + g
+super + ctrl + shift + g
 	bspc config -d focused window_gap {$gap,$(($gap+$gap)),$(($gap+$gap+$gap))}
 
 super + button{4,5}
@@ -159,6 +164,9 @@ super + button{4,5}
 super + semicolon ; {h,j,k,l,BackSpace}
 	bspc node --presel-dir {west,south,north,east,cancel}
 
+# send the newest marked node to the newest preselected node trzeba mieć preselected 
+super + a ; b
+	bspc node newest.marked.local -n newest.!automatic.local
 
 #
 # APPLICATIONS
@@ -355,138 +363,3 @@ super + shift + {comma,period}
 	# mpc seek -{10,120}
 # Increase volume, chyba cudzysłowy nie działają 
 
-#
-# MOUSE BINDINGS
-# __________________
-
-~button1
-	DidIClickDesktop.sh && gapgrab	
-
-~button2
-	# DidIClickDesktop.sh && BspwmDesktopMenu
-#	DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/BspwmDesktopMenui
-#	DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/BspwmWindowMenui
-		
-~button3
-	DidIClickDesktop.sh && rofimenu -desktop
-#DidIClickDesktop.sh && mygtkmenui -- .config/GTKmenu/LaunchMenu
-
-# Switch workspace by scrolling on the desktop. Causes scrolling issues on some systems.
-#~button4
-#	DidIClickDesktop.sh && bspc desktop -f next
-#~button5
-#	DidIClickDesktop.sh && bspc desktop -f prev
-	
-### Add or remove desktops by scrolling
-super + ctrl + button5
-    bspcp dsktp rm
-
-super + ctrl + button4
-    bspcp dsktp add
-
-# Spawn applications popup menu and manually tile selected 
-# app where your mouse was when you opened the menu. Smartsplit only chooses
-# biggest dimension of the window, MouseLaunch only cares which edge is closer.
-# mod5 is alt_gr (first key right from space) on most keyboards. 
-mod5 + @button1
-	smartsplit ; rofimenu -desktop
-#	smartsplit ; dboxmenu
-#    MouseLaunch ; mygtkmenui -- .config/GTKmenu/LaunchMenu
-
-# Spawn window manipulation menu
-# Mod1 is alt
-mod1 + @button1
-	BspwmWindowMenu
-# mygtkmenui -- .config/GTKmenu/BspwmWindowMenui
-
-
-#
-# Touchpad "gestures" (depend on your touchpad driver, very likely to be unavailable)
-#_____________________
-#
-# ALTERNATIVETES
-    
-#super + {_,shift + }{1-9,0}
-#	bspc {desktop -f,node -d} '^{1-9,10}'
-## Alternative: i3 style behavior (focus nth, desktop of the focused monitor)
-	# focusdesktopofthismonitor {1-9,10}
-## Another alternative: xmonad style desktops. You have 10 desktops shared between all monitors,
-## and focusing a desktop focuses it on the currently focused monitor
-#super + {1-9,0}
-#	summondesktop.sh {1-9,10}
-#super + shift + {1-9,0}
-#	bspc node -d ^{1-9,10}
-#
-
-# move a floating window
-# with euclid_mover moving is not necessary 
-# super + shift + ctrl + {h,j,k,l}
-    # bspc node -v {-30 0,0 30,0 -30,30 0}
-	# xdo move {-x -30,-y +30,-y -30,-x +30} # or with xdotool
-# super + shift + ctrl + {Left,Down,Up,Right}
-    # bspc node -v {-30 0,0 30,0 -30,30 0}
-	# xdo move {-x -30,-y +30,-y -30,-x +30}
-
-# Receptacle window for splitting in certain direction
-# alt + ctrl + {h,j,k,l}
-# 	bspc node --presel-dir \~{west,south,north,east} -i
-# alt + ctrl + {Left,Down,Up,Right}
-# 	bspc node -p \~{west,south,north,east} -i
-
- # Receptacle the desktop for splitting in certain direction
- # alt + shift + {h,j,k,l}
-	 # bspc node @/ -p \~{west,south,north,east} -i
- # alt + shift + {Left,Down,Up,Right}
-	 # bspc node @/ -p \~{west,south,north,east} -i
-# move window to preselection
-	# bspc node -n 'last.!automatic.local'
-# Set splitting ratio of windows - prepare the space
-#alt + ctrl + {1-9}
-#	bspc node -o 0.{1-9}
-		
-# Move current window to largest space or preselected area if there is one.
-#super + Return
-#    windowpromoter
-
-# bindsym $mod+i exec i3-msg 'workspace $ws4;exec --no-startup-id libreoffice ~/interview\ questions.odt; workspace $ws8; exec zathura ~/Arkadiusz_Mirosław_CV.pdf; workspace $ws4'
-#
-# Balance brother node. If you do this on biggest window of the desktop, it usually means balancing all windows with except the biggest.
-# super + alt + b
-	# bspc node @brother -B
-# Toggle automatic balancing of windows ? how toggle todo
-# alt + b
-	# euclid_balancer
-
-# move node to workspace don't follow
-# super + ctrl + {1-9,0}
-	# bspc node -d "$(bspc query -D -m | sed -n "{1-9,10} p")"
-	# movetodesktopofthismonitor {1-9,10}
-
-# move node to next and go to it
-# bspc node -d {prev,next}.local -follow
-# Send to last
-# super + shift + equal
-    # bspc node -m last --follow
-	
-# move to next monitor; prev 
-# super + shift + {p,n}
-	# bspc desktop -f {prev,next}.local
-	
-# Switch to the other monitor.
-#mod3 + o
-	# bspc monitor -f next
-
-
-# UNUSED shortcut
-
-# super + shift + s 
-
-# OLD
-
-	# rofi -modi dic:$ROFI/tran/dic-speak.sh,enpl:$ROFI/tran/enpl-notify.sh,plen:$ROFI/tran/plen-notify.sh -show enpl -sidebar-mode -terminal $TERM_LT -lines 1 -width 30 slow
-
-# super + shift + semicolon
-# 	bspc node $(bspc query -N -n focused) -n $(bspc query -N -n .leaf.\!window)
-# # Autopresel (split window in its largest dimension) - p preselection 
-# super + semicolon ; {p,semicolon}
-# 	{auto-presel,bspc node -i}
