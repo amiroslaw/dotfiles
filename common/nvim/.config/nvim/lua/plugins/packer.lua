@@ -46,7 +46,12 @@ return require('packer').startup(function()
 			require('nvim-tree').setup {}
 		end,
 	}
-	use { 'b3nj5m1n/kommentary', branch = 'main' }
+	use {
+		'numToStr/Comment.nvim',
+		config = function()
+			require('Comment').setup()
+		end,
+	}
 	use {
 		'windwp/nvim-autopairs',
 		config = function()
