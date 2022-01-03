@@ -9,8 +9,7 @@ function scandir(directory)
 	return t
 end
 
-actions = {
-
+return {
 	wezterm.on('trigger-vim-with-scrollback', function(window, pane)
 		local scrollback = pane:get_lines_as_text()
 		local name = os.tmpname()
@@ -74,11 +73,7 @@ actions = {
 
 	getRandomBg = function(bgPath)
 		local bgDir = scandir(bgPath)
-		print(#bgDir)
 		local randomBgNr = math.random(#bgDir)
-		print(bgDir[math.random(#bgDir)])
-		return bgDir[math.random(#bgDir)]
+		return bgDir[randomBgNr]
 	end,
 }
-
-return actions

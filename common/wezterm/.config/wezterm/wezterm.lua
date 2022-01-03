@@ -1,57 +1,28 @@
 local wezterm = require 'wezterm'
 local plugins = require 'plugins'
+local bindings = require 'key'
 
-local keys = {}
-local act = wezterm.action
-local function map(key, cmd, modKey)
-	table.insert(keys, {
-		key = key,
-		mods = modKey,
-		action = cmd,
-	})
-end
-
-local function mapCtr(key, cmd)
-	map(key, cmd, 'CTRL')
-end
-
--- ALT + number to activate that tab
-for i = 1, 8 do
-	map(tostring(i), wezterm.action { ActivateTab = i - 1 }, 'ALT')
-end
-
-mapCtr('O', 'ShowLauncher')
-mapCtr('Y', act { CopyTo = 'Clipboard' })
-map('Backspace', act { ClearScrollback = 'ScrollbackOnly' }, 'CTRL|SHIFT') -- leave one page
-mapCtr('|', act { ClearScrollback = 'ScrollbackAndViewport' })
-map('Enter', 'SpawnWindow', 'CTRL|SHIFT')
-mapCtr('~', 'ShowDebugOverlay')
--- Pane
-mapCtr('?', act { SplitVertical = { domain = 'CurrentPaneDomain' } })
-mapCtr(':', act { SplitHorizontal = { domain = 'CurrentPaneDomain' } })
-mapCtr('W', act { CloseCurrentPane = { confirm = false } })
-mapCtr('M', 'TogglePaneZoomState') -- maximalize
-mapCtr('H', act { ActivatePaneDirection = 'Left' })
-mapCtr('L', act { ActivatePaneDirection = 'Right' })
-mapCtr('N', act { ActivatePaneDirection = 'Down' })
-mapCtr('P', act { ActivatePaneDirection = 'Up' })
--- Tabs
-map('Tab', act { ActivateTabRelative = 1 }, 'CTRL|SHIFT') -- vim używa c-tab
-mapCtr('I', act { ActivateTabRelative = 1 })
-mapCtr('J', act { ScrollByLine = 1 })
-mapCtr('K', act { ScrollByLine = -1 })
-mapCtr('D', act { ScrollByPage = 1 })
-mapCtr('U', act { ScrollByPage = -1 })
--- Custom Actions
-mapCtr('E', wezterm.action { EmitEvent = 'trigger-vim-with-scrollback' })
-map('F1', wezterm.action { EmitEvent = 'toggle-ligatures' }, 'ALT') -- don't work maybe cinfig is stronger
-map('F2', wezterm.action { EmitEvent = 'toggle-opacity' }, 'ALT')
-map('F3', wezterm.action { EmitEvent = 'open-file-manager' }, 'ALT')
-map('F7', wezterm.action { Search = { Regex = 'ERROR' } }, 'ALT')
---disable key
-map('Enter', 'DisableDefaultAssignment', 'ALT')
-
-	print( plugins.getRandomBg(wezterm.config_dir .. '/bg/'))
+local launch_menu = {
+	{
+		args = { 'btm' },
+	},
+	{
+		args = { 'bmenu' },
+	},
+	{
+		label = 'music',
+		args = { 'mpd', '&&', 'ncmpcpp', '&&', 'mpc', 'update' },
+	},
+	{
+		label = 'note',
+		args = { 'nvim' },
+		cwd = wezterm.home_dir .. '/Documents/notebook',
+	},
+	{
+		label = 'tor',
+		args = { 'screen', '-x', 'tor' },
+	},
+}
 -- Must be in the end
 return {
 	color_scheme = plugins.getColorscheme 'Dracula',
@@ -65,37 +36,9 @@ return {
 	scrollback_lines = 10000,
 	harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, -- Disable Ligatures, can by set as toggle
 
-	mouse_bindings = {
-		-- Alt-Middle click pastes from the clipboard selection
-		-- NOTE: Must be last to overwrite the existing Alt-Middle binding done by permute_any_or_no_mods.
-		{
-			mods = 'ALT',
-			event = { Down = { streak = 1, button = 'Middle' } },
-			action = wezterm.action { PasteFrom = 'Clipboard' },
-		},
-	},
-
-	launch_menu = {
-		{
-			args = { 'btm' },
-		},
-		{
-			args = { 'bmenu' },
-		},
-		{
-			label = 'music',
-			args = { 'mpd', '&&', 'ncmpcpp', '&&', 'mpc', 'update' },
-		},
-		{
-			label = 'note',
-			args = { 'nvim' },
-			cwd = wezterm.home_dir .. '/Documents/notebook',
-		},
-		{
-			label = 'tor',
-			args = { 'screen', '-x', 'tor' },
-		},
-	},
+	-- window_background_opacity = 0.7,
+	-- window_background_image = plugins.getRandomBg(wezterm.config_dir .. '/bg/'), -- higher RAM usage, don't use big pictures
+	-- window_background_image_hsb = { brightness = 0.14, },
 	inactive_pane_hsb = {
 		saturation = 0.8,
 		brightness = 0.7,
@@ -106,16 +49,14 @@ return {
 		top = '0.2cell',
 		bottom = '0.2cell',
 	},
-	window_background_image = plugins.getRandomBg(wezterm.config_dir .. '/bg/'),
-	window_background_image_hsb = {
-		brightness = 0.14,
-	},
 	enable_scroll_bar = true,
 	window_close_confirmation = 'NeverPrompt',
 	enable_wayland = false,
 	freetype_load_target = 'HorizontalLcd', -- freetype_load_target = "Light",
 	warn_about_missing_glyphs = false,
-	keys = keys,
+	keys = bindings.keys,
+	mouse_bindings = bindings.mouse_bindings,
+	launch_menu = launch_menu,
 	check_for_updates = false,
 	automatically_reload_config = false,
 }
