@@ -1,7 +1,7 @@
 local wezterm = require 'wezterm'
 local plugins = require 'plugins'
 
-local keys = { }
+local keys = {}
 local act = wezterm.action
 local function map(key, cmd, modKey)
 	table.insert(keys, {
@@ -21,7 +21,7 @@ for i = 1, 8 do
 end
 
 mapCtr('O', 'ShowLauncher')
-mapCtr('Y', act{CopyTo = 'Clipboard'})
+mapCtr('Y', act { CopyTo = 'Clipboard' })
 map('Backspace', act { ClearScrollback = 'ScrollbackOnly' }, 'CTRL|SHIFT') -- leave one page
 mapCtr('|', act { ClearScrollback = 'ScrollbackAndViewport' })
 map('Enter', 'SpawnWindow', 'CTRL|SHIFT')
@@ -44,19 +44,23 @@ mapCtr('D', act { ScrollByPage = 1 })
 mapCtr('U', act { ScrollByPage = -1 })
 -- Custom Actions
 mapCtr('E', wezterm.action { EmitEvent = 'trigger-vim-with-scrollback' })
-map('F1', wezterm.action { EmitEvent = 'toggle-ligatures'}, 'ALT' ) -- don't work maybe cinfig is stronger
-map('F2', wezterm.action { EmitEvent = 'toggle-opacity'}, 'ALT' )
-map('F3', wezterm.action { EmitEvent = 'open-file-manager'}, 'ALT' )
+map('F1', wezterm.action { EmitEvent = 'toggle-ligatures' }, 'ALT') -- don't work maybe cinfig is stronger
+map('F2', wezterm.action { EmitEvent = 'toggle-opacity' }, 'ALT')
+map('F3', wezterm.action { EmitEvent = 'open-file-manager' }, 'ALT')
 map('F7', wezterm.action { Search = { Regex = 'ERROR' } }, 'ALT')
 --disable key
 map('Enter', 'DisableDefaultAssignment', 'ALT')
--- Must be in the end 
 
+	print( plugins.getRandomBg(wezterm.config_dir .. '/bg/'))
+-- Must be in the end
 return {
-	color_scheme = plugins.getColorscheme('Dracula'),
+	color_scheme = plugins.getColorscheme 'Dracula',
 	default_cursor_style = 'SteadyBar', -- the best in vim
 	font_size = 11,
-	font = wezterm.font_with_fallback( { 'SauceCodePro Nerd Font Mono', 'FiraCode Nerd Font Mono' } ,{ weight = 'Regular' }),
+	font = wezterm.font_with_fallback(
+		{ 'SauceCodePro Nerd Font Mono', 'FiraCode Nerd Font Mono' },
+		{ weight = 'Regular' }
+	),
 	hide_tab_bar_if_only_one_tab = true,
 	scrollback_lines = 10000,
 	harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, -- Disable Ligatures, can by set as toggle
@@ -89,31 +93,33 @@ return {
 		},
 		{
 			label = 'tor',
-			args = { 'screen', '-x', 'tor'},
+			args = { 'screen', '-x', 'tor' },
 		},
 	},
 	inactive_pane_hsb = {
 		saturation = 0.8,
 		brightness = 0.7,
-	}, 
+	},
 	window_padding = {
-		left = "0.2cell",
-		right = "1cell", -- needed when scrollbar is enabled
-		top = "0.2cell",
-		bottom = "0.2cell",
-	  },
+		left = '0.2cell',
+		right = '1cell', -- needed when scrollbar is enabled
+		top = '0.2cell',
+		bottom = '0.2cell',
+	},
+	window_background_image = plugins.getRandomBg(wezterm.config_dir .. '/bg/'),
+	window_background_image_hsb = {
+		brightness = 0.14,
+	},
 	enable_scroll_bar = true,
 	window_close_confirmation = 'NeverPrompt',
 	enable_wayland = false,
-	freetype_load_target = "HorizontalLcd", -- freetype_load_target = "Light",
+	freetype_load_target = 'HorizontalLcd', -- freetype_load_target = "Light",
 	warn_about_missing_glyphs = false,
 	keys = keys,
-	automatically_reload_config = false,
 	check_for_updates = false,
+	automatically_reload_config = false,
 }
 
 -- TODO
--- moje callbacki/i hooki przenieść do innego modułu
--- ogarnąć otwrcie url w przeglądarce
+-- ogarnąć otwrcie url w przeglądarce → nowa wersja
 -- w vifm małe flickery i jak się przegląda obrazki to traci układ
--- jak sesje w mux? ustawić coś w ssh?
