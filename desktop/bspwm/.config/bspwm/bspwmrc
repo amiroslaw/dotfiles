@@ -46,7 +46,7 @@ bspc config focus_follows_pointer true
 ###This creates and names desktops for multiple monitors.
 # bspc -a class_name:instance_name:name → all *
 # bspc rule -a appName:class_name → in xprop WM_CLASS(STRING) = "Toolkit"(instance_name), "firefox" (class_name)
-# in st -n = instance_name; alacritty --class = instance_name
+# in st -n ; alacritty --class; wezterm start --class instance_name -- top -c == instance_name
 # workspaces_multimonitor &
 #bspc desktop I --layout monocle
 #bspc rule -a firefox desktop=I
@@ -75,7 +75,8 @@ bspc rule -a '*:read' state=floating layer=above
 #bspc rule -a firefox desktop=I
 bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
 bspc rule -a megasync state=floating
-bspc rule -a '*:dropdown' state=fullscreen
+# bspc rule -a '*:dropdown' state=fullscreen
+bspc rule -a '*:dropdown' state=floating center=true rectangle=1000x1190+0+0
 bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
 bspc rule -a Zathura state=tiled
 bspc rule -a yad state=floating

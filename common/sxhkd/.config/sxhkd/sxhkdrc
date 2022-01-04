@@ -23,6 +23,13 @@ super + {ctrl,shift} + F1
 # In case bspwmrc fails to execute/you wish have plugged in a new monitor
 super + shift + r
 	bspwmrc
+
+# scratchpad
+F12
+	scratchpad.sh dropdown "wezterm start --class dropdown"
+	# scratchpad.sh dropdown "st -n dropdown"
+super + {_,shift,ctrl} + z
+     whid {last, hide, dmenu}
 #
 # Window manipulation
 # ______________
@@ -53,9 +60,6 @@ super + {_,shift} + f
 super + a ; {l,m,s,p}
 	bspc node -g {locked,marked,sticky,private}
 
-# hide
-super + {_,shift,ctrl} + z
-     whid {last, hide, dmenu}
 
 super + u
 	bspc node -f any.urgent
@@ -179,9 +183,6 @@ super + Return
 super + shift + Return
 	$TERM_LT
 
-# dropdown TODO show but as a normal window 
-F12
-	tdrop -m --wm bspwm -w -4 -y "$PANEL_HEIGHT" $TERM_LT -c dropdown
 
 # left/middle click emulation
 super + {x,v} 
