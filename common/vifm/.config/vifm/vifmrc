@@ -357,7 +357,7 @@ fileviewer {*.md,*.txt,*.adoc,*.lua,*.csv,*.html,*.htm,*.java,*.kt,*.kts,*.sh,*.
 
 " Images
 filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm},<image/*>
-        \ pqiv %f,
+        \ pqiv -f %f,
         \ sxiv -fa %f %i,
 		" \ echo %f > ~/test,
 " kitty 

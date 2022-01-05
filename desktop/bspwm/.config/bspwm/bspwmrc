@@ -83,7 +83,7 @@ bspc rule -a yad state=floating
 bspc rule -a Zenity state=floating
 bspc rule -a reminder state=floating
 bspc rule -a menu state=floating
-bspc rule -a pqiv state=tiled
+# bspc rule -a pqiv state=tiled
 #bspc rule -a nautilus state=pseudo_tiled
 #bspc rule -a skype state=pseudo_tiled
 #bspc rule -a urxvt state=floating center=true

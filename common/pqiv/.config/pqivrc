@@ -4,6 +4,8 @@ hide-info-box=1
 slideshow-interval=2
 scale-mode-screen-fraction=1
 disable-backends=spectre,archive,wand,poppler
+;fullscreen=1
+;if you set 'fullscreen=1',  then  pqiv  will  start  in fullscreen mode unless you supply -f upon startup.
 ;archive       generic archive file support
 ;archive_cbx   *.cb? comic book archive support
 ;libav         video support, works with ffmpeg as well

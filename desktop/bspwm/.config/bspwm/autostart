@@ -7,6 +7,8 @@ numlockx &
 #screen saver
 xset dpms 6000 6000 6000 s 6000 &
 
+# feh --no-fehbg --randomize --recursive --bg-fill ~/Pictures/wall/* &
+feh --no-fehbg --bg-fill "$(fd --type f --full-path /home/miro/Pictures/wall/horizontal | shuf -n 1)" "$(fd --type f --full-path /home/miro/Pictures/wall/vertical | shuf -n 1)" &
 /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 clipster -d &
 redshift -l 51.2:22.6 &

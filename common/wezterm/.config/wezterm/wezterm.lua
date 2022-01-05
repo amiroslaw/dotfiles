@@ -36,7 +36,7 @@ return {
 	scrollback_lines = 10000,
 	harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, -- Disable Ligatures, can by set as toggle
 
-	-- window_background_opacity = 0.7,
+	window_background_opacity = 0.8,
 	-- window_background_image = plugins.getRandomBg(wezterm.config_dir .. '/bg/'), -- higher RAM usage, don't use big pictures
 	-- window_background_image_hsb = { brightness = 0.14, },
 	inactive_pane_hsb = {
