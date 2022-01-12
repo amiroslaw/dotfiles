@@ -104,10 +104,10 @@ function omap(shortcut, command, opts)
 end
 
 vim.g.mapleader = ';'
-
 nmap('<leader>/', ':nohlsearch<cr>') -- from nvim 0.6 it's by default c-l
 nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>')
 nmap('Zz', ' :q! <cr> ')
+
 -- move lines up and down
 nmap('<c-a-j>', ':m .+1<CR>')
 nmap('<c-a-k>', ':m .-2<CR>')
@@ -133,9 +133,10 @@ nmap('<leader>sudo ', ':w !sudo tee % <CR><CR>') -- leader to backslash \w savin
 nmap('<S-X>', '<C-^>') -- alternate-file file that was last edited in the current window.
 
 -- coping and pasting
-nmap('Y', 'y$') -- from nvim 0.6 it's by default
 nmap('P', ':pu<cr>')
 nmap('<a-a>', ':%y<cr>') -- yank all text
+nmap('<leader>P', [["_diwP]]) -- keep pasting over the same thing
+nmap('Y', 'y$') -- from nvim 0.6 it's by default
 --" insert mode
 -- move to the nexst/previous word
 imap('<C-a>', '<C-o>b')
@@ -628,6 +629,7 @@ nullLs.setup {
 	sources = {
 		diagnostics.shellcheck.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
 		diagnostics.selene.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
+		diagnostics.yamllint.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
 		formatting.stylua.with {
 			extra_args = { '--config-path', vim.fn.expand '~/.config/stylua/stylua.toml' },
 		},
