@@ -77,14 +77,14 @@ bspc rule -a '*:rsvp' state=floating sticky=on layer=above rectangle=1100x150+0+
 bspc rule -a 9menu border=off manage=off
 bspc rule -a tint2 border=off manage=off
 bspc rule -a megasync state=floating
-bspc rule -a '*:dropdown' state=floating center=true rectangle=1000x500+0+0
+bspc rule -a '*:dropdown' state=floating center=true rectangle=1300x600+0+0
 bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
 bspc rule -a Zathura state=tiled
 bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
 bspc rule -a '(?i)zenity' state=floating
 bspc rule -a reminder state=floating
 bspc rule -a menu state=floating
-bspc rule -a pqiv state=tiled
+bspc rule -a Pqiv state=fullscreen
 
 ##  This script balances all windows when new one is spawned 
 #euclid_balancer &

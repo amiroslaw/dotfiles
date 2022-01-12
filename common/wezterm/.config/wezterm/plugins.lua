@@ -39,10 +39,10 @@ return {
 
 	wezterm.on('toggle-opacity', function(win, pane)
 		local overrides = win:get_config_overrides() or {}
-		if not overrides.window_background_opacity then
-			overrides.window_background_opacity = 0.5
+		if not overrides.window_background_opacity or overrides.window_background_opacity < 1.0 then
+			overrides.window_background_opacity = 1.0
 		else
-			overrides.window_background_opacity = nil
+			overrides.window_background_opacity = 0.8
 		end
 		win:set_config_overrides(overrides)
 	end),

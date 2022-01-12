@@ -260,10 +260,11 @@ alias brh='br --hidden'
 
 # potwierdzenie/progres
 #{{{
-alias Cp='cp -v'
-alias Rm='rm -iv'
+alias cp='cp -iv'
 alias rmdir='rm -Irv'
-alias Mv='mv -iv'
+alias mv='mv -iv'
+alias mkdir="mkdir -vp"
+alias Rm='rm -iv'
 #}}}
 
 # FASD

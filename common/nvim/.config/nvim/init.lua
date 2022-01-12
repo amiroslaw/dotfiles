@@ -632,7 +632,7 @@ nullLs.setup {
 			extra_args = { '--config-path', vim.fn.expand '~/.config/stylua/stylua.toml' },
 		},
 		formatting.prettier,
-		formatting.clang_format.with {
+		formatting.clang_format_md.with {
 			filetypes = { 'java', 'asciidoctor' },
 		},
 	},
