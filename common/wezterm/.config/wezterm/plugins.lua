@@ -76,4 +76,16 @@ return {
 		local randomBgNr = math.random(#bgDir)
 		return bgDir[randomBgNr]
 	end,
+
+	openUrl = wezterm.action {
+		QuickSelectArgs = {
+			label = 'open url',
+			patterns = {
+				'https?://\\S+',
+			},
+			action = wezterm.action_callback(function(window, pane)
+				wezterm.open_with(window:get_selection_text_for_pane(pane))
+			end),
+		},
+	},
 }

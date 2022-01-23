@@ -23,8 +23,7 @@ local launch_menu = {
 		args = { 'screen', '-x', 'tor' },
 	},
 }
--- Must be in the end
-return {
+return { -- Must be in the end
 	color_scheme = plugins.getColorscheme 'Dracula',
 	default_cursor_style = 'SteadyBar', -- the best in vim
 	font_size = 11,
@@ -37,8 +36,6 @@ return {
 	harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, -- Disable Ligatures, can by set as toggle
 
 	window_background_opacity = 0.8,
-	-- window_background_image = plugins.getRandomBg(wezterm.config_dir .. '/bg/'), -- higher RAM usage, don't use big pictures
-	-- window_background_image_hsb = { brightness = 0.14, },
 	inactive_pane_hsb = {
 		saturation = 0.8,
 		brightness = 0.7,
@@ -49,6 +46,7 @@ return {
 		top = '0.2cell',
 		bottom = '0.2cell',
 	},
+	use_fancy_tab_bar = false,
 	enable_scroll_bar = true,
 	window_close_confirmation = 'NeverPrompt',
 	enable_wayland = false,
@@ -59,8 +57,7 @@ return {
 	launch_menu = launch_menu,
 	check_for_updates = false,
 	automatically_reload_config = false,
+	-- window_background_image = plugins.getRandomBg(wezterm.config_dir .. '/bg/'), -- higher RAM usage, don't use big pictures
+	-- window_background_image_hsb = { brightness = 0.14, },
 }
 
--- TODO
--- ogarnąć otwrcie url w przeglądarce → nowa wersja
--- w vifm małe flickery i jak się przegląda obrazki to traci układ
