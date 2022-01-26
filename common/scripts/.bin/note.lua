@@ -47,7 +47,7 @@ function clipster(clipType)
 end
 
 function writeNote() 
-	return '\n' .. util.input('Note', 70) .. '\n'
+	return '\n' .. util.input('Note', '70%') .. '\n'
 end
 
 function writeToFile(text) 

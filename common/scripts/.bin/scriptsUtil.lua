@@ -27,10 +27,10 @@ function util.errorHandling(msg)
 	error(msg) -- does not work?
 end
 
-function util.input(prompt, width)
+function util.input(prompt, width) -- width 80px;80%;80ch
 	prompt = prompt and prompt or 'Input'
-	width = width and width or 500
-	return io.popen('rofi -monitor -4 -width ' .. width .. ' -lines 0 -dmenu -p "'.. prompt ..'"'):read('*a'):gsub('\n', '')
+	width = width and width or '500px'
+	return io.popen('rofi -monitor -4 -theme-str "window {width:  ' .. width .. ';}" -l 0 -dmenu -p "'.. prompt ..'"'):read('*a'):gsub('\n', '')
 end 
 
 function util.numberInput(prompt)
@@ -49,7 +49,7 @@ function util.select(optionTab, prompt)
 		options = options  .. val	.. '|'
 		lines = lines + 1
 	end
-	return io.popen('echo "' .. options .. '" | rofi -monitor -4 -i -lines ' .. lines .. ' -sep "|" -dmenu -p "' .. prompt .. '"'):read('*a'):gsub('\n', '')
+	return io.popen('echo "' .. options .. '" | rofi -monitor -4 -i -l ' .. lines .. ' -sep "|" -dmenu -p "' .. prompt .. '"'):read('*a'):gsub('\n', '')
 end
 
 function util.menu(unorderTab)

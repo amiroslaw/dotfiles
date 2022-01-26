@@ -11,7 +11,8 @@ fi
 menu="dmenu -i -l 52"
 baseurl="https://1337x.to"
 cachedir="$HOME/.cache/pirokit"
-query="$(sed 's/ /+/g' <<<$query)"
+query="${query// /%20}"
+# query="$(sed 's/ /+/g' <<<$query)"
 
 #curl -s https://1337x.to/category-search/$query/Movies/1/ > $cachedir/tmp.html
 curl -s https://1337x.to/search/$query/1/ > $cachedir/tmp.html

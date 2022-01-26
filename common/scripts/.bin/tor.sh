@@ -10,8 +10,7 @@ else
   query=$1
 fi
 baseurl="https://pirateproxy.live/search/"
-query="$(sed 's/ /+/g' <<<"$query")"
-
+query="${query// /%20}"
 curl -s $baseurl"$query" > $cacheFile
 
 # Get data
@@ -29,8 +28,8 @@ awk '{print "L:"$0"]" }' $cacheDir/leeches > $cacheDir/tmp && mv $cacheDir/tmp $
 # Getting the line number
 LINE=$(paste -d\  $cacheDir/seeds $cacheDir/leeches $cacheDir/sizes $cacheDir/titles |
 	# dmenu -i -l 52 |
-rofi -dmenu -theme-str 'window {width:  100%;}' -monitor -4 -l 30 |
-  awk 'BEGIN{FS="-"} {print $1}')
+	rofi -dmenu -i -theme-str 'window {width:  100%;}' -monitor -4 -l 30 |
+	awk 'BEGIN{FS="-"} {print $1}')
 
 if [ -z "$LINE" ]; then
   notify-send "😔 No Result selected. Exiting... 🔴" -i "NONE"
