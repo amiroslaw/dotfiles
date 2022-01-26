@@ -18,4 +18,4 @@ easystroke &
 sleep 500 && megasync &
 sleep 500 && gcal-show.sh &
 #clipit &
-sleep 500 && screen -S tor rtorrent &
+sleep 500 && screen -AmdS tor rtorrent &
