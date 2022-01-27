@@ -50,6 +50,8 @@ cn { command(echo -n $1 | xclip -selection clipboard); }
 cp { command(pwd echo -n $1 | xclip -selection clipboard); }
 ; copy image
 ci { command(|xclip -selection clipboard -target image/png); }
+; set wallpaper
+W { command(feh --no-fehbg --bg-fill $); }
 ;ocr image
 e { command(echo -n $1 | xargs -I {} tesseract {} {}); }
 ;rename but with default png extension

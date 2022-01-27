@@ -27,7 +27,7 @@ super + shift + r
 # scratchpad
 F12
 	scratchpad.sh dropdown "wezterm start --class dropdown"
-	# scratchpad.sh dropdown "st -n dropdown"
+
 super + {_,shift,ctrl} + z
      whid {last, hide, dmenu}
 #
@@ -343,7 +343,7 @@ super + slash
 	# amixer sset Master toggle
 
 super + shift + m
-	mpd && $TERM_LT -t music -n music -e ncmpcpp && mpc update
+	if ! pidof -x mpd; then mpd && mpc update; fi && scratchpad.sh music "$TERM_LT -t music -n music -e ncmpcpp" 
 
 super + m
 	mpc toggle
