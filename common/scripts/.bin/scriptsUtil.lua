@@ -36,7 +36,7 @@ end
 function util.numberInput(prompt)
 	local input
 	repeat
-		input = util.input(prompt, '-'.. #prompt + 8)
+		input = util.input(prompt, #prompt + 11 .. 'ch')
 	until tonumber(input)
 	return input
 end 

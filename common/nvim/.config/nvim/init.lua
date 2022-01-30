@@ -32,12 +32,12 @@ vim.o.fileencoding = 'utf-8'
 vim.o.fileencodings = 'utf-8', 'latin1'
 vim.o.linebreak = true
 vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
+	-- autocmd FileType * normal zR
 
 vim.cmd [[
 	autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif 
 	au BufRead,BufNewFile *.json set filetype=json
 	autocmd BufNewFile,BufRead \*.{md,mdwn,mkd,mkdn,mark,markdown\*} set filetype=markdown
-	autocmd FileType * normal zR
 	autocmd FileType java,javascript,typescript,css,scss,lua setlocal foldmethod=syntax
 	augroup highlight_yank
 		autocmd!

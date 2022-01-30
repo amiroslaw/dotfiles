@@ -28,7 +28,7 @@ awk '{print "L:"$0"]" }' $cacheDir/leeches > $cacheDir/tmp && mv $cacheDir/tmp $
 # Getting the line number
 LINE=$(paste -d\  $cacheDir/seeds $cacheDir/leeches $cacheDir/sizes $cacheDir/titles |
 	# dmenu -i -l 52 |
-	rofi -dmenu -i -theme-str 'window {width:  100%;}' -monitor -4 -l 30 |
+	rofi -dmenu -i -theme-str 'window {width: 1050px;}' -monitor -4 -l 30 |
 	awk 'BEGIN{FS="-"} {print $1}')
 
 if [ -z "$LINE" ]; then
