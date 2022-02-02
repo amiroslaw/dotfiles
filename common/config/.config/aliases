@@ -67,7 +67,7 @@ alias cl='clear'
 alias se='sudoedit'
 alias permissionX='sudo chmod -R +x'
 alias zathuraBlist='less ~/.local/share/zathura/bookmarks'
-alias vim-remove-swap='rm ~/.local/share/nvim/swap/*'
+alias viswap='rm ~/.local/share/nvim/swap/*'
 # grepextend pattern path/.
 alias grepextend='grep -inrC 3'
 alias history-count='cut -f1 -d" " ~/.zhistory | sort | uniq -c | sort -nr | head -n 30'

@@ -21,7 +21,6 @@ vim.cmd 'colorscheme moonfly'
 vim.o.termguicolors = true
 -- end
 vim.b.buftype = '' -- fix Cannot write buftype option is set
-vim.cmd 'syntax enable'
 vim.o.laststatus = 2
 -- podpowiedzi
 vim.o.wildmode = 'longest,list,full'
@@ -31,14 +30,15 @@ vim.o.encoding = 'utf-8'
 vim.o.fileencoding = 'utf-8'
 vim.o.fileencodings = 'utf-8', 'latin1'
 vim.o.linebreak = true
-vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
-	-- autocmd FileType * normal zR
+vim.cmd 'syntax enable'
+-- vim.o.foldlevelstart = 1 -- unfold at start - don't work after changes
 
 vim.cmd [[
 	autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif 
 	au BufRead,BufNewFile *.json set filetype=json
 	autocmd BufNewFile,BufRead \*.{md,mdwn,mkd,mkdn,mark,markdown\*} set filetype=markdown
 	autocmd FileType java,javascript,typescript,css,scss,lua setlocal foldmethod=syntax
+	autocmd FileType asciidoctor setlocal foldmethod=expr
 	augroup highlight_yank
 		autocmd!
 		autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank {timeout=600}

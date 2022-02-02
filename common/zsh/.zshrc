@@ -23,7 +23,7 @@ export LANG="en_US.UTF-8"
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
 #vimode, visual doesn't work, better from ohmyzsh
-# bindkey -v
+bindkey -v
 HISTFILE=~/.zhistory
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
