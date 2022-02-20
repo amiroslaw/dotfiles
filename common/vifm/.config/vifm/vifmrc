@@ -410,33 +410,28 @@ nmap bb :marks <cr>
 
 " :mark mark /full/directory/path [filename]
 " mark z /home/miro/.vifm ../
+mark / /
 mark A /etc/apt
 mark C /home/miro/Code
+mark D /home/miro/Documents
+mark I /home/miro/Documents/Nauka/inwestycje
+mark M /media/multi/.mumia
+mark T /home/miro/.local/share/Trash
+mark W /media/winC
+mark b /home/miro/.bin
 mark c /home/miro/.config
 mark d /home/miro/Downloads
-mark D /home/miro/Documents
+mark e /home/miro/Ext
 mark h /home/miro 
-mark I /home/miro/Documents/Nauka/inwestycje
 mark k /media/multimedia/kursy/Spring
 mark m /media/multimedia
-mark M /media/multi/.mumia
 mark n /home/miro/Documents/notebook
 mark o /home/miro/Pictures
+mark p /home/miro/Code/Projects
 mark r /run/media/miro
-mark s /home/miro/Code/SourceCode
+" mark s /home/miro/Code/SourceCode
+mark s /home/miro/Code/blog/scully/miroslaw
 mark t /home/miro/.local/share/vifm/Trash
-mark T /home/miro/.local/share/Trash
 mark u /home/miro/Documents/Ustawienia
 mark v /home/miro/Videos
 mark w /media/winD
-mark W /media/winC
-mark / /
-" mark e /home/miro/Ext
-" mark p /home/miro/Code/Projekty
-mark N /home/miro/eversis/projects/neo
-mark l /home/miro/eversis/projects/legacy-neo
-mark j /home/miro/eversis
-mark e /home/miro/Exe/liferay-ce-portal-src-7.2.1-ga2
-mark p /home/miro/eversis/projects
-mark l /home/miro/eversis/projects/piuw/modules
-mark b /home/miro/.bin

@@ -7,6 +7,8 @@
 #	bspc {desktop -f,node -d} '^{1-9,10}'
  # \~fullscreen "~\" toggle
  
+# restore from trash-cli doesn't work like I want 
+# echo 0 | trash-restore "$(trash-list | awk '{print $3}' | rofi -dmenu -threads 0 -monitor -4 -i -p "restore" rofi -theme-str 'window {width:  90%;}')"
 # make sxhkd reload its configuration files:
 super + Home
 	pkill -USR1 -x sxhkd

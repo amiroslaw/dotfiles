@@ -86,8 +86,11 @@ alias monitoroff='xrandr --output DVI-I-0 --off'
 alias fp='rg --files | fzf --preview="bat {} --color=always"'
 alias fn='nvim -o "$(fd --type f | fzf)"'
 alias fnh='nvim -o "$(fd --hidden --type f | fzf)"'
+alias fb='bat "$(fd --type f | fzf)"'
+alias fbh='bat "$(fd --hidden --type f | fzf)"'
 alias fcd='cd "$(fd --type d | fzf)"'
 alias fcdh='cd "$(fd --hidden --type d | fzf)"'
+alias ff='"$(fd --type f | fzf)"'
 alias ffh='"$(fd --hidden --type f | fzf)"'
 # execute
 # fz mv # To move files. You can write the destination after selecting the files.
@@ -108,7 +111,7 @@ fo() {
   fi
 }
 # grep
-ff() {
+fs() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
   rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 }

@@ -18,6 +18,7 @@
 # ${1:placeholder}
 # $0 ostatni tabstop - jak pójdziemy dalej to wyjdziemy poza snippet
 # Visual wkleja wcześniej zaznaczony tekst
+# VISUAL nie dział więc coś coś takiego mam ${2:`xclip -o -sel clip`}
 # ${VISUAL:default-text} - jak mamy zaznaczony text i naciśniemy tab i nazwę snippetu i tab to zostanie wklejony ten tekst. Może nie być nic zaznaczone i wtedy musimy normalnie wpisać.
 # tab to UltiSnipsExpandTrigger np. c-l
 
@@ -93,7 +94,7 @@ ____
 $0
 endsnippet
 
-snippet code "Source Code Block" !b
+snippet codenull "Source Code Block" !b
 [source,${1:java}]
 ----
 ${VISUAL}$2
@@ -101,7 +102,7 @@ ${VISUAL}$2
 $0
 endsnippet
 
-snippet codeclip "Code from clipboard" !b
+snippet code "Code from clipboard" !b
 [source,${1:java}]
 ----
 ${2:`xclip -o -sel clip`}
@@ -242,6 +243,34 @@ endsnippet
 # "\`${1:${VISUAL}}\`"$0
 # endsnippet
 
+
+# -------------------------------------------------------------------------
+#                           Tables  
+# -------------------------------------------------------------------------
+
+snippet tab4 "table" !b
+.$1
+|===
+| $2 | $3 | $4 | $5
+| $6 | $7 | $8 | $9
+|===
+endsnippet
+
+snippet tab3 "table" !b
+.$1
+|===
+| $2 | $3 | $4 
+| $5 | $6 | $7 
+|===
+endsnippet
+
+snippet tab2 "table" !b
+.$1
+|===
+| $2 | $3  
+| $4 | $5  
+|===
+endsnippet
 
 # -------------------------------------------------------------------------
 #                             Semantic Markup

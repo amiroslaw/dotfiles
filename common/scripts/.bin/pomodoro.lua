@@ -199,7 +199,7 @@ function pauseToggle()
 end
 
 function dailyInfo()
-	local today = os.date('%Y%-%m%-%d')
+	local today = os.date('%Y.%m.%d')
 	local sum = 0
 	local taskCounter = 0
 	for _, task in ipairs(getHistoryTasks()) do

@@ -66,6 +66,7 @@ r { command(zenity --entry | xargs -I {} mv $1 {}.png); }
 <equal> { set_scale_level_relative(1.1); }
 ; doesn't work or I don't know how to do it - bulk command
 ;D { command(- echo -n $1 | xargs -I {} trash-put {}); }
+;D { command(echo -n $1 | xargs -I '{}' mv '{}' 1); }
 
 # * Startup Actions
 [actions]

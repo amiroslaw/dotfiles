@@ -53,4 +53,21 @@ snippet todo "TODO comment" bw
 `!p snip.rv=` ${2:TODO}: $0${3: <${4:`!v strftime('%d-%m-%y')`}${5:, `!v g:snips_author`}>} ``
 endsnippet
 
+
+snippet comlua "comment for lua" b
+-- -------------------------------------------------------------------------
+--                       ${1:`xclip -o -sel clip`}
+-- -------------------------------------------------------------------------
+$0
+endsnippet
+
+snippet comment "comment for bash" b
+# -------------------------------------------------------------------------
+#                       ${1:`xclip -o -sel clip`}
+# -------------------------------------------------------------------------
+$0
+endsnippet
+
 # vim:ft=snippets:
+
+
