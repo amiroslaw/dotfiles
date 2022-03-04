@@ -62,6 +62,11 @@ if ! zgenom saved; then
 	zgenom load zsh-users/zsh-autosuggestions
 	zgenom load zsh-users/zsh-syntax-highlighting
 	zgenom load romkatv/powerlevel10k powerlevel10k
+	zgenom load jeffreytse/zsh-vi-mode
+	zgenom load arzzen/calc.plugin.zsh
+	zgenom load ChrisPenner/copy-pasta
+	zgenom load urbainvaes/fzf-marks
+	zgenom load ptavares/zsh-sdkman
 
 	zgenom save
  # Compile your zsh files
@@ -145,8 +150,8 @@ source /home/miro/.config/broot/launcher/bash/br
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/miro/.sdkman"
-[[ -s "/home/miro/.sdkman/bin/sdkman-init.sh" ]] && source "/home/miro/.sdkman/bin/sdkman-init.sh"
+# export SDKMAN_DIR="/home/miro/.sdkman"
+# [[ -s "/home/miro/.sdkman/bin/sdkman-init.sh" ]] && source "/home/miro/.sdkman/bin/sdkman-init.sh"
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
