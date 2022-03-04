@@ -1,13 +1,19 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+# -------------------------------------------------------------------------
+#                       sources
+# -------------------------------------------------------------------------
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
+source ~/.config/fzf/fzf.zsh
+source ~/.config/broot/launcher/bash/br
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source "${HOME}/.config/zgenom/sources/urbainvaes/fzf-marks/___/fzf-marks.plugin.zsh"
+# FZF_MARKS_JUMP="^z"
 source $HOME/.config/aliases
 
-## Options section
+# -------------------------------------------------------------------------
+#                       # Options section
+# -------------------------------------------------------------------------
 setopt correct                                                  # Auto correct mistakes
 setopt extendedglob                                             # Extended globbing. Allows using regular expressions with *
 setopt nocaseglob                                               # Case insensitive globbing
@@ -26,67 +32,33 @@ zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 
+# expand alias with TAB
+zstyle ':completion:*' completer _expand_alias _complete _ignored
+# bindkey "mykeybinding" _expand_alias
+
+# -------------------------------------------------------------------------
+#                       history
+# -------------------------------------------------------------------------
+setopt HIST_FIND_NO_DUPS
+# following should be turned off, if sharing history via setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
+#setopt appendhistory
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
-#vimode, visual doesn't work, better from ohmyzsh
-bindkey -v
 HISTFILE=~/.zhistory
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 # ignore duplicats
 export HISTCONTROL=ignoreboth
-setopt HIST_FIND_NO_DUPS
-# following should be turned off, if sharing history via setopt SHARE_HISTORY
-setopt INC_APPEND_HISTORY
-#setopt appendhistory
 
-# expand alias with TAB
-zstyle ':completion:*' completer _expand_alias _complete _ignored
-# bindkey "mykeybinding" _expand_alias
-
-# ZGENOM
-source "${HOME}/.config/zgenom/zgenom.zsh"
-if ! zgenom saved; then
-	zgenom ohmyzsh
-
-	zgenom ohmyzsh plugins/fasd 
-	zgenom ohmyzsh plugins/sudo 
-	zgenom ohmyzsh plugins/history 
-	zgenom ohmyzsh plugins/web-search 
-	zgenom ohmyzsh plugins/colored-man-pages
-	zgenom ohmyzsh plugins/vi-mode 
-	# zgenom ohmyzsh lib/completion
-	# zgenom ohmyzsh plugins/git 
-	
-	zgenom load zsh-users/zsh-completions
-	zgenom load zsh-users/zsh-autosuggestions
-	zgenom load zsh-users/zsh-syntax-highlighting
-	zgenom load romkatv/powerlevel10k powerlevel10k
-	zgenom load jeffreytse/zsh-vi-mode
-	zgenom load arzzen/calc.plugin.zsh
-	zgenom load ChrisPenner/copy-pasta
-	zgenom load urbainvaes/fzf-marks
-	zgenom load ptavares/zsh-sdkman
-
-	zgenom save
- # Compile your zsh files
-    zgenom compile "$HOME/.zshrc"
-fi
-
-# shuf -n 1 $CONFIG/logs/dictionary/enpl-dictionary.txt
-
+# -------------------------------------------------------------------------
+#                       bindkey
+# -------------------------------------------------------------------------
 # autosuggestions
 bindkey '^l' autosuggest-accept
 bindkey '^j' autosuggest-execute
 bindkey '^ ' autosuggest-clear
-# dirhistory doesn't work with vi-mode; move in history via alt + arrows
-# vimode 
-#bindkey '^?' backward-delete-char
-#bindkey '^[[3~' delete-char
-# FZF
-# ZSH keybinding example; ~/.zshrc
-# export FZF_DEFAULT_COMMAND='fd --type f'
-source ~/.config/fzf/fzf.zsh
+
 # CTRL-H - Paste the selected command from history into the command line
 fzf-history-widget() {
   local selected num
@@ -106,10 +78,6 @@ fzf-history-widget() {
 zle     -N   fzf-history-widget
 bindkey '^H' fzf-history-widget
 
-# I don't know if i use it
-eval "$(fasd --init auto)"
-
-
 # Edit line in vim with ctrl-e: oh-my-zsh do it by esc; v
 	# ctr e w fzf to otwieranie folderow
 autoload edit-command-line; zle -N edit-command-line
@@ -128,15 +96,35 @@ function zle-keymap-select {
     echo -ne '\e[5 q'
   fi
 }
-zle -N zle-keymap-select
-zle-line-init() {
-    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
-    echo -ne "\e[5 q"
-}
-zle -N zle-line-init
-echo -ne '\e[5 q' # Use beam shape cursor on startup.
-preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
+# -------------------------------------------------------------------------
+#                       # ZGENOM didn't work in the top of the zshrc
+# -------------------------------------------------------------------------
+source "${HOME}/.config/zgenom/zgenom.zsh"
+if ! zgenom saved; then
+	zgenom ohmyzsh
+
+	zgenom ohmyzsh plugins/fasd 
+	zgenom ohmyzsh plugins/sudo 
+	zgenom ohmyzsh plugins/history 
+	zgenom ohmyzsh plugins/web-search 
+	zgenom ohmyzsh plugins/colored-man-pages
+	# zgenom ohmyzsh plugins/git 
+	
+	zgenom load zsh-users/zsh-completions
+	zgenom load zsh-users/zsh-autosuggestions
+	zgenom load zsh-users/zsh-syntax-highlighting
+	zgenom load romkatv/powerlevel10k powerlevel10k
+	zgenom load jeffreytse/zsh-vi-mode
+	zgenom load arzzen/calc.plugin.zsh
+	zgenom load ChrisPenner/copy-pasta
+	zgenom load urbainvaes/fzf-marks
+	zgenom load ptavares/zsh-sdkman
+
+	zgenom save
+ # Compile your zsh files
+    zgenom compile "$HOME/.zshrc"
+fi
 
 # Use vim keys in tab complete menu:
 bindkey -M menuselect 'h' vi-backward-char
@@ -145,16 +133,12 @@ bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -v '^?' backward-delete-char
 
-source /home/miro/.config/broot/launcher/bash/br
-
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-# export SDKMAN_DIR="/home/miro/.sdkman"
-# [[ -s "/home/miro/.sdkman/bin/sdkman-init.sh" ]] && source "/home/miro/.sdkman/bin/sdkman-init.sh"
-
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.config/p10k.zsh ]] || source ~/.config/p10k.zsh
+
+# shuf -n 1 $CONFIG/logs/dictionary/enpl-dictionary.txt
+# I don't know if i use it
+# eval "$(fasd --init auto)"
