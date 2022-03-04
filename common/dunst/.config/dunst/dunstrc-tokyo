@@ -4,7 +4,7 @@
   offset = 15x40
   origin = top-right
   shrink = no
-  transparency = 23
+  transparency = 13
   notification_height = 3
   separator_height = 2
   padding = 10
@@ -36,7 +36,6 @@
   class = Dunst
   startup_notification = false
   force_xinerama = false
-corner_radius = 0
 
 [shortcuts]
   # Close notification.

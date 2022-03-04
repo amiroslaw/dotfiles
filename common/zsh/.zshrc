@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 source $HOME/.config/aliases
 
 ## Options section
@@ -19,7 +26,6 @@ zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 
-export LANG="en_US.UTF-8"
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
 #vimode, visual doesn't work, better from ohmyzsh
@@ -61,18 +67,16 @@ zplug "plugins/web-search",   from:oh-my-zsh
 zplug "plugins/colored-man-pages",   from:oh-my-zsh
 zplug "plugins/vi-mode",   from:oh-my-zsh
 # Theme!
-zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
+zplug romkatv/powerlevel10k, as:theme, depth:1
+# zplug "bhilburn/powerlevel10k", use:powerlevel9k.zsh-theme
 # zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 zplug load
 # export TERM="xterm-256color"
 # set-option -ga terminal-overrides ",xterm-256color:Tc"
 # export TERM="screen-256color"
 # export TERM="screen-256color-bce"
-#POWERLEVEL9K
-# https://github.com/bhilburn/powerlevel9k
-# https://github.com/bhilburn/powerlevel9k/blob/master/functions/colors.zsh
+#POWERLEVEL10K
 ZSH_THEME="powerlevel9k/powerlevel9k"
-# fonts
 # [fonts nerd fonts](https://nerdfonts.com/#downloads)  
 # https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#step-2-install-a-powerline-font
 POWERLEVEL9K_MODE='nerdfont-complete'
@@ -81,7 +85,7 @@ POWERLEVEL9K_MODE='nerdfont-complete'
 # POWERLEVEL9K_COLOR_SCHEME='light' # chane font color into white
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs dir_writable)
 POWERLEVEL9K_OS_ICON_BACKGROUND='magenta3'
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status vi_mode root_indicator background_jobs history time)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status vi_mode root_indicator background_jobs time)
 POWERLEVEL9K_VI_INSERT_MODE_STRING=''
 POWERLEVEL9K_VI_MODE_NORMAL_BACKGROUND='purple3'
 POWERLEVEL9K_CONTEXT_TEMPLATE='%n'
@@ -186,3 +190,6 @@ export SDKMAN_DIR="/home/miro/.sdkman"
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

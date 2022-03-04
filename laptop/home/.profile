@@ -56,6 +56,11 @@ export MPD_PORT=6666
 # export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # export MANPAGER="nvim -c 'set ft=man' -"
 export BSPWM_SOCKET="/tmp/bspwm-socket"
+# export LANGUAGE=en_US.UTF-8
+# export LANG=en_US.UTF-8
+# export LC_CTYPE=en_US.UTF-8
+# export LC_ALL=C
+export LC_ALL=en_US.UTF-8
 
 # vars
 CLIPSTER_HISTORY_SIZE=1000

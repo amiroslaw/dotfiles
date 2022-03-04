@@ -31,7 +31,7 @@ vim.o.fileencoding = 'utf-8'
 vim.o.fileencodings = 'utf-8', 'latin1'
 vim.o.linebreak = true
 vim.cmd 'syntax enable'
--- vim.o.foldlevelstart = 1 -- unfold at start - don't work after changes
+vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
 
 vim.cmd [[
 	autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif 

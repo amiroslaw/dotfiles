@@ -12,11 +12,11 @@ xset s noblank &
 xset s noexpose &
 xset c on &
 xset -dpms &
+feh --no-fehbg --randomize --recursive --bg-fill /home/miro/Pictures/wall/* &
 sleep 200 && light -S 80 &
 # xbacklight -set 15 &
 
 
-feh --no-fehbg --randomize --recursive --bg-fill /home/miro/Pictures/wall/* &
 sleep 300 && megasync &
 clipster -d &
 redshift -l 51.2:22.6 &
