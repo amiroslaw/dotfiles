@@ -33,9 +33,6 @@ bindkey -v
 HISTFILE=~/.zhistory
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
-# export EDITOR=nvim
-# export VISUAL=nvim
-# export VISUAL=mousepad
 # ignore duplicats
 export HISTCONTROL=ignoreboth
 setopt HIST_FIND_NO_DUPS
@@ -47,52 +44,29 @@ setopt INC_APPEND_HISTORY
 zstyle ':completion:*' completer _expand_alias _complete _ignored
 # bindkey "mykeybinding" _expand_alias
 
-#ZPLUG
-export ZPLUG_HOME=~/.config/zplug
-# install from aur
-source /usr/share/zsh/scripts/zplug/init.zsh
-zplug "mafredri/zsh-async", from:"github", defer:0, use:"async.zsh"
-# Syntax highlighting for commands, load last
-# ohmyzsh
-# zplug "zsh-users/zsh-autosuggestions", defer:2, on:"zsh-users/zsh-completions"
-zplug "zsh-users/zsh-autosuggestions", defer:2
-zplug "zsh-users/zsh-syntax-highlighting", from:github, defer:3
-# Load completion library for those sweet [tab] squares
-zplug "lib/completion", from:oh-my-zsh
-# zplug "plugins/git",   from:oh-my-zsh
-zplug "plugins/fasd",   from:oh-my-zsh
-zplug "plugins/sudo",   from:oh-my-zsh
-zplug "plugins/history",   from:oh-my-zsh
-zplug "plugins/web-search",   from:oh-my-zsh
-zplug "plugins/colored-man-pages",   from:oh-my-zsh
-zplug "plugins/vi-mode",   from:oh-my-zsh
-# Theme!
-zplug romkatv/powerlevel10k, as:theme, depth:1
-# zplug "bhilburn/powerlevel10k", use:powerlevel9k.zsh-theme
-# zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
-zplug load
-# export TERM="xterm-256color"
-# set-option -ga terminal-overrides ",xterm-256color:Tc"
-# export TERM="screen-256color"
-# export TERM="screen-256color-bce"
-#POWERLEVEL10K
-ZSH_THEME="powerlevel9k/powerlevel9k"
-# [fonts nerd fonts](https://nerdfonts.com/#downloads)  
-# https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#step-2-install-a-powerline-font
-POWERLEVEL9K_MODE='nerdfont-complete'
-# POWERLEVEL9K_MODE='awesome-patched'
-# POWERLEVEL9K_MODE='awesome-fontconfig'
-# POWERLEVEL9K_COLOR_SCHEME='light' # chane font color into white
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs dir_writable)
-POWERLEVEL9K_OS_ICON_BACKGROUND='magenta3'
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status vi_mode root_indicator background_jobs time)
-POWERLEVEL9K_VI_INSERT_MODE_STRING=''
-POWERLEVEL9K_VI_MODE_NORMAL_BACKGROUND='purple3'
-POWERLEVEL9K_CONTEXT_TEMPLATE='%n'
-POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND='magenta3'
-POWERLEVEL9K_STATUS_OK_BACKGROUND='green4'
-POWERLEVEL9K_TIME_BACKGROUND='yellow3'
-# POWERLEVEL9K_MODE='nerdfont-complete'
+# ZGENOM
+source "${HOME}/.config/zgenom/zgenom.zsh"
+if ! zgenom saved; then
+	zgenom ohmyzsh
+
+	zgenom ohmyzsh plugins/fasd 
+	zgenom ohmyzsh plugins/sudo 
+	zgenom ohmyzsh plugins/history 
+	zgenom ohmyzsh plugins/web-search 
+	zgenom ohmyzsh plugins/colored-man-pages
+	zgenom ohmyzsh plugins/vi-mode 
+	# zgenom ohmyzsh lib/completion
+	# zgenom ohmyzsh plugins/git 
+	
+	zgenom load zsh-users/zsh-completions
+	zgenom load zsh-users/zsh-autosuggestions
+	zgenom load zsh-users/zsh-syntax-highlighting
+	zgenom load romkatv/powerlevel10k powerlevel10k
+
+	zgenom save
+ # Compile your zsh files
+    zgenom compile "$HOME/.zshrc"
+fi
 
 # shuf -n 1 $CONFIG/logs/dictionary/enpl-dictionary.txt
 
@@ -169,20 +143,6 @@ bindkey -v '^?' backward-delete-char
 source /home/miro/.config/broot/launcher/bash/br
 
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-# Apply different settigns for different terminals
-case $(basename "$(cat "/proc/$PPID/comm")") in
-  login)
-    	RPROMPT="%{$fg[red]%} %(?..[%?])" 
-    	alias x='startx ~/.xinitrc'      # Type name of desired desktop after x, xinitrc is configured for it
-    ;;
-  *)
-        RPROMPT='$(git_prompt_string)'
-		# Use autosuggestion
-		source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-		ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-  		ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-    ;;
-esac
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/miro/.sdkman"
@@ -192,4 +152,4 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ~/.config/p10k.zsh ]] || source ~/.config/p10k.zsh
