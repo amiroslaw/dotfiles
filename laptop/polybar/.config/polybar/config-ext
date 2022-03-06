@@ -1,12 +1,12 @@
 [bar/main]
-modules-left = bspwm windows
+modules-left = bspwm bsplayout polywins
 modules-right = pomodoro battery backlight-acpi cpu memory uptime date weather network pulseaudio powermenu updates
 ;modules-center = mpd
 ; or xwindow 
 ; system-usb-udev doesn't work, and is in loop
 ; backlight-acpi or xbacklight
 
-windows-monitor = ~/.config/polybar/taskbar.sh --monitor LVDS
+; windows-monitor = ~/.config/polybar/taskbar.sh --monitor LVDS
 ; moduel/network
 ; interface = iw dev | awk '$1=="Interface"{print $2}'
 wlan = wlo1

@@ -1,11 +1,11 @@
 [bar/main]
-modules-left = bspwm windows
+modules-left = bspwm bsplayout polywins
 modules-center = investing
 modules-right = pomodoro cpu temp-amd fan-amd memory temp-nvidia fan-nvidia uptime filesystem date weather pulseaudio powermenu updates
 ; mpd - daemon should be launch first
 ; system-usb-udev doesn't work
 ; moduel/network
-windows-monitor = ~/.config/polybar/taskbar.sh --monitor DVI-D-0
+; windows-monitor = ~/.config/polybar/taskbar.sh --monitor DVI-D-0
 ; interface = iw dev | awk '$1=="Interface"{print $2}'
 wlan = wlp3s0f0u2
 
@@ -47,11 +47,11 @@ wm-restack = bspwm
 override-redirect = false
 
 [bar/ext]
-modules-left = bspwm windows
+modules-left = bspwm bsplayout polywins
 modules-center = net pcmanfm music screenshot
 modules-right = temp-amd fan-amd temp-nvidia fan-nvidia date pulseaudio powermenu
 ; modules-center = net idea pcmanfm music gpodder gnucash pidgin grywalizacja calendar screenshot
-windows-monitor = ~/.config/polybar/taskbar.sh --monitor DVI-I-0
+; windows-monitor = ~/.config/polybar/taskbar.sh --monitor DVI-I-0
 
 ; font-0 = "TerminessTTF Nerd Font:pixelsize=10;1"
 font-0 = "Ubuntu Nerd Font:pixelsize=9;1"

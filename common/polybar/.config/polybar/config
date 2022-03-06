@@ -298,6 +298,24 @@ format-prefix = " "
 ############                       SCRIPTS                      ############
 ################################################################################
 ################################################################################
+[module/polywins]
+type = custom/script
+exec = ~/.config/polybar/polywins.sh 2>/dev/null
+format = <label>
+label = %output%
+format-prefix = "  "
+format-prefix-foreground = #111111
+format-prefix-background = #0c9c84
+label-padding = 1
+tail = true
+
+[module/bsplayout]
+type = custom/script
+format = "<label>"
+tail = true
+format-foreground = #d0d060
+exec = ~/.config/polybar/bsplayout.sh
+
 
 [module/pomodoro]
 type = custom/script
@@ -320,16 +338,6 @@ type = custom/script
 exec = ~/.config/polybar/currency.sh
 interval = 3600
 
-[module/windows]
-type = custom/script
-tail = true
-format = "<label>"
-format-prefix = "  "
-format-prefix-foreground = #111111
-format-prefix-background = #0c9c84
-format-background = #111111
-format-foreground = #d0d060
-exec = ${root.windows-monitor}
 
 [module/weather]
 type = custom/script
@@ -622,5 +630,16 @@ ramp-2 = 
 [section/base]
 ; include-file = /home/miro/Documents/dotfiles/desktop/polybar/.config/polybar/ext
 include-file = /home/miro/.config/polybar/config-ext
+
+[module/windows]
+type = custom/script
+tail = true
+format = "<label>"
+format-prefix = "  "
+format-prefix-foreground = #111111
+format-prefix-background = #0c9c84
+format-background = #111111
+format-foreground = #d0d060
+exec = ${root.windows-monitor}
 
 ; vim:ft=dosini

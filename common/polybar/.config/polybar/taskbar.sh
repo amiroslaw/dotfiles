@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # https://github.com/nocturnalbeast/polybar-bspwm-taskbar-module
+# add tabs bar
 # exec = taskbar --activebg "#000" --inactivebg "#303030" --fg "#eaeaea" --separator "·" --monitor
 # add moniotr name if you want to have multimoniotor support; 
 # with some monitors name it can be a problem https://github.com/baskerville/bspwm/issues/552
