@@ -92,23 +92,11 @@ alias fcd='cd "$(fd --type d | fzf)"'
 alias fcdh='cd "$(fd --hidden --type d | fzf)"'
 alias ff='"$(fd --type f | fzf)"'
 alias ffh='"$(fd --hidden --type f | fzf)"'
-# execute
+# execute, I have shortcut for this 
 # fz mv # To move files. You can write the destination after selecting the files.
 fz() {
     sels=( "${(@f)$(fd "${fd_default[@]}" "${@:2}"| fzf)}" )
     test -n "$sels" && print -z -- "$1 ${sels[@]:q:q}"
-}
-# open
-# Modified version where you can press
-#   - CTRL-O to open with `open` command, edit to swallow
-#   - CTRL-E or Enter key to open with the $EDITOR
-fo() {
-  IFS=$'\n' out=("$(fzf-tmux --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)")
-  key=$(head -1 <<< "$out")
-  file=$(head -2 <<< "$out" | tail -1)
-  if [ -n "$file" ]; then
-    [ "$key" = ctrl-o ] && devour xdg-open "$file" || ${EDITOR:-vim} "$file"
-  fi
 }
 # grep
 fs() {
@@ -274,11 +262,12 @@ alias Rm='rm -iv'
 # {{{
 # fasd search from last opened files, paths
 # im and select a file will open in sxiv
-alias n='f -e nvim'  
+alias n='f -e nvim' 
 alias i='f -e sxiv'  
 alias m='f -e smplayer'  
 alias p='f -e zathura'  
 alias lo='f -e libreoffice'  
+
 ### default
 # from oh-my-zsh v; o; 
 # alias a='fasd -a'        # any  
@@ -297,20 +286,24 @@ alias lo='f -e libreoffice'
 alias -s tex=nvim
 alias -s txt=nvim
 alias -s md=nvim
+alias -s adoc=nvim
+alias -s lua=nvim
+alias -s java=nvim
 alias -s html=w3m
 alias -s avi=smplayer
 alias -s mp4=smplayer
 alias -s webm=smplayer
 alias -s m3u=smplayer
 alias -s mkv=smplayer
+alias -s pdf=zathura
+# todo change ot ffplay
 alias -s mp3=mocp
 alias -s flac=mocp
 alias -s og=mocp
-alias -s pdf=zathura
-alias -s jpg=sxiv 
-alias -s jpeg=sxiv 
-alias -s png=sxiv 
-alias -s gif=sxiv 
+alias -s jpg=pqiv  
+alias -s jpeg=pqiv  
+alias -s png=pqiv  
+alias -s gif=pqiv  
 alias -s odt=libreoffice
 alias -s odp=libreoffice 
 alias -s ods=libreoffice 
