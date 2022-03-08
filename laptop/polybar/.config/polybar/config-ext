@@ -1,5 +1,5 @@
 [bar/main]
-modules-left = bspwm bsplayout polywins
+modules-left = bspwm polywins
 modules-right = pomodoro battery backlight-acpi cpu memory uptime date weather network pulseaudio powermenu updates
 ;modules-center = mpd
 ; or xwindow 

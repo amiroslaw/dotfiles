@@ -1,4 +1,5 @@
 .git
 .gitignore
+*.zwc
 
 common/nvim/.config/nvim/plugin/packer_compiled.lua
