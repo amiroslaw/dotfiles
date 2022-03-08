@@ -347,8 +347,9 @@ nmap('<leader>rp', '<Plug>RestNvimPreview<cr>', { noremap = false })
 -- jqx https://github.com/gennaro-tedesco/nvim-jqx
 nmap('<leader>x', '<Plug>JqxList', { noremap = false })
 
---""""""""""""""""""
+-- -------------------------------------------------------------------------
 --  Telescope https://github.com/nvim-telescope/telescope.nvim#pickers
+-- -------------------------------------------------------------------------
 vim.o.maxmempattern = 3000 -- fix pattern uses more memory than 'maxmempattern', default is 2000
 
 local telescope = require 'telescope'
@@ -388,12 +389,13 @@ if telescope then
 	nmap('tb', '<cmd>Telescope buffers<cr>') -- closed files
 	nmap('tc', '<cmd>Telescope commands <cr> ')
 	nmap('th', '<cmd>Telescope command_history<cr> ')
+	nmap('tH', '<cmd>Telescope help_tags<cr> ')
 	nmap('tg', '<cmd>Telescope git_status<cr>')
 	nmap('tk', '<cmd>Telescope keymaps<cr>')
 	nmap('tf', '<cmd>Telescope file_browser<cr>') -- can go to the parent dir
 	nmap('tr', '<cmd>Telescope registers<cr>')
 	nmap('ts', '<cmd>Telescope spell_suggest<cr>')
-	nmap('tH', '<cmd>Telescope search_history<cr> ')
+	nmap('t/', '<cmd>Telescope search_history<cr> ')
 	nmap('t1', '<cmd>Telescope man_pages<cr>')
 	nmap('tC', '<cmd>Telescope colorscheme<cr>')
 	nmap('tl', '<cmd>Telescope<cr>') -- list of the pickers
@@ -499,9 +501,10 @@ require('bufferline').setup {
 
 require('lualine').setup { options = { theme = 'dracula', component_separators = '|' } }
 
--- nvim-cmp
+-- -------------------------------------------------------------------------
+--                       -- nvim-cmp
 -- https://github.com/hrsh7th/nvim-cmp
-
+-- -------------------------------------------------------------------------
 local cmp = require 'cmp'
 cmp.setup {
 	snippet = {
@@ -577,9 +580,10 @@ require('cmp_dictionary').setup {
 	-- debug = true,
 }
 
--- firevim
+-- -------------------------------------------------------------------------
+--                       -- firevim
 -- https://github.com/glacambre/firenvim
-
+-- -------------------------------------------------------------------------
 function IsFirenvimActive(event)
 	if vim.g.enable_vim_debug then
 		print('IsFirenvimActive, event: ', vim.inspect(event))
@@ -607,21 +611,36 @@ function OnUIEnter(event)
 	end
 end
 
-vim.cmd [[ 
-let g:firenvim_config = {
-   \ 'globalSettings': {
-        \ '<C-w>': 'noop',
-        \ '<C-n>': 'default',
-    \ },
-	\ 'localSettings': {
-			\ '^https?://[^/]*youtu\.?be[^/]*/': {
-					\ 'selector': '#contenteditable-root'
-			\ },
-	\ }
-\ }
-autocmd UIEnter * :call luaeval('OnUIEnter(vim.fn.deepcopy(vim.v.event))')
-]]
+vim.g.firenvim_config = {
+	globalSettings = {
+		ignoreKeys = { all = { '<C-w>', '<C-n>' } },
+	},
+	localSettings = {
+		[ [[.*]] ] = {
+			cmdline = 'firenvim',
+			priority = 0,
+			selector = 'textarea:not([readonly]):not([class="handsontableInput"]), div[role="textbox"]',
+			takeover = 'always',
+		},
+		[ [[^https?://[^/]*youtu\.?be[^/]*/]] ] = {
+			selector = '#contenteditable-root',
+		},
+		[ [[.*mail\.google\.com*]] ] = {
+			prioirty = 9,
+			takeover = 'never',
+		},
 
+		[ [[.*docs\.google\.com.*]] ] = {
+			prioirty = 9,
+			takeover = 'never',
+		},
+	},
+}
+vim.cmd [[ autocmd UIEnter * :call luaeval('OnUIEnter(vim.fn.deepcopy(vim.v.event))') ]]
+
+-- -------------------------------------------------------------------------
+--                       null-ls
+-- -------------------------------------------------------------------------
 local nullLs = require 'null-ls'
 local formatting = nullLs.builtins.formatting
 local diagnostics = nullLs.builtins.diagnostics
