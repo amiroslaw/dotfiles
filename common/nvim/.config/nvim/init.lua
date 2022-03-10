@@ -625,17 +625,29 @@ vim.g.firenvim_config = {
 		[ [[^https?://[^/]*youtu\.?be[^/]*/]] ] = {
 			selector = '#contenteditable-root',
 		},
-		[ [[.*mail\.google\.com*]] ] = {
-			prioirty = 9,
-			takeover = 'never',
-		},
-
-		[ [[.*docs\.google\.com.*]] ] = {
-			prioirty = 9,
-			takeover = 'never',
-		},
+		-- [ [[.*mail\.google\.com*]] ] = {
+		-- 	prioirty = 9,
+		-- 	takeover = 'never',
+		-- },
+		-- [ [[.*docs\.google\.com.*]] ] = {
+		-- 	prioirty = 9,
+		-- 	takeover = 'never',
+		-- },
+		-- [ [[.*facebook\.com*]] ] = {
+		-- 	prioirty = 9,
+		-- 	takeover = 'never',
+		-- },
 	},
 }
+local excludedDomains = { [[.*facebook\.com*]], [[.*docs\.google\.com.*]], [[.*mail\.google\.com*]] }
+for i,domain in ipairs(excludedDomains) do
+		domain = {
+			prioirty = 9,
+			takeover = 'never',
+		}
+	table.insert(vim.g.firenvim_config.localSettings, domain )
+end
+
 vim.cmd [[ autocmd UIEnter * :call luaeval('OnUIEnter(vim.fn.deepcopy(vim.v.event))') ]]
 
 -- -------------------------------------------------------------------------

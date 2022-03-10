@@ -101,7 +101,8 @@ fz() {
 # grep
 fs() {
   if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
-  rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+  rg --files-with-matches --no-messages "$1" | fzf --preview "bat --style=numbers --color=always --line-range :500 {}"
+  # rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 }
 
 # SYSTEM
@@ -225,7 +226,7 @@ alias cdm='cd ~/Musics'
 alias cdD='cd /media/winD'
 alias cdC='cd /media/winC'
 alias cdh='cd ~'
-alias cdc='cd ~/Code'
+alias cdc='cd ~/.config'
 alias cds='cd ~/Code/SourceCode'
 alias ..='cd ..'
 alias ...='cd ../..'

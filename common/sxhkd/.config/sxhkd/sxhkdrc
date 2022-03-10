@@ -252,9 +252,17 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
 # tui
-super + o ; {o,i,p,b,t}
-	$TERM_LT -e {notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nm-menu\nt-telegram", \
-		nmtui,ncmpcpp,bmenu,tg}
+super + o ; {o,i,p,b,t,z,j,f,F,d,D,v}
+	$TERM_LT -e {notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nm-menu\nt-telegram\nz-fasd\nj-fasd-dir\nf-files\nd-dir\nv-videos", \
+		nmtui,ncmpcpp,bmenu,tg, \
+		$ROFI/open.sh fasd, \
+		$ROFI/open.sh fasd-dir, \
+		$ROFI/open.sh file, \
+		$ROFI/open.sh file-hidden, \
+		$ROFI/open.sh dir, \
+		$ROFI/open.sh dir-hidden, \
+		$ROFI/open.sh video
+		}
 
 # script in background - url.lua menu will ask for the number of the links
 super + e ; {e,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
@@ -306,11 +314,9 @@ super + ctrl + d
 
 alt + space
 	 $ROFI/expander/expander.sh
-# rofi locate
+# rofi open file
 super + ctrl + f 
-	$ROFI/locate-video.py
-	# rofi-finder.sh
- # $ROFI/locate.py
+	$ROFI/open.sh video
 
 # translator 
 super + {_,shift,ctrl} + t

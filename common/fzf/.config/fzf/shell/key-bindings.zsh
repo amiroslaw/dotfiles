@@ -170,13 +170,13 @@ bindkey '\ev' edit-command-line
 #   - CTRL-E or Enter key to open with the $EDITOR
 fzf_open() {
 	zle -I;
- FZF_CMD="fzf $FZF_DEFAULT_OPTS $FZF_FILE_OPTS --query="$1" --exit-0 --expect=alt-o,ctrl-e --prompt='alt-o→open;else→edit >'"
-  IFS=$'\n' out=("$(eval "fasd -Rfl | $FZF_CMD" )")
-  key=$(head -1 <<< "$out")
-  file=$(head -2 <<< "$out" | tail -1)
-  if [ -n "$file" ]; then
-    [ "$key" = alt-o ] && devour xdg-open "$file" || ${EDITOR:-vim} "$file"
-  fi
+	FZF_CMD="$FZF_FILE_COMMAND | fzf $FZF_DEFAULT_OPTS $FZF_FILE_OPTS --query="$1" --exit-0 --expect=alt-o,ctrl-e --prompt='alt-o→open;else→edit >'"
+	IFS=$'\n' out=("$(eval "$FZF_CMD" )")
+	key=$(head -1 <<< "$out")
+	file=$(head -2 <<< "$out" | tail -1)
+	if [ -n "$file" ]; then
+		[ "$key" = alt-o ] && devour xdg-open "$file" || ${EDITOR:-vim} "$file"
+	fi
 }
 zle     -N   fzf_open;
 bindkey '\eo' fzf_open

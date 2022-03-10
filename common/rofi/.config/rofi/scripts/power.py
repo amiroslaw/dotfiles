@@ -7,7 +7,7 @@
 
 OPTIONS="Suspend system\nPower-off system\nReboot system\nHibernate system"
 
-LAUNCHER="rofi -width 30 -dmenu -i -p rofi-power:"
+LAUNCHER="rofi -theme-str 'window {width:  10%;}'  -dmenu -i -p rofi-power:"
 USE_LOCKER="true"
 LOCKER="i3lock"
 
