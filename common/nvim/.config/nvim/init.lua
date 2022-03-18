@@ -137,6 +137,7 @@ nmap('P', ':pu<cr>')
 nmap('<a-a>', ':%y<cr>') -- yank all text
 nmap('<leader>P', [["_diwP]]) -- keep pasting over the same thing
 nmap('Y', 'y$') -- from nvim 0.6 it's by default
+imap('<C-v>', '<Esc>pa ')
 --" insert mode
 -- move to the nexst/previous word
 imap('<C-a>', '<C-o>b')
@@ -581,6 +582,28 @@ require('cmp_dictionary').setup {
 }
 
 -- -------------------------------------------------------------------------
+--                       null-ls
+-- -------------------------------------------------------------------------
+local nullLs = require 'null-ls'
+local formatting = nullLs.builtins.formatting
+local diagnostics = nullLs.builtins.diagnostics
+nullLs.setup {
+	sources = {
+		diagnostics.shellcheck.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
+		diagnostics.selene.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
+		diagnostics.yamllint.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
+		formatting.stylua.with {
+			extra_args = { '--config-path', vim.fn.expand '~/.config/stylua/stylua.toml' },
+		},
+		formatting.prettier,
+		formatting.clang_format_md.with {
+			filetypes = { 'java', 'asciidoctor' },
+		},
+	},
+	debug = false,
+}
+
+-- -------------------------------------------------------------------------
 --                       -- firevim
 -- https://github.com/glacambre/firenvim
 -- -------------------------------------------------------------------------
@@ -625,49 +648,23 @@ vim.g.firenvim_config = {
 		[ [[^https?://[^/]*youtu\.?be[^/]*/]] ] = {
 			selector = '#contenteditable-root',
 		},
-		-- [ [[.*mail\.google\.com*]] ] = {
-		-- 	prioirty = 9,
-		-- 	takeover = 'never',
-		-- },
-		-- [ [[.*docs\.google\.com.*]] ] = {
-		-- 	prioirty = 9,
-		-- 	takeover = 'never',
-		-- },
-		-- [ [[.*facebook\.com*]] ] = {
-		-- 	prioirty = 9,
-		-- 	takeover = 'never',
-		-- },
-	},
-}
-local excludedDomains = { [[.*facebook\.com*]], [[.*docs\.google\.com.*]], [[.*mail\.google\.com*]] }
-for i,domain in ipairs(excludedDomains) do
-		domain = {
+		[ [[.*mail\.google\.com*]] ] = {
 			prioirty = 9,
 			takeover = 'never',
-		}
-	table.insert(vim.g.firenvim_config.localSettings, domain )
-end
-
-vim.cmd [[ autocmd UIEnter * :call luaeval('OnUIEnter(vim.fn.deepcopy(vim.v.event))') ]]
-
--- -------------------------------------------------------------------------
---                       null-ls
--- -------------------------------------------------------------------------
-local nullLs = require 'null-ls'
-local formatting = nullLs.builtins.formatting
-local diagnostics = nullLs.builtins.diagnostics
-nullLs.setup {
-	sources = {
-		diagnostics.shellcheck.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
-		diagnostics.selene.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
-		diagnostics.yamllint.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
-		formatting.stylua.with {
-			extra_args = { '--config-path', vim.fn.expand '~/.config/stylua/stylua.toml' },
 		},
-		formatting.prettier,
-		formatting.clang_format_md.with {
-			filetypes = { 'java', 'asciidoctor' },
+		[ [[.*docs\.google\.com.*]] ] = {
+			prioirty = 9,
+			takeover = 'never',
+		},
+		[ [[.*facebook\.com*]] ] = {
+			prioirty = 9,
+			takeover = 'never',
+		},
+		[ [[.*deepl\.com*]] ] = {
+			prioirty = 9,
+			takeover = 'never',
 		},
 	},
-	debug = false,
 }
+
+vim.cmd [[ autocmd UIEnter * :call luaeval('OnUIEnter(vim.fn.deepcopy(vim.v.event))') ]]

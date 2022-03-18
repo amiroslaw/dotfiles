@@ -1,10 +1,10 @@
 [global]
+#  height = 100
   width = 275
-  height = 100
   offset = 15x40
   origin = top-right
   shrink = no
-  transparency = 23
+  transparency = 15
   notification_height = 3
   separator_height = 2
   padding = 10
@@ -13,7 +13,7 @@
   separator_color = frame
   sort = yes
   idle_threshold = 120
-  font = Noto Emoji 10, JetBrainsMono Nerd Font 10
+  font = Noto Emoji 9, JetBrainsMono Nerd Font 9
   line_height = 3
   markup = full
   format = "<b>%s</b>\n%b"
@@ -36,7 +36,7 @@
   class = Dunst
   startup_notification = false
   force_xinerama = false
-corner_radius = 0
+  corner_radius = 10
 
 [shortcuts]
   # Close notification.
@@ -53,20 +53,20 @@ corner_radius = 0
 
 [urgency_low]
   background = "#1a1b23"
-  foreground = "#8791a3"
   frame_color = "#caf6bb"
+  #foreground = "#0c436e"
   timeout = 3
 
 [urgency_normal]
   background = "#1a1b23"
-  foreground = "#8791a3"
   frame_color = "#2c2e3e"
+  #foreground = "#8791a3"
   timeout = 5
 
 [urgency_critical]
   background = "#1a1b23"
-  foreground = "#8791a3"
   frame_color = "#f7768e"
+  #foreground = "#8791a3"
   timeout = 0
 
 [brightness]
