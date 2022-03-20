@@ -137,4 +137,5 @@ return require('packer').startup(function()
 	-- use 'patstockwell/vim-monokai-tasty'
 	use { 'dracula/vim', as = 'dracula' }
 	use 'bluz71/vim-moonfly-colors'
+	use 'navarasu/onedark.nvim'
 end)

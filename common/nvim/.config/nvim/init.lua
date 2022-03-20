@@ -9,9 +9,17 @@ local HOME = os.getenv 'HOME'
 --execute 'colorscheme ' . scheme
 --let &background =strftime("%H") > 5 && strftime("%H") < 18 ? "light" : "dark"
 -- vim.cmd 'colorscheme dracula'
-vim.cmd 'colorscheme moonfly'
+-- vim.cmd 'colorscheme moonfly'
+-- Lua
+require('onedark').setup {
+    style = 'deep',
+  colors = { -- https://github.com/navarasu/onedark.nvim/blob/master/lua/lualine/themes/onedark.lua
+    fg = "#fffffe",
+  },
+}
+require('onedark').load()
 -- vime-one - support dark and light theme
--- set background=dark
+-- vim.cmd("set background=light")
 -- let g:one_allow_italics = 1
 
 --"""""""""""""""""""""""""

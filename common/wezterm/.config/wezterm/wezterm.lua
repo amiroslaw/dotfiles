@@ -28,8 +28,9 @@ return { -- Must be in the end
 	default_cursor_style = 'SteadyBar', -- the best in vim
 	font_size = 11,
 	font = wezterm.font_with_fallback(
-		{ 'SauceCodePro Nerd Font Mono', 'FiraCode Nerd Font Mono' },
-		{ weight = 'Regular' }
+		{ 'Iosevka Term Slab', 'SauceCodePro Nerd Font Mono', 'FiraCode Nerd Font Mono' },
+		{ weight = 'Medium' }
+		-- { weight = 'Regular' }
 	),
 	hide_tab_bar_if_only_one_tab = true,
 	scrollback_lines = 10000,
