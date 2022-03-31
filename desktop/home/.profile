@@ -5,8 +5,9 @@ umask 022
 
 # Set our default path
 
+export SELENIUM="$HOME/Ext/selenium/chromedriver"
 export GRAALVM_HOME="$HOME/.sdkman/candidates/java/21.1.0.r16-grl"
-PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin:$HOME/.local/share/gem/ruby/2.7.0/bin:$GRAALVM_HOME/bin"
+PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin:$HOME/.local/share/gem/ruby/2.7.0/bin:$GRAALVM_HOME/bin:$SELENIUM"
 export PATH
 
 # Load profiles from /etc/profile.d

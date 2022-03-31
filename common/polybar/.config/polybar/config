@@ -168,6 +168,7 @@ time-alt = %H:%M
 format-prefix = 
 ; format-prefix-foreground = ${colors.foreground-alt}
 format-underline = ${colors.base13}
+click-right = notify-send "$(cal)"
 
 [module/pulseaudio]
 type = internal/pulseaudio
@@ -563,8 +564,8 @@ click-right = notify-send gamification &
 [module/calendar]
 type = custom/script
 exec = echo " "
-click-left = st -e nvim -c "Calendar" &
-click-right = notify-send calendar &
+click-left = notify-send "$(cal)"
+click-right =st -e nvim -c "Calendar" & 
 ###############################################################################
 ############                       UNUSED                      ############
 ################################################################################

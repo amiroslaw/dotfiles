@@ -58,6 +58,7 @@ nnoremap gh :action FileStructurePopup<CR>
 " Perhaps just use the Idea shortcut Ctrl-Alt-B
 " Alt + N, then m (through the menu bar) also seems to work, but it is non-unique.
 nnoremap gd :action GotoDeclaration<CR>
+" methid in interface
 nnoremap gm :action GotoSuperMethod<CR>
 nnoremap gi :action GotoImplementation<CR>
 " ala c-a-7
@@ -73,6 +74,11 @@ nmap gr :action RecentFiles<cr>
 "like c-o in vim
 nnoremap gl :action JumpToLastChange<CR> 
 nmap gL :action RecentLocations<cr>
+
+" check if works
+nmap gn :action Diff.NextChange<cr>
+nmap gp :action Diff.PrevChange<cr>
+
 " built-in navigation to navigated items works better than c-o
 nnoremap <c-o> :action Back<cr>
 nnoremap <c-i> :action Forward<cr>

@@ -3,8 +3,7 @@
 # WAŻNE jak podajemy ścieżkę to po = nie dawać spacji
 #alias =''
 
-# Dependencies
-#{{{
+#{{{ Dependencies
 # devour
 # dragon-drag-and-drop
 # borg
@@ -20,8 +19,7 @@
 # broot
 #}}}
 
-#variables
-#{{{
+#{{{ variables
 path_script=~/Documents/Ustawienia/skrypty/moje
 path_conf=~/Documents/Ustawienia/sync
 path_note=~/Documents/notebook
@@ -61,7 +59,8 @@ alias cfkitty='nvim ~/.config/kitty/kitty.conf'
 alias cfbroot='nvim ~/.config/broot/conf.toml'
 #}}}
 
-#RÓŹNE
+# {{{ RÓŹNE
+
 alias weather='curl wttr.in/lubartów'
 alias cl='clear'
 alias se='sudoedit'
@@ -82,31 +81,9 @@ alias xpro='xprop | grep CLASS'
 alias monitoron='xrandr --output DVI-I-0 --auto --right-of DVI-D-0 && polybar ext &'
 alias monitoroff='xrandr --output DVI-I-0 --off'
 
-# FZF
-alias fp='rg --files | fzf --preview="bat {} --color=always"'
-alias fn='nvim -o "$(fd --type f | fzf)"'
-alias fnh='nvim -o "$(fd --hidden --type f | fzf)"'
-alias fb='bat "$(fd --type f | fzf)"'
-alias fbh='bat "$(fd --hidden --type f | fzf)"'
-alias fcd='cd "$(fd --type d | fzf)"'
-alias fcdh='cd "$(fd --hidden --type d | fzf)"'
-alias ff='"$(fd --type f | fzf)"'
-alias ffh='"$(fd --hidden --type f | fzf)"'
-# execute, I have shortcut for this 
-# fz mv # To move files. You can write the destination after selecting the files.
-fz() {
-    sels=( "${(@f)$(fd "${fd_default[@]}" "${@:2}"| fzf)}" )
-    test -n "$sels" && print -z -- "$1 ${sels[@]:q:q}"
-}
-# grep
-fs() {
-  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
-  rg --files-with-matches --no-messages "$1" | fzf --preview "bat --style=numbers --color=always --line-range :500 {}"
-  # rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
-}
+# }}}
 
-# SYSTEM
-#{{{
+#{{{ SYSTEM
 alias _='sudo'
 alias shut='sudo shutdown -h now'
 # get error messages from journalctl
@@ -127,9 +104,9 @@ alias removeyay='paru -Rns'
 alias search='pacman -Ss'
 #}}}
 
-#Programs alias
-#{{{
+#{{{ Programs alias
 alias tor='abduco -A tor rtorrent'
+alias huliomail='tmpmail -g huliofff@1secmail.org && tmpmail -r'
 alias ping='prettyping'
 alias vi='nvim'
 alias neofetch='fastfetch'
@@ -156,8 +133,7 @@ alias open='xdg-open '
 alias op='xdg-open '
 #}}}
 
-#Programy coś wykonują
-#{{{
+#{{{ Programy coś wykonują
 # curl cheat.sh/java/compute+map
 alias rmsl='find . -xtype l -delete' # remove broken symlinks form the directory
 alias cht='curl cheat.sh/'
@@ -189,8 +165,7 @@ alias irr='cat $path_note/Home/angielski/irregular.adoc | grep'
 alias backup_note='cp -r $path_note ~/Templates/backup/note/notebook-$(date -u +"%Y-%m-%d")'
 #}}}
 
-# GIT
-# {{{
+# {{{ GIT
 alias addup='git add -u'
 alias addall='git add .'
 alias branch='git branch'
@@ -212,8 +187,7 @@ alias kala='gcalcli agenda --config-folder="/home/miro/.config/gcalcli"'
 alias kals='gcalcli search'
 #}}}
 
-# go to 
-#{{{
+#{{{ go to 
 alias cdt='cd ~/.local/share/Trash'
 alias cdhtdoc='cd /opt/lampp/htdocs/'
 alias cdn='cd ~/Documents/notebook && nvim'
@@ -235,8 +209,7 @@ alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 #}}}
 
-# list of the files/directories
-#{{{
+#{{{ list of the files/directories
 alias l='exa --icons'
 alias la='exa --icons -la'
 alias ll='exa --icons -l' #long
@@ -250,8 +223,7 @@ alias brs='br --sizes'
 alias brh='br --hidden'
 #}}}
 
-# potwierdzenie/progres
-#{{{
+#{{{ potwierdzenie/progres
 alias cp='cp -iv'
 alias rmdir='rm -Irv'
 alias mv='mv -iv'
@@ -259,8 +231,31 @@ alias mkdir="mkdir -vp"
 alias Rm='rm -iv'
 #}}}
 
-# FASD
-# {{{
+# {{{ FZF
+alias fp='rg --files | fzf --preview="bat {} --color=always"'
+alias fn='nvim -o "$(fd --type f | fzf)"'
+alias fnh='nvim -o "$(fd --hidden --type f | fzf)"'
+alias fb='bat "$(fd --type f | fzf)"'
+alias fbh='bat "$(fd --hidden --type f | fzf)"'
+alias fcd='cd "$(fd --type d | fzf)"'
+alias fcdh='cd "$(fd --hidden --type d | fzf)"'
+alias ff='"$(fd --type f | fzf)"'
+alias ffh='"$(fd --hidden --type f | fzf)"'
+# execute, I have shortcut for this 
+# fz mv # To move files. You can write the destination after selecting the files.
+fz() {
+    sels=( "${(@f)$(fd "${fd_default[@]}" "${@:2}"| fzf)}" )
+    test -n "$sels" && print -z -- "$1 ${sels[@]:q:q}"
+}
+# grep
+fs() {
+  if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+  rg --files-with-matches --no-messages "$1" | fzf --preview "bat --style=numbers --color=always --line-range :500 {}"
+  # rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+}
+# }}}
+
+# {{{ FASD
 # fasd search from last opened files, paths
 # im and select a file will open in sxiv
 alias n='f -e nvim' 
@@ -350,8 +345,8 @@ alias -g D='$(fd --file=d | fzf)'
 alias -g F='| fzf '
 alias -g H='$(fd --hidden | fzf) '
 #}}}
-#FUNCTIONS
-#{{{
+
+#{{{ FUNCTIONS
 alias mkcd='take'
 # mkcd () {
 #   case "$1" in /*) :;; *) set -- "./$1";; esac
@@ -386,8 +381,7 @@ wypakuj () {
 }
 #}}}
 
-# bindkey
-#{{{
+#{{{ bindkey
 # Automatically Expanding Global Aliases (Space key to expand)
 globalias() {
   if [[ $LBUFFER =~ '[A-Z0-9]+$' ]]; then
@@ -403,8 +397,7 @@ bindkey "^[[Z" magic-space            # shift-tab to bypass completion
 bindkey -M isearch " " magic-space    # normal space during searches
 #}}}
 
-#old
-#{{{
+#{{{ old
 alias sr='sr -browser=firefox'
 alias surfraw='surfraw -browser=w3m'
 # alias dic='python ~/Exe/ProgramFile/dictator-0.9.7/dictator_start.py&'      
@@ -466,8 +459,7 @@ alias surfraw='surfraw -browser=w3m'
 # alias rad='curseradio'
 #}}}
 
-#TMUX 
-#{{{
+#{{{ TMUX 
 #alias tn='tmux next-window'
 #alias tp='tmux previous-window'
 #alias tkw='tmux kill-window'
@@ -480,6 +472,7 @@ alias surfraw='surfraw -browser=w3m'
 #alias g='tmux attach -t g'
 #alias gg='tmux attach -t gg'
 #}}}
+
 ## job
 alias vpn='cd /home/miro/eversis/amiroslaw/eversis-pfs-node1-UDP4-1195-amiroslaw && sudo openvpn --config eversis-pfs-node1-UDP4-1195-amiroslaw.ovpn --auth-user-pass pass.txt'
 

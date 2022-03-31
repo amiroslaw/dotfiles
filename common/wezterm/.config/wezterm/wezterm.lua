@@ -29,8 +29,8 @@ return { -- Must be in the end
 	font_size = 11,
 	font = wezterm.font_with_fallback(
 		{ 'Iosevka Term Slab', 'SauceCodePro Nerd Font Mono', 'FiraCode Nerd Font Mono' },
-		{ weight = 'Medium' }
-		-- { weight = 'Regular' }
+		-- { weight = 'Medium' }
+		{ weight = 'Regular' }
 	),
 	hide_tab_bar_if_only_one_tab = true,
 	scrollback_lines = 10000,

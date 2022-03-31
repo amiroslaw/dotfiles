@@ -57,6 +57,8 @@ vim.cmd [[
 	  augroup end
 	autocmd BufEnter term://* startinsert
 ]]
+-- doesn't work with keybinding in zsh
+	-- autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif
 
 -- IncSearch
 vim.o.smartcase = true
@@ -114,7 +116,8 @@ end
 vim.g.mapleader = ';'
 nmap('<leader>/', ':nohlsearch<cr>') -- from nvim 0.6 it's by default c-l
 nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>')
-nmap('Zz', ' :q! <cr> ')
+nmap('Zz', ' :q! <cr>')
+-- nmap('ZZ', ' :write | bdelete!<cr>')
 
 -- move lines up and down
 nmap('<c-a-j>', ':m .+1<CR>')
@@ -487,17 +490,6 @@ vmap('<leader>f', '<cmd> lua vim.lsp.buf.range_formatting() <cr>')
 
 -----------------------------
 -- Status and tab bars
--- Barbar - tabbar
--- https://github.com/romgrk/barbar.nvim
---[[ nmap('<leader><Tab>', ':BufferNext <cr>')
-nmap('<leader>b', ':BufferPick <cr>') -- jumping to tab, like hop
-nmap('<leader>B', ':BufferOrderByBufferNumber <cr>') 
-vim.g.bufferline = {
-  closable = false,
-  icons = false, -- numbers, bug with true - can't see icon set
-}
-]]
-
 nmap('<leader><Tab>', ':BufferLineCycleNext <cr>')
 nmap('<leader>b', ':BufferLinePick <cr>') -- jumping to tab, like hop
 nmap('<leader>B', ':BufferLineSortByDirectory <cr>')
@@ -505,10 +497,12 @@ require('bufferline').setup {
 	options = {
 		show_close_icon = false,
 		sort_by = 'relative_directory',
+		show_buffer_close_icons = false,
+		always_show_bufferline = false,
 	},
 }
 
-require('lualine').setup { options = { theme = 'dracula', component_separators = '|' } }
+require('lualine').setup { options = { theme = 'onedark', component_separators = '|' } }
 
 -- -------------------------------------------------------------------------
 --                       -- nvim-cmp
