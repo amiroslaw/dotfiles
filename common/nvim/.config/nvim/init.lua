@@ -145,7 +145,6 @@ nmap('<S-X>', '<C-^>') -- alternate-file file that was last edited in the curren
 
 -- coping and pasting
 nmap('P', ':pu<cr>')
-nmap('<a-a>', ':%y<cr>') -- yank all text
 nmap('<leader>P', [["_diwP]]) -- keep pasting over the same thing
 nmap('Y', 'y$') -- from nvim 0.6 it's by default
 imap('<C-v>', '<Esc>pa ')
@@ -154,8 +153,8 @@ imap('<C-v>', '<Esc>pa ')
 imap('<C-a>', '<C-o>b')
 imap('<C-d>', '<C-o>w')
 -- move to the nexst/previous occurrence
-nmap('<C-a>', '#')
-nmap('<C-d>', '*')
+nmap('<A-a>', '#')
+nmap('<A-d>', '*')
 
 -- go to the line
 nmap('<C-j>', 'gj')
@@ -210,8 +209,12 @@ vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
 --""""""""""""""""""
 -- current line
 -- xmap('il', '^vg_')
-xmap('il', '^og_')
-omap('il', ':normal vil<CR>')
+xmap('ll', '^og_')
+omap('ll', ':normal vll<CR>')
+-- all document
+xmap('gl', ':<c-u>normal! G$Vgg0<cr>')
+omap('gl', ':<c-u>normal! GVgg<cr>')
+
 
 --"""""""""""""""""""
 --"""""" MACROS
@@ -467,6 +470,12 @@ nmap('<leader>w', '<cmd>HopWordAC <cr>')
 nmap('<leader>W', '<cmd>HopWordBC <cr>')
 nmap('s', '<cmd>HopLineStartAC <cr>')
 nmap('S', '<cmd>HopLineStartBC <cr>')
+omap('F', '<cmd>HopChar1 <cr>')
+omap('f', '<cmd>HopChar2 <cr>')
+omap('<leader>w', '<cmd>HopWordAC <cr>')
+omap('<leader>W', '<cmd>HopWordBC <cr>')
+omap('s', '<cmd>HopLineStartAC <cr>')
+omap('S', '<cmd>HopLineStartBC <cr>')
 
 --""""""""""""""""""
 -- NvimTreeToggle https://github.com/kyazdani42/nvim-tree.lua
