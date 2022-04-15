@@ -66,14 +66,13 @@ return require('packer').startup(function()
 		run = ':TSUpdate',
 		config = function()
 			require('nvim-treesitter.configs').setup {
-				ensure_installed = 'maintained',
+				ensure_installed = {"java", "scala", "javascript", "typescript", "lua",  "markdown", "http", "json", "css", "http", "kotlin", "scss", "toml", "yaml", "bash"}, -- TSInstall css html "asciidoc"  
 				highlight = {
 					enable = true,
 					additional_vim_regex_highlighting = false,
 				},
 			}
 		end,
-		-- {"java", "javascript", "typescript", "lua", "asciidoc", "markdown", "http", "json" }TSInstall css html
 	}
 	use {
 		'phaazon/hop.nvim',
@@ -117,8 +116,6 @@ return require('packer').startup(function()
 
 	use 'nvim-lualine/lualine.nvim'
 	use 'akinsho/bufferline.nvim'
-	-- use { 'romgrk/barbar.nvim', requires = {'kyazdani42/nvim-web-devicons', opt = true} }
-	-- use { 'kdheepak/tabline.nvim', requires = { 'hoob3rt/lualine.nvim', 'kyazdani42/nvim-web-devicons' } }
 	use {
 		'glacambre/firenvim',
 		run = function()

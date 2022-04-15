@@ -31,6 +31,7 @@ alias dlfile='~/Documents/Ustawienia/skrypty/dlfile'
 alias remind='$path_script/remind.sh'
 alias mag='$path_script/magnet.sh "$(xclip -o -selection clipboard)"'
 alias crypto='investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)'
+alias yahoo-key='cd $PRIVATE && java -jar $PRIVATE/yahoo-selenium.jar'
 #}}}
 
 # {{{ config files
