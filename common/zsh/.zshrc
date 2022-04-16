@@ -29,10 +29,10 @@ zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 
-# expand alias with TAB
 zstyle ':completion:*' menu select
 zmodload -i zsh/complist
-# zstyle ':completion:*' completer _expand_alias _complete _ignored
+# expand alias with TAB it can expand $()
+zstyle ':completion:*' completer _expand_alias _complete _ignored
 # bindkey "mykeybinding" _expand_alias
 
 # -------------------------------------------------------------------------

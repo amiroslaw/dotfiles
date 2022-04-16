@@ -5,7 +5,7 @@
 
 #{{{ Dependencies
 # devour
-# dragon-drag-and-drop
+# dragon-drop
 # borg
 # xprop
 # xrandr
@@ -27,7 +27,7 @@ java8=~/.sdkman/candidates/java/8.0.171-oracle/bin/java
 #}}}
 
 #{{{ scripts
-alias dlfile='~/Documents/Ustawienia/skrypty/dlfile'
+alias drop='drop.sh'
 alias remind='$path_script/remind.sh'
 alias mag='$path_script/magnet.sh "$(xclip -o -selection clipboard)"'
 alias crypto='investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)'
@@ -129,7 +129,7 @@ alias coin='coinmon -p ~/.config/coinmon/portfolio.json -s 1,2,3,4,5,7 -c pln'
 alias df='df -h --output=source,fstype,size,used,avail,pcent,target -x tmpfs -x devtmpfs'
 alias speed='speedtest'
 alias music='ncmpcpp'
-alias dragon='dragon-drag-and-drop -t'
+alias drag='dragon-drop -t'
 alias open='xdg-open '
 alias op='xdg-open '
 #}}}
@@ -153,7 +153,7 @@ alias lamp-stop='sudo /opt/lampp/lampp stop'
 alias lamp-manager='sudo /opt/lampp/manager-linux-x64.run &'
 alias rozpakuj='atool extract'
 alias pakuj='atool create'
-alias pl='atool list'
+alias pl='atool -l'
 alias ffmpeg-speed-up='for i in *.mp3; do ffmpeg -i $i -filter:a "atempo=1.3" -vn sp-$i; done'
 alias ffmpeg-segment='for i in *.mp3; do ffmpeg -i "$i" -f segment -segment_time 900 -c copy "${i%%.*}-%02d.mp3"; done'
 alias icat='kitty +kitten icat '
@@ -278,37 +278,16 @@ alias lo='f -e libreoffice'
 #}}}
 
 #ZSH
-# {{{ ZSH extensions 
-# sxiv => girl.jpg
-alias -s tex=nvim
-alias -s txt=nvim
-alias -s md=nvim
-alias -s adoc=nvim
-alias -s java=nvim
+# {{{ ZSH extensions , open in a app
+alias -s {tex,txt,md,adoc,java}=nvim
 alias -s html=w3m
-alias -s avi=smplayer
-alias -s mp4=smplayer
-alias -s webm=smplayer
-alias -s m3u=smplayer
-alias -s mkv=smplayer
-alias -s pdf=zathura
-# todo change ot ffplay
-alias -s mp3=mocp
-alias -s flac=mocp
-alias -s og=mocp
-alias -s jpg=pqiv  
-alias -s jpeg=pqiv  
-alias -s png=pqiv  
-alias -s gif=pqiv  
-alias -s odt=libreoffice
-alias -s odp=libreoffice 
-alias -s ods=libreoffice 
-alias -s doc=libreoffice 
-alias -s docx=libreoffice 
-alias -s xls=libreoffice 
-alias -s xlsx=libreoffice 
-alias -s ppt=libreoffice 
-alias -s pptx=libreoffice 
+alias -s {avi,mp4,webm,m3u,mkv}='devour smplayer'
+alias -s pdf='devour zathura'
+alias -s {mp3,flac,og}='ffplay -nodisp -autoexit'
+alias -s {jpg,JPG,jpeg,png,PNG,gif}='devour pqiv'  
+alias -s {ods,ODS,odt,ODT,odp,ODP,doc,DOC,docx,DOCX,xls,XLS,xlsx,XLSX,xlsm,XLSM,ppt,PPT,pptx,PPTX,csv,CSV}='devour libreoffice'
+alias -s {zip,ZIP,war,WAR,gz,tgz}="atool -l"
+alias -s {jar,JAR}="java -jar"
 #}}}
 
 # {{{ ZSH global
@@ -317,13 +296,14 @@ alias -g R='!-1'
 # append all previous arguments: new_string old_arguments
 alias -g A='!*'
 
-
+alias -g jj='java -jar'
 alias -g G='| grep'
 alias -g H='| head'
 alias -g T='| tail'
 alias -g SN='| sort -n'
 alias -g L='| less'
 alias -g W='| wc'
+alias -g Jq='| jq .'
 
 # copy terminal output into clipboard
 alias -g C='| xclip -sel clip'

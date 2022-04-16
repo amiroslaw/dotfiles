@@ -2,7 +2,7 @@
 " DEPENDENCY
 " rust - rip, fd, rg, 
 " patool lub atool, feh or sxiv, meld, trash-cli, tree, du, pdfunite, udevil
-" meld dragon-drag-and-drop tesseract
+" meld dragon-drop tesseract
 "
 " set grepprg="grep\ -n\ -H\ -I\ -r\ -i\ %i\ %a %s"
 " set findprg="find %s %a -print -prune"
@@ -175,10 +175,9 @@ nmap cp	:!pdfunite %f %d:t.pdf <cr>
 nmap cP	:!pdftotext %c %c:r <cr>
 "Tesseract OCR
 nmap ct	:!tesseract %c %c:r <cr>
-"dragon drag and drop
-nmap dr :!dragon-drag-and-drop %c <cr>
-nmap dR :!dragon-drag-and-drop %f <cr>
-nmap dl :!~/Documents/Ustawienia/skrypty/dlfile <cr>
+"dragon dr - drag from and dl drop to
+nmap dr :!dragon-drop %f <cr> 
+nmap dl :!drop.sh <cr>
 
 " meld pliki pod kursorem
 nmap <C-p> :!meld %c %C %i<cr> 

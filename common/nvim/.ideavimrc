@@ -22,6 +22,7 @@
 " inline var - dodanie go do parametru
 " shell - open terminal 
 " parameter info
+"
 
 " SETS
 let mapleader = ";"
@@ -241,6 +242,28 @@ map <leader>t <Plug>(easymotion-w)
 map s <Plug>(easymotion-j)
 map S <Plug>(easymotion-k)
 nmap <leader>. <Plug>(easymotion-repeat)
+
+" nadpisanie skrótów przez vim
+" ~/.config/JetBrains/IntelliJIdea2021.2/options/vim_settings.xml
+sethandler <c-c> a:vim
+sethandler <c-u> a:vim
+sethandler <c-a> a:vim
+sethandler <c-w> a:vim
+sethandler <c-n> a:vim
+sethandler <c-d> a:vim
+sethandler <c-r> a:vim
+sethandler <c-s> a:vim
+sethandler <c-i> a:vim
+sethandler <c-t> a:vim
+sethandler <c-h> a:vim
+sethandler <c-y> a:vim
+sethandler <c-g> a:vim
+sethandler <c-;> a:vim
+sethandler <c-s-;> a:vim
+sethandler <c-a-k> a:vim
+sethandler <c-a-j> a:vim
+sethandler <s-a-j> a:vim
+
 
 " MAYBE LATER
 " Inspectioncode
