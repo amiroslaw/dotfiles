@@ -113,7 +113,6 @@ alias vi='nvim'
 alias neofetch='fastfetch'
 alias rest='wuzz'
 alias vim='nvim'
-alias lg='lazygit'
 alias viswap_rm= 'rm ~/.local/share/nvim/swap/*'
 alias stown='stow -nvSt ~ '
 alias stow='stow -vSt ~ '
@@ -167,17 +166,18 @@ alias backup_note='cp -r $path_note ~/Templates/backup/note/notebook-$(date -u +
 #}}}
 
 # {{{ GIT
+alias lg='lazygit'
 alias addup='git add -u'
 alias addall='git add .'
-alias branch='git branch'
-alias checkout='git checkout'
-alias clone='git clone'
-alias commit='git commit -am'
-alias fetch='git fetch'
+alias gbranch='git branch'
+alias gcheck='git checkout'
+alias gclone='git clone'
+alias gcommit='git commit -am'
+alias gfetch='git fetch'
 alias gdiff='git diff'
-alias pull='git pull origin'
-alias push='git push origin'
-alias stat='git status'  # 'status' is protected name so using 'stat' instead
+alias gpull='git pull origin'
+alias gpush='git push origin'
+alias gst='git status'  # 'status' is protected name so using 'stat' instead
 # }}}
 
 # gcalcli {{{

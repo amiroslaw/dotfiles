@@ -44,3 +44,5 @@ borg create --stats --compression lzma /media/backup/backup-borg/monthly::{hostn
 	# --exclude /tmp \
 	# --exclude /run/media  \
 	# --exclude /run/mount  \
+
+dunstify "backuped monthly"

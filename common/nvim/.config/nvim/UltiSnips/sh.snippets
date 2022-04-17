@@ -22,6 +22,7 @@ def getShell():
 	return "sh"
 endglobal
 
+
 ###########################################################################
 #                            TextMate Snippets                            #
 ###########################################################################
@@ -80,7 +81,7 @@ fi
 endsnippet
 
 snippet if "if ... then (if)" b
-if [[ ${1:condition} ]]; then
+if [[ ${1:-z} $2 ]]; then
 	${0:${VISUAL}}
 fi
 endsnippet
@@ -101,6 +102,19 @@ snippet func "function() {...}" b
 ${1:function} () {
 	${0:${VISUAL}}
 }
+endsnippet
+
+# -------------------------------------------------------------------------
+#                       CUSTOM
+# -------------------------------------------------------------------------
+snippet rofilist "rofi with options"
+SELECTION="$( echo "${1:options|}" | rofi -dmenu -threads 0 -monitor -4 -i -sep "|" -l ${2:lines} -p ${3:prompt})"
+$0
+endsnippet
+
+snippet rofiinput "rofi with input"
+SELECTION="$(rofi -dmenu -monitor -4 -i -l 0 -theme-str "window {width: ${1:50%};}" -p ${3:prompt})"
+$0
 endsnippet
 
 # vim:ft=snippets:

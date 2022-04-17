@@ -221,7 +221,7 @@ super + BackSpace
 
 # search
 super + {_, shift,ctrl} + g
-	{search.lua google primary, search.lua google clip, search.lua google primary}
+	{search.lua google clip, search.lua google primary, search.lua brave clip}
 
 super + s ; {s,h,g,G,b,B,u,U,y,Y,m,M}
 	{ dunstify options: " (capital-clipboard):\nh-help menu\ng-google\nb-brave\nu-duckduck\ny-yt\nm-maps\nw-wiki\nc-ceneo\no-cenowarka\na-allegro\nz-amazon\ns-so\nf-filmweb\nd-diki\nl-deepL\nr-translator\np-pl-en trans\ne-en-pl trans\nx-tuxi\nt-tor\ni-info from cheatsh", \
@@ -340,15 +340,17 @@ super + {equal,plus}
 	pactl set-sink-volume 0 +{5,15}%
 	# ~/.i3/volume
 	# amixer sset Master {5,15}%+ && notify-send $(awk -F"[][]" '/Front Left:/ { print $2 }' <(amixer sget Master))
+
+# TODO stops working after switching to headset
 # Decrease volume
 super {_,shift +} + minus
 	pactl set-sink-volume 0 -{5,15}% 
 	# ~/.i3/volume
 	# amixer sset Master {5,15}%- && notify-send $(awk -F"[][]" '/Front Left:/ { print $2 }' <(amixer sget Master))
-super + slash
-	pactl set-sink-mute 0 toggle
-	# volume toggle
-	# amixer sset Master toggle
+#  toggle volume or audio channel 
+super + {_,shift,ctrl} + slash
+	{ amixer sset Master toggle, audio.sh toggle, audio.sh }
+	# pactl set-sink-mute 0 toggle
 
 super + shift + m
 	if ! pidof -x mpd; then mpd && mpc update; fi && scratchpad.sh music "$TERM_LT -t music -n music -e ncmpcpp" 
@@ -359,7 +361,7 @@ super + m
 super + {comma,period}
 	mpc {prev,next}
 # Restart track
-super + shift + slash
+super + ctrl + period
 	mpc seek 0%
 
 # Seek foward in song

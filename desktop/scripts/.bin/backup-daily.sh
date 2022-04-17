@@ -12,3 +12,5 @@ borg create --stats /media/backup/backup-borg/daily::{hostname}-daily-{now:%Y-%m
 	--exclude '*.class'	>> ~/Documents/Ustawienia/logs/borg-pc/log_daily.txt 2>&1
 
 	# --exclude **/.debris \
+
+dunstify "backuped daily"
