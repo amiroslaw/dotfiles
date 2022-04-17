@@ -92,7 +92,7 @@ function readable(linkTab)
 	local tmpname = os.tmpname()
 	for i, link in ipairs(linkTab) do
 		local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to asciidoc --output ' .. tmpname .. '.adoc')
-		os.execute('st -t read -n read -e nvim ' .. tmpname .. '.adoc') -- can read form evns
+		os.execute('st -c read -n read -e nvim ' .. tmpname .. '.adoc') -- can read form evns
 		assert(createFile == 0, 'Could not create file')
 	end
 	return 'Created file ' .. tmpname
@@ -102,7 +102,7 @@ function speed(linkTab)
 	local tmpname = os.tmpname()
 	for i, link in ipairs(linkTab) do
 		local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to plain --output ' .. tmpname)
-		-- os.execute('st -t rsvp -n rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 300"') 
+		-- os.execute('st -c rsvp -n rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 300"') 
 		os.execute('wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. tmpname .. ' | speedread -w 300"') 
 		assert(createFile == 0, 'Could not create file')
 	end

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Requires xdo for searching windows’ PIDs. (can be replaced by xdotool if necessary)
 # https://my-take-on.tech/2020/07/03/some-tricks-for-sxhkd-and-bspwm/#my-take-on-creating-a-scratchpad
-#scratchpad.sh top "st -n top htop"
+#scratchpad.sh top "st -n top -c top htop"
 #scratchpad.sh instanece_name "cmd with instanece_name"
 
 if [ $# = 0 ]; then

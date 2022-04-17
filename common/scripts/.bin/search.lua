@@ -83,7 +83,7 @@ end
 function tuxi() --show error but work fine
 	local output = io.popen('tuxi -ra "' .. phraseArg ..'"'):read('*a')
 	assert(#output ~= 0, "Can not search")
-	os.execute("st -t read -n read -e sh -c 'echo \"" .. output .. "\" | nvim -'") -- can take terminal form env and save file into tmp
+	os.execute("st -c read -n read -e sh -c 'echo \"" .. output .. "\" | nvim -'") -- can take terminal form env and save file into tmp
 end
 
 local options = {

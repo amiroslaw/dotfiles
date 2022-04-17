@@ -1,5 +1,5 @@
 ﻿# doesn't work env vars form zsh - only form .profile
-# kitty ma flagi --title i --name a st tylko -t/T i -n 
+# kitty ma flagi --title i --name a st -c -t/T i -n; wezterm --class; class to nazwa na statusbar
 # sudo -A or gksu - popup with password
 # pattern for 3 actions
 # super + {_,shift,ctrl} + z 
@@ -7,8 +7,6 @@
 #	bspc {desktop -f,node -d} '^{1-9,10}'
  # \~fullscreen "~\" toggle
  
-# restore from trash-cli doesn't work like I want 
-# echo 0 | trash-restore "$(trash-list | awk '{print $3}' | rofi -dmenu -threads 0 -monitor -4 -i -p "restore" rofi -theme-str 'window {width:  90%;}')"
 # make sxhkd reload its configuration files:
 super + Home
 	pkill -USR1 -x sxhkd
@@ -212,11 +210,14 @@ super + F{1,2,3,4,7,8,9,10,11,12}
 super + {_,shift,ctrl} + y
 	{ pomodoro.lua add, todo.lua add, gcal-add.lua }
 
-super + {_,shift,ctrl} + Delete 
-	{rmmpv-playing.sh, rmmpd-playing.sh, xkill}
+super + {shift,ctrl,_} + Delete 
+	{ rmmpv-playing.sh, \
+	rmmpd-playing.sh, \
+	echo 0 | trash-restore "$(trash-list | awk '\{print $3\}' | rofi -dmenu -threads 0 -monitor -4 -i -p "restore" rofi -theme-str 'window \{width:  90%;\}')"
+	}
 
-super + BackSpace
-	$TERM_LT -t top -n top -e btm
+super + {_,shift} + BackSpace
+	{$TERM_LT -t top -c top -e btm,xkill}
 
 
 # search
@@ -331,32 +332,26 @@ super + ctrl + u
 # MEDIA KEYS
 # ______________    
 # audio and mpd
+# volume manipulation
+super + {equal,plus}
+	pactl set-sink-volume "$(pacmd list-sinks | grep index | awk '\{print $3\}')" +{5,15}%
+super + {_,shift} + minus
+	pactl set-sink-volume "$(pacmd list-sinks | grep index | awk '\{print $3\}')" -{5,15}% 
 XF86Audio{Raise,Lower}Volume
 	pactl set-sink-volume 0 {+,-}10%
-XF86AudioMute
-	pactl set-sink-mute 0 toggle
-	# volume toggle
-super + {equal,plus}
-	pactl set-sink-volume 0 +{5,15}%
-	# ~/.i3/volume
-	# amixer sset Master {5,15}%+ && notify-send $(awk -F"[][]" '/Front Left:/ { print $2 }' <(amixer sget Master))
 
-# TODO stops working after switching to headset
-# Decrease volume
-super {_,shift +} + minus
-	pactl set-sink-volume 0 -{5,15}% 
-	# ~/.i3/volume
-	# amixer sset Master {5,15}%- && notify-send $(awk -F"[][]" '/Front Left:/ { print $2 }' <(amixer sget Master))
 #  toggle volume or audio channel 
 super + {_,shift,ctrl} + slash
 	{ amixer sset Master toggle, audio.sh toggle, audio.sh }
-	# pactl set-sink-mute 0 toggle
-
-super + shift + m
-	if ! pidof -x mpd; then mpd && mpc update; fi && scratchpad.sh music "$TERM_LT -t music -n music -e ncmpcpp" 
-
+XF86AudioMute
+	pactl set-sink-mute "$(pacmd list-sinks | grep index | awk '\{print $3\}')" toggle
 super + m
 	mpc toggle
+
+# start mpd
+super + shift + m
+	if ! pidof -x mpd; then mpd && mpc update; fi && scratchpad.sh music "$TERM_LT -c music -n music -e ncmpcpp" 
+
 # Changes to next/previous tracks
 super + {comma,period}
 	mpc {prev,next}
