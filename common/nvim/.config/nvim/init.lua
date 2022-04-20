@@ -599,7 +599,7 @@ local nullLs = require 'null-ls'
 local formatting = nullLs.builtins.formatting
 local diagnostics = nullLs.builtins.diagnostics
 nullLs.setup {
-	sources = {
+	sources = { -- :NullLsLog shows supported sources
 		diagnostics.shellcheck.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
 		diagnostics.selene.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },
 		diagnostics.yamllint.with { method = nullLs.methods.DIAGNOSTICS_ON_SAVE },

@@ -49,6 +49,7 @@ return require('packer').startup(function()
 	}
 	use {
 		'numToStr/Comment.nvim',
+		tag = 'v0.6', -- TODO update in 0.7
 		config = function()
 			require('Comment').setup()
 		end,

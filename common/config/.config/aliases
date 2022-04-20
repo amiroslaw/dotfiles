@@ -37,7 +37,7 @@ alias yahoo-key='cd $PRIVATE && java -jar $PRIVATE/yahoo-selenium.jar'
 # {{{ config files
 alias batalias='bat ~/.config/aliases'
 alias cfportfolio='nvim ~/.config/investing/portfolio.yaml'
-alias cfqpiv='nvim ~/.config/pqivrc'
+alias cfpqiv='nvim ~/.config/pqivrc'
 alias cfaliases='nvim ~/.config/aliases'
 alias cfalacritty='nvim ~/.config/alacritty/alacritty.yml'
 alias cfwez='nvim ~/.config/wezterm/wezterm.lua'
