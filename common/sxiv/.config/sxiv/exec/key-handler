@@ -14,5 +14,7 @@ do
 				# xclip -in -filter | tr '\n' ' ' | xclip -in -selection clipboard ;;
         "r")
                 convert -rotate 90 "$file" "$file" ;;
+        "t")
+                echo -n "$file" > 1 ;;
         esac
 done
