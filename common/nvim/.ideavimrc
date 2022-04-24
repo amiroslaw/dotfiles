@@ -1,5 +1,7 @@
 " vim:filetype=vim
-" https://gist.github.com/zchee/9c78f91cc5ad771c1f5d
+" https://github.com/JetBrains/ideavim
+" https://gist.github.com/zchee/9c78f91cc5ad771c1f5d actions
+" sometimes noremap doesn't work
 " TODO
 " zobaczyć jakie rzeczy nie są dostępne w ideavim i zbindować kilka rzeczy do tego 
 " zgrupowane akcji - jak dla gita; dla refactoringu, dla czegośtam
@@ -10,11 +12,10 @@
 "
 " przydałoby się zbindować:
 " java class diagram/ bena spring ee
-" c-a-7
 " What if I want to use visual mode during refactoring? 
 " Select mode is controlled by the keymodel and selectmode options. Remove template from the selectmode option to adjust this behavior.
 " set selectmode-=template
-" quick documentation - z ide
+" quick documentation - z ide c-q
 " ADD 
 " import 
 " max editor
@@ -39,8 +40,13 @@ set clipboard+=ideaput
 " PLUGINS
 set ideajoin
 set easymotion
+set NERDTree
+map <leader>n :NERDTreeToggle<cr>
+" navigation, open close tree
+let g:NERDTreeMapActivateNode='l'
+let g:NERDTreeMapJumpParent='h'
 
-" visual select and then S
+" visual select and then S, conflict with yssb
 set surround            
 " SurroundWith nie wiem czy działa                                       
 vnoremap <leader>s :action SurroundWith<cr>
@@ -49,7 +55,25 @@ nnoremap <leader>s :action SurroundWith<cr>
 set commentary			
 " <A + n> , <A + x>, <A + a> 
 set multiple-cursors    
+" set vim-highlightedyank
+Plug 'machakann/vim-highlightedyank'
+let g:highlightedyank_highlight_duration = 1000
 
+" copy something and griw or grr (works with visual mode)
+set ReplaceWithRegister
+" text object for argumentst; daa - delete, caa - edit
+set argtextobj
+" Easy Motion
+let g:EasyMotion_smartcase = 1
+map f <Plug>(easymotion-f)
+map F <Plug>(easymotion-F)
+map <leader>T <Plug>(easymotion-b)
+" t and s is used
+map <leader>t <Plug>(easymotion-w)
+" map <nowait> s <Plug>(easymotion-j)
+map s <Plug>(easymotion-j)
+map S <Plug>(easymotion-k)
+nmap <leader>. <Plug>(easymotion-repeat)
 
 " ACTIONS
 " problem with selection and s 
@@ -85,8 +109,8 @@ nnoremap <c-o> :action Back<cr>
 nnoremap <c-i> :action Forward<cr>
 " more like search
 " c-s-f
-vnoremap <a-s> :action FindInPath<CR> 
-nnoremap <a-s> :action FindInPath<CR> 
+vnoremap <c-s> :action FindInPath<CR> 
+nnoremap <c-s> :action FindInPath<CR> 
 
 nma mp :action GotoPreviousBookmark<cr>
 nma mn :action GotoNextBookmark<cr>
@@ -94,9 +118,13 @@ nma ma :action ShowBookmarks<cr>
 nma mm :action ToggleBookmark<cr>
 
 " lepiej nie używać taba
-" nnorema <tab> :action NextTab<cr>
-" nnoremap <s-tab> :action PreviousTab<cr>
-"
+nmap <c-s-h> :action PreviousTab <cr>
+nmap <c-s-l> :action NextTab<cr>
+
+nnoremap <leader>/ :nohlsearch<cr>
+
+
+
 "folds
 " zo 	open current fold
 " zO 	recursively open current fold
@@ -104,8 +132,8 @@ nma mm :action ToggleBookmark<cr>
 " zc 	close current fold
 " ExpandAllToLevel1                                  
 " don't work
-nnoremap zm :action CollapseAll<cr>
-nnoremap zr :action ExpandAll<cr>
+nmap zm :action CollapseAll<cr>
+nmap zr :action ExpandAll<cr>
 
 nnoremap <A-h> :action PrevSplitter<cr>
 inoremap <A-h> :action PrevSplitter<cr>
@@ -119,8 +147,10 @@ inoremap <A-j> :action MethodDown<cr>
 
 " code navigation
 " Moving lines 
-nmap <c-a-k> :action MoveLineUp<cr>
-nma  <c-a-j> :action MoveLineDown<cr>
+nnoremap <c-a-k> :action MoveLineUp<cr>
+nnoremap <c-a-j> :action MoveLineDown<cr>
+inoremap <c-a-j> <Esc>:m +1<CR>gi
+inoremap <c-a-k> <Esc>:m -2<CR>gi
 
 " OK but change mapping
 " Moving statements - IDK what does it do
@@ -151,9 +181,13 @@ nmap tu :action MembersPullUp<cr>
 
 
 " podobnej jest z alt-j i i f3 oraz pluginem- ogarnąć różnice. 
-" chyba nie działa 
+" chyba nie działa c-s-f7
 nnoremap <leader>l :action HighlightUsagesInFile<cr>
-nnoremap <leader>n :action NextOccurence<cr>
+nnoremap <c-n> :action GotoNextElementUnderCaretUsage<cr>
+" nnoremap <leader>n :action GotoNextElementUnderCaretUsage<cr>
+" nnoremap <leader>n :action NextOccurence<cr>
+
+" FindWordAtCaret
 " Hide All Tool Windows  fullscreen editor c-s-F12
 nnoremap <leader>e :action HideAllWindows<cr>
 
@@ -221,27 +255,19 @@ inoremap <C-d> <C-o>w
 nnoremap <Space> <C-d><cr> 
 
 " Error
-" don't work 
 " nmap <c-s> <F2>
 " nmap <c-s-s> <s-F2>
-nmap <c-s> :action GotoNextError<cr>
-nmap <c-s-s> :action GotoPreviousError<cr>
+nmap <a-s> :action GotoNextError<cr>
+nmap <a-s-s> :action GotoPreviousError<cr>
 nnoremap <leader>c :CodeCleanup<cr>
 
-nnoremap <leader>/ :nohlsearch<cr>
-
-" PLUGINS
-" Easy Motion
-let g:EasyMotion_smartcase = 1
-map f <Plug>(easymotion-f)
-map F <Plug>(easymotion-F)
-map <leader>T <Plug>(easymotion-b)
-" t and s is used
-map <leader>t <Plug>(easymotion-w)
-" map <nowait> s <Plug>(easymotion-j)
-map s <Plug>(easymotion-j)
-map S <Plug>(easymotion-k)
-nmap <leader>. <Plug>(easymotion-repeat)
+" # -------------------------------------------------------------------------
+" #                       Definitions
+" # -------------------------------------------------------------------------
+nmap <leader>dd <action>(QuickImplementations)
+nmap <leader>de <action>(ShowErrorDescription)
+nmap <leader>di <action>(QuickTypeDefinition)
+nmap <leader>dj <action>(QuickJavaDoc)
 
 " nadpisanie skrótów przez vim
 " ~/.config/JetBrains/IntelliJIdea2021.2/options/vim_settings.xml
@@ -321,3 +347,5 @@ sethandler <s-a-j> a:vim
 " nmap <leader>d :action DebugClass<cr>
 " nmap <leader>t :action RerunTests<cr>                                         
 " nmap <leader>T :action RerunFailedTests<cr>
+
+
