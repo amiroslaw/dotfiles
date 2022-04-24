@@ -1,31 +1,14 @@
-" vim:filetype=vim
 " https://github.com/JetBrains/ideavim
 " https://gist.github.com/zchee/9c78f91cc5ad771c1f5d actions
 " sometimes noremap doesn't work
-" TODO
-" zobaczyć jakie rzeczy nie są dostępne w ideavim i zbindować kilka rzeczy do tego 
-" zgrupowane akcji - jak dla gita; dla refactoringu, dla czegośtam
-" zobaczyć moje mappingi z vimrc/init
-"
+" :source ~/.ideavimrc
+" DON'T put a comment in the end of the keybinging
 " , for git
 " - for run
-"
-" przydałoby się zbindować:
-" java class diagram/ bena spring ee
-" What if I want to use visual mode during refactoring? 
-" Select mode is controlled by the keymodel and selectmode options. Remove template from the selectmode option to adjust this behavior.
-" set selectmode-=template
-" quick documentation - z ide c-q
-" ADD 
-" import 
-" max editor
-" refactor this
-" inline var - dodanie go do parametru
-" shell - open terminal 
-" parameter info
-"
+
 
 " SETS
+" https://github.com/JetBrains/ideavim/wiki/%22set%22-commands
 let mapleader = ";"
 set hlsearch
 set ignorecase
@@ -34,14 +17,31 @@ set visualbell
 set history=1000
 set clipboard=unnamed
 set clipboard+=ideaput
-" set relativenumber
+set idearefactormode=keep
+set ideawrite=all
+set scrolloff=5 
+set ideastatusicon=gray
+set ideajoin=true
 " https://github.com/JetBrains/ideavim/wiki/%60ideajoin%60-examples
+" set relativenumber
 
-" PLUGINS
-set ideajoin
+" # -------------------------------------------------------------------------
+" #                       PLUGINS
+" set exchange - interesting
+" Additional motions / text objects:
+"   s - Surround. Ex: cis" = change inside surrounding quotes
+"   a - Argument. Ex: cia = change inner (function) argument
+"   e - Entire bufer. ex: dae = delete all buffer (content)
+" Additional commands:
+"   gc<motion> - Comment. Ex: gcc = comment line
+"   gr<motion> - ReplaceWithRegister. Ex: grr = replace line with unnamed register
+"   cx<motion> - Exchange/Transpose. Ex: cxiw, (move to other word), . = swap two words. Also: cxc, X
+"   <A-n>, <A-x>, <A-p>, g<A-n> - Multiple cursors.
+" # -------------------------------------------------------------------------
 set easymotion
 set NERDTree
-map <leader>n :NERDTreeToggle<cr>
+map <leader>N :NERDTreeToggle<cr>
+map <leader>n <Action>(SelectInProjectView)
 " navigation, open close tree
 let g:NERDTreeMapActivateNode='l'
 let g:NERDTreeMapJumpParent='h'
@@ -63,6 +63,7 @@ let g:highlightedyank_highlight_duration = 1000
 set ReplaceWithRegister
 " text object for argumentst; daa - delete, caa - edit
 set argtextobj
+" let g:argtextobj_pairs="[:],(:),<:>"
 " Easy Motion
 let g:EasyMotion_smartcase = 1
 map f <Plug>(easymotion-f)
@@ -75,93 +76,101 @@ map s <Plug>(easymotion-j)
 map S <Plug>(easymotion-k)
 nmap <leader>. <Plug>(easymotion-repeat)
 
-" ACTIONS
+" VIM MAPS
+inoremap <C-a> <C-o>b
+inoremap <C-d> <C-o>w
+nnoremap <Space> <C-d><cr> 
+
+" # -------------------------------------------------------------------------
+" #                       GOTO and JUMP
+" # -------------------------------------------------------------------------
 " problem with selection and s 
 " nnoremap s <Nop>
-" Ctrl + F12 in idea.
-nnoremap gh :action FileStructurePopup<CR> 
 " Perhaps just use the Idea shortcut Ctrl-Alt-B
 " Alt + N, then m (through the menu bar) also seems to work, but it is non-unique.
 nnoremap gd :action GotoDeclaration<CR>
-" methid in interface
-nnoremap gm :action GotoSuperMethod<CR>
+" method in interface
+nnoremap gm :action GotoSuperMethod<CR> 
 nnoremap gi :action GotoImplementation<CR>
-" ala c-a-7
+" similar to c-a-7
 nnoremap gu :action ShowUsages<CR>	
-" podobne ale w nowym oknie
-" nnoremap gu :action FindUsages<CR>	
+" in new window
+nnoremap gU :action FindUsages<CR> 
+
 nmap gf :action GotoFile<cr>
 nmap gj :action GotoClass<cr>
 nmap gs :action GotoSymbol<cr>
 nmap ga :action GotoAction<cr>
-" c-e
-nmap gr :action RecentFiles<cr>
-"like c-o in vim
-nnoremap gl :action JumpToLastChange<CR> 
-nmap gL :action RecentLocations<cr>
 
-" check if works
-nmap gn :action Diff.NextChange<cr>
-nmap gp :action Diff.PrevChange<cr>
+noremap gy        :action GotoTypeDeclaration<CR>
+noremap gt        :action GotoTest<CR>
 
 " built-in navigation to navigated items works better than c-o
 nnoremap <c-o> :action Back<cr>
 nnoremap <c-i> :action Forward<cr>
-" more like search
-" c-s-f
+nmap gl :action RecentLocations<cr>
+"like c-o in vim don't work?
+nnoremap gL :action JumpToLastChange<CR> 
+noremap gr  :action RecentChangedFiles<CR>
+
+nnoremap <leader>l :action HighlightUsagesInFile<cr>
+nnoremap <c-n> :action GotoNextElementUnderCaretUsage<cr>
+" nnoremap <leader>n :action NextOccurence<cr>
+" Error F2
+nmap <a-s> :action GotoNextError<cr>
+nmap <a-s-s> :action GotoPreviousError<cr>
+
+nnoremap gh :action FileStructurePopup<CR> 
+map <C-h> :action TypeHierarchy<CR>
+" noremap <Leader>ic :action CallHierarchy<CR>
+" noremap <Leader>im :action MethodHierarchy<CR>
+
+" more like search c-s-f
 vnoremap <c-s> :action FindInPath<CR> 
 nnoremap <c-s> :action FindInPath<CR> 
 
-nma mp :action GotoPreviousBookmark<cr>
-nma mn :action GotoNextBookmark<cr>
-nma ma :action ShowBookmarks<cr>
-nma mm :action ToggleBookmark<cr>
+" # -------------------------------------------------------------------------
+" #                       code navigation
+" # -------------------------------------------------------------------------
+" Moving lines or code block
+nnoremap <c-a-k> :action MoveLineUp<cr>
+nnoremap <c-a-j> :action MoveLineDown<cr>
+inoremap <c-a-j> <Esc>:m +1<CR>gi
+inoremap <c-a-k> <Esc>:m -2<CR>gi
 
-" lepiej nie używać taba
-nmap <c-s-h> :action PreviousTab <cr>
-nmap <c-s-l> :action NextTab<cr>
-
-nnoremap <leader>/ :nohlsearch<cr>
-
-
-
-"folds
-" zo 	open current fold
-" zO 	recursively open current fold
-" zC 	recursively close current fold
-" zc 	close current fold
-" ExpandAllToLevel1                                  
-" don't work
-nmap zm :action CollapseAll<cr>
-nmap zr :action ExpandAll<cr>
-
-nnoremap <A-h> :action PrevSplitter<cr>
-inoremap <A-h> :action PrevSplitter<cr>
-nnoremap <A-l> :action NextSplitter<cr>
-inoremap <A-l> :action NextSplitter<cr>
+nmap <s-a-k> :action MoveStatementUp<cr>
+nmap <s-a-j> :action MoveStatementDown<cr>
 
 nnoremap <A-k> :action MethodUp<cr>
 inoremap <A-k> :action MethodUp<cr>
 nnoremap <A-j> :action MethodDown<cr>
 inoremap <A-j> :action MethodDown<cr>
 
-" code navigation
-" Moving lines 
-nnoremap <c-a-k> :action MoveLineUp<cr>
-nnoremap <c-a-j> :action MoveLineDown<cr>
-inoremap <c-a-j> <Esc>:m +1<CR>gi
-inoremap <c-a-k> <Esc>:m -2<CR>gi
+" # -------------------------------------------------------------------------
+" #                       tabs, panes and bookmarks
+" better not to bind to TAB
+" # -------------------------------------------------------------------------
+nnoremap <A-h> :action PrevSplitter<cr>
+inoremap <A-h> :action PrevSplitter<cr>
+nnoremap <A-l> :action NextSplitter<cr>
+inoremap <A-l> :action NextSplitter<cr>
 
-" OK but change mapping
-" Moving statements - IDK what does it do
-nmap <s-a-k> :action MoveStatementUp<cr>
-nmap <s-a-j> :action MoveStatementDown<cr>
+nma mp :action GotoPreviousBookmark<cr>
+nma mn :action GotoNextBookmark<cr>
+nma ma :action ShowBookmarks<cr>
+nma mm :action ToggleBookmark<cr>
 
-" Refactorings -generate
+nmap <c-s-h> :action PreviousTab <cr>
+nmap <c-s-l> :action NextTab<cr>
+nmap Zz :action ReopenClosedTab<cr>
+
+" # -------------------------------------------------------------------------
+" #                       Refactorings -generate
+" # -------------------------------------------------------------------------
 vmap T :action Refactorings.QuickListPopupAction<cr>
 nmap T :action Refactorings.QuickListPopupAction<cr>
+noremap tr :action RefactoringMenu<CR>
 " Shift + F6 in idea.  Alt + R, then R (through the menu bar) also seems to work fine.
-" map <Leader>r :action RenameElement<CR>
 nmap tt :action RenameElement<cr>
 nmap ti :action OptimizeImports<cr>
 nmap tg :action Generate<cr>
@@ -174,26 +183,21 @@ nmap tp :action IntroduceParameter<cr>
 nmap tv :action IntroduceVariable<cr>
 nmap td :action MemberPushDown<cr>
 nmap tu :action MembersPullUp<cr>
-
-
+noremap tl :action Inline<CR>
+noremap to :action Move<CR>
+nmap <leader>r :action Replace<cr>
+noremap tA :action AnalyzeMenu<CR>
+nmap ta :action InspectCode<cr>
+nnoremap <leader>c :CodeCleanup<cr>
 " nmap tp :action IntroduceFunctionalParameter<cr>
 " nmap tm :action IntroduceParameterObject<cr>
 
-
-" podobnej jest z alt-j i i f3 oraz pluginem- ogarnąć różnice. 
-" chyba nie działa c-s-f7
-nnoremap <leader>l :action HighlightUsagesInFile<cr>
-nnoremap <c-n> :action GotoNextElementUnderCaretUsage<cr>
-" nnoremap <leader>n :action GotoNextElementUnderCaretUsage<cr>
-" nnoremap <leader>n :action NextOccurence<cr>
-
-" FindWordAtCaret
-" Hide All Tool Windows  fullscreen editor c-s-F12
-nnoremap <leader>e :action HideAllWindows<cr>
-
-" Maybe
-map <C-h> :action TypeHierarchy<CR>
-" VCS operations git
+" # -------------------------------------------------------------------------
+" #                       VCS operations and git
+" # -------------------------------------------------------------------------
+"maybe better keys
+nnoremap gn :action VcsShowNextChangeMarker<cr> 
+nnoremap gp :action VcsShowPrevChangeMarker<cr>
 nmap ,y :action Vcs.Show.Local.Changes<cr>                          
 nmap ,, :action Vcs.QuickListPopupAction<cr>
 " nmap ,b :action Vcs.UpdateProject<cr>
@@ -213,9 +217,9 @@ nmap ,vs :action Compare.Selected<cr>
 nmap ,vv :action Compare.SameVersion<cr>
 nmap ,vl :action Compare.LastVersion<cr>
 " nie wiem jak compare with branch
+noremap ,vc  :action RecentChanges<CR>
 
-" dont work
-nmap ,L :action Vcs.History<cr>
+nmap ,L :action Vcs.ShowTabbedFileHistory<cr>
 nmap ,M :action Git.Menu<cr>
 " nmap ,b :action Vcs.Checkout<cr>
 nmap ,c :action Git.CheckoutRevision<cr>
@@ -224,42 +228,23 @@ nmap ,k :action ChangesView.Commit<cr>
 " LocalHistory
 nmap ,h :action LocalHistory.ShowHistory<cr>
 nmap ,H :action LocalHistory.ShowSelectionHistory<cr>
-
 " VcsToobarActions                                  
 " nmap <leader>yr :action Git.ResolveConflicts<cr>                          
-"
-nmap <leader>m :action Maven.Reimport <cr>
-" Maven.ReimportProject → jest jeszcze 
-" External GVim - trzeba ustawić w externa tools w ide na termite -e nvim lub
-" jakiś klient nvjm
-nmap <leader>v :action Tool_External Tools_gvim<cr>
-" nmap <leader>Q :action ReopenClosedTab<cr>
-nmap <leader>r :action Replace<cr>
 
-" nmap  :action JShell.Console
-" Building, Running and Debugging
-" nmap ,c :action CompileDirty<cr>
-" nmap ,b :action Debug<cr>
-" nmap ,c :action RunClass<cr>
 
+" # -------------------------------------------------------------------------
+" #                       Building, Running and Debugging
+" # -------------------------------------------------------------------------
 nmap -r :action Run<cr>
 nmap -R :action RunAnything<cr>
 nmap -d :action Debug<cr>
 nmap -t :action RerunTests<cr>                                         
 nmap -T :action RerunFailedTests<cr>
-
-" MAPS
-" IDK what it is 
-inoremap <C-a> <C-o>b
-inoremap <C-d> <C-o>w
-nnoremap <Space> <C-d><cr> 
-
-" Error
-" nmap <c-s> <F2>
-" nmap <c-s-s> <s-F2>
-nmap <a-s> :action GotoNextError<cr>
-nmap <a-s-s> :action GotoPreviousError<cr>
-nnoremap <leader>c :CodeCleanup<cr>
+nmap -D :action DebugClass<cr>
+nmap -c :action RunClass<cr>
+map <leader>b <Action>(ToggleLineBreakpoint)
+nmap -j :action JShell.Console<cr>
+" nmap ,c :action CompileDirty<cr>
 
 " # -------------------------------------------------------------------------
 " #                       Definitions
@@ -268,9 +253,34 @@ nmap <leader>dd <action>(QuickImplementations)
 nmap <leader>de <action>(ShowErrorDescription)
 nmap <leader>di <action>(QuickTypeDefinition)
 nmap <leader>dj <action>(QuickJavaDoc)
+noremap <Leader>dp :action ParameterInfo<CR>
+noremap <Leader>da :action QuickActions<CR> 
 
-" nadpisanie skrótów przez vim
+"folds
+" zo 	open current fold
+" zO 	recursively open current fold
+" zC 	recursively close current fold
+" zc 	close current fold
+" ExpandAllToLevel1                                  
+" don't work
+nmap zm :action CollapseAll<cr>
+nmap zr :action ExpandAll<cr>
+
+
+nnoremap <leader>/ :nohlsearch<cr>
+
+" Hide All Tool Windows  fullscreen editor c-s-F12
+nnoremap <leader>e :action HideAllWindows<cr>
+nmap <leader>m :action Maven.Reimport <cr>
+" Maven.ReimportProject → jest jeszcze 
+" External GVim - trzeba ustawić w externa tools w ide na termite -e nvim lub
+" jakiś klient nvim
+nmap <leader>v :action Tool_External Tools_gvim<cr>
+
+" # -------------------------------------------------------------------------
+" #                       Override intellij keybingings
 " ~/.config/JetBrains/IntelliJIdea2021.2/options/vim_settings.xml
+" # -------------------------------------------------------------------------
 sethandler <c-c> a:vim
 sethandler <c-u> a:vim
 sethandler <c-a> a:vim
@@ -292,60 +302,40 @@ sethandler <s-a-j> a:vim
 
 
 " MAYBE LATER
-" Inspectioncode
-" nmap <leader>rc :action InspectCode<cr>
 "
-" NOT NEEDED
+" uppercase last inserted word - c-s-u do the same
+" imap <C-l> <Esc>bgUawea 
+" GitFileActions, GitRepositoryActions, Git.ResolveConflicts)
 
+" NOT NEEDED
 " shift shift
 " nnoremap ge :action SearchEverywhere<CR> 
 " inoremap ge :action SearchEverywhere<CR> 
+" c-e don't work but I have RecentChangedFiles
+" nmap gr :action RecentFiles<cr>
+
+" test
+ " a-cr
+noremap <CR>      :action ShowIntentionActions<CR>
+
+" TODO
+" zobaczyć jakie rzeczy nie są dostępne w ideavim i zbindować kilka rzeczy do tego 
+" zgrupowane akcji - jak dla gita; dla refactoringu, dla czegośtam
+" zobaczyć moje mappingi z vimrc/init
 "
-" This is Ctrl-W in the default keymap, but we are using it for Vim.
-" map <C-k> :action EditorSelectWord<CR>   
-
-" nnoremap <A-h> <C-w>h
-" nnoremap <A-j> <C-w>j
-" nnoremap <A-k> <C-w>k
-" nnoremap <A-l> <C-w>l
-" inoremap <A-h> <C-\><C-N><C-w>h
-" inoremap <A-j> <C-\><C-N><C-w>j
-" inoremap <A-k> <C-\><C-N><C-w>k
-" inoremap <A-l> <C-\><C-N><C-w>l
-
-" SETTINGS
-" 'clipboard'      'cb'    clipboard options
-" 'digraph'        'dg'    enable the entering of digraphs in Insert mode
-" 'gdefault'       'gd'    the ":substitute" flag 'g' is default on
-" 'history'        'hi'    number of command-lines that are remembered
-" 'hlsearch'       'hls'   highlight matches with last search pattern
-" 'ignorecase'     'ic'    ignore case in search patterns
-" 'iskeyword'      'isk'   defines keywords for commands like 'w', '*', etc.
-" 'incsearch'      'is'    show where search pattern typed so far matches
-" 'matchpairs'     'mps'   pairs of characters that "%" can match
-" 'nrformats'      'nf'    number formats recognized for CTRL-A command
-" 'number'         'nu'    print the line number in front of each line
-" 'relativenumber' 'rnu'   show the line number relative to the line with the cursor
-" 'scroll'         'scr'   lines to scroll with CTRL-U and CTRL-D
-" 'scrolljump'     'sj'    minimum number of lines to scroll
-" 'scrolloff'      'so'    minimum nr. of lines above and below cursor
-" 'selection'      'sel'   what type of selection to use
-" 'showmode'       'smd'   message on status line to show current mode
-" 'sidescroll'     'ss'    minimum number of columns to scroll horizontal
-" 'sidescrolloff'  'siso'  min. nr. of columns to left and right of cursor
-" 'smartcase'      'scs'   no ignore case when pattern has uppercase
-" 'timeout'        'to'    use timeout for mapped key sequences
-" 'tieeoutlen'     'tm'    time that is waited for a mapped key sequence
-" 'undolevels'     'ul'    maximum number of changes that can be undone
-" 'viminfo'        'vi'    information to remember after restart
-" 'visualbell'     'vb'    use visual bell instead of beeping
-" 'wrapscan'       'ws'    searches wrap around the end of the file
+" przydałoby się zbindować:
+" java class diagram/ bena spring ee
+" What if I want to use visual mode during refactoring? 
+" Select mode is controlled by the keymodel and selectmode options. Remove template from the selectmode option to adjust this behavior.
+" set selectmode-=template
+" quick documentation - z ide c-q
+" ADD 
+" import 
+" max editor
+" refactor this
+" inline var - dodanie go do parametru
+" shell - open terminal 
+" parameter info
 "
-"
-" free keymap
-" nmap <leader>R :action RunAnything<cr>
-" nmap <leader>d :action DebugClass<cr>
-" nmap <leader>t :action RerunTests<cr>                                         
-" nmap <leader>T :action RerunFailedTests<cr>
 
-
+" vim:filetype=vim
