@@ -25,7 +25,8 @@ List of the options:
 flags (short options) in a format: -ca
 	d - debug mode
 	c - adds daily pomodoro counter in the status
-	a - sound alert with notification
+	a - sound alert
+	n - notification
 	j - display pomodoro history in JSON format
 	s - show secunds in the status - not implemented
 

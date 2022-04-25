@@ -316,7 +316,7 @@ sethandler <s-a-j> a:vim
 
 " test
  " a-cr
-noremap <CR>      :action ShowIntentionActions<CR>
+" noremap <CR>      :action ShowIntentionActions<CR>
 
 " TODO
 " zobaczyć jakie rzeczy nie są dostępne w ideavim i zbindować kilka rzeczy do tego 

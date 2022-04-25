@@ -31,7 +31,9 @@ alias drop='drop.sh'
 alias remind='$path_script/remind.sh'
 alias mag='$path_script/magnet.sh "$(xclip -o -selection clipboard)"'
 alias crypto='investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)'
-alias yahoo-key='cd $PRIVATE && java -jar $PRIVATE/yahoo-selenium.jar'
+alias yahoo-key='cd $PRIVATE && java -jar $PRIVATE/selenium.jar yahoo'
+alias selenium='cd $PRIVATE && java -jar $PRIVATE/selenium.jar '
+alias gry='$java8 -jar ~/Documents/Ustawienia/sync/grywalizacja/Grywalizacja.jar &'
 #}}}
 
 # {{{ config files
@@ -120,7 +122,6 @@ alias stowd='stow -vDt ~ '
 alias fm='vifm'
 alias js='~/.sdkman/candidates/java/10.0.1-oracle/bin/jshell'
 alias exodus='~/Exe/program_files/Exodus/Exodus &'
-alias gry='$java8 -jar ~/Documents/Ustawienia/sync/grywalizacja/Grywalizacja.jar &'
 alias duh='du -sh '
 alias dudepth='du -h --max-depth'
 alias gs='groovysh'
