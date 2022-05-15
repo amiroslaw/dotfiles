@@ -256,6 +256,17 @@ fs() {
   rg --files-with-matches --no-messages "$1" | fzf --preview "bat --style=numbers --color=always --line-range :500 {}"
   # rg --files-with-matches --no-messages "$1" | fzf --preview "highlight -O ansi -l {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 }
+fi() {
+    # save newline separated string into an array
+    mapfile -t website <<< "$(buku -p -f 5 | column -ts$'\t' | fzf --multi)"
+
+    # open each website
+    for i in "${website[@]}"; do
+        index="$(echo "$i" | awk '{print $1}')"
+        buku -p "$index"
+        buku -o "$index"
+    done
+}
 # }}}
 
 # {{{ FASD

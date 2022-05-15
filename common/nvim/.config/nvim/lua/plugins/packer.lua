@@ -15,9 +15,7 @@ return require('packer').startup(function()
 	use 'MattesGroeger/vim-bookmarks'
 	use 'majutsushi/tagbar'
 	use 'mhinz/vim-startify' -- start screen
-	-- use { 'goolord/alpha-nvim', config = function () require'alpha'.setup(require'alpha.themes.startify'.opts) end } -- dont know how to opening multiple files
 	use { 'mbbill/undotree', cmd = { 'UndotreeToggle' } }
-	-- use 'vim-scripts/YankRing.vim' -- fix keybinding
 	use 'bfredl/nvim-miniyank'
 	-- CODE
 	use 'tpope/vim-surround'
@@ -28,7 +26,6 @@ return require('packer').startup(function()
 	use { 'aserebryakov/vim-todo-lists', tag = '0.7.1' }
 	use { 'kabbamine/lazyList.vim', cmd = { 'LazyList' } }
 	-- asciidoctor
-	-- use {'habamax/vim-asciidoctor', ft = {'asciidoctor', 'asciidoc', 'adoc'}}
 	use { 'habamax/vim-asciidoctor', ft = { 'asciidoctor' } }
 	-- markdown
 	use { 'plasticboy/vim-markdown', ft = { 'markdown' } }
@@ -49,7 +46,6 @@ return require('packer').startup(function()
 	}
 	use {
 		'numToStr/Comment.nvim',
-		tag = 'v0.6', -- TODO update in 0.7
 		config = function()
 			require('Comment').setup()
 		end,
@@ -116,16 +112,8 @@ return require('packer').startup(function()
 	}
 
 	use 'nvim-lualine/lualine.nvim'
-	use 'akinsho/bufferline.nvim'
-	use {
-		'glacambre/firenvim',
-		run = function()
-			vim.fn['firenvim#install'](0)
-		end,
-	}
-	-- use { "folke/which-key.nvim", config = function() require("which-key").setup { } end }
-
-	use { 'kdheepak/lazygit.nvim', cmd = { 'LazyGit' } }
+	use {'akinsho/bufferline.nvim', branch = 'main',}
+	use { 'kdheepak/lazygit.nvim', branch = 'main', cmd = { 'LazyGit' } }
 	-- COLORSCHEMES
 	-- https://www.dunebook.com/best-vim-themes/
 	-- https://vimcolorschemes.com/top

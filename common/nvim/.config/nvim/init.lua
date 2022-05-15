@@ -29,7 +29,7 @@ require('onedark').load()
 vim.o.termguicolors = true
 -- end
 vim.b.buftype = '' -- fix Cannot write buftype option is set
-vim.o.laststatus = 2
+vim.o.laststatus = 3
 -- podpowiedzi
 vim.o.wildmode = 'longest,list,full'
 --" Status bar
@@ -41,24 +41,6 @@ vim.o.linebreak = true
 vim.cmd 'syntax enable'
 vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
 
-<<<<<<< HEAD
-vim.cmd [[
-	autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif 
-	au BufRead,BufNewFile *.json set filetype=json
-	autocmd BufNewFile,BufRead \*.{md,mdwn,mkd,mkdn,mark,markdown\*} set filetype=markdown
-	autocmd FileType java,javascript,typescript,css,scss,lua setlocal foldmethod=syntax
-	autocmd FileType asciidoctor setlocal foldmethod=expr
-	augroup highlight_yank
-		autocmd!
-		autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank {timeout=600}
-	augroup END
-	  augroup packer_user_config
-		autocmd!
-		autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-	  augroup end
-	autocmd BufEnter term://* startinsert
-]]
-=======
 -- -------------------------------------------------------------------------
 --                       Autocommands
 -- -------------------------------------------------------------------------
@@ -104,7 +86,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   command = "silent! lua vim.highlight.on_yank {timeout=600}",
   group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }) -- clear true is default
 })
->>>>>>> 8e2bada (add qb mpv and mpvc)
 -- doesn't work with keybinding in zsh
 	-- autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif
 
@@ -257,11 +238,11 @@ vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
 --""""""""""""""""""
 -- current line
 -- xmap('il', '^vg_')
-xmap('ll', '^og_')
-omap('ll', ':normal vll<CR>')
+xmap('ol', '^og_')
+omap('ol', ':normal vol<CR>')
 -- all document
-xmap('gl', ':<c-u>normal! G$Vgg0<cr>')
-omap('gl', ':<c-u>normal! GVgg<cr>')
+xmap('oa', ':<c-u>normal! G$Vgg0<cr>')
+omap('oa', ':<c-u>normal! GVgg<cr>')
 
 
 --"""""""""""""""""""
@@ -559,7 +540,7 @@ require('bufferline').setup {
 	},
 }
 
-require('lualine').setup { options = { theme = 'onedark', component_separators = '|' } }
+require('lualine').setup { options = { theme = 'onedark', component_separators = '|',  globalstatus = true, } }
 
 -- -------------------------------------------------------------------------
 --                       -- nvim-cmp
@@ -655,75 +636,9 @@ nullLs.setup {
 			extra_args = { '--config-path', vim.fn.expand '~/.config/stylua/stylua.toml' },
 		},
 		formatting.prettier,
-		formatting.clang_format_md.with {
+		formatting.clang_format.with {
 			filetypes = { 'java', 'asciidoctor' },
 		},
 	},
 	debug = false,
 }
-
--- -------------------------------------------------------------------------
---                       -- firevim
--- https://github.com/glacambre/firenvim
--- -------------------------------------------------------------------------
-function IsFirenvimActive(event)
-	if vim.g.enable_vim_debug then
-		print('IsFirenvimActive, event: ', vim.inspect(event))
-	end
-	if vim.fn.exists '*nvim_get_chan_info' == 0 then
-		return 0
-	end
-	local ui = vim.api.nvim_get_chan_info(event.chan)
-	if vim.g.enable_vim_debug then
-		print('IsFirenvimActive, ui: ', vim.inspect(ui))
-	end
-	local is_firenvim_active_in_browser = (ui['client'] ~= nil and ui['client']['name'] ~= nil)
-	if vim.g.enable_vim_debug then
-		print('is_firenvim_active_in_browser: ', is_firenvim_active_in_browser)
-	end
-	return is_firenvim_active_in_browser
-end
-
-function OnUIEnter(event)
-	if IsFirenvimActive(event) then
-		vim.opt.laststatus = 0 -- Disable the status bar
-		vim.opt.lines = 15
-		vim.opt.columns = 100
-		-- vim.cmd 'set guifont=SauceCodePro\\ Nerd\\ Font:h18' -- Increase the font size
-	end
-end
-
-vim.g.firenvim_config = {
-	globalSettings = {
-		ignoreKeys = { all = { '<C-w>', '<C-n>' } },
-	},
-	localSettings = {
-		[ [[.*]] ] = {
-			cmdline = 'firenvim',
-			priority = 0,
-			selector = 'textarea:not([readonly]):not([class="handsontableInput"]), div[role="textbox"]',
-			takeover = 'always',
-		},
-		[ [[^https?://[^/]*youtu\.?be[^/]*/]] ] = {
-			selector = '#contenteditable-root',
-		},
-		[ [[.*mail\.google\.com*]] ] = {
-			prioirty = 9,
-			takeover = 'never',
-		},
-		[ [[.*docs\.google\.com.*]] ] = {
-			prioirty = 9,
-			takeover = 'never',
-		},
-		[ [[.*facebook\.com*]] ] = {
-			prioirty = 9,
-			takeover = 'never',
-		},
-		[ [[.*deepl\.com*]] ] = {
-			prioirty = 9,
-			takeover = 'never',
-		},
-	},
-}
-
-vim.cmd [[ autocmd UIEnter * :call luaeval('OnUIEnter(vim.fn.deepcopy(vim.v.event))') ]]
