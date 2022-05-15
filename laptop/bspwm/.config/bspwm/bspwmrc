@@ -85,6 +85,8 @@ bspc rule -a '(?i)zenity' state=floating
 bspc rule -a reminder state=floating
 bspc rule -a menu state=floating
 bspc rule -a Pqiv state=fullscreen
+bspc rule -a qb state=floating rectangle=700x400+0+0 center=true
+bspc rule -a audio state=floating rectangle=500x150+0+0 center=true
 
 ##  This script balances all windows when new one is spawned 
 #euclid_balancer &

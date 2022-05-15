@@ -41,6 +41,7 @@ vim.o.linebreak = true
 vim.cmd 'syntax enable'
 vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
 
+<<<<<<< HEAD
 vim.cmd [[
 	autocmd BufReadPost * if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif 
 	au BufRead,BufNewFile *.json set filetype=json
@@ -57,6 +58,53 @@ vim.cmd [[
 	  augroup end
 	autocmd BufEnter term://* startinsert
 ]]
+=======
+-- -------------------------------------------------------------------------
+--                       Autocommands
+-- -------------------------------------------------------------------------
+vim.api.nvim_create_autocmd( -- go to last loc when opening a buffe
+	"BufReadPost",
+    { command = [[if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif]] })
+vim.api.nvim_create_autocmd(
+	"FileType", {
+	pattern = {'lua','java','javascript','typescript','css','scss'},
+	command = [[setlocal foldmethod=syntax]] 
+	})
+vim.api.nvim_create_autocmd(
+	"FileType", {
+	pattern = {'asciidoc'},
+	command = [[setlocal foldmethod=expr]] 
+	})
+vim.api.nvim_create_autocmd(
+	{"BufRead","BufNewFile"}, {
+	pattern = {'*.json'},
+	command = [[set filetype=json]] 
+	})
+vim.api.nvim_create_autocmd(
+	{"BufRead","BufNewFile"}, {
+	pattern = {'/tmp/*'},
+	command = [[set filetype=text]] 
+	})
+vim.api.nvim_create_autocmd(
+	{"BufRead","BufNewFile"}, {
+	pattern = {'*.{md,mdwn,mkd,mkdn,mark,markdown}'},
+	command = [[set filetype=markdown]] 
+	})
+vim.api.nvim_create_autocmd( -- Prefer Neovim terminal insert mode to normal mode. IDK if it's default mode
+	"BufEnter", {
+	pattern = {'term://*'},
+	command = [[startinsert]]
+	})
+vim.api.nvim_create_autocmd("BufWritePost", {
+	pattern = {'plugins.lua'},
+	command = "source <afile> | PackerCompile",
+	group = vim.api.nvim_create_augroup("packerCompile", { clear = true }) -- clear true is default
+})
+vim.api.nvim_create_autocmd("TextYankPost", {
+  command = "silent! lua vim.highlight.on_yank {timeout=600}",
+  group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }) -- clear true is default
+})
+>>>>>>> 8e2bada (add qb mpv and mpvc)
 -- doesn't work with keybinding in zsh
 	-- autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif
 

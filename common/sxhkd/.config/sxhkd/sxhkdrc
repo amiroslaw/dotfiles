@@ -284,10 +284,11 @@ ctrl + shift + z
 	$ROFI/clipster/roficlip
 
 # clipster and notes; add J nad fix previous-copy primary
-super + c ; {c,g,p,r,R,j,J,n,N,k,K,l,L,w}
+super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}
 	{dunstify options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from clip\nl(L)-note from sel\nw -write note", \
 	clipster -sc, \
 	$ROFI/clipster/roficlip-primary, \
+	clipster -po, \
 	clipster -cr, clipster -r, \
 	clipster.lua join clipboard, clipster.lua join primary, \
 	clipster.lua next clipboard, clipster.lua next primary, \

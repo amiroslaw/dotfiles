@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Author: palb91
+# Date:   2022
+#
+# Qutescript that perform a normal download on pages and a file download on
+# pdfjs
+#
+# In config.py:
+#   bind('gd', 'spawn -u jsdownload')
+
+set -e
+
+# Default command, if not in pdfjs
+QUTE_CMD=download
+
+# Check if using pdfjs
+[ "${QUTE_URL#qute://pdfjs/}" = "${QUTE_URL}" ] \
+    || QUTE_CMD='jseval document.getElementById("download").click()'
+
+echo "${QUTE_CMD}" >"${QUTE_FIFO}"
