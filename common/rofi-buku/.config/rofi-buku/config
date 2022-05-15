@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+_rofi () {
+    rofi -dmenu -i -threads 0 -monitor -4 -l 33 -theme-str 'window {width:  1000px;}' "$@"
+    # rofi -dmenu -i -threads 0 -monitor -4 -matching fuzzy -multi-select -theme-str 'window {width:  80%;}' "$@" # script doesn't support multi select
+}
+
+# display settings
+# if (type == 1)  id  url  tags
+# if (type == 2)  id  title  tags
+# if (type == 3)  id  title  url  tags
+display_type=1
+max_str_width=60
+
+# keybindings
+switch_view="Alt+Tab"
+new_bookmark="Alt+n"
+actions="Alt+a"
+edit="Alt+e"
+delete="Alt+d"
+
+# colors
+help_color="#2d7ed8"
