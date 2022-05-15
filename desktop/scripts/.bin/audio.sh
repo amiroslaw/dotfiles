@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -uo pipefail
+set -o pipefail
 
 if [[ "$1" == toggle ]]; then
 	SPEAKERS=$(pacmd list-cards | grep 'active' | grep '21')

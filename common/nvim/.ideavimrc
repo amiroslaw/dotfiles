@@ -275,7 +275,7 @@ nmap <leader>m :action Maven.Reimport <cr>
 " Maven.ReimportProject → jest jeszcze 
 " External GVim - trzeba ustawić w externa tools w ide na termite -e nvim lub
 " jakiś klient nvim
-nmap <leader>v :action Tool_External Tools_gvim<cr>
+nmap <leader>v :action Tool_External Tools_vim<cr>
 
 " # -------------------------------------------------------------------------
 " #                       Override intellij keybingings
