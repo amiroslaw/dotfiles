@@ -188,8 +188,9 @@ super + shift + Return
 super + {x,v} 
 	xdotool click --clearmodifiers {1,2}
 
-super + {_,shift} + i
-	{gksu net-restart.sh, \
+super + {_,shift, ctrl} + i
+	{ rofi-buku, \
+	gksu net-restart.sh, \
 	nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
 	
 super + F{1,2,3,4,7,8,9,10,11,12}

@@ -93,6 +93,7 @@ config.bind('<Ctrl-m>', 'set-cmd-text :set-mark ')
 config.bind('xp', 'process')
 config.bind('ya', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-formatted link”
 config.bind('<Ctrl+T>', 'spawn --userscript translate')
+config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
 
 config.bind('<Ctrl-j>', 'scroll-px 0 50', 'caret')
 config.bind('<Ctrl-k>', 'scroll-px 0 -50', 'caret')
@@ -259,6 +260,7 @@ c.url.searchengines = {
     'dd': 'https://duckduckgo.com/?q={}',
     'am': 'https://www.amazon.com/s?k={}',
     'aw': 'https://wiki.archlinux.org/?search={}',
+    'au': 'https://aur.archlinux.org/packages?O=0&K={}',
     'a': 'https://allegro.pl/listing?string={}',
     'f': 'https://www.filmweb.pl/search?q={}',
     'tekstowo': 'https://www.tekstowo.pl/wyszukaj.html?search-artist=Podaj+wykonawc%C4%99&search-title={}',

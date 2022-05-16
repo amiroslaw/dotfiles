@@ -18,6 +18,7 @@ new_bookmark="Alt+n"
 actions="Alt+a"
 edit="Alt+e"
 delete="Alt+d"
+copy="Alt+c"
 
 # colors
 help_color="#2d7ed8"
