@@ -217,7 +217,7 @@ super + {_,shift,ctrl} + y
 super + {shift,ctrl,_} + Delete 
 	{ rmmpv-playing.sh, \
 	rmmpd-playing.sh, \
-	echo 0 | trash-restore "$(trash-list | awk '\{print $3\}' | rofi -dmenu -threads 0 -monitor -4 -i -p "restore" rofi -theme-str 'window \{width:  90%;\}')"
+	echo 0 | trash-restore "$(trash-list | cut -d" " -f3- | rofi -dmenu -threads 0 -monitor -4 -i -l 33 -p "restore" -theme-str 'window \{width:  90%;\}')"
 	}
 
 super + {_,shift} + BackSpace
