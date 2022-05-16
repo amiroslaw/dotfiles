@@ -137,7 +137,7 @@ config.bind('eK', urlCmdRapid + 'kindle {hint-url}')
 config.bind('er', urlCmd + 'read {hint-url}')
 config.bind('eR', 'spawn -u ~/.bin/url.lua read {url}')
 config.bind('es', urlCmd + 'speed {hint-url}')
-config.bind('eS', 'spawn -u ~/.bin/url.lua read {url}')
+config.bind('eS', 'spawn -u ~/.bin/url.lua speed {url}')
 
 #COPY OR CREATE
 config.bind('cc', 'spawn -u ~/.bin/note.lua clip {clipboard}')
@@ -169,7 +169,6 @@ config.bind('al', 'edit-url')
 config.bind('au', 'navigate up') # TODO change for 1 stroke
 config.bind("aF", "hint links spawn firefox {hint-url}")
 config.bind("af", "firefox {url}")
-config.bind('as', 'set-cmd-text :session-load ')
 config.bind('at', 'set-cmd-text :screenshot ') # todo bind to print scr and get current date
 config.bind('ao', 'spawn -u qutedmenu tab') # TODO change to rofi
 config.bind('ad', 'spawn -u open_download')
@@ -200,6 +199,10 @@ config.bind('sD', 'open -t d {clipboard} ')
 config.bind('zz', 'spawn -u selection.sh ')
 config.bind('zz', 'spawn -u selection.sh', 'caret')
 config.bind('zZ', 'spawn -u selection.sh {clipboard}')
+# config.bind('as', 'set-cmd-text :session-load ')
+config.bind('zs', 'spawn -u session.sh save')
+config.bind('zl', 'spawn -u session.sh load')
+config.bind('zd', 'spawn -u session.sh delete')
 config.bind('<Ctrl-s>', 'open -t {primary} ', 'insert')
 config.bind('<Ctrl-i>', 'open -t d {primary} ')
 config.bind('<Ctrl-i>', 'open -t d {primary} ', 'insert')
