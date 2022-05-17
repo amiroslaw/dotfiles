@@ -43,13 +43,10 @@ bspc config border_width 2
 bspc config focus_follows_pointer true
 #bspc config pointer_follows_focus true #Some keybindings automatically enable and disable this setting
 
-###This creates and names desktops for multiple monitors.
+## TIPS
 # bspc -a class_name:instance_name:name → all *
 # bspc rule -a appName:class_name → in xprop WM_CLASS(STRING) = "Toolkit"(instance_name), "firefox" (class_name)
 # in st -n ; alacritty --class; wezterm start --class instance_name -- top -c == instance_name
-# workspaces_multimonitor &
-#bspc desktop I --layout monocle
-#bspc rule -a firefox desktop=I
 
 bspc rule -a screenkey --unmanage
 bspc rule -a gcolor2 state=floating center=true
@@ -68,28 +65,38 @@ bspc rule -a '*:libreofficedev' state=tiled
 bspc rule -a '*:soffice' state=tiled
 bspc rule -a firefox private=on
 bspc rule -a firefox:Toolkit  state=floating sticky=on focus=off layer=above rectangle=380x210+1530+980
-bspc rule -a '*:rsvp' state=floating sticky=on layer=above rectangle=1100x150+0+0 center=true
-bspc rule -a '*:cheatsh' state=floating layer=above
-bspc rule -a '*:read' state=floating layer=above
 
-#bspc rule -a firefox desktop=I
 bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
 bspc rule -a megasync state=floating
-# bspc rule -a '*:dropdown' state=fullscreen
-bspc rule -a '*:dropdown' state=floating center=true rectangle=1000x1150+0+0
-bspc rule -a '*:music' state=floating center=true rectangle=1000x1150+0+0
 bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
 bspc rule -a Zathura state=tiled
+bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
+bspc rule -a '(?i)zenity' state=floating
 bspc rule -a yad state=floating
-bspc rule -a Zenity state=floating
 bspc rule -a reminder state=floating
 bspc rule -a menu state=floating
 bspc rule -a Pqiv state=fullscreen
+
+## Custom classes and names
+bspc rule -a '*:rsvp' state=floating sticky=on layer=above rectangle=1100x150+0+0 center=true
+bspc rule -a '*:cheatsh' state=floating layer=above
+bspc rule -a '*:read' state=floating layer=above
+bspc rule -a '*:dropdown' state=floating center=true rectangle=1000x1150+0+0
+bspc rule -a '*:music' state=floating center=true rectangle=1000x1150+0+0
+bspc rule -a qb state=floating rectangle=700x400+0+0 center=true
+bspc rule -a audio state=floating rectangle=500x150+0+0 center=true
+
+#bspc rule -a firefox desktop=I
 #bspc rule -a nautilus state=pseudo_tiled
 #bspc rule -a skype state=pseudo_tiled
 #bspc rule -a urxvt state=floating center=true
 # bspc rule -a conky sticky=on manage=off lower=on
 
+###This creates and names desktops for multiple monitors.
+# workspaces_multimonitor &
+
+#bspc desktop I --layout monocle
+#bspc rule -a firefox desktop=I
 
 ##  This script balances all windows when new one is spawned 
 #euclid_balancer &
