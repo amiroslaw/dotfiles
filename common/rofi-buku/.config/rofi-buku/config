@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 _rofi () {
-    rofi -dmenu -i -threads 0 -monitor -4 -l 33 -theme-str 'window {width:  1000px;}' "$@"
+    rofi -dmenu -i -threads 0 -monitor -4 -l 25 -theme-str 'window {width:  1000px;}' "$@"
     # rofi -dmenu -i -threads 0 -monitor -4 -matching fuzzy -multi-select -theme-str 'window {width:  80%;}' "$@" # script doesn't support multi select
 }
 

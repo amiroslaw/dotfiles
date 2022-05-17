@@ -57,14 +57,15 @@ if ! command -v "${ROFI_CMD}" > /dev/null ; then
 fi
 
 rofi_default_args=(
-        -monitor -2 # place above window
+		-dmenu
+        -monitor -4 # place above window
         -location 6 # aligned at the bottom
-        -width 100  # use full window width
+		-theme-str 'window {width:  1000px;}'
         -i
         -no-custom
         -format i   # make rofi return the index
-        -l 10
-        -p 'Open download:' -dmenu
+        -l 25
+        -p 'Open download' 
     )
 
 crop-first-column() {
