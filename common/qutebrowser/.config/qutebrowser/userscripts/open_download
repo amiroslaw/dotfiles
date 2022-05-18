@@ -65,7 +65,7 @@ rofi_default_args=(
         -no-custom
         -format i   # make rofi return the index
         -l 25
-        -p 'Open download' 
+        -p 'Open download xx' 
     )
 
 crop-first-column() {

@@ -41,8 +41,9 @@ config.set('content.javascript.enabled', True, 'qute://*/*')
 
 # Aliases for commands. 
 c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save --only-active-window', 'wq': 'quit --save', 'wqa': 'quit --save', 'h': 'help', 's': 'screenshot'}
-# Without this  option set, `:wq` (`:quit --save`) needs to be used to save open tabs (and restore them), while quitting qutebrowser in any other way will not save/restore the session.  
-c.auto_save.session = True
+# Without this  option set, `:wq`/ZZ (`:quit --save`) needs to be used to save open tabs (and restore them), while quitting qutebrowser in any other way will not save/restore the session.  
+c.auto_save.session = False
+c.confirm_quit = ["multiple-tabs", "downloads"]
 c.session.lazy_restore = True
 
 c.completion.shrink = True
@@ -94,10 +95,12 @@ config.bind('xp', 'process')
 config.bind('ya', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-formatted link”
 config.bind('<Ctrl+T>', 'spawn --userscript translate')
 config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
+config.bind('<Escape>', 'mode-enter normal ;; jseval -q document.activeElement.blur()', 'insert') # unfocus input
 
 config.bind('<Ctrl-j>', 'scroll-px 0 50', 'caret')
 config.bind('<Ctrl-k>', 'scroll-px 0 -50', 'caret')
 # config.bind('<Ctrl-j>', 'scroll-px 0 50', 'hint') # hints are static
+
 
 # TABS AND WINDOWS
 config.bind(',,', 'tab-close')
@@ -168,13 +171,14 @@ config.bind('ap', 'spawn -u jspdfdownload')
 config.bind('al', 'edit-url')
 config.bind('au', 'navigate up') # TODO change for 1 stroke
 config.bind("aF", "hint links spawn firefox {hint-url}")
-config.bind("af", "firefox {url}")
+config.bind("af", "spawn -u url.sh firefox {url}")
 config.bind('at', 'set-cmd-text :screenshot ') # todo bind to print scr and get current date
 config.bind('ao', 'spawn -u qutedmenu tab') # TODO change to rofi
 config.bind('ad', 'spawn -u open_download')
 config.bind('ac', 'download-cancel')
 
 # SEARCH
+# TODO carets doesnt' work but zz work
 config.bind('ss', 'open -t {primary} ')
 config.bind('sS', 'open -t {clipboard} ')
 config.bind('ss', 'open -t {primary}', 'caret')
@@ -204,10 +208,8 @@ config.bind('zs', 'spawn -u session.sh save')
 config.bind('zl', 'spawn -u session.sh load')
 config.bind('zd', 'spawn -u session.sh delete')
 config.bind('<Ctrl-s>', 'open -t {primary} ', 'insert')
-config.bind('<Ctrl-i>', 'open -t d {primary} ')
 config.bind('<Ctrl-i>', 'open -t d {primary} ', 'insert')
-config.bind('<Ctrl-Shift-i>', 'open -t t {primary} ')
-config.bind('<Ctrl-Shift-i>', 'open -t t {primary} ', 'insert')
+config.bind('<Ctrl-Shift-i>', 'open -t d {primary} ', 'insert')
 config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
 
 # config.bind('J', 'move-to-start-of-next-block', 'caret') # [

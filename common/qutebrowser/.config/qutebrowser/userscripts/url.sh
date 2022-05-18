@@ -39,6 +39,9 @@ case "$1" in
 	"gallery" )
 		url.lua gallery "$QUTE_URL"
 	;;
+	"firefox" )
+		firefox "$QUTE_URL"
+	;;
 	* )
 		url.lua menu
 	;;

@@ -133,6 +133,7 @@ alias music='ncmpcpp'
 alias drag='dragon-drop -t'
 alias open='xdg-open '
 alias op='xdg-open '
+alias di='dua interactive'
 #}}}
 
 #{{{ Programy coś wykonują

@@ -58,6 +58,8 @@ return { -- Must be in the end
 	launch_menu = launch_menu,
 	check_for_updates = false,
 	automatically_reload_config = false,
+	key_map_preference = "Mapped",
+	-- disable_default_key_bindings = true,
 	-- window_background_image = plugins.getRandomBg(wezterm.config_dir .. '/bg/'), -- higher RAM usage, don't use big pictures
 	-- window_background_image_hsb = { brightness = 0.14, },
 }

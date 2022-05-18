@@ -1,13 +1,18 @@
 #!/bin/bash
-
-session=$(ls -1 "$HOME/.local/share/qutebrowser/sessions" | rofi -dmenu -monitor -4 -p 'qb session')
+session=$(ls -1p "$HOME/.local/share/qutebrowser/sessions" | grep -v / | rofi -dmenu -monitor -4 -p 'qb session')
 if [ "$session" == "" ]; then
 	exit 0
 fi
-if [[ "$1" == "save" ]]; then
-	qutebrowser ":session-save --only-active-window ${session/\.yml/}"
-elif [[ "$1" == "delete" ]]; then
-	qutebrowser ":session-delete ${session/\.yml/}"
-else
-	qutebrowser ":session-load ${session/\.yml/}"
-fi
+
+case "$1" in
+	"save" ) qutebrowser ":session-save --only-active-window ${session/\.yml/}"
+		;;
+	"delete" ) qutebrowser ":session-delete ${session/\.yml/}"
+		;;
+	"load" ) qutebrowser ":session-load ${session/\.yml/}"
+		;;
+	"restore" ) qutebrowser --restore "${session/\.yml/}"
+		;;
+	* ) qutebrowser --restore "${session/\.yml/}"
+		;;
+esac
