@@ -1,5 +1,13 @@
 #!/bin/bash
-session=$(ls -1p "$HOME/.local/share/qutebrowser/sessions" | grep -v / | rofi -dmenu -monitor -4 -p 'qb session')
+
+sessionDir="$HOME/.local/share/qutebrowser/sessions" 
+
+if [[ "$1" == "webapp"  ]]; then
+	sessionDir="$HOME/Templates/webapp-qt/data/sessions" 
+fi
+
+session=$(ls -1p "$sessionDir" | grep -v / | rofi -dmenu -monitor -4 -p "qb session $1")
+
 if [ "$session" == "" ]; then
 	exit 0
 fi
@@ -12,6 +20,8 @@ case "$1" in
 	"load" ) qutebrowser ":session-load ${session/\.yml/}"
 		;;
 	"restore" ) qutebrowser --restore "${session/\.yml/}"
+		;;
+	"webapp" ) qutebrowser --basedir ~/Templates/webapp-qt --restore "${session/\.yml/}"
 		;;
 	* ) qutebrowser --restore "${session/\.yml/}"
 		;;

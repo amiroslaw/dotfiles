@@ -176,21 +176,20 @@ super + a ; b
 # APPLICATIONS
 # ______________    
 #
-
 super + Return
 	$TERM_DEF
 
 super + shift + Return
 	$TERM_LT
 
-
 # left/middle click emulation
 super + {x,v} 
 	xdotool click --clearmodifiers {1,2}
 
-super + {_,shift} + i
+super + {_,shift,ctrl} + i
 	{ rofi-buku, \
-	~/.config/qutebrowser/userscripts/session.sh
+	~/.config/qutebrowser/userscripts/session.sh, \
+	~/.config/qutebrowser/userscripts/session.sh webapp
 	}
 
 super + {shift, ctrl} + o
@@ -224,7 +223,6 @@ super + {shift,ctrl,_} + Delete
 super + {_,shift} + BackSpace
 	{$TERM_LT -t top -c top -e btm,xkill}
 
-
 # search
 super + {_, shift,ctrl} + g
 	{search.lua google clip, search.lua google primary, search.lua brave clip}
@@ -257,9 +255,9 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 	search.lua cheat input, search.lua cheat primary }
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
-# tui
-super + o ; {o,i,p,b,t,z,j,f,F,d,D,v}
-	$TERM_LT -e {notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nm-menu\nt-telegram\nz-fasd\nj-fasd-dir\nf-files\nd-dir\nv-videos", \
+# tui runs from terminal
+super + o ; {o,i,p,b,t,z,j,f,F,d,D,v,w,m}
+	$TERM_LT -e {notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nj-fasd-dir\nf-files\nd-dir\nv-videos\nw-whatsapp\nm-music", \
 		nmtui,ncmpcpp,bmenu,tg, \
 		$ROFI/open.sh fasd, \
 		$ROFI/open.sh fasd-dir, \

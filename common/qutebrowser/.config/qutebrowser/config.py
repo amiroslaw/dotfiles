@@ -35,9 +35,6 @@ config.set('content.javascript.enabled', True, 'devtools://*')
 config.set('content.javascript.enabled', True, 'chrome://*/*')
 config.set('content.javascript.enabled', True, 'qute://*/*')
 # c.content.unknown_url_scheme_policy = "allow-all"
-# Allow websites to show notifications. autoconfig.yml
-# Valid values: - true - false - ask
-# config.set('content.notifications.enabled', False, 'https://www.reddit.com')
 
 # Aliases for commands. 
 c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save --only-active-window', 'wq': 'quit --save', 'wqa': 'quit --save', 'h': 'help', 's': 'screenshot'}
@@ -90,11 +87,12 @@ c.content.blocking.adblock.lists = [
 config.bind('<Alt-s>', ':set spellcheck.languages ["en-US"]', 'insert') 
 config.bind('<Shift-Alt-s>', ':set spellcheck.languages ["pl-PL"]', 'insert')
 config.bind('ZZ', ':session-save --only-active-window  ;; later 1000 close')
-config.bind('<Ctrl-m>', 'set-cmd-text :set-mark ')
+config.bind('za', 'set-cmd-text --space :scroll-to-anchor ')
 config.bind('xp', 'process')
 config.bind('ya', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-formatted link”
 config.bind('<Ctrl+T>', 'spawn --userscript translate')
 config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
+config.bind('M', 'bookmark-add --toggle')
 config.bind('<Escape>', 'mode-enter normal ;; jseval -q document.activeElement.blur()', 'insert') # unfocus input
 
 config.bind('<Ctrl-j>', 'scroll-px 0 50', 'caret')
@@ -113,7 +111,7 @@ config.bind('<', 'tab-move -')
 config.bind('<Ctrl-o>', 'tab-focus last')
 config.bind('$', 'tab-focus -1')
 config.bind('wn', 'open -w')
-config.bind('<Ctrl-n>', 'open -p')
+config.bind('<Ctrl-n>', 'open -w')
 
 # MEDIA
 config.bind('<Alt-Shift-w>', 'hint --rapid links spawn -u  mpvplaylist.sh push {hint-url}')
@@ -166,47 +164,52 @@ config.bind(';s', 'hint links userscript doi.py')
 
 # LEADER
 config.bind('ar', 'config-source')
-config.bind('aa', 'config-cycle --temp content.blocking.enabled false true') 
+config.bind('aa', 'config-cycle --temp --print content.blocking.enabled false true') 
+config.bind('aj', 'config-cycle --temp --print input.spatial_navigation false true')
+config.set('content.notifications.enabled', False, 'https://www.reddit.com')
 config.bind('ap', 'spawn -u jspdfdownload')
-config.bind('al', 'edit-url')
-config.bind('au', 'navigate up') # TODO change for 1 stroke
+config.bind('au', 'edit-url')
 config.bind("aF", "hint links spawn firefox {hint-url}")
-config.bind("af", "spawn -u url.sh firefox {url}")
-config.bind('at', 'set-cmd-text :screenshot ') # todo bind to print scr and get current date
+# config.bind("af", "spawn -u url.sh firefox {url}")
+config.bind("af", "spawn firefox {url}")
+config.bind('at', 'set-cmd-text --space :screenshot ') # todo bind to print scr and get current date
 config.bind('ao', 'spawn -u qutedmenu tab') # TODO change to rofi
 config.bind('ad', 'spawn -u open_download')
 config.bind('ac', 'download-cancel')
+config.bind('<Ctrl-u>', 'navigate up')
+config.bind('<F7>', 'open -t file:///home/miro/Documents/notebook/preview.html')
+config.bind('<F1>', 'spawn preview-ascii.sh ' + os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/qt-default-bindings.adoc ;; later 1000 open -t file:///home/miro/Documents/notebook/preview.html")
 
 # SEARCH
-# TODO carets doesnt' work but zz work
-config.bind('ss', 'open -t {primary} ')
-config.bind('sS', 'open -t {clipboard} ')
-config.bind('ss', 'open -t {primary}', 'caret')
+config.bind('ss', 'open -t g {primary} ')
+config.bind('sS', 'open -t g {clipboard} ')
+config.bind('ss', 'spawn -u selection.sh g', 'caret')
 config.bind('sm', 'open -t m {primary} ')
-config.bind('sm', 'open -t m {primary}', 'caret')
 config.bind('sM', 'open -t m {clipboard} ')
+config.bind('sm', 'spawn -u selection.sh m', 'caret')
 config.bind('sc', 'open -t c {primary} ')
-config.bind('sc', 'open -t c {primary}', 'caret')
 config.bind('sC', 'open -t c {clipboard} ')
+config.bind('sc', 'spawn -u selection.sh c', 'caret')
 config.bind('st', 'open -t t {primary} ')
 config.bind('sT', 'open -t t {clipboard} ')
-config.bind('st', 'open -t t {primary}', 'caret')
+config.bind('st', 'spawn -u selection.sh t', 'caret')
 config.bind('sw', 'open -t w {primary} ')
-config.bind('sw', 'open -t w {primary}', 'caret')
 config.bind('sW', 'open -t w {clipboard} ')
+config.bind('sw', 'spawn -u selection.sh w', 'caret')
 config.bind('sv', 'open -t y {primary} ')
-config.bind('sv', 'open -t y {primary}', 'caret')
 config.bind('sV', 'open -t y {clipboard} ')
+config.bind('sv', 'spawn -u selection.sh y', 'caret')
 config.bind('sd', 'open -t d {primary} ')
-config.bind('sd', 'open -t d {primary}', 'caret')
 config.bind('sD', 'open -t d {clipboard} ')
+config.bind('sd', 'spawn -u selection.sh d', 'caret')
 config.bind('zz', 'spawn -u selection.sh ')
 config.bind('zz', 'spawn -u selection.sh', 'caret')
 config.bind('zZ', 'spawn -u selection.sh {clipboard}')
-# config.bind('as', 'set-cmd-text :session-load ')
+# config.bind('as', 'set-cmd-text --space :session-load ')
 config.bind('zs', 'spawn -u session.sh save')
 config.bind('zl', 'spawn -u session.sh load')
 config.bind('zd', 'spawn -u session.sh delete')
+config.bind('zw', 'spawn -u session.sh webapp')
 config.bind('<Ctrl-s>', 'open -t {primary} ', 'insert')
 config.bind('<Ctrl-i>', 'open -t d {primary} ', 'insert')
 config.bind('<Ctrl-Shift-i>', 'open -t d {primary} ', 'insert')
@@ -236,6 +239,7 @@ config.bind('<Ctrl-Delete>', 'completion-item-del', 'command')
 config.bind("<Ctrl-l>", "fake-key <Ctrl-Right>", "insert")
 config.bind("<Ctrl-h>", "fake-key <Ctrl-Left>", "insert")
 config.bind("<Ctrl-a>", "fake-key <Home>", "insert")
+config.bind("<Alt-a>", "fake-key <Ctrl-a>", "insert")
 config.bind("<Ctrl-e>", "fake-key <End>", "insert")
 config.bind("<Ctrl-b>", "fake-key <Left>", "insert")
 config.bind("<Ctrl-f>", "fake-key <Right>", "insert")
@@ -253,10 +257,10 @@ config.bind("<Ctrl-o>", "edit-text", "insert")
 config.bind("ai", "mode-enter insert ;; fake-key <Enter> ;; mode-enter normal" )
 # }}}
 
-
 # engine name (such as `DEFAULT`, or `ddg`) to a URL with a `{}` placeholder. The placeholder will be replaced by the search term, use `{{` and `}}` for literal `{`/`}` braces.  
 c.url.searchengines = {
     'DEFAULT': 'https://www.google.com/search?q={}',
+    'g': 'https://www.google.com/search?q={}',
     'y': 'https://www.youtube.com/results?search_query={}',
     'w': 'https://en.wikipedia.org/wiki/{}',
     'wp': 'https://pl.wikipedia.org/wiki/{}',

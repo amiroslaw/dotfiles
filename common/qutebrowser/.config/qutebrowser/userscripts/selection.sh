@@ -7,6 +7,11 @@ search_engine_start="c.url.searchengines"
 # check for empty selection and exit
 [ -z "$QUTE_SELECTED_TEXT" ] && exit 0
 
+if [ -n "$1" ]; then
+	echo "open -t $1 $QUTE_SELECTED_TEXT" >> "$QUTE_FIFO"
+	exit 0
+fi
+
 # notify-send "raw_search_engines"
 raw_search_engines=$(awk "/$search_engine_start/{p=1}/^ *$/{p=0}p" "$search_engine_file")
 
