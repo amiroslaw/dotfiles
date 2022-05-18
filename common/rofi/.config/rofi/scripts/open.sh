@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ROFI_OPTIONS=(-theme-str 'window {width:  80%;}' -l 30 -i -dmenu -multi-select -monitor -4 -matching fuzzy)
+ROFI_OPTIONS=(-theme-str 'window {width:  80%;}' -l 25 -i -dmenu -multi-select -monitor -4 -matching fuzzy)
 
 case "$1" in
 	fasd) fasd -Rfl | rofi "${ROFI_OPTIONS[@]}" -p "open fasd files:" | xargs -r -P 0 -I {} xdg-open {} ;;

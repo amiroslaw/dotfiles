@@ -6,6 +6,8 @@
 #super + {_,shift + }{1-9,0} dwa zakresy
 #	bspc {desktop -f,node -d} '^{1-9,10}'
  # \~fullscreen "~\" toggle
+# aviailable
+# super + ctrl + f 
  
 # make sxhkd reload its configuration files:
 super + Home
@@ -208,7 +210,6 @@ super + F{1,2,3,4,7,8,9,10,11,12}
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu
 	}
-# super + F6 surf https://clockify.me/tracker,
 
 # show/add into todo list; add event to the google calendar
 super + {_,shift,ctrl} + y
@@ -255,9 +256,9 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 	search.lua cheat input, search.lua cheat primary }
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
-# tui runs from terminal
-super + o ; {o,i,p,b,t,z,j,f,F,d,D,v,w,m}
-	$TERM_LT -e {notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nj-fasd-dir\nf-files\nd-dir\nv-videos\nw-whatsapp\nm-music", \
+# tui runs from terminal; rofi opens with xdg-open so sometimes it's not necessary to open in terminal
+super + o ; {o,i,p,b,t,z,j,f,F,d,D,v}
+	$TERM_LT -e { notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nj-fasd-dir\nf-files\nd-dir\nv-videos", \
 		nmtui,ncmpcpp,bmenu,tg, \
 		$ROFI/open.sh fasd, \
 		$ROFI/open.sh fasd-dir, \
@@ -265,7 +266,7 @@ super + o ; {o,i,p,b,t,z,j,f,F,d,D,v,w,m}
 		$ROFI/open.sh file-hidden, \
 		$ROFI/open.sh dir, \
 		$ROFI/open.sh dir-hidden, \
-		$ROFI/open.sh video
+		$ROFI/open.sh video 
 		}
 
 # script in background - url.lua menu will ask for the number of the links
@@ -319,9 +320,10 @@ super + ctrl + d
 
 alt + space
 	 $ROFI/expander/expander.sh
-# rofi open file
-super + ctrl + f 
-	$ROFI/open.sh video
+
+# rofi video
+super + {shift,ctrl} + v
+	$ROFI/open.sh video,cd ~/Templates/mpvlists && mpv $(ls -r | rofi -dmenu)
 
 # translator 
 super + {_,shift,ctrl} + t
