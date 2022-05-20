@@ -21,7 +21,8 @@ case "$1" in
 		;;
 	"restore" ) qutebrowser --restore "${session/\.yml/}"
 		;;
-	"webapp" ) qutebrowser --basedir ~/Templates/webapp-qt --restore "${session/\.yml/}"
+	"webapp" ) qutebrowser --config-py ~/.config/qutebrowser/config.py --basedir ~/Templates/webapp-qt ":session-load ${session/\.yml/}"
+	# "webapp" ) qutebrowser --config-py ~/.config/qutebrowser/config.py --basedir ~/Templates/webapp-qt --restore "${session/\.yml/}"
 		;;
 	* ) qutebrowser --restore "${session/\.yml/}"
 		;;

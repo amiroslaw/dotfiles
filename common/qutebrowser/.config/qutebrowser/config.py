@@ -55,6 +55,9 @@ c.url.open_base_url = True # Open the searchengine if a shortcut is invoked with
 c.tabs.title.format = "{index}:{audio}{current_title}{private}"
 c.colors.statusbar.private.bg = "#5e0802"
 c.colors.statusbar.command.private.bg= "#5e0802"
+c.colors.statusbar.url.success.http.fg="#f179f7"
+# c.colors.statusbar.url.success.https.fg="#ebe834"
+
 # c.colors.tabs.even.bg = "silver"
 # c.colors.tabs.odd.bg = "gainsboro"
 
