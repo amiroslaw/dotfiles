@@ -7,7 +7,7 @@ import os
 from qutebrowser.api import interceptor
 
 # config.source('themes/onedark/onedark.py')
-config.source('themes/base16/themes/default/base16-seti.config.py')
+config.source('themes/base16/default/base16-seti.config.py')
 
 # idk if my options will be saved 
 config.load_autoconfig(True) # Change the argument to True to still load settings configured via autoconfig.yml
