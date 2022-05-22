@@ -13,34 +13,34 @@
 
 case "$1" in
 	"audio" )
-		url.lua audio "$QUTE_URL"
+		url.lua audio "$2"
 	;;
 	"yt" )
-		url.lua yt "$QUTE_URL"
+		url.lua yt "$2"
 	;;
 	"tor" )
-		url.lua tor "$QUTE_URL"
+		url.lua tor "$2"
 	;;
 	"kindle" )
-		url.lua kindle "$QUTE_URL"
+		url.lua kindle "$2"
 	;;
 	"read" )
-		url.lua read "$QUTE_URL"
+		url.lua read "$2"
 	;;
 	"speed" )
-		url.lua gallery "$QUTE_URL"
+		url.lua speed "$2"
 	;;
 	"wget" )
-		url.lua wget "$QUTE_URL"
+		url.lua wget "$2"
 	;;
 	"video" )
-		url.lua video "$QUTE_URL"
+		url.lua video "$2"
 	;;
 	"gallery" )
-		url.lua gallery "$QUTE_URL"
+		url.lua gallery "$2"
 	;;
 	"firefox" )
-		firefox "$QUTE_URL"
+		firefox "$2"
 	;;
 	* )
 		url.lua menu

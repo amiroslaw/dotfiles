@@ -6,13 +6,8 @@ import subprocess
 import os
 from qutebrowser.api import interceptor
 
-# import themes.dracula.draw
-# themes.dracula.draw.blood(c, {
-#     'spacing': {
-#         'vertical': 3,
-#         'horizontal': 5
-#     }
-# })
+# config.source('themes/onedark/onedark.py')
+config.source('themes/base16/themes/default/base16-seti.config.py')
 
 # idk if my options will be saved 
 config.load_autoconfig(True) # Change the argument to True to still load settings configured via autoconfig.yml
@@ -45,7 +40,7 @@ c.session.lazy_restore = True
 
 c.completion.shrink = True
 c.completion.open_categories = [ 'quickmarks', 'bookmarks', 'history', 'searchengines', 'filesystem'] # idk what filesystem is
-
+c.scrolling.smooth = True
 c.url.start_pages = os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/themes/startpage/index.html"
 c.url.default_page = os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/themes/startpage/index.html"
 c.tabs.close_mouse_button = "right"
@@ -92,6 +87,8 @@ config.bind('<Shift-Alt-s>', ':set spellcheck.languages ["pl-PL"]', 'insert')
 config.bind('ZZ', ':session-save --only-active-window  ;; later 1000 close')
 config.bind('za', 'set-cmd-text --space :scroll-to-anchor ')
 config.bind('xp', 'process')
+config.bind('pc', 'open -t {primary}')
+config.bind('pC', 'open -t {clipboard}')
 config.bind('ya', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-formatted link”
 config.bind('<Ctrl+T>', 'spawn --userscript translate')
 config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
@@ -124,24 +121,24 @@ config.bind(';a', 'hint links spawn -uv mpvplaylist.sh audio {hint-url}')
 config.bind('<Ctrl-w>', 'spawn -uv view_in_mpv') # stop video and open in mpv
 
 # URL mostly download stuff
-urlCmd = 'hint links spawn -u url.sh '
-urlCmdRapid = 'hint --rapid links spawn -u url.sh '
-config.bind('ea', urlCmd + 'audio {hint-url}')
-config.bind('eA', urlCmdRapid + 'audio {hint-url}')
-config.bind('et', urlCmd + 'tor {hint-url}')
-config.bind('eT', urlCmdRapid + 'tor {hint-url}')
-config.bind('ey', urlCmd + 'yt {hint-url}')
-config.bind('eY', urlCmdRapid + 'yt {hint-url}')
-config.bind('eg', urlCmd + 'gallery {hint-url}')
-config.bind('eG', urlCmdRapid + 'gallery {hint-url}')
-config.bind('ew', urlCmd + 'wget {hint-url}') # doesn't work
-config.bind('eW', urlCmdRapid + 'wget {hint-url}')
-config.bind('ek', urlCmd + 'kindle {hint-url}')
-config.bind('eK', urlCmdRapid + 'kindle {hint-url}')
-config.bind('er', urlCmd + 'read {hint-url}')
-config.bind('eR', 'spawn -u ~/.bin/url.lua read {url}')
-config.bind('es', urlCmd + 'speed {hint-url}')
-config.bind('eS', 'spawn -u ~/.bin/url.lua speed {url}')
+urlCmd = 'hint links spawn url.lua '
+urlCmdRapid = 'hint --rapid links spawn url.lua '
+config.bind('ea', urlCmd + 'audio "{hint-url}"')
+config.bind('eA', urlCmdRapid + 'audio "{hint-url}"')
+config.bind('et', urlCmd + 'tor "{hint-url}"')
+config.bind('eT', urlCmdRapid + 'tor "{hint-url}"')
+config.bind('ey', urlCmd + 'yt "{hint-url}"')
+config.bind('eY', urlCmdRapid + 'yt "{hint-url}"')
+config.bind('eg', urlCmd + 'gallery "{hint-url}"')
+config.bind('eG', urlCmdRapid + 'gallery "{hint-url}"')
+config.bind('ew', urlCmd + 'wget "{hint-url}"')
+config.bind('eW', urlCmdRapid + 'wget "{hint-url}"')
+config.bind('ek', urlCmd + 'kindle "{hint-url}"')
+config.bind('eK', urlCmdRapid + 'kindle "{hint-url}"')
+config.bind('er', urlCmd + 'read "{hint-url}"')
+config.bind('eR', 'spawn -u ~/.bin/url.lua read "{url}"')
+config.bind('es', urlCmd + 'speed "{hint-url}"')
+config.bind('eS', 'spawn -u ~/.bin/url.lua speed "{url}"')
 
 #COPY OR CREATE
 config.bind('cc', 'spawn -u ~/.bin/note.lua clip {clipboard}')
@@ -179,7 +176,6 @@ config.bind('at', 'set-cmd-text --space :screenshot ') # todo bind to print scr 
 config.bind('ao', 'spawn -u qutedmenu tab') # TODO change to rofi
 config.bind('ad', 'spawn -u open_download')
 config.bind('ac', 'download-cancel')
-config.bind('<Ctrl-u>', 'navigate up')
 config.bind('<F7>', 'open -t file:///home/miro/Documents/notebook/preview.html')
 config.bind('<F1>', 'spawn preview-ascii.sh ' + os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/qt-default-bindings.adoc ;; later 1000 open -t file:///home/miro/Documents/notebook/preview.html")
 
@@ -264,12 +260,13 @@ config.bind("ai", "mode-enter insert ;; fake-key <Enter> ;; mode-enter normal" )
 c.url.searchengines = {
     'DEFAULT': 'https://www.google.com/search?q={}',
     'g': 'https://www.google.com/search?q={}',
+    'dd': 'https://duckduckgo.com/?q={}',
+    'b': 'https://search.brave.com/search?q={}',
     'y': 'https://www.youtube.com/results?search_query={}',
     'w': 'https://en.wikipedia.org/wiki/{}',
     'wp': 'https://pl.wikipedia.org/wiki/{}',
     'c': 'https://www.ceneo.pl/;szukaj-{}',
     'cc': 'https://cenowarka.pl/?fs={}',
-    'dd': 'https://duckduckgo.com/?q={}',
     'am': 'https://www.amazon.com/s?k={}',
     'aw': 'https://wiki.archlinux.org/?search={}',
     'au': 'https://aur.archlinux.org/packages?O=0&K={}',
@@ -336,7 +333,6 @@ config.bind('xx', 'jseval (function () { '+
 # c.input.insert_mode.auto_load = True
 # c.tabs.last_close = "close"
 # c.tabs.mousewheel_switching = False
-# c.scrolling.smooth
 # config.set("content.register_protocol_handler", True, "*://calendar.google.com")
 # config.set("content.register_protocol_handler", True, "*://teams.microsoft.com")
 # config.set("content.media.audio_video_capture", True, "*://teams.microsoft.com")

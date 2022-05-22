@@ -6,6 +6,10 @@
 # - https://help.ubuntu.com/community/Logitech_Marblemouse_USB
 # - https://wiki.archlinux.org/index.php/Mouse_acceleration
 # - https://leho.kraav.com/blog/combine-xf86-input-evdev-middle-button-wheel-emulation-kensington-orbit-trackball/
+# list the peripherals, note the good number with the device name of the mouse!
+#   xinput list
+# list parameters from peripheral number 9
+#   xinput list-props 9
 
 # Remap buttons
 #dev="Logitech USB Trackball"  # Logitech Marble Mouse for USB
@@ -27,13 +31,13 @@ xinput --set-prop "$dev" 'libinput Button Scrolling Button Lock Enabled' 0
 
 
 ##### Logitech MX Vertical
-# mxVertical="Logitech MX Vertical"
-# mxVertical="$(xinput | grep "$mxVertical\s*.*pointer" | sed -r 's/.*id=(\S+)\s+.*/\1/')"
+mxVertical="Logitech MX Vertical"
+mxVertical="$(xinput | grep "$mxVertical\s*.*pointer" | sed -r 's/.*id=(\S+)\s+.*/\1/')"
 
 # xinput --set-prop "$mxVertical" 'libinput Accel Speed' 1.0
 # https://clickspeedtest.com/scroll-test.html
 # doesn't work
-# xinput --set-prop "$mxVertical" 'libinput Scrolling Pixel Distance' 50
+xinput --set-prop "$mxVertical" 'libinput Scrolling Pixel Distance' 50
 # xinput --set-prop "$mxVertical" 'libinput Scrolling Pixel Distance Default' 14
 
 # Enable acceleration so it's easy to use a 4480x1080px desktop

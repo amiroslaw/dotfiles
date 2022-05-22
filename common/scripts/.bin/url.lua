@@ -24,7 +24,7 @@ List of the options:
 		url - link of the website
 		-h help - show help
 
-dependencies: mpv, youtube-dl, gallery-dl, clipster, readability-cli (node 12), mailx, speedread
+dependencies: mpv, youtube-dl or yt-dlp, gallery-dl, clipster, readability-cli (node 12), mailx, speedread
 ]]
 
 YT_DIR = '~/Videos/YouTube/'
@@ -118,13 +118,13 @@ end
 
 function audio()
 	os.execute('mkdir -p ' .. AUDIO_DIR)
-	local cmd = "| xargs -P 0 -I {} youtube-dl -f bestaudio -x --audio-format mp3 -o '".. AUDIO_DIR .. "%(title)s.%(ext)s' {}"
+	local cmd = "| xargs -P 0 -I {} yt-dlp -f bestaudio -x --audio-format mp3 -o '".. AUDIO_DIR .. "%(title)s.%(ext)s' {}"
 	return execXargs, cmd
 end
 
 function yt()
 	os.execute('mkdir -p ' .. YT_DIR)
-	local cmd = "| xargs -P 0 -I {} youtube-dl -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
+	local cmd = "| xargs -P 0 -I {} yt-dlp -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
 	return execXargs, cmd
 end
 
