@@ -340,9 +340,9 @@ super + ctrl + u
 # audio and mpd
 # volume manipulation
 super + {equal,plus}
-	pactl set-sink-volume "$(pacmd list-sinks | grep index | awk '\{print $3\}')" +{5,15}%
+	pactl set-sink-volume "$(pacmd list-sinks | grep '* index' | awk '\{print $3\}')" +{5,15}%
 super + {_,shift} + minus
-	pactl set-sink-volume "$(pacmd list-sinks | grep index | awk '\{print $3\}')" -{5,15}% 
+	pactl set-sink-volume "$(pacmd list-sinks | grep '* index' | awk '\{print $3\}')" -{5,15}% 
 XF86Audio{Raise,Lower}Volume
 	pactl set-sink-volume 0 {+,-}10%
 
@@ -350,7 +350,7 @@ XF86Audio{Raise,Lower}Volume
 super + {_,shift,ctrl} + slash
 	{ amixer sset Master toggle, audio.sh toggle, audio.sh }
 XF86AudioMute
-	pactl set-sink-mute "$(pacmd list-sinks | grep index | awk '\{print $3\}')" toggle
+	pactl set-sink-mute "$(pacmd list-sinks | grep '* index' | awk '\{print $3\}')" toggle
 super + m
 	mpc toggle
 
