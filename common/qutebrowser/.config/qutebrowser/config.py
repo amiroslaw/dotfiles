@@ -1,15 +1,14 @@
+# vim: foldmethod=marker
+
 # Documentation:
 #   qute://help/configuring.html
 #   qute://help/settings.html
 
+# ======================= Config default ============= {{{
 import subprocess
 import os
 from qutebrowser.api import interceptor
 
-# config.source('themes/onedark/onedark.py')
-config.source('themes/base16/default/base16-seti.config.py')
-
-# idk if my options will be saved 
 config.load_autoconfig(True) # Change the argument to True to still load settings configured via autoconfig.yml
 
 config.set('content.cookies.accept', 'all', 'chrome-devtools://*') # no-unknown-3rdparty
@@ -30,6 +29,22 @@ config.set('content.javascript.enabled', True, 'devtools://*')
 config.set('content.javascript.enabled', True, 'chrome://*/*')
 config.set('content.javascript.enabled', True, 'qute://*/*')
 # c.content.unknown_url_scheme_policy = "allow-all"
+# }}}
+
+# ======================= CONFIG ============= {{{
+# ======================= Theme ============= {{{
+config.source('themes/base16/default/base16-seti.config.py')
+# config.source('themes/onedark/onedark.py')
+c.url.start_pages = os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/themes/startpage/index.html"
+c.url.default_page = os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/themes/startpage/index.html"
+c.tabs.title.format = "{index}:{audio}{current_title}{private}"
+c.colors.statusbar.private.bg = "#5e0802"
+c.colors.statusbar.command.private.bg= "#5e0802"
+c.colors.statusbar.url.success.http.fg="#f179f7"
+# c.colors.statusbar.url.success.https.fg="#ebe834"
+# c.colors.tabs.even.bg = "silver"
+# c.colors.tabs.odd.bg = "gainsboro"
+# }}}
 
 # Aliases for commands. 
 c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save --only-active-window', 'wq': 'quit --save', 'wqa': 'quit --save', 'h': 'help', 's': 'screenshot'}
@@ -41,20 +56,10 @@ c.session.lazy_restore = True
 c.completion.shrink = True
 c.completion.open_categories = [ 'quickmarks', 'bookmarks', 'history', 'searchengines', 'filesystem'] # idk what filesystem is
 c.scrolling.smooth = True
-c.url.start_pages = os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/themes/startpage/index.html"
-c.url.default_page = os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/themes/startpage/index.html"
 c.tabs.close_mouse_button = "right"
 c.tabs.show = 'multiple' # hide the tab bar if one tab
 c.tabs.last_close = 'startpage'
 c.url.open_base_url = True # Open the searchengine if a shortcut is invoked without parameters.
-c.tabs.title.format = "{index}:{audio}{current_title}{private}"
-c.colors.statusbar.private.bg = "#5e0802"
-c.colors.statusbar.command.private.bg= "#5e0802"
-c.colors.statusbar.url.success.http.fg="#f179f7"
-# c.colors.statusbar.url.success.https.fg="#ebe834"
-
-# c.colors.tabs.even.bg = "silver"
-# c.colors.tabs.odd.bg = "gainsboro"
 
 c.editor.command = [ os.environ["TERM_LT"], "-c", "qb", "-e", os.environ["EDITOR"], "-f", "{file}", "-c", "normal {line}G{column0}1", ]
 c.editor.remove_file = False # Files are in the /tmp
@@ -80,6 +85,7 @@ c.content.blocking.adblock.lists = [
         "https://raw.githubusercontent.com/MajkiIT/polish-ads-filter/master/polish-adblock-filters/adblock.txt", 
         "https://raw.githubusercontent.com/olegwukr/polish-privacy-filters/master/anti-adblock.txt"
         ]
+# }}}
 
 # ======================= BINDINGS =================== {{{
 config.bind('<Alt-s>', ':set spellcheck.languages ["en-US"]', 'insert') 
@@ -94,13 +100,33 @@ config.bind('<Ctrl+T>', 'spawn --userscript translate')
 config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
 config.bind('M', 'bookmark-add --toggle')
 config.bind('<Escape>', 'mode-enter normal ;; jseval -q document.activeElement.blur()', 'insert') # unfocus input
+config.bind("<Ctrl-v>", "hint inputs --first ;; later 200 insert-text {clipboard}")
+config.bind('<F7>', 'open -t file:///home/miro/Documents/notebook/preview.html')
+config.bind('<F1>', 'spawn preview-ascii.sh ' + os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/qt-default-bindings.adoc ;; later 1000 open -t file:///home/miro/Documents/notebook/preview.html")
 
 config.bind('<Ctrl-j>', 'scroll-px 0 50', 'caret')
 config.bind('<Ctrl-k>', 'scroll-px 0 -50', 'caret')
 # config.bind('<Ctrl-j>', 'scroll-px 0 50', 'hint') # hints are static
+config.bind('<Alt-a>', 'navigate next')
+config.bind('<Alt-x>', 'navigate prev')
 
+# MEDIA
+config.bind('<Alt-Shift-w>', 'hint --rapid links spawn -u  mpvplaylist.sh push {hint-url}')
+config.bind('<Alt-Ctrl-w>', 'spawn -uv  mpvplaylist.sh play')
+config.bind(';w', 'hint links spawn -uv mpvplaylist.sh {hint-url}')
+config.bind(';a', 'hint links spawn -uv mpvplaylist.sh audio {hint-url}')
+config.bind('<Ctrl-w>', 'spawn -uv view_in_mpv') # stop video and open in mpv
 
-# TABS AND WINDOWS
+# SESSION
+config.bind('zs', 'spawn -u session.sh save')
+config.bind('zl', 'spawn -u session.sh load')
+config.bind('zd', 'spawn -u session.sh delete')
+config.bind('zw', 'spawn -u session.sh webapp')
+# config.bind('as', 'set-cmd-text --space :session-load ')
+
+# ======================= TABS AND WINDOWS ============= {{{
+config.bind(']', 'tab-next')
+config.bind('[', 'tab-prev')
 config.bind(',,', 'tab-close')
 config.bind('tm', 'tab-mute')
 config.bind('tg', 'tab-give')
@@ -112,13 +138,18 @@ config.bind('<Ctrl-o>', 'tab-focus last')
 config.bind('$', 'tab-focus -1')
 config.bind('wn', 'open -w')
 config.bind('<Ctrl-n>', 'open -w')
+# }}}
 
-# MEDIA
-config.bind('<Alt-Shift-w>', 'hint --rapid links spawn -u  mpvplaylist.sh push {hint-url}')
-config.bind('<Alt-Ctrl-w>', 'spawn -uv  mpvplaylist.sh play')
-config.bind(';w', 'hint links spawn -uv mpvplaylist.sh {hint-url}')
-config.bind(';a', 'hint links spawn -uv mpvplaylist.sh audio {hint-url}')
-config.bind('<Ctrl-w>', 'spawn -uv view_in_mpv') # stop video and open in mpv
+# ======================= HINTS ============= {{{
+config.bind(';;', 'hint links tab-bg')
+config.bind(';m', 'hint media')
+config.bind(';y', 'hint links yank-primary')
+config.bind(';Y', 'hint --rapid links yank-primary')
+config.bind(';c', 'hint links yank')
+config.bind(';C', 'hint --rapid links yank')
+config.bind(';D', 'hint --rapid links download')
+config.bind(';s', 'hint links userscript doi.py')
+# :bind d spawn -u doi.py
 
 # URL mostly download stuff
 urlCmd = 'hint links spawn url.lua '
@@ -139,8 +170,9 @@ config.bind('er', urlCmd + 'read "{hint-url}"')
 config.bind('eR', 'spawn -u ~/.bin/url.lua read "{url}"')
 config.bind('es', urlCmd + 'speed "{hint-url}"')
 config.bind('eS', 'spawn -u ~/.bin/url.lua speed "{url}"')
+# }}}
 
-#COPY OR CREATE
+# ======================= COPY OR CREATE ============= {{{
 config.bind('cc', 'spawn -u ~/.bin/note.lua clip {clipboard}')
 config.bind('cs', 'spawn -u ~/.bin/note.lua sel {primary}')
 config.bind('cs', 'spawn -u ~/.bin/note.lua sel {primary}', 'caret')
@@ -150,23 +182,13 @@ config.bind('cb', 'hint code userscript code_select.py')
 config.bind('ca', 'hint p userscript p_select.py')
 
 config.bind('cp', 'print') # create PDF
+# }}}
 
-# HINTS
-config.bind(';;', 'hint links tab-bg')
-config.bind(';m', 'hint media')
-config.bind(';y', 'hint links yank-primary')
-config.bind(';Y', 'hint --rapid links yank-primary')
-config.bind(';c', 'hint links yank')
-config.bind(';C', 'hint --rapid links yank')
-config.bind(';D', 'hint --rapid links download')
-config.bind(';s', 'hint links userscript doi.py')
-# :bind d spawn -u doi.py
 
-# LEADER
+# ======================= LEADER ============= {{{
 config.bind('ar', 'config-source')
 config.bind('aa', 'config-cycle --temp --print content.blocking.enabled false true') 
 config.bind('aj', 'config-cycle --temp --print input.spatial_navigation false true')
-config.set('content.notifications.enabled', False, 'https://www.reddit.com')
 config.bind('ap', 'spawn -u jspdfdownload')
 config.bind('au', 'edit-url')
 config.bind("aF", "hint links spawn firefox {hint-url}")
@@ -176,51 +198,6 @@ config.bind('at', 'set-cmd-text --space :screenshot ') # todo bind to print scr 
 config.bind('ao', 'spawn -u qutedmenu tab') # TODO change to rofi
 config.bind('ad', 'spawn -u open_download')
 config.bind('ac', 'download-cancel')
-config.bind('<F7>', 'open -t file:///home/miro/Documents/notebook/preview.html')
-config.bind('<F1>', 'spawn preview-ascii.sh ' + os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/qt-default-bindings.adoc ;; later 1000 open -t file:///home/miro/Documents/notebook/preview.html")
-
-# SEARCH
-config.bind('ss', 'open -t g {primary} ')
-config.bind('sS', 'open -t g {clipboard} ')
-config.bind('ss', 'spawn -u selection.sh g', 'caret')
-config.bind('sm', 'open -t m {primary} ')
-config.bind('sM', 'open -t m {clipboard} ')
-config.bind('sm', 'spawn -u selection.sh m', 'caret')
-config.bind('sc', 'open -t c {primary} ')
-config.bind('sC', 'open -t c {clipboard} ')
-config.bind('sc', 'spawn -u selection.sh c', 'caret')
-config.bind('st', 'open -t t {primary} ')
-config.bind('sT', 'open -t t {clipboard} ')
-config.bind('st', 'spawn -u selection.sh t', 'caret')
-config.bind('sw', 'open -t w {primary} ')
-config.bind('sW', 'open -t w {clipboard} ')
-config.bind('sw', 'spawn -u selection.sh w', 'caret')
-config.bind('sy', 'open -t y {primary} ')
-config.bind('sY', 'open -t y {clipboard} ')
-config.bind('sy', 'spawn -u selection.sh y', 'caret')
-config.bind('sd', 'open -t d {primary} ')
-config.bind('sD', 'open -t d {clipboard} ')
-config.bind('sd', 'spawn -u selection.sh d', 'caret')
-config.bind('zz', 'spawn -u selection.sh ')
-config.bind('zz', 'spawn -u selection.sh', 'caret')
-config.bind('zZ', 'spawn -u selection.sh {clipboard}')
-# config.bind('as', 'set-cmd-text --space :session-load ')
-config.bind('zs', 'spawn -u session.sh save')
-config.bind('zl', 'spawn -u session.sh load')
-config.bind('zd', 'spawn -u session.sh delete')
-config.bind('zw', 'spawn -u session.sh webapp')
-config.bind('<Ctrl-s>', 'open -t {primary} ', 'insert')
-config.bind('<Ctrl-i>', 'open -t d {primary} ', 'insert')
-config.bind('<Ctrl-Shift-i>', 'open -t d {primary} ', 'insert')
-config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
-
-# config.bind('J', 'move-to-start-of-next-block', 'caret') # [
-# config.bind('K', 'move-to-start-of-prev-block', 'caret')
-# config.bind(',r', 'spawn -u readability-js')
-# config.bind(',R', 'spawn -u readability')
-# config.bind(',F', 'spawn -u openfeeds') - module needed
-# move cursor in command mode
-# bind go set-cmd-text :open {url:pretty} ;; fake-key -g <Home><Ctrl-Right><Shift-End>
 # }}}
 
 # ======================= Command Mode ============= {{{
@@ -233,7 +210,8 @@ config.bind('<Ctrl-Delete>', 'completion-item-del', 'command')
 # config.bind('<Alt-j>', 'command-history-next', 'command') # c-p /c-n default
 # config.bind('<Alt-k>', 'command-history-prev', 'command')
 # }}}
-# ======================= Redline Insert Mode ============= {{{
+
+# ======================= Redline and Insert Mode ============= {{{
 # config.bind("<Ctrl-h>", "fake-key <Backspace>", "insert")
 config.bind("<Ctrl-l>", "fake-key <Ctrl-Right>", "insert")
 config.bind("<Ctrl-h>", "fake-key <Ctrl-Left>", "insert")
@@ -250,12 +228,17 @@ config.bind("<Mod1-d>", "fake-key <Ctrl-Delete>", "insert")
 config.bind("<Ctrl-d>", "fake-key <Delete>", "insert")
 config.bind("<Ctrl-w>", "fake-key <Ctrl-Backspace>", "insert")
 config.bind("<Ctrl-u>", "fake-key <Shift-Home><Delete>", "insert")
-config.bind("<Ctrl-k>", "fake-key <Shift-End><Delete>", "insert")
+config.bind("<Ctrl-x>", "fake-key <Shift-End><Delete>", "insert")
 config.bind('<Ctrl-y>', 'insert-text {primary}', 'insert') # doesn't work
 config.bind("<Ctrl-o>", "edit-text", "insert")
 config.bind("ai", "mode-enter insert ;; fake-key <Enter> ;; mode-enter normal" )
+config.bind('<Ctrl-j>', 'fake-key <Down>', 'insert')
+config.bind('<Ctrl-k>', 'fake-key <Up>', 'insert')
 # }}}
 
+# }}}
+
+# ======================= Searchengines ============= {{{
 # engine name (such as `DEFAULT`, or `ddg`) to a URL with a `{}` placeholder. The placeholder will be replaced by the search term, use `{{` and `}}` for literal `{`/`}` braces.  
 c.url.searchengines = {
     'DEFAULT': 'https://www.google.com/search?q={}',
@@ -286,6 +269,48 @@ c.url.searchengines = {
     'git': 'https://github.com/search?q={}'
         }
 
+# ======================= SEARCH bindings ============= {{{
+config.bind('ss', 'open -t g {primary} ')
+config.bind('sS', 'open -t g {clipboard} ')
+config.bind('ss', 'spawn -u selection.sh g', 'caret')
+config.bind('sm', 'open -t m {primary} ')
+config.bind('sM', 'open -t m {clipboard} ')
+config.bind('sm', 'spawn -u selection.sh m', 'caret')
+config.bind('sb', 'open -t b {primary} ')
+config.bind('sB', 'open -t b {clipboard} ')
+config.bind('sb', 'spawn -u selection.sh b', 'caret')
+config.bind('sc', 'open -t c {primary} ')
+config.bind('sC', 'open -t c {clipboard} ')
+config.bind('sc', 'spawn -u selection.sh c', 'caret')
+config.bind('so', 'open -t cc {primary} ')
+config.bind('sO', 'open -t cc {clipboard} ')
+config.bind('so', 'spawn -u selection.sh cc', 'caret')
+config.bind('sa', 'open -t a {primary} ')
+config.bind('sA', 'open -t a {clipboard} ')
+config.bind('sa', 'spawn -u selection.sh a', 'caret')
+config.bind('st', 'open -t t {primary} ')
+config.bind('sT', 'open -t t {clipboard} ')
+config.bind('st', 'spawn -u selection.sh t', 'caret')
+config.bind('sw', 'open -t w {primary} ')
+config.bind('sW', 'open -t w {clipboard} ')
+config.bind('sw', 'spawn -u selection.sh w', 'caret')
+config.bind('sy', 'open -t y {primary} ')
+config.bind('sY', 'open -t y {clipboard} ')
+config.bind('sy', 'spawn -u selection.sh y', 'caret')
+config.bind('sd', 'open -t d {primary} ')
+config.bind('sD', 'open -t d {clipboard} ')
+config.bind('sd', 'spawn -u selection.sh d', 'caret')
+
+config.bind('zz', 'spawn -u selection.sh ')
+config.bind('zz', 'spawn -u selection.sh', 'caret')
+config.bind('zZ', 'spawn -u selection.sh {clipboard}')
+config.bind('<Ctrl-s>', 'open -t {primary} ', 'insert')
+config.bind('<Ctrl-i>', 'open -t d {primary} ', 'insert')
+config.bind('<Ctrl-Shift-i>', 'open -t d {primary} ', 'insert')
+config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
+# }}}
+# }}}
+
 # ================== Custom hints ======================= {{{
 c.hints.selectors["code"] = [ # Selects all code tags whose direct parent is not a pre tag
     ":not(pre) > code",
@@ -297,6 +322,7 @@ c.hints.selectors["p"] = [
 c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'input[type="checkbox"]', 'input[type="radio"]', 'input[type="range"]', 'input[type="submit"]', 'input[type="reset"]', 'input[type="button"]', 'input[type="image"]', 'form button' ]
 # }}}
 
+# ================== jseval ======================= {{{
 # close popup
 config.bind('xx', 'jseval (function () { '+
 '  var i, elements = document.querySelectorAll("body *");'+
@@ -309,7 +335,6 @@ config.bind('xx', 'jseval (function () { '+
 '  }'+
 '})();');
 
-# ================== Youtube Add Blocking ======================= {{{
 # probably doesn't work
 # def filter_yt(info: interceptor.Request):
 #     """Block the given request if necessary."""
@@ -323,8 +348,7 @@ config.bind('xx', 'jseval (function () { '+
 # interceptor.register(filter_yt)
 # }}}
 
-
-# TESTS
+# ======================= Test ============= {{{
 # c.downloads.position = "bottom"
 # c.scrolling.bar = "always"
 # c.content.javascript.can_access_clipboard = True
@@ -341,3 +365,11 @@ config.bind('xx', 'jseval (function () { '+
 # config.set("content.desktop_capture", True, "*://teams.microsoft.com")
 # config.set("content.cookies.accept", "all", "*://teams.microsoft.com")
 
+# config.bind('J', 'move-to-start-of-next-block', 'caret') # [
+# config.bind('K', 'move-to-start-of-prev-block', 'caret')
+# config.bind(',r', 'spawn -u readability-js')
+# config.bind(',R', 'spawn -u readability')
+# config.bind(',F', 'spawn -u openfeeds') - module needed
+# move cursor in command mode
+# bind go set-cmd-text :open {url:pretty} ;; fake-key -g <Home><Ctrl-Right><Shift-End>
+# }}}
