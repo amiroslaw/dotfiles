@@ -258,7 +258,7 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 
 # tui runs from terminal; rofi opens with xdg-open so sometimes it's not necessary to open in terminal
 super + o ; {o,i,p,b,t,z,j,f,F,d,D,v}
-	$TERM_LT -e { notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nj-fasd-dir\nf-files\nd-dir\nv-videos", \
+	$TERM_LT -e { notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nj-fasd-dir\nf(F)-files\nd(D)-dir\nv-videos", \
 		nmtui,ncmpcpp,bmenu,tg, \
 		$ROFI/open.sh fasd, \
 		$ROFI/open.sh fasd-dir, \
@@ -266,7 +266,7 @@ super + o ; {o,i,p,b,t,z,j,f,F,d,D,v}
 		$ROFI/open.sh file-hidden, \
 		$ROFI/open.sh dir, \
 		$ROFI/open.sh dir-hidden, \
-		$ROFI/open.sh video 
+		$ROFI/open.sh video, \
 		}
 
 # script in background - url.lua menu will ask for the number of the links
@@ -323,7 +323,7 @@ alt + space
 
 # rofi video
 super + {shift,ctrl} + v
-	$ROFI/open.sh video,cd ~/Templates/mpvlists && mpv $(ls -r | rofi -dmenu)
+	{ $ROFI/open.sh video, cd ~/Templates/mpvlists && mpv $(ls -r | rofi -dmenu) }
 
 # translator 
 super + {_,shift,ctrl} + t
