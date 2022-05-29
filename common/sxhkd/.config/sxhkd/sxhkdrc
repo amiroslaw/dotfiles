@@ -222,7 +222,7 @@ super + {shift,ctrl,_} + Delete
 	}
 
 super + {_,shift} + BackSpace
-	{$TERM_LT -t top -c top -e btm,xkill}
+	{$TERM_LT -t top -c top -e btop,xkill}
 
 # search
 super + {_, shift,ctrl} + g

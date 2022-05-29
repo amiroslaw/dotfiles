@@ -4,7 +4,7 @@ local bindings = require 'key'
 
 local launch_menu = {
 	{
-		args = { 'btm' },
+		args = { 'btop' },
 	},
 	{
 		args = { 'bmenu' },
