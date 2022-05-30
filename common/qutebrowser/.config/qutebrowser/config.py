@@ -96,6 +96,7 @@ config.bind('xp', 'process')
 config.bind('pc', 'open -t {primary}')
 config.bind('pC', 'open -t {clipboard}')
 config.bind('ya', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-formatted link”
+
 config.bind('<Ctrl+T>', 'spawn --userscript translate')
 config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
 config.bind('M', 'bookmark-add --toggle')
@@ -111,11 +112,12 @@ config.bind('<Alt-a>', 'navigate next')
 config.bind('<Alt-x>', 'navigate prev')
 
 # MEDIA
-config.bind('<Alt-Shift-w>', 'hint --rapid links spawn -u  mpvplaylist.sh push {hint-url}')
-config.bind('<Alt-Ctrl-w>', 'spawn -uv  mpvplaylist.sh play')
+config.bind('<Ctrl-w>', 'hint --rapid links spawn -u  mpvplaylist.sh push {hint-url}')
+config.bind('<Alt-Shift-w>', 'spawn -uv  mpvplaylist.sh play')
 config.bind(';w', 'hint links spawn -uv mpvplaylist.sh {hint-url}')
+config.bind(';W', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
 config.bind(';a', 'hint links spawn -uv mpvplaylist.sh audio {hint-url}')
-config.bind('<Ctrl-w>', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
+config.bind(';A', 'spawn -uv mpvplaylist.sh audio {url}')
 
 # SESSION
 config.bind('zs', 'spawn -u session.sh save')
@@ -154,22 +156,28 @@ config.bind(';s', 'hint links userscript doi.py')
 # URL mostly download stuff
 urlCmd = 'hint links spawn url.lua '
 urlCmdRapid = 'hint --rapid links spawn url.lua '
-config.bind('ea', urlCmd + 'audio "{hint-url}"')
-config.bind('eA', urlCmdRapid + 'audio "{hint-url}"')
-config.bind('et', urlCmd + 'tor "{hint-url}"')
-config.bind('eT', urlCmdRapid + 'tor "{hint-url}"')
-config.bind('ey', urlCmd + 'yt "{hint-url}"')
-config.bind('eY', urlCmdRapid + 'yt "{hint-url}"')
-config.bind('eg', urlCmd + 'gallery "{hint-url}"')
-config.bind('eG', urlCmdRapid + 'gallery "{hint-url}"')
-config.bind('ew', urlCmd + 'wget "{hint-url}"')
-config.bind('eW', urlCmdRapid + 'wget "{hint-url}"')
-config.bind('ek', urlCmd + 'kindle "{hint-url}"')
-config.bind('eK', urlCmdRapid + 'kindle "{hint-url}"')
-config.bind('er', urlCmd + 'read "{hint-url}"')
-config.bind('eR', 'spawn -u ~/.bin/url.lua read "{url}"')
-config.bind('es', urlCmd + 'speed "{hint-url}"')
-config.bind('eS', 'spawn -u ~/.bin/url.lua speed "{url}"')
+urlCmdLink = 'spawn -u url.lua '
+config.bind('eaa', urlCmd + 'audio "{hint-url}"')
+config.bind('ear', urlCmdRapid + 'audio "{hint-url}"')
+config.bind('eal', urlCmdLink + 'audio "{url}"')
+config.bind('ett', urlCmd + 'tor "{hint-url}"')
+config.bind('etr', urlCmdRapid + 'tor "{hint-url}"')
+config.bind('eyy', urlCmd + 'yt "{hint-url}"')
+config.bind('eyr', urlCmdRapid + 'yt "{hint-url}"')
+config.bind('eyl', urlCmdLink + 'yt "{url}"')
+config.bind('egg', urlCmd + 'gallery "{hint-url}"')
+config.bind('egr', urlCmdRapid + 'gallery "{hint-url}"')
+config.bind('egl', urlCmdLink + 'gallery "{url}"')
+config.bind('eww', urlCmd + 'wget "{hint-url}"')
+config.bind('ewr', urlCmdRapid + 'wget "{hint-url}"')
+config.bind('ewl', urlCmdLink + 'wget "{url}"')
+config.bind('ekk', urlCmd + 'kindle "{hint-url}"')
+config.bind('ekr', urlCmdRapid + 'kindle "{hint-url}"')
+config.bind('ekl', urlCmdLink + 'kindle "{url}"')
+config.bind('enn', urlCmd + 'read "{hint-url}"')
+config.bind('enl', urlCmdLink + 'read "{url}"')
+config.bind('ess', urlCmd + 'speed "{hint-url}"')
+config.bind('esl', urlCmdLink + 'speed "{url}"')
 # }}}
 
 # ======================= COPY OR CREATE ============= {{{
@@ -189,6 +197,8 @@ config.bind('cp', 'print') # create PDF
 config.bind('ar', 'config-source')
 config.bind('aa', 'config-cycle --temp --print content.blocking.enabled false true') 
 config.bind('aj', 'config-cycle --temp --print input.spatial_navigation false true')
+config.bind('aw', 'config-cycle --temp --print qt.workarounds.remove_service_workers true false')
+
 config.bind('ap', 'spawn -u jspdfdownload')
 config.bind('au', 'edit-url')
 config.bind("aF", "hint links spawn firefox {hint-url}")
