@@ -115,7 +115,7 @@ config.bind('<Alt-Shift-w>', 'hint --rapid links spawn -u  mpvplaylist.sh push {
 config.bind('<Alt-Ctrl-w>', 'spawn -uv  mpvplaylist.sh play')
 config.bind(';w', 'hint links spawn -uv mpvplaylist.sh {hint-url}')
 config.bind(';a', 'hint links spawn -uv mpvplaylist.sh audio {hint-url}')
-config.bind('<Ctrl-w>', 'spawn -uv view_in_mpv') # stop video and open in mpv
+config.bind('<Ctrl-w>', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
 
 # SESSION
 config.bind('zs', 'spawn -u session.sh save')
@@ -228,7 +228,7 @@ config.bind("<Mod1-d>", "fake-key <Ctrl-Delete>", "insert")
 config.bind("<Ctrl-d>", "fake-key <Delete>", "insert")
 config.bind("<Ctrl-w>", "fake-key <Ctrl-Backspace>", "insert")
 config.bind("<Ctrl-u>", "fake-key <Shift-Home><Delete>", "insert")
-config.bind("<Ctrl-x>", "fake-key <Shift-End><Delete>", "insert")
+config.bind("<Ctrl-Shift-d>", "fake-key <Shift-End><Delete>", "insert")
 config.bind('<Ctrl-y>', 'insert-text {primary}', 'insert') # doesn't work
 config.bind("<Ctrl-o>", "edit-text", "insert")
 config.bind("ai", "mode-enter insert ;; fake-key <Enter> ;; mode-enter normal" )
@@ -308,6 +308,7 @@ config.bind('<Ctrl-s>', 'open -t {primary} ', 'insert')
 config.bind('<Ctrl-i>', 'open -t d {primary} ', 'insert')
 config.bind('<Ctrl-Shift-i>', 'open -t d {primary} ', 'insert')
 config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
+config.bind('zg', 'set-cmd-text --space :open -t site:{url} ')
 # }}}
 # }}}
 
@@ -323,30 +324,16 @@ c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'in
 # }}}
 
 # ================== jseval ======================= {{{
-# close popup
-config.bind('xx', 'jseval (function () { '+
-'  var i, elements = document.querySelectorAll("body *");'+
-''+
-'  for (i = 0; i < elements.length; i++) {'+
-'    var pos = getComputedStyle(elements[i]).position;'+
-'    if (pos === "fixed" || pos == "sticky") {'+
-'      elements[i].parentNode.removeChild(elements[i]);'+
-'    }'+
-'  }'+
-'})();');
+config.bind('xx', 'jseval -q -f ~/.config/qutebrowser/js/close-popup.js')
 
-# probably doesn't work
-# def filter_yt(info: interceptor.Request):
-#     """Block the given request if necessary."""
-#     url = info.request_url
-#     if (
-#         url.host() == "www.youtube.com"
-#         and url.path() == "/get_video_info"
-#         and "&adformat=" in url.query()
-#     ):
-#         info.block()
-# interceptor.register(filter_yt)
-# }}}
+CYCLE_INPUTS = "jseval -q -f /usr/share/qutebrowser/scripts/cycle-inputs.js"
+config.bind('<Alt-n>', CYCLE_INPUTS)
+config.bind('<Alt-n>', CYCLE_INPUTS, 'insert')
+# deezer
+config.bind('xn', 'jseval -q document.querySelector(".player-controls li:nth-child(5) button").click()')
+config.bind('xl', 'jseval -q document.querySelector("[aria-label=\'View lyrics\']").click()')
+config.bind('xf', 'jseval -q document.querySelector("[aria-label=\'Add to Favorite tracks\']").click()')
+# config.bind('xp', 'jseval -q document.querySelector(".player-controls li:nth-child(3) button").click()') # space in 
 
 # ======================= Test ============= {{{
 # c.downloads.position = "bottom"

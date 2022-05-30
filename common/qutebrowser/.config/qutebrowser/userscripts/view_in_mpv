@@ -49,13 +49,11 @@ msg() {
 
 MPV_COMMAND=${MPV_COMMAND:-mpv}
 # Warning: spaces in single flags are not supported
-MPV_FLAGS=${MPV_FLAGS:- --profile=stream}
-# MPV_FLAGS=${MPV_FLAGS:- --force-window --no-terminal --keep-open=yes --fs --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --slang=en --ytdl-raw-options="write-auto-sub=,sub-lang=en,yes-playlist=" --ytdl-format="bestvideo[height<=?1080][vcodec!=vp9]+bestaudio/best" --input-ipc-server=/tmp/mpvsocket}
-# ignores ytld flags - maybe I should define mpv profile
+MPV_FLAGS=${MPV_FLAGS:---profile=stream}
 # MPV_FLAGS=${MPV_FLAGS:- --force-window --no-terminal --keep-open=yes --ytdl}
 IFS=" " read -r -a video_command <<< "$MPV_COMMAND $MPV_FLAGS"
 # IFS=" " read -r -a video_command <<< mpv --profile=stream
-# MPV_COMMAND='mpv --force-window --no-terminal --keep-open=yes --fs --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --slang=en --ytdl-raw-options='write-auto-sub=,sub-lang=en,yes-playlist=' --ytdl-format='bestvideo[height<=?1080][vcodec!=vp9]+bestaudio/best' --input-ipc-server=/tmp/mpvsocket'
+# MPV_FLAGS=${MPV_FLAGS:- --force-window --no-terminal --keep-open=yes --fs --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --slang=en --ytdl-raw-options="write-auto-sub=,sub-lang=en,yes-playlist=" --ytdl-format="bestvideo[height<=?1080][vcodec!=vp9]+bestaudio/best" --input-ipc-server=/tmp/mpvsocket}
 
 js() {
 cat <<EOF
