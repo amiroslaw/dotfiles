@@ -88,14 +88,9 @@ c.content.blocking.adblock.lists = [
 # }}}
 
 # ======================= BINDINGS =================== {{{
+config.unbind('ad')
 config.bind('<Alt-s>', ':set spellcheck.languages ["en-US"]', 'insert') 
 config.bind('<Shift-Alt-s>', ':set spellcheck.languages ["pl-PL"]', 'insert')
-config.bind('ZZ', ':session-save --only-active-window  ;; later 1000 close')
-config.bind('za', 'set-cmd-text --space :scroll-to-anchor ')
-config.bind('xp', 'process')
-config.bind('pc', 'open -t {primary}')
-config.bind('pC', 'open -t {clipboard}')
-config.bind('ya', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-formatted link”
 
 config.bind('<Ctrl+T>', 'spawn --userscript translate')
 config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
@@ -119,13 +114,6 @@ config.bind(';W', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # s
 config.bind(';a', 'hint links spawn -uv mpvplaylist.sh audio {hint-url}')
 config.bind(';A', 'spawn -uv mpvplaylist.sh audio {url}')
 
-# SESSION
-config.bind('zs', 'spawn -u session.sh save')
-config.bind('zl', 'spawn -u session.sh load')
-config.bind('zd', 'spawn -u session.sh delete')
-config.bind('zw', 'spawn -u session.sh webapp')
-# config.bind('as', 'set-cmd-text --space :session-load ')
-
 # ======================= TABS AND WINDOWS ============= {{{
 config.bind(']', 'tab-next')
 config.bind('[', 'tab-prev')
@@ -142,6 +130,26 @@ config.bind('wn', 'open -w')
 config.bind('<Ctrl-n>', 'open -w')
 # }}}
 
+# ======================= SESSION AND JSEVAL ============= {{{
+config.bind('zs', 'spawn -u session.sh save')
+config.bind('zl', 'spawn -u session.sh load')
+config.bind('zd', 'spawn -u session.sh delete')
+config.bind('zw', 'spawn -u session.sh webapp')
+# config.bind('zs', 'set-cmd-text --space :session-load ')
+config.bind('ZZ', ':session-save --only-active-window ;; later 500 close')    
+
+config.bind('zx', 'jseval -q -f ~/.config/qutebrowser/js/close-popup.js')
+
+CYCLE_INPUTS = "jseval -q -f /usr/share/qutebrowser/scripts/cycle-inputs.js"
+config.bind('<Alt-n>', CYCLE_INPUTS)
+config.bind('<Alt-n>', CYCLE_INPUTS, 'insert')
+# deezer
+config.bind('zn', 'jseval -q document.querySelector(".player-controls li:nth-child(5) button").click()')
+config.bind('zt', 'jseval -q document.querySelector("[aria-label=\'View lyrics\']").click()')
+config.bind('zf', 'jseval -q document.querySelector("[aria-label=\'Add to Favorite tracks\']").click()')
+# config.bind('zp', 'jseval -q document.querySelector(".player-controls li:nth-child(3) button").click()')
+# }}}
+
 # ======================= HINTS ============= {{{
 config.bind(';;', 'hint links tab-bg')
 config.bind(';m', 'hint media')
@@ -156,31 +164,31 @@ config.bind(';s', 'hint links userscript doi.py')
 # URL mostly download stuff
 urlCmd = 'hint links spawn url.lua '
 urlCmdRapid = 'hint --rapid links spawn url.lua '
-urlCmdLink = 'spawn -u url.lua '
-config.bind('eaa', urlCmd + 'audio "{hint-url}"')
-config.bind('ear', urlCmdRapid + 'audio "{hint-url}"')
-config.bind('eal', urlCmdLink + 'audio "{url}"')
-config.bind('ett', urlCmd + 'tor "{hint-url}"')
-config.bind('etr', urlCmdRapid + 'tor "{hint-url}"')
-config.bind('eyy', urlCmd + 'yt "{hint-url}"')
-config.bind('eyr', urlCmdRapid + 'yt "{hint-url}"')
-config.bind('eyl', urlCmdLink + 'yt "{url}"')
-config.bind('egg', urlCmd + 'gallery "{hint-url}"')
-config.bind('egr', urlCmdRapid + 'gallery "{hint-url}"')
-config.bind('egl', urlCmdLink + 'gallery "{url}"')
-config.bind('eww', urlCmd + 'wget "{hint-url}"')
-config.bind('ewr', urlCmdRapid + 'wget "{hint-url}"')
-config.bind('ewl', urlCmdLink + 'wget "{url}"')
-config.bind('ekk', urlCmd + 'kindle "{hint-url}"')
-config.bind('ekr', urlCmdRapid + 'kindle "{hint-url}"')
-config.bind('ekl', urlCmdLink + 'kindle "{url}"')
-config.bind('enn', urlCmd + 'read "{hint-url}"')
-config.bind('enl', urlCmdLink + 'read "{url}"')
-config.bind('ess', urlCmd + 'speed "{hint-url}"')
-config.bind('esl', urlCmdLink + 'speed "{url}"')
+urlCmdLink = 'spawn url.lua '
+config.bind('add', urlCmd + 'audio "{hint-url}"')
+config.bind('ada', urlCmdRapid + 'audio "{hint-url}"')
+config.bind('aal', urlCmdLink + 'audio "{url}"')
+config.bind('att', urlCmd + 'tor "{hint-url}"')
+config.bind('ata', urlCmdRapid + 'tor "{hint-url}"')
+config.bind('ayy', urlCmd + 'yt "{hint-url}"')
+config.bind('aya', urlCmdRapid + 'yt "{hint-url}"')
+config.bind('ayl', urlCmdLink + 'yt "{url}"')
+config.bind('agg', urlCmd + 'gallery "{hint-url}"')
+config.bind('aga', urlCmdRapid + 'gallery "{hint-url}"')
+config.bind('agl', urlCmdLink + 'gallery "{url}"')
+config.bind('aww', urlCmd + 'wget "{hint-url}"')
+config.bind('awa', urlCmdRapid + 'wget "{hint-url}"')
+config.bind('awl', urlCmdLink + 'wget "{url}"')
+config.bind('akk', urlCmd + 'kindle "{hint-url}"')
+config.bind('aka', urlCmdRapid + 'kindle "{hint-url}"')
+config.bind('akl', urlCmdLink + 'kindle "{url}"')
+config.bind('arr', urlCmd + 'read "{hint-url}"')
+config.bind('arl', urlCmdLink + 'read "{url}"')
+config.bind('ass', urlCmd + 'speed "{hint-url}"')
+config.bind('asl', urlCmdLink + 'speed "{url}"')
 # }}}
 
-# ======================= COPY OR CREATE ============= {{{
+# ======================= COPING OR CREATE ============= {{{
 config.bind('cc', 'spawn -u ~/.bin/note.lua clip {clipboard}')
 config.bind('cs', 'spawn -u ~/.bin/note.lua sel {primary}')
 config.bind('cs', 'spawn -u ~/.bin/note.lua sel {primary}', 'caret')
@@ -190,24 +198,23 @@ config.bind('cb', 'hint code userscript code_select.py')
 config.bind('ca', 'hint p userscript p_select.py')
 
 config.bind('cp', 'print') # create PDF
+
+config.bind('pc', 'open -t {primary}')
+config.bind('pC', 'open -t {clipboard}')
+config.bind('ya', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-formatted link”
 # }}}
 
-
 # ======================= LEADER ============= {{{
-config.bind('ar', 'config-source')
-config.bind('aa', 'config-cycle --temp --print content.blocking.enabled false true') 
-config.bind('aj', 'config-cycle --temp --print input.spatial_navigation false true')
-config.bind('aw', 'config-cycle --temp --print qt.workarounds.remove_service_workers true false')
-
-config.bind('ap', 'spawn -u jspdfdownload')
-config.bind('au', 'edit-url')
-config.bind("aF", "hint links spawn firefox {hint-url}")
-# config.bind("af", "spawn -u url.sh firefox {url}")
-config.bind("af", "spawn firefox {url}")
-config.bind('at', 'set-cmd-text --space :screenshot ') # todo bind to print scr and get current date
-config.bind('ao', 'spawn -u qutedmenu tab') # TODO change to rofi
-config.bind('ad', 'spawn -u open_download')
-config.bind('ac', 'download-cancel')
+config.bind('ee', 'set-cmd-text -sr :tab-focus')
+config.bind('ex', 'open -t ;; process')
+config.bind('er', 'config-source')
+config.bind('ep', 'spawn -u jspdfdownload')
+config.bind('eu', 'edit-url')
+config.bind('ef', "spawn firefox {url}")
+config.bind('eF', "hint links spawn firefox {hint-url}")
+config.bind('eo', 'spawn -u qutedmenu tab') # TODO change to rofi
+config.bind('ed', 'spawn -u open_download')
+config.bind('ec', 'download-cancel')
 # }}}
 
 # ======================= Command Mode ============= {{{
@@ -241,11 +248,19 @@ config.bind("<Ctrl-u>", "fake-key <Shift-Home><Delete>", "insert")
 config.bind("<Ctrl-Shift-d>", "fake-key <Shift-End><Delete>", "insert")
 config.bind('<Ctrl-y>', 'insert-text {primary}', 'insert') # doesn't work
 config.bind("<Ctrl-o>", "edit-text", "insert")
-config.bind("ai", "mode-enter insert ;; fake-key <Enter> ;; mode-enter normal" )
+config.bind('ei', "mode-enter insert ;; fake-key <Enter> ;; mode-enter normal" )
 config.bind('<Ctrl-j>', 'fake-key <Down>', 'insert')
 config.bind('<Ctrl-k>', 'fake-key <Up>', 'insert')
 # }}}
 
+# ================== set-cmd and config ======================= {{{
+config.bind('xa', 'config-cycle --temp --print content.blocking.enabled false true')
+config.bind('xj', 'config-cycle --temp --print input.spatial_navigation false true')
+config.bind('xw', 'config-cycle --temp --print qt.workarounds.remove_service_workers true false')
+
+config.bind('xp', 'set-cmd-text --space :screenshot ') # todo bind to print scr and get current date
+config.bind('xs', 'set-cmd-text --space :scroll-to-anchor ')
+# }}}
 # }}}
 
 # ======================= Searchengines ============= {{{
@@ -311,6 +326,8 @@ config.bind('sd', 'open -t d {primary} ')
 config.bind('sD', 'open -t d {clipboard} ')
 config.bind('sd', 'spawn -u selection.sh d', 'caret')
 
+config.bind('sg', 'set-cmd-text --space :open -t site:{url} ')
+
 config.bind('zz', 'spawn -u selection.sh ')
 config.bind('zz', 'spawn -u selection.sh', 'caret')
 config.bind('zZ', 'spawn -u selection.sh {clipboard}')
@@ -318,7 +335,6 @@ config.bind('<Ctrl-s>', 'open -t {primary} ', 'insert')
 config.bind('<Ctrl-i>', 'open -t t {primary} ', 'insert')
 config.bind('<Ctrl-Shift-i>', 'open -t d {primary} ', 'insert')
 config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
-config.bind('zg', 'set-cmd-text --space :open -t site:{url} ')
 # }}}
 # }}}
 
@@ -332,18 +348,6 @@ c.hints.selectors["p"] = [
 ]
 c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'input[type="checkbox"]', 'input[type="radio"]', 'input[type="range"]', 'input[type="submit"]', 'input[type="reset"]', 'input[type="button"]', 'input[type="image"]', 'form button' ]
 # }}}
-
-# ================== jseval ======================= {{{
-config.bind('xx', 'jseval -q -f ~/.config/qutebrowser/js/close-popup.js')
-
-CYCLE_INPUTS = "jseval -q -f /usr/share/qutebrowser/scripts/cycle-inputs.js"
-config.bind('<Alt-n>', CYCLE_INPUTS)
-config.bind('<Alt-n>', CYCLE_INPUTS, 'insert')
-# deezer
-config.bind('xn', 'jseval -q document.querySelector(".player-controls li:nth-child(5) button").click()')
-config.bind('xl', 'jseval -q document.querySelector("[aria-label=\'View lyrics\']").click()')
-config.bind('xf', 'jseval -q document.querySelector("[aria-label=\'Add to Favorite tracks\']").click()')
-# config.bind('xp', 'jseval -q document.querySelector(".player-controls li:nth-child(3) button").click()') # space in 
 
 # ======================= Test ============= {{{
 # c.downloads.position = "bottom"
