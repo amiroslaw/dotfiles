@@ -67,7 +67,7 @@ c.spellcheck.languages =  ["en-US", 'pl-PL']
 c.content.default_encoding = 'utf-8'
 c.downloads.remove_finished = 10000
 c.content.autoplay = False
-c.content.pdfjs = True ## Display PDFs within qutebrowser - dependency needed
+# c.content.pdfjs = True ## Display PDFs within qutebrowser - dependency needed
 # c.input.spatial_navigation = True # navigate between focusable elements, using arrow keys, how to disable hjkl keys?
 # c.content.geolocation = False # default - ask
 
@@ -140,9 +140,13 @@ config.bind('ZZ', ':session-save --only-active-window ;; later 500 close')
 
 config.bind('zx', 'jseval -q -f ~/.config/qutebrowser/js/close-popup.js')
 
+config.bind('zr', 'jseval -q document.getElementById("reload-button").click()') # reload page
+config.bind('zp', 'jseval -q document.getElementById("popover2").click()') # pepper alarms
+
 CYCLE_INPUTS = "jseval -q -f /usr/share/qutebrowser/scripts/cycle-inputs.js"
 config.bind('<Alt-n>', CYCLE_INPUTS)
 config.bind('<Alt-n>', CYCLE_INPUTS, 'insert')
+
 # deezer
 config.bind('zn', 'jseval -q document.querySelector(".player-controls li:nth-child(5) button").click()')
 config.bind('zt', 'jseval -q document.querySelector("[aria-label=\'View lyrics\']").click()')
@@ -213,7 +217,7 @@ config.bind('eu', 'edit-url')
 config.bind('ef', "spawn firefox {url}")
 config.bind('eF', "hint links spawn firefox {hint-url}")
 config.bind('eo', 'spawn -u qutedmenu tab') # TODO change to rofi
-config.bind('ed', 'spawn -u open_download')
+config.bind('ed', 'spawn -u ~/.config/qutebrowser/userscripts/open_download')
 config.bind('ec', 'download-cancel')
 # }}}
 
@@ -298,6 +302,9 @@ c.url.searchengines = {
 config.bind('ss', 'open -t g {primary} ')
 config.bind('sS', 'open -t g {clipboard} ')
 config.bind('ss', 'spawn -u selection.sh g', 'caret')
+config.bind('si', 'open -t gi {primary} ')
+config.bind('sI', 'open -t gi {clipboard} ')
+config.bind('si', 'spawn -u selection.sh gi', 'caret')
 config.bind('sm', 'open -t m {primary} ')
 config.bind('sM', 'open -t m {clipboard} ')
 config.bind('sm', 'spawn -u selection.sh m', 'caret')

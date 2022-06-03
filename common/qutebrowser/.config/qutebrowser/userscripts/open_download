@@ -19,7 +19,6 @@
 # Any feedback is welcome!
 
 set -e
-
 # open a file from the download directory using rofi
 DOWNLOAD_DIR=${DOWNLOAD_DIR:-$QUTE_DOWNLOAD_DIR}
 DOWNLOAD_DIR=${DOWNLOAD_DIR:-$HOME/Downloads}
@@ -65,7 +64,7 @@ rofi_default_args=(
         -no-custom
         -format i   # make rofi return the index
         -l 25
-        -p 'Open download xx' 
+        -p 'Open download' 
     )
 
 crop-first-column() {
@@ -114,6 +113,7 @@ if [ -f /.flatpak-info ]; then
 else
     filetype=$(xdg-mime query filetype "$path")
     application=$(xdg-mime query default "$filetype")
+	dunstify $application
 
     if [ -z "$application" ] ; then
         die "Do not know how to open »$file« of type $filetype"
