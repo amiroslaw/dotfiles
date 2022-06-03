@@ -490,21 +490,6 @@ vim.g.UltiSnipsJumpBackwardTrigger = '<c-k>'
 vim.g.UltiSnipsSnippetsDir = HOME .. '~/.config/nvim/UltiSnips'
 vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' }
 
---""""""""""""""""""
--- hop, easymotion alternative
--- https://github.com/phaazon/hop.nvim
-nmap('F', '<cmd>HopChar1 <cr>')
-nmap('f', '<cmd>HopChar2 <cr>')
-nmap('<leader>w', '<cmd>HopWordAC <cr>')
-nmap('<leader>W', '<cmd>HopWordBC <cr>')
-nmap('s', '<cmd>HopLineStartAC <cr>')
-nmap('S', '<cmd>HopLineStartBC <cr>')
-omap('F', '<cmd>HopChar1 <cr>')
-omap('f', '<cmd>HopChar2 <cr>')
-omap('<leader>w', '<cmd>HopWordAC <cr>')
-omap('<leader>W', '<cmd>HopWordBC <cr>')
-omap('s', '<cmd>HopLineStartAC <cr>')
-omap('S', '<cmd>HopLineStartBC <cr>')
 
 --""""""""""""""""""
 -- NvimTreeToggle https://github.com/kyazdani42/nvim-tree.lua

@@ -83,3 +83,28 @@ vim.g.firenvim_config = {
 }
 
 vim.cmd [[ autocmd UIEnter * :call luaeval('OnUIEnter(vim.fn.deepcopy(vim.v.event))') ]]
+
+
+	use {
+		'phaazon/hop.nvim',
+		branch = 'v1', -- optional but strongly recommended
+		config = function()
+			require('hop').setup { keys = 'etovxqpdygfblzhckisuran' }
+		end,
+	}
+
+--""""""""""""""""""
+-- hop, easymotion alternative
+-- https://github.com/phaazon/hop.nvim
+nmap('F', '<cmd>HopChar1 <cr>')
+nmap('f', '<cmd>HopChar2 <cr>')
+nmap('<leader>w', '<cmd>HopWordAC <cr>')
+nmap('<leader>W', '<cmd>HopWordBC <cr>')
+nmap('s', '<cmd>HopLineStartAC <cr>')
+nmap('S', '<cmd>HopLineStartBC <cr>')
+omap('F', '<cmd>HopChar1 <cr>')
+omap('f', '<cmd>HopChar2 <cr>')
+omap('<leader>w', '<cmd>HopWordAC <cr>')
+omap('<leader>W', '<cmd>HopWordBC <cr>')
+omap('s', '<cmd>HopLineStartAC <cr>')
+omap('S', '<cmd>HopLineStartBC <cr>')

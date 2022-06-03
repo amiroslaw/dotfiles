@@ -71,13 +71,7 @@ return require('packer').startup(function()
 			}
 		end,
 	}
-	use {
-		'phaazon/hop.nvim',
-		branch = 'v1', -- optional but strongly recommended
-		config = function()
-			require('hop').setup { keys = 'etovxqpdygfblzhckisuran' }
-		end,
-	}
+	use "ggandor/lightspeed.nvim"
 	use { 'abecodes/tabout.nvim', after = { 'nvim-cmp' } } -- doesn't support asciidoc
 	use {
 		'hrsh7th/nvim-cmp',
