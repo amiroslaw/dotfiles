@@ -52,6 +52,8 @@ c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save --only-active-window
 c.auto_save.session = False
 c.confirm_quit = ["multiple-tabs", "downloads"]
 c.session.lazy_restore = True
+c.downloads.location.directory = "~/Downloads"
+# c.downloads.location.prompt = False
 
 c.completion.shrink = True
 c.completion.open_categories = [ 'quickmarks', 'bookmarks', 'history', 'searchengines', 'filesystem'] # idk what filesystem is
@@ -91,8 +93,10 @@ c.content.blocking.adblock.lists = [
 config.unbind('ad')
 config.bind('<Alt-s>', ':set spellcheck.languages ["en-US"]', 'insert') 
 config.bind('<Shift-Alt-s>', ':set spellcheck.languages ["pl-PL"]', 'insert')
+config.bind('gp', 'open -t ;; process')
 
 config.bind('<Ctrl+T>', 'spawn --userscript translate')
+
 config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
 config.bind('M', 'bookmark-add --toggle')
 config.bind('<Escape>', 'mode-enter normal ;; jseval -q document.activeElement.blur()', 'insert') # unfocus input
@@ -130,18 +134,8 @@ config.bind('wn', 'open -w')
 config.bind('<Ctrl-n>', 'open -w')
 # }}}
 
-# ======================= SESSION AND JSEVAL ============= {{{
-config.bind('zs', 'spawn -u session.sh save')
-config.bind('zl', 'spawn -u session.sh load')
-config.bind('zd', 'spawn -u session.sh delete')
-config.bind('zw', 'spawn -u session.sh webapp')
-# config.bind('zs', 'set-cmd-text --space :session-load ')
-config.bind('ZZ', ':session-save --only-active-window ;; later 500 close')    
-
-config.bind('zx', 'jseval -q -f ~/.config/qutebrowser/js/close-popup.js')
-
+# ======================= JSEVAL ============= {{{
 config.bind('zr', 'jseval -q document.getElementById("reload-button").click()') # reload page
-config.bind('zp', 'jseval -q document.getElementById("popover2").click()') # pepper alarms
 
 CYCLE_INPUTS = "jseval -q -f /usr/share/qutebrowser/scripts/cycle-inputs.js"
 config.bind('<Alt-n>', CYCLE_INPUTS)
@@ -150,8 +144,13 @@ config.bind('<Alt-n>', CYCLE_INPUTS, 'insert')
 # deezer
 config.bind('zn', 'jseval -q document.querySelector(".player-controls li:nth-child(5) button").click()')
 config.bind('zt', 'jseval -q document.querySelector("[aria-label=\'View lyrics\']").click()')
-config.bind('zf', 'jseval -q document.querySelector("[aria-label=\'Add to Favorite tracks\']").click()')
 # config.bind('zp', 'jseval -q document.querySelector(".player-controls li:nth-child(3) button").click()')
+
+# general
+config.bind('za', 'jseval -qf ~/.config/qutebrowser/js/general-alert.js')
+config.bind('zl', 'jseval -qf ~/.config/qutebrowser/js/general-save.js') 
+config.bind('zs', 'jseval -qf ~/.config/qutebrowser/js/general-sort.js') 
+config.bind('zf', 'jseval -qf ~/.config/qutebrowser/js/general-save.js') # TODO
 # }}}
 
 # ======================= HINTS ============= {{{
@@ -163,6 +162,7 @@ config.bind(';c', 'hint links yank')
 config.bind(';C', 'hint --rapid links yank')
 config.bind(';D', 'hint --rapid links download')
 config.bind(';s', 'hint links userscript doi.py')
+config.bind(';x', 'hint all delete')
 # :bind d spawn -u doi.py
 
 # URL mostly download stuff
@@ -203,14 +203,17 @@ config.bind('ca', 'hint p userscript p_select.py')
 
 config.bind('cp', 'print') # create PDF
 
+config.bind('ci', 'hint images download')
+config.bind('cI', 'hint --rapid images download')
+# config.bind('cic', 'hint images spawn -v xclip -selection clipboard -t image/png -i {hint-url}') script with downloading to tmp and from that copy to clipboard
+
 config.bind('pc', 'open -t {primary}')
 config.bind('pC', 'open -t {clipboard}')
 config.bind('ya', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-formatted link”
 # }}}
 
-# ======================= LEADER ============= {{{
+# ======================= LEADER and SESSION ============= {{{
 config.bind('ee', 'set-cmd-text -sr :tab-focus')
-config.bind('ex', 'open -t ;; process')
 config.bind('er', 'config-source')
 config.bind('ep', 'spawn -u jspdfdownload')
 config.bind('eu', 'edit-url')
@@ -219,6 +222,14 @@ config.bind('eF', "hint links spawn firefox {hint-url}")
 config.bind('eo', 'spawn -u qutedmenu tab') # TODO change to rofi
 config.bind('ed', 'spawn -u ~/.config/qutebrowser/userscripts/open_download')
 config.bind('ec', 'download-cancel')
+
+config.bind('es', 'spawn -u session.sh save')
+config.bind('el', 'spawn -u session.sh load')
+config.bind('ex', 'spawn -u session.sh delete')
+config.bind('ew', 'spawn -u session.sh webapp')
+# config.bind('es', 'set-cmd-text --space :session-load ')
+config.bind('ZZ', ':session-save --only-active-window ;; later 500 close')    
+
 # }}}
 
 # ======================= Command Mode ============= {{{
@@ -258,6 +269,8 @@ config.bind('<Ctrl-k>', 'fake-key <Up>', 'insert')
 # }}}
 
 # ================== set-cmd and config ======================= {{{
+config.bind('xx', 'jseval -q -f ~/.config/qutebrowser/js/close-popup.js')
+
 config.bind('xa', 'config-cycle --temp --print content.blocking.enabled false true')
 config.bind('xj', 'config-cycle --temp --print input.spatial_navigation false true')
 config.bind('xw', 'config-cycle --temp --print qt.workarounds.remove_service_workers true false')
@@ -299,38 +312,38 @@ c.url.searchengines = {
         }
 
 # ======================= SEARCH bindings ============= {{{
-config.bind('ss', 'open -t g {primary} ')
-config.bind('sS', 'open -t g {clipboard} ')
+config.bind('ss', 'open -b g {primary} ')
+config.bind('sS', 'open -b g {clipboard} ')
 config.bind('ss', 'spawn -u selection.sh g', 'caret')
-config.bind('si', 'open -t gi {primary} ')
-config.bind('sI', 'open -t gi {clipboard} ')
+config.bind('si', 'open -b gi {primary} ')
+config.bind('sI', 'open -b gi {clipboard} ')
 config.bind('si', 'spawn -u selection.sh gi', 'caret')
-config.bind('sm', 'open -t m {primary} ')
-config.bind('sM', 'open -t m {clipboard} ')
+config.bind('sm', 'open -b m {primary} ')
+config.bind('sM', 'open -b m {clipboard} ')
 config.bind('sm', 'spawn -u selection.sh m', 'caret')
-config.bind('sb', 'open -t b {primary} ')
-config.bind('sB', 'open -t b {clipboard} ')
+config.bind('sb', 'open -b b {primary} ')
+config.bind('sB', 'open -b b {clipboard} ')
 config.bind('sb', 'spawn -u selection.sh b', 'caret')
-config.bind('sc', 'open -t c {primary} ')
-config.bind('sC', 'open -t c {clipboard} ')
+config.bind('sc', 'open -b c {primary} ')
+config.bind('sC', 'open -b c {clipboard} ')
 config.bind('sc', 'spawn -u selection.sh c', 'caret')
-config.bind('so', 'open -t cc {primary} ')
-config.bind('sO', 'open -t cc {clipboard} ')
+config.bind('so', 'open -b cc {primary} ')
+config.bind('sO', 'open -b cc {clipboard} ')
 config.bind('so', 'spawn -u selection.sh cc', 'caret')
-config.bind('sa', 'open -t a {primary} ')
-config.bind('sA', 'open -t a {clipboard} ')
+config.bind('sa', 'open -b a {primary} ')
+config.bind('sA', 'open -b a {clipboard} ')
 config.bind('sa', 'spawn -u selection.sh a', 'caret')
-config.bind('st', 'open -t t {primary} ')
-config.bind('sT', 'open -t t {clipboard} ')
+config.bind('st', 'open -b t {primary} ')
+config.bind('sT', 'open -b t {clipboard} ')
 config.bind('st', 'spawn -u selection.sh t', 'caret')
-config.bind('sw', 'open -t w {primary} ')
-config.bind('sW', 'open -t w {clipboard} ')
+config.bind('sw', 'open -b w {primary} ')
+config.bind('sW', 'open -b w {clipboard} ')
 config.bind('sw', 'spawn -u selection.sh w', 'caret')
-config.bind('sy', 'open -t y {primary} ')
-config.bind('sY', 'open -t y {clipboard} ')
+config.bind('sy', 'open -b y {primary} ')
+config.bind('sY', 'open -b y {clipboard} ')
 config.bind('sy', 'spawn -u selection.sh y', 'caret')
-config.bind('sd', 'open -t d {primary} ')
-config.bind('sD', 'open -t d {clipboard} ')
+config.bind('sd', 'open -b d {primary} ')
+config.bind('sD', 'open -b d {clipboard} ')
 config.bind('sd', 'spawn -u selection.sh d', 'caret')
 
 config.bind('sg', 'set-cmd-text --space :open -t site:{url} ')
@@ -361,7 +374,6 @@ c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'in
 # c.scrolling.bar = "always"
 # c.content.javascript.can_access_clipboard = True
 # c.content.notifications.enabled = True
-# c.downloads.location.prompt = False
 # c.input.insert_mode.auto_load = True
 # c.tabs.last_close = "close"
 # c.tabs.mousewheel_switching = False

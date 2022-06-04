@@ -1,5 +1,4 @@
 #!/bin/sh
-
 search_engine_file="$QUTE_CONFIG_DIR/config.py"
 
 search_engine_start="c.url.searchengines"
@@ -8,7 +7,7 @@ search_engine_start="c.url.searchengines"
 [ -z "$QUTE_SELECTED_TEXT" ] && exit 0
 
 if [ -n "$1" ]; then
-	echo "open -t $1 $QUTE_SELECTED_TEXT" >> "$QUTE_FIFO"
+	echo "open -b $1 $QUTE_SELECTED_TEXT" >> "$QUTE_FIFO"
 	exit 0
 fi
 
@@ -25,4 +24,4 @@ abbreviations=$(echo "$definitions" | grep -oE "'\w+'" | tr -d \')
 search_engine=$(echo "$abbreviations" | dmenu -p "search engine")
 
 # search selected text with search engine in new tab
-echo "open -t $search_engine $QUTE_SELECTED_TEXT" >> "$QUTE_FIFO"
+echo "open -b $search_engine $QUTE_SELECTED_TEXT" >> "$QUTE_FIFO"

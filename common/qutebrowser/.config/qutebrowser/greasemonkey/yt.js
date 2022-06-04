@@ -3,11 +3,11 @@
 // @namespace    http://tampermonkey.net/
 // @version      1.0
 // @author       Hulio
-// @match        https://www.youtube.com/*
+// @match        *://*.youtube.com/*
 // @grant        none
 // ==/UserScript==
 
-// expand playlist 
+// expand playlist
 setTimeout(() => {  
 	document.getElementById('expander-item').click();
 }, 3000);
