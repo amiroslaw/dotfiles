@@ -49,6 +49,9 @@ function util.select(optionTab, prompt)
 		options = options  .. val	.. '|'
 		lines = lines + 1
 	end
+	if lines > 25 then
+		lines = 25
+	end
 	return io.popen('echo "' .. options .. '" | rofi -monitor -4 -i -l ' .. lines .. ' -sep "|" -dmenu -p "' .. prompt .. '"'):read('*a'):gsub('\n', '')
 end
 

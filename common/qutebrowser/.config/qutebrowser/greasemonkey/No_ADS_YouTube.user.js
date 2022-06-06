@@ -4,7 +4,7 @@
 // @version      1.2
 // @description  - Skips all youtube ads - | - undetectable - | - skips ads instantly -
 // @author       GSRHackZ
-// @match        https://www.youtube.com/watch?*
+// @match        https://www.youtube.com/*
 // @icon         https://i.ibb.co/X5f50Cg/Screen-Shot-2021-07-19-at-9-31-54-PM.png
 // @grant        none
 // ==/UserScript==

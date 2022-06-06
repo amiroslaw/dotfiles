@@ -85,6 +85,7 @@ return require('packer').startup(function()
 			{ 'quangnguyen30192/cmp-nvim-ultisnips' },
 			{ 'hrsh7th/cmp-nvim-lua' }, -- vim.api
 			{ 'hrsh7th/cmp-nvim-lsp' },
+			-- {"github/copilot.vim"},  github AI
 			{ 'uga-rosa/cmp-dictionary' },
 			config = function()
 				require('cmp-nvim-ultisnips').setup {}

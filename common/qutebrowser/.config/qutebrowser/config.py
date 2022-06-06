@@ -93,7 +93,13 @@ c.content.blocking.adblock.lists = [
 config.unbind('ad')
 config.bind('<Alt-s>', ':set spellcheck.languages ["en-US"]', 'insert') 
 config.bind('<Shift-Alt-s>', ':set spellcheck.languages ["pl-PL"]', 'insert')
+config.bind('gj', 'spawn -u headers.lua')
+config.bind('gh', 'history -t')
 config.bind('gp', 'open -t ;; process')
+config.bind('gf', 'fullscreen')
+config.bind('gl', 'open -t ;; messages')
+config.bind('gs', 'view-source') # -p
+config.bind('gS', 'view-source --edit') 
 
 config.bind('<Ctrl+T>', 'spawn --userscript translate')
 
@@ -169,8 +175,8 @@ config.bind(';x', 'hint all delete')
 urlCmd = 'hint links spawn url.lua '
 urlCmdRapid = 'hint --rapid links spawn url.lua '
 urlCmdLink = 'spawn url.lua '
-config.bind('add', urlCmd + 'audio "{hint-url}"')
-config.bind('ada', urlCmdRapid + 'audio "{hint-url}"')
+config.bind('aad', urlCmd + 'audio "{hint-url}"')
+config.bind('aaa', urlCmdRapid + 'audio "{hint-url}"')
 config.bind('aal', urlCmdLink + 'audio "{url}"')
 config.bind('att', urlCmd + 'tor "{hint-url}"')
 config.bind('ata', urlCmdRapid + 'tor "{hint-url}"')

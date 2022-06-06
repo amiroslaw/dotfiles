@@ -552,6 +552,7 @@ cmp.setup {
 		{ name = 'ultisnips', keyword_length = 1 },
 		{ name = 'buffer', keyword_length = 2, option = { keyword_pattern = [[\k\+]] } },
 		{ name = 'nvim_lua' },
+		{ name = 'nvim_lsp' },
 		{ name = 'path' },
 		{ name = 'calc' },
 		{ name = 'dictionary' },
