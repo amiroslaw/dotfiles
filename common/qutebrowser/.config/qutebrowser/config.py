@@ -199,13 +199,15 @@ config.bind('asl', urlCmdLink + 'speed "{url}"')
 # }}}
 
 # ======================= COPING OR CREATE ============= {{{
-config.bind('cc', 'spawn -u ~/.bin/note.lua clip {clipboard}')
-config.bind('cs', 'spawn -u ~/.bin/note.lua sel {primary}')
-config.bind('cs', 'spawn -u ~/.bin/note.lua sel {primary}', 'caret')
+config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}')
+config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}', 'caret')
+config.bind('cN', 'spawn -u ~/.bin/note.lua clip {clipboard}')
 # config.bind('ch', 'hint p spawn -u ~/.bin/note.lua sel {clipboard}')
 # coping custom hints
-config.bind('cb', 'hint code userscript code_select.py')
-config.bind('ca', 'hint p userscript p_select.py')
+config.bind('ck', 'hint code userscript copy_select.lua')
+config.bind('cc', 'hint p userscript copy_select.lua')
+config.bind('cs', 'hint p userscript copy_select_sentence.lua')
+# config.bind('ca', 'hint p spawn -u copy_select.lua split') - doesn't work. How to pass an argument
 
 config.bind('cp', 'print') # create PDF
 

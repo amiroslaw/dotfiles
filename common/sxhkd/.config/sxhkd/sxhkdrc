@@ -8,15 +8,16 @@
  # \~fullscreen "~\" toggle
 # aviailable
 # super + ctrl + f 
+# super + backslash
  
 # make sxhkd reload its configuration files:
 super + Home
 	pkill -USR1 -x sxhkd
 	# bspc wm -r ?
 
-# kill rofi
-super + Escape
-	{$ROFI/kill}
+# notification
+super + {_,shift} + Escape
+	{dunstctl close-all,dunstctl history-pop}
 
 # Show manual; keybindings
 super + {ctrl,shift} + F1
@@ -57,11 +58,9 @@ super + {_,shift} + f
 #
 #### FLAGS
 # ______________    
-
 # sticky works only on the one monitor
 super + a ; {l,m,s,p}
 	bspc node -g {locked,marked,sticky,private}
-
 
 super + u
 	bspc node -f any.urgent
@@ -221,8 +220,8 @@ super + {shift,ctrl,_} + Delete
 	echo 0 | trash-restore "$(trash-list | cut -d" " -f3- | rofi -dmenu -threads 0 -monitor -4 -i -l 33 -p "restore" -theme-str 'window \{width:  90%;\}')"
 	}
 
-super + {_,shift} + BackSpace
-	{$TERM_LT -t top -c top -e btop,xkill}
+super + {_,shift,ctrl} + BackSpace
+	{$TERM_LT -t top -c top -e btop,$ROFI/kill,xkill}
 
 # search
 super + {_, shift,ctrl} + g

@@ -109,6 +109,9 @@ alias search='pacman -Ss'
 #}}}
 
 #{{{ Programs alias
+alias pfile='xclip-pastefile'
+alias yfile='xclip-copyfile'
+alias cfile='xclip-cutfile'
 alias tor='abduco -A tor rtorrent'
 alias huliomail='tmpmail -g huliofff@1secmail.org && tmpmail -r'
 alias ping='prettyping'
@@ -471,7 +474,7 @@ alias surfraw='surfraw -browser=w3m'
 #}}}
 
 ## job
-alias vpn='cd /home/miro/eversis/amiroslaw/eversis-pfs-node1-UDP4-1195-amiroslaw && sudo openvpn --config eversis-pfs-node1-UDP4-1195-amiroslaw.ovpn --auth-user-pass pass.txt'
+# alias vpn='cd /home/miro/eversis/amiroslaw/eversis-pfs-node1-UDP4-1195-amiroslaw && sudo openvpn --config eversis-pfs-node1-UDP4-1195-amiroslaw.ovpn --auth-user-pass pass.txt'
 
 # alias zadView='cat $path_note/ZADANIA/today.todo' i have script for this
 
