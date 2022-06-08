@@ -322,7 +322,7 @@ alt + space
 
 # rofi video
 super + {shift,ctrl} + v
-	{ $ROFI/open.sh video, cd ~/Templates/mpvlists && mpv $(ls -r | rofi -dmenu) }
+	{ $ROFI/open.sh video, cd ~/Templates/mpvlists && mpv --profile=stream $(ls -r | grep -e "-video-" | rofi -dmenu) }
 
 # translator 
 super + {_,shift,ctrl} + t

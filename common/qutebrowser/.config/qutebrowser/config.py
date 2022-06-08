@@ -118,12 +118,12 @@ config.bind('<Alt-a>', 'navigate next')
 config.bind('<Alt-x>', 'navigate prev')
 
 # MEDIA
-config.bind('<Ctrl-w>', 'hint --rapid links spawn -u  mpvplaylist.sh push {hint-url}')
-config.bind('<Alt-Shift-w>', 'spawn -uv  mpvplaylist.sh play')
-config.bind(';w', 'hint links spawn -uv mpvplaylist.sh {hint-url}')
+config.bind('<Ctrl-w>', 'hint --rapid links spawn -u mpv.lua push {hint-url}')
+config.bind('<Alt-Shift-w>', 'spawn -uv  mpv.lua videolist')
+config.bind(';w', 'hint links spawn -uv mpv.lua videoplay {hint-url}')
 config.bind(';W', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
-config.bind(';a', 'hint links spawn -uv mpvplaylist.sh audio {hint-url}')
-config.bind(';A', 'spawn -uv mpvplaylist.sh audio {url}')
+config.bind(';a', 'hint links spawn -uv mpv.lua audioplay {hint-url}')
+config.bind(';A', 'spawn -uv mpv.lua audiolist')
 
 # ======================= TABS AND WINDOWS ============= {{{
 config.bind(']', 'tab-next')
@@ -205,7 +205,8 @@ config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}', 'caret')
 config.bind('cN', 'spawn -u ~/.bin/note.lua clip {clipboard}')
 # config.bind('ch', 'hint p spawn -u ~/.bin/note.lua sel {clipboard}')
 # coping custom hints
-config.bind('ck', 'spawn -u hint_wrapper code copy_select.lua')
+# config.bind('ck', 'spawn -u hint_wrapper code copy_select.lua')
+config.bind('ck', 'hint code userscript copy_select.lua')
 config.bind('cc', 'spawn -u hint_wrapper copyable copy_select.lua --url')
 config.bind('cs', 'spawn -u hint_wrapper p copy_select.lua --split') # -multi-select → S-enter 
 
