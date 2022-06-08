@@ -52,7 +52,7 @@ function util.select(optionTab, prompt)
 	if lines > 25 then
 		lines = 25
 	end
-	return io.popen('echo "' .. options .. '" | rofi -monitor -4 -i -l ' .. lines .. ' -sep "|" -dmenu -p "' .. prompt .. '"'):read('*a'):gsub('\n', '')
+	return io.popen('echo "' .. options .. '" | rofi -multi-select -monitor -4 -i -l ' .. lines .. ' -sep "|" -dmenu -p "' .. prompt .. '"'):read('*a'):gsub('\n', '')
 end
 
 function util.menu(unorderTab)
@@ -92,6 +92,23 @@ function util.splitFlags(optionsTxt)
 		end
 	end)
 	return flags
+end
+
+function util.switch(case, pattern, args)
+	for k, v in pairs(pattern) do
+		if k == case then
+			if type(v) == 'function' then
+				return v(args)
+			else
+				return v
+			end
+		end
+	end
+	if type(pattern[false]) == 'function' then
+		return pattern[false](args)
+	else
+		return pattern[false]
+	end
 end
 
 return util

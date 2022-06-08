@@ -100,6 +100,7 @@ config.bind('gf', 'fullscreen')
 config.bind('gl', 'open -t ;; messages')
 config.bind('gs', 'view-source') # -p
 config.bind('gS', 'view-source --edit') 
+config.bind('gb', 'back -t') # -p
 
 config.bind('<Ctrl+T>', 'spawn --userscript translate')
 
@@ -204,10 +205,9 @@ config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}', 'caret')
 config.bind('cN', 'spawn -u ~/.bin/note.lua clip {clipboard}')
 # config.bind('ch', 'hint p spawn -u ~/.bin/note.lua sel {clipboard}')
 # coping custom hints
-config.bind('ck', 'hint code userscript copy_select.lua')
-config.bind('cc', 'hint p userscript copy_select.lua')
-config.bind('cs', 'hint p userscript copy_select_sentence.lua')
-# config.bind('ca', 'hint p spawn -u copy_select.lua split') - doesn't work. How to pass an argument
+config.bind('ck', 'spawn -u hint_wrapper code copy_select.lua')
+config.bind('cc', 'spawn -u hint_wrapper copyable copy_select.lua --url')
+config.bind('cs', 'spawn -u hint_wrapper p copy_select.lua --split') # -multi-select → S-enter 
 
 config.bind('cp', 'print') # create PDF
 
@@ -367,13 +367,10 @@ config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
 # }}}
 
 # ================== Custom hints ======================= {{{
-c.hints.selectors["code"] = [ # Selects all code tags whose direct parent is not a pre tag
-    ":not(pre) > code",
-    "pre"
-]
-c.hints.selectors["p"] = [
-    "p"
-]
+# Selects all code tags whose direct parent is not a pre tag
+c.hints.selectors["code"] = [ ":not(pre) > code", "pre" ]
+c.hints.selectors["p"] = [ "p" ]
+c.hints.selectors["copyable"] = [ "p", "ul", "ol", "table" ]
 c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'input[type="checkbox"]', 'input[type="radio"]', 'input[type="range"]', 'input[type="submit"]', 'input[type="reset"]', 'input[type="button"]', 'input[type="image"]', 'form button' ]
 # }}}
 
