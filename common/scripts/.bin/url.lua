@@ -75,6 +75,7 @@ function sendToKindle(linkTab)
 			doc:write(link)
 			doc:close() ]]
 
+			-- print('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Kindle" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
 			local sendFile = os.execute('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Kindle" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
 			if createFile ~= 0 or sendFile ~= 0 then -- readability-cli return 0 in error 
 				table.insert(articlesWithErrors, link)

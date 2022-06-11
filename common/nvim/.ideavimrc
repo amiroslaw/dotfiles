@@ -25,6 +25,7 @@ set ideajoin=true
 " https://github.com/JetBrains/ideavim/wiki/%60ideajoin%60-examples
 " set relativenumber
 
+
 " # -------------------------------------------------------------------------
 " #                       PLUGINS
 " set exchange - interesting
@@ -80,6 +81,13 @@ nmap <leader>. <Plug>(easymotion-repeat)
 inoremap <C-a> <C-o>b
 inoremap <C-d> <C-o>w
 nnoremap <Space> <C-d><cr> 
+
+" current line
+xmap ol ^og_
+omap ol :normal vol<CR>
+" all document
+xmap oa :<c-u>normal! G$Vgg0<cr>
+omap oa :<c-u>normal! GVgg<cr>
 
 " # -------------------------------------------------------------------------
 " #                       GOTO and JUMP

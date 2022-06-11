@@ -64,4 +64,7 @@ local cases = {
 	[false] = videoplay,
 }
 
-xpcall(util.switch, errorMsg, arg[1], cases, arg[2])
+local ok, switchFunction = xpcall(util.switch, errorMsg, arg[1], cases)
+if ok then
+	switchFunction(arg[2])
+end

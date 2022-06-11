@@ -171,7 +171,7 @@ nmap cP	:!pdftotext %c %c:r <cr>
 nmap ct	:!tesseract %c %c:r <cr>
 "dragon dr - drag from and dl drop to
 nmap dr :!dragon-drop %f <cr> 
-nmap dl :!drop.sh <cr>
+nmap dl :!dragon-pull.sh <cr>
 " ffmpeg
 noremap cm :!for i in %f; do  ffmpeg -i "$i" -f segment -segment_time 900 -c copy "${i%%.*}-%%02d.mp3"; done <cr>
 
