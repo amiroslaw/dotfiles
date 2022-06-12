@@ -176,8 +176,8 @@ config.bind(';x', 'hint all delete')
 urlCmd = 'hint links spawn url.lua '
 urlCmdRapid = 'hint --rapid links spawn url.lua '
 urlCmdLink = 'spawn url.lua '
-config.bind('aad', urlCmd + 'audio "{hint-url}"')
-config.bind('aaa', urlCmdRapid + 'audio "{hint-url}"')
+config.bind('aaa', urlCmd + 'audio "{hint-url}"')
+config.bind('aar', urlCmdRapid + 'audio "{hint-url}"')
 config.bind('aal', urlCmdLink + 'audio "{url}"')
 config.bind('att', urlCmd + 'tor "{hint-url}"')
 config.bind('ata', urlCmdRapid + 'tor "{hint-url}"')
@@ -204,8 +204,7 @@ config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}')
 config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}', 'caret')
 config.bind('cN', 'spawn -u ~/.bin/note.lua clip {clipboard}')
 # config.bind('ch', 'hint p spawn -u ~/.bin/note.lua sel {clipboard}')
-# coping custom hints
-# config.bind('ck', 'spawn -u hint_wrapper code copy_select.lua')
+# coping custom hints - use hint_wrapper if you need pass an argument
 config.bind('ck', 'hint code userscript copy_select.lua')
 config.bind('cc', 'spawn -u hint_wrapper copyable copy_select.lua --url')
 config.bind('cs', 'spawn -u hint_wrapper p copy_select.lua --split') # -multi-select → S-enter 

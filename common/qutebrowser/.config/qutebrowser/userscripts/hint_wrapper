@@ -8,6 +8,8 @@ local hintType = arg[1]
 local scryptName = arg[2]
 local argument = arg[3]
 
-io.open('/tmp/qute-arg', 'w'):write(argument)
+local file = io.open('/tmp/qute-arg', 'w')
+file:write(argument)
+file:close()
 io.open(quteFifo, 'a'):write('hint ' .. hintType .. ' userscript ' .. scryptName)
 

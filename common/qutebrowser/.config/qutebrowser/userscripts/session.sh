@@ -14,6 +14,8 @@ fi
 
 case "$1" in
 	"save" ) qutebrowser ":session-save --only-active-window ${session/\.yml/}"
+		mkdir -p "$sessionDir"/backup
+		cp "$sessionDir/$session" "$sessionDir/backup/$session"
 		;;
 	"delete" ) qutebrowser ":session-delete ${session/\.yml/}"
 		;;
