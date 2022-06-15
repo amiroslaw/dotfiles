@@ -101,3 +101,7 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 # Needed it if the plugin is not loaded
 eval "$(fasd --init auto)"
 # shuf -n 1 $CONFIG/logs/dictionary/enpl-dictionary.txt
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/miro/.local/share/sdkman"
+[[ -s "/home/miro/.local/share/sdkman/bin/sdkman-init.sh" ]] && source "/home/miro/.local/share/sdkman/bin/sdkman-init.sh"
