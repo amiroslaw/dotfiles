@@ -8,29 +8,32 @@ local gumbo = require 'gumbo'
 local selectedHtml = os.getenv 'QUTE_SELECTED_HTML'
 local quteFifo = os.getenv 'QUTE_FIFO'
 
-local arg = io.open('/tmp/qute-arg', 'r'):read '*all'
+local arg = ''
+local argFile = io.open('/tmp/qute-arg', 'r')
+if argFile then
+	arg = argFile:read '*all'
+	argFile:close()
+end
 
 local document = gumbo.parse(selectedHtml)
 local selectedTxt = document:getElementsByTagName '*'
 selectedTxt = selectedTxt[1].textContent
 
-if arg then
-	if arg == '--split' then
-		local sentenses = {}
-		-- regex = '[^%.!?]+[!?%.]%s*'
-		-- regex = '.-[!?:%.]'
-		-- regex = '.-[!?:%.]%s'
-		regex = '.-[%.:!?]%f[%z%s]'
-		for match in selectedTxt:gmatch(regex) do
-			table.insert(sentenses, match)
-		end
-		selectedTxt = util.select(sentenses, 'Sentense')
+if arg == '--split' then
+	local sentenses = {}
+	-- regex = '[^%.!?]+[!?%.]%s*'
+	-- regex = '.-[!?:%.]'
+	-- regex = '.-[!?:%.]%s'
+	regex = '.-[%.:!?]%f[%z%s]'
+	for match in selectedTxt:gmatch(regex) do
+		table.insert(sentenses, match)
 	end
+	selectedTxt = util.select(sentenses, 'Sentense')
+end
 
-	if arg == '--url' then
-		for i, element in ipairs(document.links) do
-			selectedTxt = selectedTxt .. '\n' .. element:getAttribute 'href'
-		end
+if arg == '--url' then
+	for i, element in ipairs(document.links) do
+		selectedTxt = selectedTxt .. '\n' .. element:getAttribute 'href'
 	end
 end
 
