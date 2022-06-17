@@ -208,6 +208,7 @@ config.bind('cN', 'spawn -u ~/.bin/note.lua clip {clipboard}')
 config.bind('ck', 'hint code userscript copy_select.lua')
 config.bind('cc', 'spawn -u hint_wrapper copyable copy_select.lua --url')
 config.bind('cs', 'spawn -u hint_wrapper p copy_select.lua --split') # -multi-select → S-enter 
+config.bind('cr', 'spawn -u hint_wrapper p copy_select.lua --speed')
 
 config.bind('cp', 'print') # create PDF
 

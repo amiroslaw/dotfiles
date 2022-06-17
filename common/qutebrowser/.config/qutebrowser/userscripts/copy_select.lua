@@ -7,6 +7,7 @@ local gumbo = require 'gumbo'
 
 local selectedHtml = os.getenv 'QUTE_SELECTED_HTML'
 local quteFifo = os.getenv 'QUTE_FIFO'
+local readerTmp = '/tmp/qute-speedread.txt'
 
 local arg = ''
 local argFile = io.open('/tmp/qute-arg', 'r')
@@ -34,6 +35,12 @@ end
 if arg == '--url' then
 	for i, element in ipairs(document.links) do
 		selectedTxt = selectedTxt .. '\n' .. element:getAttribute 'href'
+	end
+	if arg == '--speed' then
+		local file = io.open(readerTmp, 'w')
+		file:write(selectedTxt)
+		file:close()
+		os.execute('wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. readerTmp .. ' | speedread -w 300"') 
 	end
 end
 
