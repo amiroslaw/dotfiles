@@ -82,13 +82,6 @@ inoremap <C-a> <C-o>b
 inoremap <C-d> <C-o>w
 nnoremap <Space> <C-d><cr> 
 
-" current line
-xmap ol ^og_
-omap ol :normal vol<CR>
-" all document
-xmap oa :<c-u>normal! G$Vgg0<cr>
-omap oa :<c-u>normal! GVgg<cr>
-
 " # -------------------------------------------------------------------------
 " #                       GOTO and JUMP
 " # -------------------------------------------------------------------------
@@ -170,7 +163,7 @@ nma mm :action ToggleBookmark<cr>
 
 nmap <c-s-h> :action PreviousTab <cr>
 nmap <c-s-l> :action NextTab<cr>
-nmap Zz :action ReopenClosedTab<cr>
+nmap U :action ReopenClosedTab<cr>
 
 " # -------------------------------------------------------------------------
 " #                       Refactorings -generate
@@ -257,6 +250,7 @@ nmap -j :action JShell.Console<cr>
 " # -------------------------------------------------------------------------
 " #                       Definitions
 " # -------------------------------------------------------------------------
+" TODO maybe remap
 nmap <leader>dd <action>(QuickImplementations)
 nmap <leader>de <action>(ShowErrorDescription)
 nmap <leader>di <action>(QuickTypeDefinition)

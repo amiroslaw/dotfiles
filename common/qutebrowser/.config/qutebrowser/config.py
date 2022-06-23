@@ -119,9 +119,10 @@ config.bind('<Alt-x>', 'navigate prev')
 
 # MEDIA
 config.bind('<Ctrl-w>', 'hint --rapid links spawn -u mpv.lua push {hint-url}')
-config.bind('<Alt-Shift-w>', 'spawn -uv  mpv.lua videolist')
+config.bind('<Shift-w>', 'spawn -uv  mpv.lua videolist')
+config.bind('<Alt-Shift-w>', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
 config.bind(';w', 'hint links spawn -uv mpv.lua videoplay {hint-url}')
-config.bind(';W', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
+config.bind(';W', 'hint links spawn -uv mpv.lua videopopup {hint-url}')
 config.bind(';a', 'hint links spawn -uv mpv.lua audioplay {hint-url}')
 config.bind(';A', 'spawn -uv mpv.lua audiolist')
 
@@ -372,8 +373,7 @@ config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
 c.hints.selectors["code"] = [ ":not(pre) > code", "pre" ]
 c.hints.selectors["p"] = [ "p" ]
 c.hints.selectors["copyable"] = [ "p", "ul", "ol", "table", "strong", "header", "article", "section", "main", 
-    "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "i", "dl", "mark"
-    ]
+    "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "i", "dl", "mark" ]
 c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'input[type="checkbox"]', 'input[type="radio"]', 'input[type="range"]', 'input[type="submit"]', 'input[type="reset"]', 'input[type="button"]', 'input[type="image"]', 'form button' ]
 # }}}
 

@@ -41,6 +41,11 @@ function videoplay(url)
 	assert(os.execute('mpv --profile=stream --playlist=' .. tmpPlay))
 end
 
+function videopopup(url)
+	writeUrlToFile(tmpPlay, url)
+	assert(os.execute('mpv --x11-name=videopopup --profile=stream-popup --playlist=' .. tmpPlay))
+end
+
 function audioplay(url)
 	writeUrlToFile(tmpPlay, url)
 	assert(os.execute( 'st -c audio -e mpv --ytdl --no-video --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --playlist=' 
@@ -61,6 +66,7 @@ local cases = {
 	['audioplay'] = audioplay,
 	['audiolist'] = audiolist,
 	['videolist'] = videolist,
+	['videopopup'] = videopopup,
 	[false] = videoplay,
 }
 
