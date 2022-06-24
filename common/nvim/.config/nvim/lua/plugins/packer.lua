@@ -109,6 +109,7 @@ return require('packer').startup(function()
 	use 'nvim-lualine/lualine.nvim'
 	use {'akinsho/bufferline.nvim', branch = 'main',}
 	use { 'kdheepak/lazygit.nvim', branch = 'main', cmd = { 'LazyGit' } }
+	use { 'lewis6991/gitsigns.nvim', }
 	-- COLORSCHEMES
 	-- https://www.dunebook.com/best-vim-themes/
 	-- https://vimcolorschemes.com/top

@@ -12,10 +12,10 @@ local HOME = os.getenv 'HOME'
 -- vim.cmd 'colorscheme moonfly'
 -- Lua
 require('onedark').setup {
-    style = 'deep',
-  colors = { -- https://github.com/navarasu/onedark.nvim/blob/master/lua/lualine/themes/onedark.lua
-    fg = "#fffffe",
-  },
+	style = 'deep',
+	colors = { -- https://github.com/navarasu/onedark.nvim/blob/master/lua/lualine/themes/onedark.lua
+		fg = '#fffffe',
+	},
 }
 require('onedark').load()
 -- vime-one - support dark and light theme
@@ -45,49 +45,49 @@ vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
 --                       Autocommands
 -- -------------------------------------------------------------------------
 vim.api.nvim_create_autocmd( -- go to last loc when opening a buffe
-	"BufReadPost",
-    { command = [[if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif]] })
-vim.api.nvim_create_autocmd(
-	"FileType", {
-	pattern = {'lua','java','javascript','typescript','css','scss'},
-	command = [[setlocal foldmethod=syntax]] 
-	})
-vim.api.nvim_create_autocmd(
-	"FileType", {
-	pattern = {'asciidoc'},
-	command = [[setlocal foldmethod=expr]] 
-	})
-vim.api.nvim_create_autocmd(
-	{"BufRead","BufNewFile"}, {
-	pattern = {'*.json'},
-	command = [[set filetype=json]] 
-	})
-vim.api.nvim_create_autocmd(
-	{"BufRead","BufNewFile"}, {
-	pattern = {'/tmp/*'},
-	command = [[set filetype=text]] 
-	})
-vim.api.nvim_create_autocmd(
-	{"BufRead","BufNewFile"}, {
-	pattern = {'*.{md,mdwn,mkd,mkdn,mark,markdown}'},
-	command = [[set filetype=markdown]] 
-	})
-vim.api.nvim_create_autocmd( -- Prefer Neovim terminal insert mode to normal mode. IDK if it's default mode
-	"BufEnter", {
-	pattern = {'term://*'},
-	command = [[startinsert]]
-	})
-vim.api.nvim_create_autocmd("BufWritePost", {
-	pattern = {'plugins.lua'},
-	command = "source <afile> | PackerCompile",
-	group = vim.api.nvim_create_augroup("packerCompile", { clear = true }) -- clear true is default
+	'BufReadPost',
+	{
+		command = [[if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif]],
+	}
+)
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { 'lua', 'java', 'javascript', 'typescript', 'css', 'scss' },
+	command = [[setlocal foldmethod=syntax]],
 })
-vim.api.nvim_create_autocmd("TextYankPost", {
-  command = "silent! lua vim.highlight.on_yank {timeout=600}",
-  group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }) -- clear true is default
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { 'asciidoc' },
+	command = [[setlocal foldmethod=expr]],
+})
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+	pattern = { '*.json' },
+	command = [[set filetype=json]],
+})
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+	pattern = { '/tmp/*' },
+	command = [[set filetype=text]],
+})
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+	pattern = { '*.{md,mdwn,mkd,mkdn,mark,markdown}' },
+	command = [[set filetype=markdown]],
+})
+vim.api.nvim_create_autocmd( -- Prefer Neovim terminal insert mode to normal mode. IDK if it's default mode
+	'BufEnter',
+	{
+		pattern = { 'term://*' },
+		command = [[startinsert]],
+	}
+)
+vim.api.nvim_create_autocmd('BufWritePost', {
+	pattern = { 'plugins.lua' },
+	command = 'source <afile> | PackerCompile',
+	group = vim.api.nvim_create_augroup('packerCompile', { clear = true }), -- clear true is default
+})
+vim.api.nvim_create_autocmd('TextYankPost', {
+	command = 'silent! lua vim.highlight.on_yank {timeout=600}',
+	group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }), -- clear true is default
 })
 -- doesn't work with keybinding in zsh
-	-- autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif
+-- autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif
 
 -- IncSearch
 vim.o.smartcase = true
@@ -243,7 +243,6 @@ omap('ol', ':normal vol<CR>')
 -- all document
 xmap('oa', ':<c-u>normal! G$Vgg0<cr>')
 omap('oa', ':<c-u>normal! GVgg<cr>')
-
 
 --"""""""""""""""""""
 --"""""" MACROS
@@ -490,7 +489,6 @@ vim.g.UltiSnipsJumpBackwardTrigger = '<c-k>'
 vim.g.UltiSnipsSnippetsDir = HOME .. '~/.config/nvim/UltiSnips'
 vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' }
 
-
 --""""""""""""""""""
 -- NvimTreeToggle https://github.com/kyazdani42/nvim-tree.lua
 nmap('<F3>', ':NvimTreeToggle<CR>')
@@ -525,7 +523,7 @@ require('bufferline').setup {
 	},
 }
 
-require('lualine').setup { options = { theme = 'onedark', component_separators = '|',  globalstatus = true, } }
+require('lualine').setup { options = { theme = 'onedark', component_separators = '|', globalstatus = true } }
 
 -- -------------------------------------------------------------------------
 --                       -- nvim-cmp
@@ -627,4 +625,45 @@ nullLs.setup {
 		},
 	},
 	debug = false,
+}
+
+-- -------------------------------------------------------------------------
+--                       gitsigns
+-- -------------------------------------------------------------------------
+require('gitsigns').setup {
+	on_attach = function(bufnr)
+		local gs = package.loaded.gitsigns
+		-- Navigation
+		vim.keymap.set('n', ',n', function()
+			if vim.wo.diff then
+				return ',n'
+			end
+			vim.schedule(function()
+				gs.next_hunk()
+			end)
+			return '<Ignore>'
+		end, { expr = true, buffer = bufnr })
+
+		vim.keymap.set('n', ',p', function()
+			if vim.wo.diff then
+				return ',p'
+			end
+			vim.schedule(function()
+				gs.prev_hunk()
+			end)
+			return '<Ignore>'
+		end, { expr = true, buffer = bufnr })
+		-- can be convert to  vim.keymap.set
+		-- Actions
+		nmap(',r', ':Gitsigns reset_hunk<CR>')
+		vmap(',r', ':Gitsigns reset_hunk<CR>')
+		nmap(',s', '<cmd>Gitsigns preview_hunk<CR>')
+		nmap(',d', '<cmd>Gitsigns diffthis<CR>')
+		nmap(',D', '<cmd>lua require"gitsigns".diffthis("~")<CR>')
+		nmap(',t', '<cmd>Gitsigns toggle_deleted<CR>')
+
+		-- Text object
+		omap('oh', ':<C-U>Gitsigns select_hunk<CR>')
+		xmap('oh', ':<C-U>Gitsigns select_hunk<CR>')
+	end,
 }
