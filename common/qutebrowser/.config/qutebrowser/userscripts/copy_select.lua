@@ -10,9 +10,11 @@ local quteFifo = os.getenv 'QUTE_FIFO'
 local readerTmp = '/tmp/qute-speedread.txt'
 
 local arg = ''
-local argFile = io.open('/tmp/qute-arg', 'r')
+local argFile = io.open('/tmp/qute-arg', 'r+')
 if argFile then
 	arg = argFile:read '*all'
+	argFile:seek('set')
+	argFile:write('no argument')
 	argFile:close()
 end
 
