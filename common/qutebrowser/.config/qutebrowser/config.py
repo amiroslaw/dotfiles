@@ -205,11 +205,13 @@ config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}')
 config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}', 'caret')
 config.bind('cN', 'spawn -u ~/.bin/note.lua clip {clipboard}')
 # config.bind('ch', 'hint p spawn -u ~/.bin/note.lua sel {clipboard}')
-# coping custom hints - use hint_wrapper if you need pass an argument
+# coping custom hints - use hint_wrapper if you need to pass an argument
 config.bind('ck', 'hint code userscript copy_select.lua')
 config.bind('cc', 'spawn -u hint_wrapper copyable copy_select.lua --url')
-config.bind('cs', 'spawn -u hint_wrapper p copy_select.lua --split') # -multi-select → S-enter 
-config.bind('cr', 'spawn -u hint_wrapper p copy_select.lua --speed')
+config.bind('ch', 'spawn -u hint_wrapper copyable copy_select.lua --split') #hunk -multi-select → S-enter 
+config.bind('cs', 'spawn -u hint_wrapper copyable copy_select.lua --speed')
+config.bind('cr', 'spawn -u hint_wrapper copyable copy_select.lua --read')
+config.bind('cl', 'spawn -u hint_wrapper copyable copy_select.lua --translate')
 
 config.bind('cp', 'print') # create PDF
 
@@ -313,9 +315,9 @@ c.url.searchengines = {
     'thesaurus': 'https://www.thesaurus.com/browse/{}?s=t',
     'm': 'https://maps.google.com/maps?q={}',
     'gi': 'https://www.google.com/search?q={}&tbm=isch',
-    't' :'https://www.deepl.com/en/translator#en/pl/{}',
+    'l' :'https://www.deepl.com/en/translator#en/pl/{}',
     'd': 'https://www.diki.pl/slownik-angielskiego?q={}',
-    'tt': 'https://translate.google.pl/?hl=pl#pl/en/{}',
+    't': 'https://translate.google.pl/?hl=pl#pl/en/{}',
     'cam': 'https://dictionary.cambridge.org/spellcheck/english/?q={}', 
     'sci': 'https://sci-hub.se/{}', 
     'git': 'https://github.com/search?q={}'
@@ -346,6 +348,9 @@ config.bind('sa', 'spawn -u selection.sh a', 'caret')
 config.bind('st', 'open -b t {primary} ')
 config.bind('sT', 'open -b t {clipboard} ')
 config.bind('st', 'spawn -u selection.sh t', 'caret')
+config.bind('sl', 'open -b l {primary} ')
+config.bind('sL', 'open -b l {clipboard} ')
+config.bind('sl', 'spawn -u selection.sh l', 'caret')
 config.bind('sw', 'open -b w {primary} ')
 config.bind('sW', 'open -b w {clipboard} ')
 config.bind('sw', 'spawn -u selection.sh w', 'caret')

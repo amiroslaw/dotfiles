@@ -36,24 +36,40 @@ if arg == '--url' then
 	for i, element in ipairs(document.links) do
 		selectedTxt = selectedTxt .. '\n' .. element:getAttribute 'href'
 	end
-	if arg == '--speed' then
-		local file = io.open(readerTmp, 'w')
-		file:write(selectedTxt)
-		file:close()
-		os.execute('wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. readerTmp .. ' | speedread -w 300"') 
-	end
 end
+
+if arg == '--speed' then
+	local file = io.open(readerTmp, 'w')
+	file:write(selectedTxt)
+	file:close()
+	os.execute( 'wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. readerTmp .. ' | speedread -w 300"')
+end
+
+if arg == '--read' then
+	local tmpName = os.tmpname()
+	tmpName = tmpName .. '.txt'
+	local file = io.open(tmpName, 'w')
+	file:write(selectedTxt)
+	file:close()
+	os.execute('st -c read -n read -e nvim ' .. tmpName)
+end
+
+if arg == '--translate' then
+	local fifo = io.open(quteFifo, 'a')
+	fifo:write('open -t l ' .. selectedTxt)
+	fifo:close()
+end
+
 
 local ok = os.execute('echo "' .. selectedTxt .. '" | xclip -sel clip')
 if ok then
-	io.open(quteFifo, 'a'):write 'message-info "Copied'
+	io.open(quteFifo, 'a'):write 'message-info "Selected"'
 	-- io.open(quteFifo, 'a'):write('message-info "Copied: ' .. util.split(selectedTxt, '\n')[1] .. '"')
 else
-	io.open(quteFifo, 'a'):write 'message-error Coping field'
+	io.open(quteFifo, 'a'):write 'message-error Selection field'
 end
 
 -- io.open(quteFifo, 'a'):write("message-info 'anchor not found'" )
 -- local selectedAnchor = util.select(anchors, 'headings')
 -- io.open('/tmp/qb-output', 'w+'):write(anchors[selectedAnchor])
 -- io.open(quteFifo, 'a'):write("message-info 'Bookmark added to Buku!'" )
--- local foo = document:getElementById 'messages'

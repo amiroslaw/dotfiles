@@ -19,6 +19,7 @@ for h, header in ipairs(headerTags) do
 		end
 	end
 end
+-- or search href=#...
 
 local selectedAnchor = util.menu(anchors)
 

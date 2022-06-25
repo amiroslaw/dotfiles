@@ -17,11 +17,13 @@ set visualbell
 set history=1000
 set clipboard=unnamed
 set clipboard+=ideaput
-set idearefactormode=keep
 set ideawrite=all
 set scrolloff=5 
 set ideastatusicon=gray
-set ideajoin=true
+set idearefactormode=select
+"keep  - keep the mode that was enabled before starting a refactoring
+set ideajoin
+" set ideajoin=true
 " https://github.com/JetBrains/ideavim/wiki/%60ideajoin%60-examples
 " set relativenumber
 
@@ -33,19 +35,22 @@ set ideajoin=true
 "   s - Surround. Ex: cis" = change inside surrounding quotes
 "   a - Argument. Ex: cia = change inner (function) argument
 "   e - Entire bufer. ex: dae = delete all buffer (content)
+"   cs'" - change ' to "
+"   S" in visual mode
 " Additional commands:
 "   gc<motion> - Comment. Ex: gcc = comment line
 "   gr<motion> - ReplaceWithRegister. Ex: grr = replace line with unnamed register
 "   cx<motion> - Exchange/Transpose. Ex: cxiw, (move to other word), . = swap two words. Also: cxc, X
 "   <A-n>, <A-x>, <A-p>, g<A-n> - Multiple cursors.
 " # -------------------------------------------------------------------------
-set easymotion
 set NERDTree
 map <leader>N :NERDTreeToggle<cr>
 map <leader>n <Action>(SelectInProjectView)
-" navigation, open close tree
 let g:NERDTreeMapActivateNode='l'
 let g:NERDTreeMapJumpParent='h'
+" j/k; J/K; c-j/k; c-p/n moving 
+" x -close; go - open without losing focus; s-split
+" navigation, open close tree
 
 " visual select and then S, conflict with yssb
 set surround            
@@ -66,15 +71,20 @@ set ReplaceWithRegister
 set argtextobj
 " let g:argtextobj_pairs="[:],(:),<:>"
 " Easy Motion
+" all actions only make visual mode selection
+set easymotion
 let g:EasyMotion_smartcase = 1
-map f <Plug>(easymotion-f)
-map F <Plug>(easymotion-F)
-map <leader>T <Plug>(easymotion-b)
-" t and s is used
-map <leader>t <Plug>(easymotion-w)
+let g:EasyMotion_override_acejump = 0
+map s <Plug>(easymotion-f)
+map S <Plug>(easymotion-F)
+map f <Plug>(easymotion-j)
+map F <Plug>(easymotion-k)
+map <leader>t <Plug>(easymotion-eol-j)
+map <leader>T <Plug>(easymotion-eol-k)
+" t and s is used?
+" map <leader>T <Plug>(easymotion-b)
+" map <leader>t <Plug>(easymotion-w)
 " map <nowait> s <Plug>(easymotion-j)
-map s <Plug>(easymotion-j)
-map S <Plug>(easymotion-k)
 nmap <leader>. <Plug>(easymotion-repeat)
 
 " VIM MAPS
