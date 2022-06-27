@@ -3,7 +3,7 @@
 sessionDir="$HOME/.local/share/qutebrowser/sessions" 
 
 if [[ "$1" == "webapp"  ]]; then
-	sessionDir="$HOME/Templates/webapp-qt/data/sessions" 
+	sessionDir="$HOME/Templates/webapp-qb/data/sessions" 
 fi
 
 session=$(ls -1p "$sessionDir" | grep -v / | rofi -dmenu -monitor -4 -p "qb session $1")
@@ -28,7 +28,7 @@ case "$1" in
 	"restore" ) qutebrowser --restore "${session/\.yml/}"
 		;;
 	# "webapp" ) qutebrowser --config-py ~/.config/qutebrowser/config.py --basedir ~/Templates/webapp-qt ":session-load ${session/\.yml/}"
-	"webapp" ) qutebrowser --config-py ~/.config/qutebrowser/config.py --basedir ~/Templates/webapp-qt --restore "${session/\.yml/}"
+	"webapp" ) qutebrowser --config-py ~/.config/qutebrowser/config.py --basedir ~/Templates/webapp-qb --restore "${session/\.yml/}"
 		;;
 	* ) qutebrowser --restore "${session/\.yml/}"
 		;;
