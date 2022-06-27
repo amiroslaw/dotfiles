@@ -19,6 +19,8 @@ thumbnail-preload=300
 [keybindings]
 n { goto_file_relative(1); } 
 p { goto_file_relative(-1); } 
+N { goto_logical_directory_relative(1); } 
+P { goto_logical_directory_relative(-1); } 
 g { goto_file_byindex(0) }
 G { goto_file_byindex(-1) }
 <slash> { jump_dialog(); } 
@@ -27,17 +29,19 @@ w { flip_horizontally(); }
 v { flip_vertically(); }
 z { rotate_left(); }
 x { rotate_right(); }
-N { toggle_negate_mode(0) }
-l { shift_x(10); } 
-h { shift_x(-10); } 
-j { shift_y(10); } 
-k { shift_y(-10); } 
+a { toggle_negate_mode(0) }
+l { shift_x(-10); } 
+h { shift_x(10); } 
+j { shift_y(-10); } 
+k { shift_y(10); } 
+L { shift_x(-30); } 
+H { shift_x(30); } 
+J { shift_y(-30); } 
+K { shift_y(30); } 
 O { clear_marks(); }
 R { toggle_shuffle_mode(0); } 
 <equal> { set_scale_level_relative(1.1); }
 ;go to the next dir if you loaded files from multiple folders
-J { goto_logical_directory_relative(1); } 
-K { goto_logical_directory_relative(-1); } 
 
 ; COMMANDS
 ; with cat it's bulk commnad that uses marks
@@ -64,6 +68,7 @@ r { command(zenity --entry | xargs -I {} mv $1 {}.png); }
 3 { command(mkdir 3; mv $1 3); }
 4 { command(mkdir 4; mv $1 4); }
 5 { command(mkdir 5; mv $1 5); }
+;bulk
 <Alt>1 { command(-mkdir 1; cat | xargs -I {} mv {} 1); }
 <Alt>2 { command(-mkdir 2; cat | xargs -I {} mv {} 2); }
 <Alt>3 { command(-mkdir 3; cat | xargs -I {} mv {} 3); }

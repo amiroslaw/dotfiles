@@ -52,7 +52,7 @@ c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save --only-active-window
 c.auto_save.session = False
 c.confirm_quit = ["multiple-tabs", "downloads"]
 c.session.lazy_restore = True
-c.downloads.location.directory = "~/Downloads"
+c.downloads.location.directory = os.environ["HOME"] + "/Downloads"
 # c.downloads.location.prompt = False
 
 c.completion.shrink = True
@@ -60,6 +60,7 @@ c.completion.open_categories = [ 'quickmarks', 'bookmarks', 'history', 'searchen
 c.scrolling.smooth = True
 c.tabs.close_mouse_button = "right"
 c.tabs.show = 'multiple' # hide the tab bar if one tab
+c.tabs.new_position.unrelated = 'next'
 c.tabs.last_close = 'startpage'
 c.url.open_base_url = True # Open the searchengine if a shortcut is invoked without parameters.
 
@@ -212,6 +213,7 @@ config.bind('ch', 'spawn -u hint_wrapper copyable copy_select.lua --split') #hun
 config.bind('cs', 'spawn -u hint_wrapper copyable copy_select.lua --speed')
 config.bind('cr', 'spawn -u hint_wrapper copyable copy_select.lua --read')
 config.bind('cl', 'spawn -u hint_wrapper copyable copy_select.lua --translate')
+config.bind('cg', 'spawn -u hint_wrapper copyable copy_select.lua --search')
 
 config.bind('cp', 'print') # create PDF
 

@@ -267,7 +267,7 @@ vim.g['@f'] = 'f)a kb  '
 
 --""""""""""""""""""
 -- https://github.com/kdheepak/lazygit.nvim
-nmap('<leader>g', ':LazyGit <cr>')
+nmap(',g', ':LazyGit <cr>')
 
 --""""""""""""""""""
 -- calendar.vim

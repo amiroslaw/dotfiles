@@ -62,6 +62,11 @@ if arg == '--translate' then
 	fifo:close()
 end
 
+if arg == '--search' then
+	local fifo = io.open(quteFifo, 'a')
+	fifo:write('open -t ' .. selectedTxt)
+	fifo:close()
+end
 
 local ok = os.execute('echo "' .. selectedTxt .. '" | xclip -sel clip')
 if ok then
