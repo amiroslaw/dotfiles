@@ -369,7 +369,7 @@ config.bind('zz', 'spawn -u selection.sh ')
 config.bind('zz', 'spawn -u selection.sh', 'caret')
 config.bind('zZ', 'spawn -u selection.sh {clipboard}')
 config.bind('<Ctrl-s>', 'open -t {primary} ', 'insert')
-config.bind('<Ctrl-i>', 'open -t t {primary} ', 'insert')
+config.bind('<Ctrl-i>', 'open -t l {primary} ', 'insert')
 config.bind('<Ctrl-Shift-i>', 'open -t d {primary} ', 'insert')
 config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
 # }}}

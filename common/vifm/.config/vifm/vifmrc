@@ -351,7 +351,7 @@ fileviewer {*.md,*.txt,*.adoc,*.lua,*.csv,*.html,*.htm,*.java,*.kt,*.kts,*.sh,*.
 	\ bat --color always --plain %c
 
 " Images
-filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm},<image/*>
+filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm,*.svg},<image/*>
         \ pqiv -f %f,
         \ sxiv -fa %f %i,
 		" \ echo %f > ~/test,
