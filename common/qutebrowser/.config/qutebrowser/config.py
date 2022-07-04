@@ -145,6 +145,7 @@ config.bind('<Ctrl-n>', 'open -w')
 # }}}
 
 # ======================= JSEVAL ============= {{{
+# click-element can be a native replacement but currently only supports id https://github.com/qutebrowser/qutebrowser/issues/5356
 config.bind('zr', 'jseval -q document.getElementById("reload-button").click()') # reload page
 
 CYCLE_INPUTS = "jseval -q -f /usr/share/qutebrowser/scripts/cycle-inputs.js"
@@ -165,14 +166,15 @@ config.bind('zf', 'jseval -qf ~/.config/qutebrowser/js/general-save.js') # TODO
 
 # ======================= HINTS ============= {{{
 config.bind(';;', 'hint links tab-bg')
-config.bind(';m', 'hint media')
 config.bind(';y', 'hint links yank-primary')
 config.bind(';Y', 'hint --rapid links yank-primary')
 config.bind(';c', 'hint links yank')
 config.bind(';C', 'hint --rapid links yank')
 config.bind(';D', 'hint --rapid links download')
-config.bind(';s', 'hint links userscript doi.py')
 config.bind(';x', 'hint all delete')
+config.bind(';m', 'hint all right-click')
+config.bind(';q', 'hint media')
+config.bind(';s', 'hint links userscript doi.py')
 # :bind d spawn -u doi.py
 
 # URL mostly download stuff
@@ -206,15 +208,16 @@ config.bind('asl', urlCmdLink + 'speed "{url}"')
 config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}')
 config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}', 'caret')
 config.bind('cN', 'spawn -u ~/.bin/note.lua clip {clipboard}')
-# config.bind('ch', 'hint p spawn -u ~/.bin/note.lua sel {clipboard}')
-# coping custom hints - use hint_wrapper if you need to pass an argument
-config.bind('ck', 'hint code userscript copy_select.lua')
-config.bind('cc', 'spawn -u hint_wrapper copyable copy_select.lua --url')
-config.bind('ch', 'spawn -u hint_wrapper copyable copy_select.lua --split') #hunk -multi-select → S-enter 
-config.bind('cs', 'spawn -u hint_wrapper copyable copy_select.lua --speed')
-config.bind('cr', 'spawn -u hint_wrapper copyable copy_select.lua --read')
-config.bind('cl', 'spawn -u hint_wrapper copyable copy_select.lua --translate')
-config.bind('cg', 'spawn -u hint_wrapper copyable copy_select.lua --search')
+# select custom hints - use hint_wrapper if you need to pass an argument
+config.bind('ck', 'hint code userscript select.lua')
+config.bind('cK', 'hint --rapid code userscript select.lua')
+config.bind('cc', 'spawn -u hint_wrapper copyable select.lua --url')
+config.bind('cC', 'hint --rapid copyable userscript select.lua')
+config.bind('ch', 'spawn -u hint_wrapper copyable select.lua --split') #hunk -multi-select → S-enter 
+config.bind('cs', 'spawn -u hint_wrapper copyable select.lua --speed')
+config.bind('cr', 'spawn -u hint_wrapper copyable select.lua --read')
+config.bind('cl', 'spawn -u hint_wrapper copyable select.lua --translate')
+config.bind('cg', 'spawn -u hint_wrapper copyable select.lua --search')
 
 config.bind('cp', 'print') # create PDF
 
