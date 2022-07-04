@@ -388,7 +388,7 @@ c.hints.selectors["code"] = [ ":not(pre) > code", "pre" ]
 c.hints.selectors["p"] = [ "p" ]
 c.hints.selectors["copyable"] = [ "p", "ul", "ol", "table", "strong", "header", "article", "section", "main", 
     "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "i", "dl", "mark" ]
-c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'input[type="checkbox"]', 'input[type="radio"]', 'input[type="range"]', 'input[type="submit"]', 'input[type="reset"]', 'input[type="button"]', 'input[type="image"]', 'form button' ]
+c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'input[type="checkbox"]', 'input[type="radio"]', 'input[type="range"]', 'input[type="submit"]', 'input[type="reset"]', 'input[type="button"]', 'input[type="image"]', 'form button', 'select' ]
 # }}}
 
 # ======================= Test ============= {{{

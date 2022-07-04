@@ -61,7 +61,7 @@ map('F12', 'ShowDebugOverlay', 'ALT')
 --disable key
 map('Enter', 'DisableDefaultAssignment', 'ALT')
 -- key table don't work
-map('m', wezterm.action{ ActivateKeyTable={ name="activate_pane", timeout_milliseconds=1000, } }, "LEADER")
+-- map('m', wezterm.action{ ActivateKeyTable={ name="activate_pane", timeout_milliseconds=1000, replace_current=true, one_shot=true} }, "LEADER")
 
 local mouse_bindings = {
 	{ -- Alt-Middle click pastes from the clipboard selection
