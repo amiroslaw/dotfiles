@@ -56,16 +56,21 @@ if arg == '--read' then
 	os.execute('st -c read -n read -e nvim ' .. tmpName)
 end
 
-if arg == '--translate' then
+function searchEngine(engine)
 	local fifo = io.open(quteFifo, 'a')
-	fifo:write('open -t l ' .. selectedTxt)
+	selectedTxt = selectedTxt:gsub('\t', ' ')
+	selectedTxt = selectedTxt:gsub('\n', ' ')
+	fifo:write('open -t ' .. engine .. ' ' .. selectedTxt)
 	fifo:close()
+	
+end
+
+if arg == '--translate' then
+	searchEngine('l')
 end
 
 if arg == '--search' then
-	local fifo = io.open(quteFifo, 'a')
-	fifo:write('open -t ' .. selectedTxt)
-	fifo:close()
+	searchEngine(' ')
 end
 
 local ok = os.execute('echo "' .. selectedTxt .. '" | xclip -sel clip')

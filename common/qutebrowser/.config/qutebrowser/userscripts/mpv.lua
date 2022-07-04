@@ -25,10 +25,6 @@ function savePlaylist(mediaType)
 	assert(os.execute('rm -f ' .. tmpPlaylist))
 end
 
-function videolist()
-	assert(os.execute('mpv --profile=stream --playlist=' .. tmpPlaylist))
-	savePlaylist 'video'
-end
 
 function writeUrlToFile(filePath, url)
 	local file = io.open(filePath, 'w')
@@ -36,14 +32,25 @@ function writeUrlToFile(filePath, url)
 	file:close()
 end
 
+
 function videoplay(url)
 	writeUrlToFile(tmpPlay, url)
 	assert(os.execute('mpv --profile=stream --playlist=' .. tmpPlay))
 end
 
+function videolist()
+	assert(os.execute('mpv --profile=stream --playlist=' .. tmpPlaylist))
+	savePlaylist 'video'
+end
+
 function videopopup(url)
 	writeUrlToFile(tmpPlay, url)
 	assert(os.execute('mpv --x11-name=videopopup --profile=stream-popup --playlist=' .. tmpPlay))
+end
+
+function popuplist()
+	assert(os.execute('mpv --x11-name=videopopup --profile=stream-popup --playlist=' .. tmpPlaylist))
+	savePlaylist 'video'
 end
 
 function audioplay(url)
@@ -67,6 +74,7 @@ local cases = {
 	['audiolist'] = audiolist,
 	['videolist'] = videolist,
 	['videopopup'] = videopopup,
+	['popuplist'] = popuplist,
 	[false] = videoplay,
 }
 

@@ -120,10 +120,11 @@ config.bind('<Alt-x>', 'navigate prev')
 
 # MEDIA
 config.bind('<Ctrl-w>', 'hint --rapid links spawn -u mpv.lua push {hint-url}')
-config.bind('<Shift-w>', 'spawn -uv  mpv.lua videolist')
-config.bind('<Alt-Shift-w>', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
+config.bind('<Shift-w>', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
 config.bind(';w', 'hint links spawn -uv mpv.lua videoplay {hint-url}')
-config.bind(';W', 'hint links spawn -uv mpv.lua videopopup {hint-url}')
+config.bind(';W', 'spawn -uv mpv.lua videolist')
+config.bind(';p', 'hint links spawn -uv mpv.lua videopopup {hint-url}')
+config.bind(';P', 'spawn -uv mpv.lua popuplist')
 config.bind(';a', 'hint links spawn -uv mpv.lua audioplay {hint-url}')
 config.bind(';A', 'spawn -uv mpv.lua audiolist')
 
@@ -356,6 +357,9 @@ config.bind('sl', 'spawn -u selection.sh l', 'caret')
 config.bind('sw', 'open -b w {primary} ')
 config.bind('sW', 'open -b w {clipboard} ')
 config.bind('sw', 'spawn -u selection.sh w', 'caret')
+config.bind('sf', 'open -b f {primary} ')
+config.bind('sF', 'open -b f {clipboard} ')
+config.bind('sf', 'spawn -u selection.sh f', 'caret')
 config.bind('sy', 'open -b y {primary} ')
 config.bind('sY', 'open -b y {clipboard} ')
 config.bind('sy', 'spawn -u selection.sh y', 'caret')
@@ -369,8 +373,8 @@ config.bind('zz', 'spawn -u selection.sh ')
 config.bind('zz', 'spawn -u selection.sh', 'caret')
 config.bind('zZ', 'spawn -u selection.sh {clipboard}')
 config.bind('<Ctrl-s>', 'open -t {primary} ', 'insert')
-config.bind('<Ctrl-i>', 'open -t l {primary} ', 'insert')
-config.bind('<Ctrl-Shift-i>', 'open -t d {primary} ', 'insert')
+config.bind('<Ctrl-l>', 'open -t l {primary} ', 'insert')
+config.bind('<Ctrl-Shift-l>', 'open -t d {primary} ', 'insert')
 config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
 # }}}
 # }}}
