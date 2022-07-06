@@ -2,12 +2,12 @@
 var url = document.location.hostname;
 
 if(url.includes("youtube")) {
-	let playlistButton = getHtmlElement( "[aria-label=\'Zapisz na playliście\']","[aria-label=\'Save to playlist\']");
+	let playlistButton = getHtmlElement('[aria-label="Zapisz na playliście"]','[aria-label="Save to playlist"]');
 	playlistButton.click();
 	setTimeout(() => {  
 		let watchLaterList = getHtmlElement( "ytd-playlist-add-to-option-renderer [title=\'Watch later\']","ytd-playlist-add-to-option-renderer [title=\'Do obejrzenia\']");
 		watchLaterList.click();
-		document.querySelector("[icon=\'close\']").click();
+		document.querySelector('[icon="close"]').click();
 	}, 1000);
 	
 

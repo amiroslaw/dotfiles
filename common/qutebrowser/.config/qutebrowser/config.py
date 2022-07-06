@@ -160,6 +160,8 @@ config.bind('zt', 'jseval -q document.querySelector("[aria-label=\'View lyrics\'
 # general
 config.bind('za', 'jseval -qf ~/.config/qutebrowser/js/general-alert.js')
 config.bind('zl', 'jseval -qf ~/.config/qutebrowser/js/general-save.js') 
+config.bind('zu', 'jseval -qf ~/.config/qutebrowser/js/general-unsave.js') 
+config.bind('zc', 'jseval -qf ~/.config/qutebrowser/js/general-copy.js') 
 config.bind('zs', 'jseval -qf ~/.config/qutebrowser/js/general-sort.js') 
 config.bind('zf', 'jseval -qf ~/.config/qutebrowser/js/general-save.js') # TODO
 # }}}
