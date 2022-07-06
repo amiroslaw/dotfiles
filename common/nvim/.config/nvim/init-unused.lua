@@ -108,3 +108,20 @@ omap('<leader>w', '<cmd>HopWordAC <cr>')
 omap('<leader>W', '<cmd>HopWordBC <cr>')
 omap('s', '<cmd>HopLineStartAC <cr>')
 omap('S', '<cmd>HopLineStartBC <cr>')
+
+
+--""""""""""""""""""
+-- vim-bookmarks
+vim.g.bookmark_auto_close = 1
+vim.g.bookmark_display_annotation = 1
+vim.g.bookmark_auto_save_file = HOME .. '/.local/share/nvim/vim-bookmarks'
+vim.g.bookmark_show_toggle_warning = 0
+
+telescope
+{ 'tom-anders/telescope-vim-bookmarks.nvim' },
+use 'MattesGroeger/vim-bookmarks'
+
+	telescope.load_extension 'vim_bookmarks'
+	nmap('tm', '<cmd>Telescope vim_bookmarks current_file <cr>')
+	nmap('tM', '<cmd>Telescope vim_bookmarks all <cr>')
+

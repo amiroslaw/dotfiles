@@ -12,11 +12,12 @@ return require('packer').startup(function()
 	use 'justincampbell/vim-eighties' -- Automatically resizes your windows
 	use { 'mg979/vim-visual-multi', branch = 'master' }
 	use 'tpope/vim-repeat'
-	use 'MattesGroeger/vim-bookmarks'
+	use 'chentoast/marks.nvim'
 	use 'majutsushi/tagbar'
 	use 'mhinz/vim-startify' -- start screen
 	use { 'mbbill/undotree', cmd = { 'UndotreeToggle' } }
 	use 'bfredl/nvim-miniyank'
+	use 'voldikss/vim-browser-search'
 	-- CODE
 	use 'tpope/vim-surround'
 	use { 'sbdchd/neoformat', cmd = { 'Neoformat' } }
@@ -25,6 +26,7 @@ return require('packer').startup(function()
 	use { 'itchyny/calendar.vim', cmd = { 'Calendar' } } -- problem with api
 	use { 'aserebryakov/vim-todo-lists', tag = '0.7.1' }
 	use { 'kabbamine/lazyList.vim', cmd = { 'LazyList' } }
+	use'axieax/urlview.nvim'
 	-- asciidoctor
 	use { 'habamax/vim-asciidoctor', ft = { 'asciidoctor' } }
 	-- markdown
@@ -99,7 +101,6 @@ return require('packer').startup(function()
 		'nvim-telescope/telescope.nvim',
 		requires = {
 			{ 'nvim-lua/popup.nvim', opt = true },
-			{ 'tom-anders/telescope-vim-bookmarks.nvim' },
 			{ 'fhill2/telescope-ultisnips.nvim' },
 			{ 'crispgm/telescope-heading.nvim', lock = true }, -- I added asciidoc support
 			{ 'nvim-lua/plenary.nvim', opt = true },

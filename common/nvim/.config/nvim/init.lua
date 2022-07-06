@@ -278,12 +278,31 @@ vim.g.calendar_first_day = 'monday'
 nmap('<F9>', ':Calendar <CR>')
 nmap('<S-F9>', ':Calendar -view=year -split=horizontal -position=below -height=10 <CR>') -- TODO shift, can't be done
 
---""""""""""""""""""
--- vim-bookmarks
-vim.g.bookmark_auto_close = 1
-vim.g.bookmark_display_annotation = 1
-vim.g.bookmark_auto_save_file = HOME .. '/.local/share/nvim/vim-bookmarks'
-vim.g.bookmark_show_toggle_warning = 0
+-- -------------------------------------------------------------------------
+--                       marks https://github.com/chentoast/marks.nvim
+-- -------------------------------------------------------------------------
+require'marks'.setup {
+  mappings = {
+    preview = "m;", -- m;a show mark in popup
+    set_bookmark0 = "m0",
+  set_next = 'mm',
+  toggle = 'mt',
+  delete_buf = 'mx',
+  next    = 'mn',
+  prev    = 'mp' ,     
+  next_bookmark    = 'mN', -- next in the current group 
+  prev_bookmark    = 'mP' ,     
+  delete_bookmark = 'mX',
+  annotate  = 'm/', 
+  },
+  bookmark_0 = {
+    sign = "⚑",
+    virt_text = "TODO"
+  },
+}
+nmap('ml', ':MarksListBuf<cr>')
+nmap('mA', ':MarksListAll<cr>')
+nmap('mL', ':BookmarksListAll<cr>')
 
 --""""""""""""""""""
 -- undo tree
@@ -386,6 +405,13 @@ nmap('<leader>r', '<Plug>RestNvim<cr>', { noremap = false })
 nmap('<leader>rr', '<Plug>RestNvimLast<cr>', { noremap = false })
 nmap('<leader>rp', '<Plug>RestNvimPreview<cr>', { noremap = false })
 
+-- -------------------------------------------------------------------------
+--              browser search         https://github.com/voldikss/vim-browser-search
+-- -------------------------------------------------------------------------
+nmap('<Leader>g', '<Plug>SearchNormal', { noremap = false })
+vmap('<Leader>g', '<Plug>SearchVisual', { noremap = false })
+nmap('gs', ':BrowserSearch<cr>')
+
 --"""""""""""""""""""
 -- jqx https://github.com/gennaro-tedesco/nvim-jqx
 nmap('<leader>x', '<Plug>JqxList', { noremap = false })
@@ -441,6 +467,7 @@ if telescope then
 	nmap('t/', '<cmd>Telescope search_history<cr> ')
 	nmap('t1', '<cmd>Telescope man_pages<cr>')
 	nmap('tC', '<cmd>Telescope colorscheme<cr>')
+	nmap('tm', '<cmd>Telescope marks<cr>') -- list of the pickers
 	nmap('tl', '<cmd>Telescope<cr>') -- list of the pickers
 	-- nmap('tl', '<cmd>Telescope loclist<cr> ')
 
@@ -449,13 +476,18 @@ if telescope then
 	-- nmap('tt', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope current_buffer_tags<CR>')
 	nmap('T', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope tags<CR>')
 
-	telescope.load_extension 'vim_bookmarks'
-	nmap('tm', '<cmd>Telescope vim_bookmarks current_file <cr>')
-	nmap('tM', '<cmd>Telescope vim_bookmarks all <cr>')
-
 	require('telescope').load_extension 'ultisnips'
 	nmap('tu', '<cmd>Telescope ultisnips <cr>')
 end
+
+-- -------------------------------------------------------------------------
+--                       urlview https://github.com/axieax/urlview.nvim
+-- -------------------------------------------------------------------------
+require('urlview').setup({
+  default_picker = "telescope", -- native,
+  sorted = false,
+})
+nmap('<Leader>u', ':UrlView<cr>')
 
 --""""""""""""""""""
 -- previm https://github.com/previm/previm
