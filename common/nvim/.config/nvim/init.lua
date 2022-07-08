@@ -281,24 +281,23 @@ nmap('<S-F9>', ':Calendar -view=year -split=horizontal -position=below -height=1
 -- -------------------------------------------------------------------------
 --                       marks https://github.com/chentoast/marks.nvim
 -- -------------------------------------------------------------------------
-require'marks'.setup {
-  mappings = {
-    preview = "m;", -- m;a show mark in popup
-    set_bookmark0 = "m0",
-  set_next = 'mm',
-  toggle = 'mt',
-  delete_buf = 'mx',
-  next    = 'mn',
-  prev    = 'mp' ,     
-  next_bookmark    = 'mN', -- next in the current group 
-  prev_bookmark    = 'mP' ,     
-  delete_bookmark = 'mX',
-  annotate  = 'm/', 
-  },
-  bookmark_0 = {
-    sign = "⚑",
-    virt_text = "TODO"
-  },
+require('marks').setup {
+	mappings = {
+		preview = 'm;', -- m;a show mark in popup
+		set_bookmark0 = 'm0',
+		toggle = 'mm', -- set_next = 'mm', it's the same
+		delete_buf = 'mx',
+		next = 'mn',
+		prev = 'mp',
+		next_bookmark = 'mN', -- next in the current group
+		prev_bookmark = 'mP',
+		delete_bookmark = 'mX',
+		annotate = 'm/',
+	},
+	bookmark_0 = {
+		sign = '⚑',
+		virt_text = 'TODO',
+	},
 }
 nmap('ml', ':MarksListBuf<cr>')
 nmap('mA', ':MarksListAll<cr>')
@@ -447,6 +446,13 @@ if telescope then
 				},
 			},
 		},
+		pickers = {
+			live_grep = {
+				additional_args = function()
+					return { '--glob', '!/old/*' } -- exclude old folder
+				end,
+			},
+		},
 	}
 
 	nmap('<c-f>', '<cmd>Telescope find_files<cr>')
@@ -483,10 +489,10 @@ end
 -- -------------------------------------------------------------------------
 --                       urlview https://github.com/axieax/urlview.nvim
 -- -------------------------------------------------------------------------
-require('urlview').setup({
-  default_picker = "telescope", -- native,
-  sorted = false,
-})
+require('urlview').setup {
+	default_picker = 'telescope', -- native,
+	sorted = false,
+}
 nmap('<Leader>u', ':UrlView<cr>')
 
 --""""""""""""""""""
@@ -524,6 +530,7 @@ vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' }
 --""""""""""""""""""
 -- NvimTreeToggle https://github.com/kyazdani42/nvim-tree.lua
 nmap('<F3>', ':NvimTreeToggle<CR>')
+nmap('<leader>n', ':NvimTreeToggle<CR>')
 
 --""""""""""""""""""
 -- https://github.com/bfredl/nvim-miniyank
