@@ -8,7 +8,8 @@
  # \~fullscreen "~\" toggle
 # aviailable
 # super + ctrl + f 
-# super + backslash
+# unused 
+# b - balance
  
 # make sxhkd reload its configuration files:
 super + Home
@@ -193,7 +194,7 @@ super + {_,shift,ctrl} + i
 	~/.config/qutebrowser/userscripts/session.sh webapp
 	}
 
-super + {shift, ctrl} + o
+super + {shift, ctrl} + x
 	{ gksu net-restart.sh, \
 	nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
 
@@ -255,18 +256,27 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 	search.lua cheat input, search.lua cheat primary }
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
-# tui runs from terminal; rofi opens with xdg-open so sometimes it's not necessary to open in terminal
-super + o ; {o,i,p,b,t,z,j,f,F,d,D,v}
-	$TERM_LT -e { notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nj-fasd-dir\nf(F)-files\nd(D)-dir\nv-videos", \
-		nmtui,ncmpcpp,bmenu,tg, \
-		$ROFI/open.sh fasd, \
+# open media or dir with xdg-open
+super + o ; {o,j,d,D,v,c,y,a}
+	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ns-stream-video\ns-stream-audio", \
 		$ROFI/open.sh fasd-dir, \
-		$ROFI/open.sh file, \
-		$ROFI/open.sh file-hidden, \
 		$ROFI/open.sh dir, \
 		$ROFI/open.sh dir-hidden, \
 		$ROFI/open.sh video, \
+		$ROFI/open.sh course, \
+		$ROFI/open.sh yt, \
+		$ROFI/open.sh audio, \
 		}
+
+# open tui or file in terminal 
+super + shift + o ; {o,i,p,b,t,z,f,F}
+	$TERM_LT -e { notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
+		nmtui,ncmpcpp,bmenu,tg, \
+		$ROFI/open.sh fasd, \
+		$ROFI/open.sh file, \
+		$ROFI/open.sh file-hidden, \
+		}
+
 
 # script in background - url.lua menu will ask for the number of the links
 super + e ; {e,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
@@ -322,7 +332,7 @@ alt + space
 
 # rofi video
 super + {shift,ctrl} + v
-	{ $ROFI/open.sh video, cd ~/Templates/mpvlists && mpv --profile=stream $(ls -r | grep -e "-video-" | rofi -dmenu) }
+	{ $ROFI/open.sh course, $ROFI/open.sh yt }
 
 # translator 
 super + {_,shift,ctrl} + t

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 ROFI_OPTIONS=(-theme-str 'window {width:  80%;}' -l 25 -i -dmenu -multi-select -monitor -4 -matching fuzzy)
+STREAM_PLAYLIST=~/Templates/mpvlists
 
 case "$1" in
 	fasd) fasd -Rfl | rofi "${ROFI_OPTIONS[@]}" -p "open fasd files:" | xargs -r -P 0 -I {} xdg-open {} ;;
@@ -9,7 +10,10 @@ case "$1" in
 	file-hidden) fd --hidden --type f | rofi "${ROFI_OPTIONS[@]}" -p "open hidden files:" | xargs -r -P 0 -I {} xdg-open {} ;;
 	dir) fd --type d | rofi "${ROFI_OPTIONS[@]}" -p "dir" | xargs -r -P 0 -I {} xdg-open {} ;;
 	dir-hidden) fd --type d --hidden | rofi "${ROFI_OPTIONS[@]}" -p "open hidden dir:" | xargs -r -P 0 -I {} xdg-open {} ;;
-	video) fd --follow  --type=f -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg --search-path "$HOME/Videos" | rofi "${ROFI_OPTIONS[@]}" -p "open video:" | awk '{print "\""$0"\""}' | xargs -r "$VIDEO" ;;
+	video) cd "$HOME/Videos" && fd --follow  --type=f -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg --search-path "$HOME/Videos" | awk -v pattern="$HOME/Videos" '{gsub(pattern,".", $0); print $0}' | rofi "${ROFI_OPTIONS[@]}" -p "open video:" | awk '{print "\""$0"\""}' | xargs -r "$VIDEO" ;;
+	course) cd "$COURSES" && fd --follow  --type=f -e m3u --search-path "$COURSES" | awk -v pattern="$COURSES" '{gsub(pattern,".", $0); print $0}' | rofi "${ROFI_OPTIONS[@]}" -p "open course:" | awk '{print "\""$0"\""}' | xargs -r mpv ;;
+	yt) cd "$STREAM_PLAYLIST" && mpv --profile=stream "$(ls -r | grep -e "-video-" | rofi "${ROFI_OPTIONS[@]}")";;
+	audio) cd "$STREAM_PLAYLIST" && mpv --profile=stream "$(ls -r | grep -e "-audio-" | rofi "${ROFI_OPTIONS[@]}")"
 esac
 # fd --follow  --type=f -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg --search-path ~/Videos | rofi -width 100 -lines 30 -multi-select -dmenu -i -p "locate:" | awk '{print "\""$0"\""}' | xargs -r $VIDEO
 

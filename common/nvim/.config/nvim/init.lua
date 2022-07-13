@@ -706,3 +706,12 @@ require('gitsigns').setup {
 		xmap('oh', ':<C-U>Gitsigns select_hunk<CR>')
 	end,
 }
+
+-- -------------------------------------------------------------------------
+--                      lightspeed https://github.com/ggandor/lightspeed.nvim#-configuration
+-- -------------------------------------------------------------------------
+require'lightspeed'.setup {
+  ignore_case = false,
+  exit_after_idle_msecs = { unlabeled = 3000, labeled = nil },
+  jump_to_unique_chars = { safety_timeout = 400 },
+}
