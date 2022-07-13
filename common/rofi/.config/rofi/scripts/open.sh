@@ -8,7 +8,7 @@ case "$1" in
 	fasd-dir) fasd -Rdl | rofi "${ROFI_OPTIONS[@]}" -p "open fasd dir:" | xargs -r -P 0 -I {} xdg-open {} ;;
 	file) fd --type f | rofi "${ROFI_OPTIONS[@]}" -p "open files:" | xargs -r -P 0 -I {} xdg-open {} ;;
 	file-hidden) fd --hidden --type f | rofi "${ROFI_OPTIONS[@]}" -p "open hidden files:" | xargs -r -P 0 -I {} xdg-open {} ;;
-	dir) fd --type d | rofi "${ROFI_OPTIONS[@]}" -p "dir" | xargs -r -P 0 -I {} xdg-open {} ;;
+	dir) fd --type d --follow | rofi "${ROFI_OPTIONS[@]}" -p "dir" | xargs -r -P 0 -I {} xdg-open {} ;;
 	dir-hidden) fd --type d --hidden | rofi "${ROFI_OPTIONS[@]}" -p "open hidden dir:" | xargs -r -P 0 -I {} xdg-open {} ;;
 	video) cd "$HOME/Videos" && fd --follow  --type=f -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg --search-path "$HOME/Videos" | awk -v pattern="$HOME/Videos" '{gsub(pattern,".", $0); print $0}' | rofi "${ROFI_OPTIONS[@]}" -p "open video:" | awk '{print "\""$0"\""}' | xargs -r "$VIDEO" ;;
 	course) cd "$COURSES" && fd --follow  --type=f -e m3u --search-path "$COURSES" | awk -v pattern="$COURSES" '{gsub(pattern,".", $0); print $0}' | rofi "${ROFI_OPTIONS[@]}" -p "open course:" | awk '{print "\""$0"\""}' | xargs -r mpv ;;
