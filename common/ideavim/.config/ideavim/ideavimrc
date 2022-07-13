@@ -285,9 +285,9 @@ nnoremap <leader>/ :nohlsearch<cr>
 nnoremap <leader>e :action HideAllWindows<cr>
 nmap <leader>m :action Maven.Reimport <cr>
 " Maven.ReimportProject → jest jeszcze 
-" External GVim - trzeba ustawić w externa tools w ide na termite -e nvim lub
-" jakiś klient nvim
-nmap <leader>v :action Tool_External Tools_vim<cr>
+" External GVim - trzeba ustawić w externa tools w ide na termite -e nvim lub jakiś klient nvim
+" prefix Tools
+nmap <leader>v :action Tool_External Tools_nvim-qt<cr>
 
 " # -------------------------------------------------------------------------
 " #                       Override intellij keybingings

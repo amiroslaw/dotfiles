@@ -351,12 +351,12 @@ alias -g H='$(fd --hidden | fzf) '
 #}}}
 
 #{{{ FUNCTIONS
-alias mkcd='take'
-# mkcd () {
-#   case "$1" in /*) :;; *) set -- "./$1";; esac
-#   mkdir -p "$1" && cd "$1"
-#   }
-#
+# alias mkcd='take'
+take () {
+  case "$1" in /*) :;; *) set -- "./$1";; esac
+  mkdir -p "$1" && cd "$1"
+  }
+
 function zadAdd() { 
 	echo "add task"
 	read task
