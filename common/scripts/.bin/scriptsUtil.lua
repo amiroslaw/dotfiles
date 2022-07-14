@@ -94,21 +94,4 @@ function util.splitFlags(optionsTxt)
 	return flags
 end
 
-function util.switch(case, pattern)
-	for k, v in pairs(pattern) do
-		if k == case then
-			if type(v) == 'function' then
-				return v
-			else
-				return v
-			end
-		end
-	end
-	if type(pattern[false]) == 'function' then
-		return pattern[false]
-	else
-		return pattern[false]
-	end
-end
-
 return util

@@ -1,4 +1,4 @@
-# $HOME/.profile
+# device specific
 
 #Set our umask
 umask 022
@@ -26,8 +26,6 @@ unset TERMCAP
 # Man is much better than us at figuring this out
 unset MANPATH
 
-
-
 # paths
 export CONFIG="$HOME/Documents/Ustawienia"
 export ROFI="$HOME/.config/rofi/scripts"
@@ -36,6 +34,7 @@ export TOR_WATCH="$HOME/Downloads/.torrenty"
 export TOR_DIR="/media/multi/Downloads"
 export NOTE="$HOME/Documents/notebook"
 export PRIVATE="$HOME/Documents/Ustawienia/stow-private"
+export LUA_INIT="@$HOME/Documents/dotfiles/common/scripts/.bin/init.lua"
 
 # Default Apps
 export USER_HOME="/home/miro"

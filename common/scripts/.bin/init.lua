@@ -1,0 +1,321 @@
+-- most functions copied from 
+-- https://github.com/marcotrosi/init.lua
+--
+--[[
+printt to print tables on screen or to file
+copyt copy table
+readf read file, return table
+writef write table/string to file
+eq compares 2 values for equality
+run executes external command and optionally capture the output
+str converts any non-string type to string, and strings to quoted strings
+switch
+--]]
+
+
+-- printt <<<
+--[[
+A simple function to print tables or to write tables into files.
+Great for debugging but also for data storage.
+When writing into files the 'return' keyword will be added automatically,
+so the tables can be loaded with 'dofile()' into a variable.
+The basic datatypes table, string, number, boolean and nil are supported.
+The tables can be nested and have number and string indices.
+This function has no protection when writing files without proper permissions and
+when datatypes other then the supported ones are used.
+
+t = table
+f = filename (optional)
+--]]
+function printt(t, f)
+
+   local function printTableHelper(obj, cnt)
+
+      local cnt = cnt or 0
+
+      if type(obj) == "table" then
+
+         io.write("\n", string.rep("\t", cnt), "{\n")
+         cnt = cnt + 1
+
+         for k,v in pairs(obj) do
+
+            if type(k) == "string" then
+               io.write(string.rep("\t",cnt), '["'..k..'"]', ' = ')
+            end
+
+            if type(k) == "number" then
+               io.write(string.rep("\t",cnt), "["..k.."]", " = ")
+            end
+
+            printTableHelper(v, cnt)
+            io.write(",\n")
+         end
+
+         cnt = cnt-1
+         io.write(string.rep("\t", cnt), "}")
+
+      elseif type(obj) == "string" then
+         io.write(string.format("%q", obj))
+
+      else
+         io.write(tostring(obj))
+      end 
+   end
+
+   if f == nil then
+      printTableHelper(t)
+   else
+      io.output(f)
+      io.write("return")
+      printTableHelper(t)
+      io.output(io.stdout)
+   end
+end -- >>>
+-- copyt <<<
+--[[
+This is a simple copy table function. It uses recursion so you may get trouble
+with cycles and too big tables. But in most cases this function is absolutely enough.
+
+t = table to copy
+--]]
+function copyt(t)
+
+   if type(t) ~= "table" then return nil end
+
+   local Copy_t = {}
+ 
+   for k,v in pairs(t) do
+      if type(v) == "table" then
+         Copy_t[k] = copyt(v)
+      else
+         Copy_t[k] = v
+      end
+   end
+ 
+   return Copy_t
+end -- >>>
+-- readf <<<
+--[[
+readf reads a file and returns the content as a table with one line per index.
+if the file was not readable readf returns nil.
+
+f = filename
+--]]
+function readf(f)
+
+   if (type(f) ~= "string") then
+      return nil
+   end
+
+   local File_t = {}
+   local File_h = io.open(f)
+
+   if File_h then
+      for l in File_h:lines() do
+         table.insert(File_t, (string.gsub(l, "[\n\r]+$", "")))
+      end
+      File_h:close()
+      return File_t
+   end
+
+   return nil
+end -- >>>
+-- writef <<<
+--[[
+writef takes a table or string and writes it to a file and returns true if writing was successful, otherwise nil.
+If t is a table it shall contain numerical indices (1 to n) with strings as values, and no nil values in-between.
+
+t = table or string containing file lines
+f = filename
+n = newline character (optional, default is "\n")
+m = write mode ["w"|"a"|"w+"|"a+"] (optional, default is "w")
+--]]
+function writef(t, f, n, m)
+
+   local n = n or "\n"
+   local m = m or "w"
+
+   if (type(t) ~= "table") and (type(t) ~= "string")              then return nil end
+   if (type(f) ~= "string")                                       then return nil end
+   if (type(n) ~= "string")                                       then return nil end
+   if (type(m) ~= "string") or (not string.match(m, "^[wa]%+?$")) then return nil end
+
+   local File_h = io.open(f, m)
+   if File_h then
+      if (type(t) == "table") then
+         for _,l in ipairs(t) do
+            File_h:write(l)
+            File_h:write(n)
+         end
+      else
+         File_h:write(t)
+      end
+      File_h:close()
+      return true
+   end
+   return nil
+end -- >>>
+
+-- eq <<<
+--[[
+This function takes 2 values as input and returns true if they are equal and false if not.
+
+a and b can numbers, strings, booleans, tables and nil.
+--]]
+function eq(a,b)
+
+   local function isEqualTable(t1,t2) -- <<<
+
+      if t1 == t2 then
+         return true
+      end
+
+      for k,v in pairs(t1) do
+
+         if type(t1[k]) ~= type(t2[k]) then
+            return false
+         end
+
+         if type(t1[k]) == "table" then
+            if not isEqualTable(t1[k], t2[k]) then
+               return false
+            end
+         else
+            if t1[k] ~= t2[k] then
+               return false
+            end
+         end
+      end
+
+      for k,v in pairs(t2) do
+
+         if type(t2[k]) ~= type(t1[k]) then
+            return false
+         end
+
+         if type(t2[k]) == "table" then
+            if not isEqualTable(t2[k], t1[k]) then
+               return false
+            end
+         else
+            if t2[k] ~= t1[k] then
+               return false
+            end
+         end
+      end
+
+      return true
+   end -- >>>
+
+   if type(a) ~= type(b) then
+      return false
+   end
+
+   if type(a) == "table" then
+      return isEqualTable(a,b)
+   else
+      return (a == b)
+   end
+end -- >>>
+-- run <<<
+--[[
+This is kind of a wrapper function to os.execute and io.popen.
+The problem with os.execute is that it can only return the
+exit status but not the command output. And io.popen can provide
+the command output but not an exit status. This function can do both.
+It will return the same return valus as os.execute plus two additional tables.
+These tables contain the command output, 1 line per numeric index.
+Line feed and carriage return are removed from each line.
+The first table contains the stdout stream, the second the stderr stream.
+
+cmd     = command to execute, can be string or table
+status,out,err = run("ls -l")
+printt(out)
+printt(err)
+--]]
+function run(cmd)
+ 
+   if (type(cmd) ~= "string") and (type(cmd) ~= "table") then return nil end
+ 
+   local OutFile_s = "/tmp/init.lua.run.out"
+   local ErrFile_s = "/tmp/init.lua.run.err"
+   local Command_s
+   local Out_t
+   local Err_t
+
+   if type(cmd) == "table" then
+      Command_s = table.concat(cmd, " ")
+   else
+      Command_s = cmd
+   end
+
+      Command_s = "( " .. Command_s .. " )" .. " 1> " .. OutFile_s .. " 2> " .. ErrFile_s
+   local Status_b = os.execute(Command_s)
+  Out_t = readf(OutFile_s)
+  Err_t = readf(ErrFile_s)
+  os.remove(OutFile_s)
+  os.remove(ErrFile_s)
+  return Status_b, Out_t, Err_t
+end -- >>>
+-- str <<<
+--[[
+This function converts tables, functions, ... to strings.
+If the input is a string then a quoted string is returned.
+
+x = input to convert to string
+--]]
+function str(x)
+   if type(x) == "table" then
+      local ret_t = {}
+      local function convertTableToString(obj, cnt) -- <<<
+         local cnt=cnt or 0
+         if type(obj) == "table" then
+            table.insert(ret_t, "\n" .. string.rep("\t",cnt) .. "{\n")
+            cnt = cnt+1
+            for k,v in pairs(obj) do
+               if type(k) == "string" then
+                  table.insert(ret_t, string.rep("\t",cnt) .. '["' .. k .. '"] = ')
+               end
+               if type(k) == "number" then
+                  table.insert(ret_t, string.rep("\t",cnt) .. "[" .. k.. "] = ")
+               end
+               convertTableToString(v, cnt)
+               table.insert(ret_t, ",\n")
+            end
+            cnt = cnt-1
+            table.insert(ret_t, string.rep("\t",cnt) .. "}")
+         elseif type(obj) == "string" then
+            table.insert(ret_t, string.format("%q",obj))
+         else
+            table.insert(ret_t, tostring(obj))
+         end 
+      end -- >>>
+      convertTableToString(x)
+      return table.concat(ret_t)
+   elseif type(x) == "function" then
+      local status, result = pcall(string.dump, x, true)
+      if status then
+         return result
+      else
+         return "not dumpable function"
+      end
+   elseif type(x) == "string" then
+      return string.format("%q", x)
+   else
+      return tostring(x)
+  end
+	 
+end -- >>>
+
+--- <<<
+function switch(cases, pattern)
+	for k, v in pairs(cases) do
+		if k == pattern then
+			return v
+		end
+	end
+	return cases[false]
+end -- >>>
+
+-- vim: fmr=<<<,>>> fdm=marker

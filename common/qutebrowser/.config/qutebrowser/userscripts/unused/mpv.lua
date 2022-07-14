@@ -1,7 +1,7 @@
 #!/usr/bin/luajit
 
-package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
-util = require 'scriptsUtil'
+-- package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
+-- util = require 'scriptsUtil'
 
 local quteFifo = os.getenv 'QUTE_FIFO'
 local tmpPlaylist = '/tmp/qt_mpvplaylist.m3u'
@@ -25,13 +25,11 @@ function savePlaylist(mediaType)
 	assert(os.execute('rm -f ' .. tmpPlaylist))
 end
 
-
 function writeUrlToFile(filePath, url)
 	local file = io.open(filePath, 'w')
 	file:write(url)
 	file:close()
 end
-
 
 function videoplay(url)
 	writeUrlToFile(tmpPlay, url)
@@ -54,6 +52,7 @@ function popuplist()
 end
 
 function audioplay(url)
+	print('play')
 	writeUrlToFile(tmpPlay, url)
 	assert(os.execute( 'st -c audio -e mpv --ytdl --no-video --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --playlist=' 
 	.. tmpPlay))
@@ -77,8 +76,9 @@ local cases = {
 	['popuplist'] = popuplist,
 	[false] = videoplay,
 }
-
-local ok, switchFunction = xpcall(util.switch, errorMsg, arg[1], cases)
-if ok then
-	switchFunction(arg[2])
-end
+print(arg[1])
+switch(cases, arg[1])(arg[2])
+-- local ok, switchFunction = xpcall(switch, errorMsg, cases, arg[1])
+-- if ok then
+-- 	switchFunction(arg[2])
+-- end
