@@ -125,6 +125,7 @@ config.bind(';w', 'hint links spawn -uv mpv.lua videoplay {hint-url}')
 config.bind(';W', 'spawn -uv mpv.lua videolist')
 config.bind(';p', 'hint links spawn -uv mpv.lua videopopup {hint-url}')
 config.bind(';P', 'spawn -uv mpv.lua popuplist')
+# config.bind(';P', 'spawn -uv mpv.lua videopopup {url}')
 config.bind(';a', 'hint links spawn -uv mpv.lua audioplay {hint-url}')
 config.bind(';A', 'spawn -uv mpv.lua audiolist')
 
@@ -180,11 +181,13 @@ config.bind(';s', 'hint links userscript doi.py')
 # :bind d spawn -u doi.py
 
 # URL mostly download stuff
+# types: h-hint l/u-link url from current site all; r/a- rapid 
+# or change to format a
 urlCmd = 'hint links spawn url.lua '
 urlCmdRapid = 'hint --rapid links spawn url.lua '
 urlCmdLink = 'spawn url.lua '
 config.bind('aaa', urlCmd + 'audio "{hint-url}"')
-config.bind('aar', urlCmdRapid + 'audio "{hint-url}"')
+config.bind('aar', urlCmdRapid + 'audio "{hint-url}"') # exception
 config.bind('aal', urlCmdLink + 'audio "{url}"')
 config.bind('att', urlCmd + 'tor "{hint-url}"')
 config.bind('ata', urlCmdRapid + 'tor "{hint-url}"')
@@ -317,10 +320,10 @@ c.url.searchengines = {
     'au': 'https://aur.archlinux.org/packages?O=0&K={}',
     'a': 'https://allegro.pl/listing?string={}',
     'f': 'https://www.filmweb.pl/search?q={}',
-    'tekstowo': 'https://www.tekstowo.pl/wyszukaj.html?search-artist=Podaj+wykonawc%C4%99&search-title={}',
+    'ly': 'https://www.tekstowo.pl/wyszukaj.html?search-artist=Podaj+wykonawc%C4%99&search-title={}',
     'so': 'https://stackoverflow.com/search?q={}',
     'wa': 'https://www.wolframalpha.com/input/?i={}',
-    'thesaurus': 'https://www.thesaurus.com/browse/{}?s=t',
+    'syn': 'https://www.thesaurus.com/browse/{}?s=t',
     'm': 'https://maps.google.com/maps?q={}',
     'gi': 'https://www.google.com/search?q={}&tbm=isch',
     'l' :'https://www.deepl.com/en/translator#en/pl/{}',
