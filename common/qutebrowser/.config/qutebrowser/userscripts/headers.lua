@@ -1,8 +1,5 @@
 #!/usr/bin/luajit
 
-package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
-util = require 'scriptsUtil'
-
 local gumbo = require 'gumbo'
 local quteFifo = os.getenv 'QUTE_FIFO'
 local htmlPath = os.getenv 'QUTE_HTML'
@@ -21,7 +18,7 @@ for h, header in ipairs(headerTags) do
 end
 -- or search href=#...
 
-local selectedAnchor = util.menu(anchors)
+local selectedAnchor = rofiMenu(anchors)
 
 if selectedAnchor ~= '' then
 	local anchor = anchors[selectedAnchor]
@@ -30,9 +27,3 @@ if selectedAnchor ~= '' then
 	end
 	io.open(quteFifo, 'a'):write('scroll-to-anchor ' .. anchor)
 end
-
--- io.open(quteFifo, 'a'):write("message-info 'anchor not found'" )
--- local selectedAnchor = util.select(anchors, 'headings')
--- io.open('/tmp/qb-output', 'w+'):write(anchors[selectedAnchor])
--- io.open(quteFifo, 'a'):write("message-info 'Bookmark added to Buku!'" )
--- local foo = document:getElementById 'messages'

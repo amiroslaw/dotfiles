@@ -308,7 +308,8 @@ function str(x)
 	 
 end -- >>>
 
---- <<<
+--- switch <<<
+-- the argument cases is a key-value table. Values can be either variables or functions.
 function switch(cases, pattern)
 	for k, v in pairs(cases) do
 		if k == pattern then
@@ -318,4 +319,131 @@ function switch(cases, pattern)
 	return cases[false]
 end -- >>>
 
+-- isArray <<<
+-- if a table is a dictionary it will return false
+--]]
+function isArray(table)
+  if type(table) == 'table' and #table > 0 then
+    return true
+  end
+  return false
+end -- >>>
+
+-- split <<<
+function split(str, delimiter)
+    local result = {}
+    for match in (str..delimiter):gmatch("(.-)"..delimiter) do
+        table.insert(result, match);
+    end
+	return result
+end -- >>>
+
+-- enum <<<
+-- Enum table. When accessing or modifying an entry of non -existing value, the error will be thrown.
+function enum(tab)
+	local meta_table = {
+		__index = function(self, key)
+			if tab[key] == nil then
+				error("Attepted access a non existant field: " .. key)
+			end
+			return tab[key]
+		end,
+		__newindex = function(self, key, value)
+			error("Attepted to modify const table: " .. key .. " " .. value)
+		end,
+		__metatable = false
+	}
+	return setmetatable({}, meta_table)
+end -- >>>
+
+--- util for scripting <<< 
+
+-- notify <<<
+-- Send notification.
+function notify(msg)
+	print(msg)
+	os.execute("dunstify '" .. msg .. "'")
+end 
+
+function notifyError(msg)
+	os.execute("dunstify -u critical Error: '" .. msg .. "'")
+	error(msg) -- does not work?
+end -- >>>
+
+-- rofi <<<
+
+--[[
+Shows a rofi input. 
+Prompt or width can be adjusted. The width accepts following units:
+80px;80%;80ch
+--]]
+function rofiInput(prompt, width) 
+	prompt = prompt and prompt or 'Input'
+	width = width and width or '500px'
+	return io.popen('rofi -monitor -4 -theme-str "window {width:  ' .. width .. ';}" -l 0 -dmenu -p "'.. prompt ..'"'):read('*a'):gsub('\n', '')
+end 
+
+--[[
+Shows a rofi input for a number. Input will be appear until it will get valid type.
+Prompt can be adjusted, default is "Input".
+--]]
+function rofiNumberInput(prompt)
+	local input
+	repeat
+		input = rofiInput(prompt, #prompt + 11 .. 'ch')
+	until tonumber(input)
+	return input
+end 
+
+--[[
+Shows a rofi menu. Option can be parser form an array (ordered table) or a dictionary.
+prompt or menuHeight can be adjusted 
+--]]
+function rofiMenu(optionTab, prompt, menuHeight)
+	local prompt = prompt and prompt or 'Select'
+	local menuHeight = menuHeight and menuHeight or 25
+	local options = ''
+	local lines = 0
+	local isArray = isArray(optionTab)
+
+	for key,val in pairs(optionTab) do
+		if isArray then
+			options = options  .. val	.. '|'
+		else
+			options = options  .. key	.. '|'
+		end
+		lines = lines + 1
+	end
+	if lines > menuHeight then
+		lines = menuHeight
+	end
+	return io.popen('echo "' .. options .. '" | rofi -multi-select -monitor -4 -i -l ' .. lines .. ' -sep "|" -dmenu -p "' .. prompt .. '"'):read('*a'):gsub('\n', '')
+end -- >>>
+
+-- getConfigProperties <<<
+-- Read configuration file with key=value format. Function returns table(map).
+function getConfigProperties(path)
+	assert(os.execute( "test -f " .. path ) == 0, 'Config file does not exist: ' .. path)
+	local properties = {}
+	for line in io.lines(path) do
+		local property = split(line, '=')
+		properties[property[1]:gsub('%s', '')] = property[2]:gsub('%s', '')
+	end
+	return properties
+end -- >>>
+
+-- splitFlags <<<
+-- Splits arguments from the script flags. Example:  -a or -abcd.
+function splitFlags(optionsTxt)
+	local flags = {}
+	if not optionsTxt or optionsTxt == '' then return flags end
+	optionsTxt:gsub(".", function(char) 
+		if char ~= '-' then 
+			flags[char] = char 
+		end
+	end)
+	return flags
+end -- >>>
+
+-- >>>
 -- vim: fmr=<<<,>>> fdm=marker

@@ -1,7 +1,5 @@
 #!/usr/bin/luajit
 
-package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
-util = require 'scriptsUtil'
 local gumbo = require 'gumbo'
 
 local selectedHtml = os.getenv 'QUTE_SELECTED_HTML'
@@ -15,7 +13,7 @@ local sentenses = {}
 for match in selectedTxt:gmatch '([^.?!]+)' do
 	table.insert(sentenses, match)
 end
-selectedTxt = util.select(sentenses, 'Sentense')
+selectedTxt = rofiMenu(sentenses, 'Sentense')
 
 local ok = os.execute('echo "' .. selectedTxt .. '" | xclip -sel clip')
 if ok then

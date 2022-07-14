@@ -352,7 +352,7 @@ nmap('<S-F7>', ':Asciidoctor2DOCX<CR>') -- TODO shift, can't be bind
 vim.g.asciidoctor_syntax_conceal = 1
 vim.g.asciidoctor_folding = 2
 vim.g.asciidoctor_folding_level = 6
-vim.g.asciidoctor_fenced_languages = { 'java', 'typescript', 'javascript', 'bash', 'html' } -- 'kotlin' add syntax TODO
+vim.g.asciidoctor_fenced_languages = { 'java', 'typescript', 'javascript', 'bash', 'html', 'lua', 'css' } -- 'kotlin' add syntax TODO
 -- vim.g.asciidoctor_syntax_indented = 0
 -- vim.g.asciidoctor_fold_options = 0
 vim.g.asciidoctor_img_paste_command = 'xclip -selection clipboard -t image/png -o > %s%s'
@@ -407,9 +407,22 @@ nmap('<leader>rp', '<Plug>RestNvimPreview<cr>', { noremap = false })
 -- -------------------------------------------------------------------------
 --              browser search         https://github.com/voldikss/vim-browser-search
 -- -------------------------------------------------------------------------
-nmap('<Leader>g', '<Plug>SearchNormal', { noremap = false })
-vmap('<Leader>g', '<Plug>SearchVisual', { noremap = false })
-nmap('gs', ':BrowserSearch<cr>')
+nmap('gs', '<Plug>SearchNormal', { noremap = false }) -- can operate with text objects: gss
+vmap('gs', '<Plug>SearchVisual', { noremap = false })
+nmap('<Leader>g', ':BrowserSearch<cr>') -- search in default (google)
+vmap('<Leader>g', ':BrowserSearch<cr>')
+
+-- doesn't work
+-- vim.g.browser_search_engines = {
+-- 	['duckduckgo']='https://duckduckgo.com/?q=%s',
+-- 	['github']='https://github.com/search?q=%s',
+-- 	['google']='https://google.com/search?q=%s',
+-- 	['translate']='https://translate.google.com/?sl=auto&tl=it&text=%s',
+-- 	['wikipedia']='https://en.wikipedia.org/wiki/%s',
+-- 	['youtube']='https://www.youtube.com/results?search_query=%s&page=&utm_source=opensearch',
+-- 	['stackoverflow']='https://stackoverflow.com/search?q=%s',
+--   }
+
 
 --"""""""""""""""""""
 -- jqx https://github.com/gennaro-tedesco/nvim-jqx

@@ -1,7 +1,5 @@
 #!/bin/luajit
 -- TODO maybe reverse clipboard history when it join the elements
-package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
-util = require('scriptsUtil')
 
 HELP = [[
 Utils for working clipster program.
@@ -39,7 +37,7 @@ end
 
 function join() 
 	local clipboardAmount = 1
-	if not arg[3] then clipboardAmount = util.numberInput('Number of clips') 
+	if not arg[3] then clipboardAmount = rofiNumberInput('Number of clips') 
 	else
 		clipboardAmount = arg[3]
 	end
@@ -62,4 +60,4 @@ end)
 
 local exec, param = switch(arg[1])
 local ok, val = pcall(exec, param)
--- if not ok then util.errorHandling('Clipster.lua error') end
+-- if not ok then notifyError('Clipster.lua error') end

@@ -1,8 +1,5 @@
 #!/usr/bin/luajit
 
--- package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
--- util = require 'scriptsUtil'
-
 local quteFifo = os.getenv 'QUTE_FIFO'
 local tmpPlaylist = '/tmp/qt_mpvplaylist.m3u'
 local tmpPlay = '/tmp/qt_mpv.m3u'

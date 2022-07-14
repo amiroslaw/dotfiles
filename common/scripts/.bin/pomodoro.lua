@@ -9,9 +9,6 @@
 -- 24 notyfikacja 25 → break 1; output jest po tym jak się wykona skrypt czyli będzie notyfikacja
 -- 4 notyfikacja 5 → work 0 lub
 
-package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
-util = require('scriptsUtil')
-
 HELP = [[
 The pomodoro app for system bar like polybar with support of the work history.
 pomodoro.lua option [-flags]
@@ -51,8 +48,8 @@ ALERT_PATH = POMODORO_DIR .. '/alert.mp3'
 STATUS_PATH = '/tmp/pomodoro'
 DELIMITER = '|'
 
-config = util.getConfigProperties(CONFIG_PATH)
-flags = util.splitFlags(arg[2])
+config = getConfigProperties(CONFIG_PATH)
+flags = splitFlags(arg[2])
 
 function getHistoryTasks()
 	local tasks = {}
@@ -79,7 +76,7 @@ end
 
 function duplicateTask() 
 	local current = io.open(CURRENT_PATH):read('*a')
-	local taskInfo = util.split(current, DELIMITER)
+	local taskInfo = split(current, DELIMITER)
 	taskInfo[1] = os.date('%Y-%m-%dT%H:%M:%S')
 	taskInfo[#taskInfo] = nil
 	local file = io.open(CURRENT_PATH, 'w')
@@ -136,15 +133,15 @@ end
 
 function add()
 	-- assert(os.execute( "test -f " .. STATUS_PATH ) ~= 0, 'Task exist')
-	local description = util.input('description')
+	local description = rofiInput('description')
 	local tags = {}
 	for _, line in ipairs(getHistoryTasks()) do
-		local taskInfo = util.split(line, DELIMITER)
+		local taskInfo = split(line, DELIMITER)
 		if taskInfo[2] then 
 			tags[taskInfo[2]] = taskInfo[2]
 		end
 	end
-	local selectedTag = util.select(tags, 'Tags')
+	local selectedTag = rofiMenu(tags, 'Tags')
 
 	local file
 	local date = os.date('%Y-%m-%dT%H:%M:%S')
@@ -155,7 +152,7 @@ function add()
 		file = io.open(CURRENT_PATH, 'r+')
 		local current = file:read('*a')
 		file:seek('set')
-		local taskInfo = util.split(current, DELIMITER)
+		local taskInfo = split(current, DELIMITER)
 		date = taskInfo[1]
 		if selectedTag == '' then selectedTag = taskInfo[2] end
 		if description == '' then description = taskInfo[3] end
@@ -205,7 +202,7 @@ function dailyInfo()
 	local taskCounter = 0
 	for _, task in ipairs(getHistoryTasks()) do
 		if task:find(today) then
-			local taskInfo = util.split(task, DELIMITER)
+			local taskInfo = split(task, DELIMITER)
 			sum = sum + taskInfo[#taskInfo]
 			taskCounter = taskCounter + 1
 		end
@@ -216,14 +213,14 @@ end
 function notify()
 	local takskRatio, duration = dailyInfo()
 	local currentTask = io.open(CURRENT_PATH):read('*a')
-	util.notify(currentTask:gsub(DELIMITER, '\n') .. dailyInfo())
+	notify(currentTask:gsub(DELIMITER, '\n') .. dailyInfo())
 end
 
 function history()
 	if flags['j'] then 
 		tasksJson = '['
 		for _, historyEntry in ipairs(getHistoryTasks()) do
-			local task = util.split(historyEntry, DELIMITER)
+			local task = split(historyEntry, DELIMITER)
 			tasksJson = tasksJson .. '{"description":"' .. task[3] .. '",' .. '"tag":"' .. task[2] .. '","duration":' .. task[4] .. ', "date":"' .. task[1] .. '"},' end 
 		io.write(tasksJson:sub(1,-2), ']')
 	else
@@ -231,7 +228,7 @@ function history()
 	end
 end
 
-stateEnum = util.const({STOP = function() print'' end, BREAK = breakStatus, WORK = workStatus, PAUSE = pauseStatus})
+stateEnum = enum({STOP = function() print'' end, BREAK = breakStatus, WORK = workStatus, PAUSE = pauseStatus})
 
 local defaultOption = 'status'
 local options = {
@@ -252,7 +249,7 @@ end)
 
 local action = arg[1] and arg[1] or defaultOption
 if action == 'menu' then
-	action = util.menu(options)
+	action = rofiMenu(options)
 end
 local exec, param = switch(action)
 local ok, val = pcall(exec, param)

@@ -1,7 +1,5 @@
 #!/bin/luajit
 -- in some cases I have to use this $BROWSER  "google.com/search?q=$(xclip -o -sel primary | sed -e 's/ /+/g')"
-package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
-util = require('scriptsUtil')
 
 HELP = [[
 Utils for searching.
@@ -23,7 +21,7 @@ action = arg[1]
 phraseArg = arg[2] and arg[2] or 'primary'
 
 if not phraseArg or phraseArg == 'input' then
-	phraseArg =	util.input('Search')	
+	phraseArg =	rofiInput('Search')	
 end 
 if phraseArg == 'primary' or phraseArg == 'clip' then
 	phraseArg = io.popen('xclip -out -selection ' .. phraseArg):read('*a')
@@ -47,7 +45,7 @@ function cheat()
 	}
 
 	local tmpname = os.tmpname()
-	local topic = util.menu(topics)
+	local topic = rofiMenu(topics)
 	local query = phraseArg:gsub('%s', '+')
 	local status = 1
 	if topics[topic] == 'lang' then
@@ -73,7 +71,7 @@ function transShell(dictionary)
 	if #translation == 0 then 
 		error("Can not translate") 
 	else
-		util.notify(translation)
+		notify(translation)
 		-- todo
 		-- path = os.getenv('CONFIG') ..  '/logs/
 		-- echo "$selection ; $pl" >> ~/.config/rofi/scripts/tran/enpl-dictionary.txt ]]
@@ -116,12 +114,12 @@ local switch = (function(name,args)
 end)
 
 if action == 'menu' then
-	action = util.menu(options)
+	action = rofiMenu(options)
 end
 
 local exec, param = switch(action, phraseArg)
 local ok, val = pcall(exec, param)
 
 if not ok then 
-	util.errorHandling(val)
+	notifyError(val)
 end

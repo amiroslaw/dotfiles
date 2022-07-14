@@ -4,8 +4,20 @@ PATH="/usr/local/sbin:/usr/bin/core_perl:/usr/local/bin:/usr/bin:$HOME/.config/b
 #PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin:$HOME/.local/bin:/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:~/.gem/ruby/2.6.0/bin"
 export PATH
 
+# paths
+export ROFI="$HOME/.config/rofi/scripts"
+export GRAVEYARD="$HOME/.local/share/Trash"
+export LUA_INIT="@$HOME/Documents/dotfiles/common/scripts/.bin/init.lua"
 export XDG_CONFIG_HOME="$HOME/.config"
+
+export EDITOR="nvim"
+export VISUAL="nvim"
+export OPENER="xdg-open"
+export PAGER="less"
+export WM="bspwm"
 export BSPWM_SOCKET="/tmp/bspwm-socket"
+export MPD_PORT=6666
+
 export XDG_CONFIG_DIRS=/usr/etc/xdg:/etc/xdg
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export PANEL_FIFO="/tmp/panel-fifo"

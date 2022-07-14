@@ -27,34 +27,24 @@ unset TERMCAP
 unset MANPATH
 
 # paths
-export CONFIG="$HOME/Documents/Ustawienia"
-export ROFI="$HOME/.config/rofi/scripts"
-export GRAVEYARD="$HOME/.local/share/Trash"
 export TOR_WATCH="$HOME/Downloads/.torrenty"
 export TOR_DIR="/media/multi/Downloads"
 export NOTE="$HOME/Documents/notebook"
+export CONFIG="$HOME/Documents/Ustawienia"
 export PRIVATE="$HOME/Documents/Ustawienia/stow-private"
-export LUA_INIT="@$HOME/Documents/dotfiles/common/scripts/.bin/init.lua"
+export USER_HOME="/home/miro"
 
 # Default Apps
-export USER_HOME="/home/miro"
-export EDITOR="nvim"
 export READER="zathura"
 export GUI_EDITOR=/usr/bin/micro-st
-export VISUAL="nvim"
 export TERM_DEF="wezterm"
 export TERM_LT="st"
 # export BROWSER="org.qutebrowser.qutebrowser.desktop"
 export BROWSER="qutebrowser"
 export VIDEO="smplayer"
 export IMAGE="sxiv"
-export OPENER="xdg-open"
-export PAGER="less"
-export WM="bspwm"
-export MPD_PORT=6666
 # export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # export MANPAGER="nvim -c 'set ft=man' -"
-export BSPWM_SOCKET="/tmp/bspwm-socket"
 # export LANGUAGE=en_US.UTF-8
 # export LANG=en_US.UTF-8
 # export LC_CTYPE=en_US.UTF-8
@@ -62,7 +52,7 @@ export BSPWM_SOCKET="/tmp/bspwm-socket"
 export LC_ALL=en_US.UTF-8
 
 # vars
-CLIPSTER_HISTORY_SIZE=1000
+export CLIPSTER_HISTORY_SIZE=1000
 
 # if [[ "$(tty)" = "/dev/tty1" ]]; then
 #	pgrep bspwm || startx

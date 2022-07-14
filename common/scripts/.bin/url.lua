@@ -1,8 +1,6 @@
 #!/bin/luajit
 -- optimalization 
 -- kindle - I execute 2 times, maybe I don't need title of the article, I can useos.tmpfile - but it remove file after end of the script
-package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
-util = require('scriptsUtil')
 
 HELP = [[
 Utils for using URLs from the system clipboard.
@@ -103,8 +101,8 @@ function speed(linkTab)
 	local tmpname = os.tmpname()
 	for i, link in ipairs(linkTab) do
 		local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to plain --output ' .. tmpname)
-		-- os.execute('st -c rsvp -n rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 300"') 
-		os.execute('wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. tmpname .. ' | speedread -w 300"') 
+		-- os.execute('st -c rsvp -n rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 330"') 
+		os.execute('wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. tmpname .. ' | speedread -w 330"') 
 		assert(createFile == 0, 'Could not create file')
 	end
 	return 'RSVP finished ' .. tmpname
@@ -153,7 +151,7 @@ local switch = (function(name,args)
 	return (sw[name]and{sw[name]}or{sw["#default"]})[1](args)
 end)
 if action == 'menu' then
-	action = util.menu(options)
+	action = rofiMenu(options)
 end
 
 function filtrLinks(clipboardStream, regex)
@@ -162,13 +160,13 @@ function filtrLinks(clipboardStream, regex)
 		local match = line:match(regex)
 		if match then table.insert(links, line) end
 	end
-	if #links  == 0 then util.errorHandling('No link provided') end
+	if #links  == 0 then notifyError('No link provided') end
 	return links
 end
 
 linkTab = {}
 if urlArg == 'input' then
-	urlArg = util.input('No. urls')	
+	urlArg = rofiInput('No. urls')	
 end
 if action == '-h' or action == 'help' then 
 	action = '-h'
@@ -183,7 +181,7 @@ end
 local exec, cmd = switch(action)
 local status, val = pcall(exec, linkTab, cmd)
 if status then
-	util.notify(val)
+	notify(val)
 else
-	util.errorHandling(val)
+	notifyError(val)
 end

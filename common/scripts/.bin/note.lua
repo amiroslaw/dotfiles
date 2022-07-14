@@ -1,6 +1,4 @@
 #!/bin/luajit
-package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
-util = require('scriptsUtil')
 
 HELP = [[
 Utils for working with notes.
@@ -19,13 +17,13 @@ action = arg[1]
 clipboard = 'primary'
 
 if not action then 
-	util.errorHandling('Provide argument')
+	notifyError('Provide argument')
 end
 
 function clipster(clipType) 
 	local delimiter = '~#~'
 	local clipboardAmount = 1
-	if not arg[2] then clipboardAmount = util.numberInput('Number of clips') 
+	if not arg[2] then clipboardAmount = rofiNumberInput('Number of clips') 
 	else
 		clipboardAmount = arg[2]
 	end
@@ -47,7 +45,7 @@ function clipster(clipType)
 end
 
 function writeNote() 
-	return '\n' .. util.input('Note', '70%') .. '\n'
+	return '\n' .. rofiInput('Note', '70%') .. '\n'
 end
 
 function writeToFile(text) 
@@ -74,9 +72,9 @@ local exec, param = switch(action)
 local ok, val = pcall(exec, param)
 
 if not ok then 
-	util.errorHandling(val)
+	notifyError(val)
 else
 	local ok, val = pcall(writeToFile, val)
-	util.notify(val)
+	notify(val)
 end
 
