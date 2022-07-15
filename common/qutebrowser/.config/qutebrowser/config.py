@@ -198,7 +198,7 @@ config.bind('alr', 'spawn url.lua read "{url}"')
 config.bind('ahs', urlCmdHint+ 'url.lua speed "{hint-url}"')
 config.bind('als', 'spawn url.lua speed "{url}"')
 # MEDIA
-config.bind('<Ctrl-w>', 'hint --rapid links spawn -u mpv.lua push {hint-url}')
+config.bind('<Ctrl-w>', 'hint --rapid links spawn mpv.lua push {hint-url}')
 config.bind('<Shift-w>', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
 config.bind('ahv', urlCmdHint + '-v mpv.lua videoplay {hint-url}')
 config.bind('aav', 'spawn -v mpv.lua videolist')

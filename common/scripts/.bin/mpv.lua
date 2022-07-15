@@ -1,20 +1,16 @@
 #!/usr/bin/luajit
 
--- TODO change to init.lua
-package.path = '/home/miro/Documents/dotfiles/common/scripts/.bin/' .. package.path
-util = require 'scriptsUtil'
-
 local tmpPlaylist = '/tmp/qt_mpvplaylist.m3u'
 local tmpPlay = '/tmp/qt_mpv.m3u'
 local dirPlaylists = os.getenv 'HOME' .. '/Templates/mpvlists'
 
 function errorMsg(msg)
-	util.notify('Error: ' .. msg)
-	-- notifyError(msg)
+	print(msg)
+	notifyError(msg)
 end
 
 function getHost()
-	local pageUrl = os.getenv 'QUTE_URL'
+	local pageUrl = assert(io.open(tmpPlaylist, 'r'):read('*l'), 'Did not read page url')
 	-- return (pageUrl .. '/'):match '://(.-)/'
 	return pageUrl:match('^%w+://([^/]+)'):gsub('www.', ''):match '([^.]+)'
 end
@@ -27,7 +23,7 @@ function savePlaylist(mediaType)
 end
 
 function writeUrlToFile(filePath, url)
-	local file = io.open(filePath, 'w')
+	local file = assert(io.open(filePath, 'w'), 'Could not write to file ' .. filePath)
 	file:write(url)
 	file:close()
 end
@@ -63,7 +59,7 @@ function audiolist()
 end
 
 function push(url)
-	assert(io.open(tmpPlaylist, 'a'):write(url .. '\n') == 0, 'Did not save url to playlist')
+	assert(io.open(tmpPlaylist, 'a'):write(url .. '\n'))
 end
 
 local cases = {
@@ -76,9 +72,5 @@ local cases = {
 	[false] = videoplay,
 }
 
-local switchFunction = util.switch(arg[1], cases)
--- local switchFunction = switch(cases, arg[1])
-local ok = xpcall(switchFunction, errorMsg, arg[2])
-if ok then
-	-- notify(arg[1])
-end
+local switchFunction = switch(cases, arg[1])
+xpcall(switchFunction, errorMsg, arg[2])

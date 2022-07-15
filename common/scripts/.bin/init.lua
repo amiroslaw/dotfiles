@@ -9,7 +9,17 @@ writef write table/string to file
 eq compares 2 values for equality
 run executes external command and optionally capture the output
 str converts any non-string type to string, and strings to quoted strings
+
 switch
+isArray
+enum
+split
+splitFlags
+notify
+notifyError
+rofiMenu 
+rofiInput 
+rofiNumberInput 
 --]]
 
 
@@ -251,6 +261,7 @@ function run(cmd)
    end
 
       Command_s = "( " .. Command_s .. " )" .. " 1> " .. OutFile_s .. " 2> " .. ErrFile_s
+-- maybe change status when is 0 to nil for better assertion
    local Status_b = os.execute(Command_s)
   Out_t = readf(OutFile_s)
   Err_t = readf(ErrFile_s)
