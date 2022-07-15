@@ -26,7 +26,7 @@ export ZPLUG_HOME=~/.config/zplug
 ## Load appearance settings
 export GTK2_RC_FILES="$HOME/.config/gtkrc-2.0"
 
-source $HOME/.profile
+# source $HOME/.profile
 
 #[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec starx
 # Following automatically calls "startx" when you login:

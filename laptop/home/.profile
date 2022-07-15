@@ -2,29 +2,15 @@
 
 #Set our umask
 umask 022
-
-# Set our default path
-PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin"
-export PATH
-
-# Load profiles from /etc/profile.d
-if test -d /etc/profile.d/; then
-	for profile in /etc/profile.d/*.sh; do
-		test -r "$profile" && . "$profile"
-	done
-	unset profile
-fi
-
-# Source global bash config
-if test "$PS1" && test "$BASH" && test -r /etc/bash.bashrc; then
-	. /etc/bash.bashrc
-fi
-
 # Termcap is outdated, old, and crusty, kill it.
 unset TERMCAP
 
 # Man is much better than us at figuring this out
 unset MANPATH
+
+# Set our default path
+PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin"
+export PATH
 
 # paths
 export TOR_WATCH="$HOME/Downloads/.torrenty"
@@ -37,6 +23,7 @@ export USER_HOME="/home/miro"
 # Default Apps
 export READER="zathura"
 export GUI_EDITOR=/usr/bin/micro-st
+export TERMINAL="wezterm"
 export TERM_DEF="wezterm"
 export TERM_LT="st"
 # export BROWSER="org.qutebrowser.qutebrowser.desktop"
@@ -58,3 +45,14 @@ export CLIPSTER_HISTORY_SIZE=1000
 #	pgrep bspwm || startx
 # fi
 
+# Source global bash config
+if test "$PS1" && test "$BASH" && test -r /etc/bash.bashrc; then
+	. /etc/bash.bashrc
+fi
+
+if [ -f "$HOME/.zshenv" ] && [ -f "$HOME/.zprofile" ]; then
+	. "$HOME/.zshenv"
+	. "$HOME/.zprofile"
+else
+	echo "Failed to find ~/.zshenv or ~/.zprofile"
+fi
