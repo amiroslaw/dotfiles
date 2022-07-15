@@ -118,16 +118,6 @@ config.bind('<Ctrl-k>', 'scroll-px 0 -50', 'caret')
 config.bind('<Alt-a>', 'navigate next')
 config.bind('<Alt-x>', 'navigate prev')
 
-# MEDIA
-config.bind('<Ctrl-w>', 'hint --rapid links spawn -u mpv.lua push {hint-url}')
-config.bind('<Shift-w>', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
-config.bind(';w', 'hint links spawn -uv mpv.lua videoplay {hint-url}')
-config.bind(';W', 'spawn -uv mpv.lua videolist')
-config.bind(';p', 'hint links spawn -uv mpv.lua videopopup {hint-url}')
-config.bind(';P', 'spawn -uv mpv.lua popuplist')
-# config.bind(';P', 'spawn -uv mpv.lua videopopup {url}')
-config.bind(';a', 'hint links spawn -uv mpv.lua audioplay {hint-url}')
-config.bind(';A', 'spawn -uv mpv.lua audiolist')
 
 # ======================= TABS AND WINDOWS ============= {{{
 config.bind(']', 'tab-next')
@@ -180,33 +170,45 @@ config.bind(';q', 'hint media')
 config.bind(';s', 'hint links userscript doi.py')
 # :bind d spawn -u doi.py
 
-# URL mostly download stuff
-# types: h-hint l/u-link url from current site all; r/a- rapid 
-# or change to format a
-urlCmd = 'hint links spawn url.lua '
-urlCmdRapid = 'hint --rapid links spawn url.lua '
-urlCmdLink = 'spawn url.lua '
-config.bind('aaa', urlCmd + 'audio "{hint-url}"')
-config.bind('aar', urlCmdRapid + 'audio "{hint-url}"') # exception
-config.bind('aal', urlCmdLink + 'audio "{url}"')
-config.bind('att', urlCmd + 'tor "{hint-url}"')
-config.bind('ata', urlCmdRapid + 'tor "{hint-url}"')
-config.bind('ayy', urlCmd + 'yt "{hint-url}"')
-config.bind('aya', urlCmdRapid + 'yt "{hint-url}"')
-config.bind('ayl', urlCmdLink + 'yt "{url}"')
-config.bind('agg', urlCmd + 'gallery "{hint-url}"')
-config.bind('aga', urlCmdRapid + 'gallery "{hint-url}"')
-config.bind('agl', urlCmdLink + 'gallery "{url}"')
-config.bind('aww', urlCmd + 'wget "{hint-url}"')
-config.bind('awa', urlCmdRapid + 'wget "{hint-url}"')
-config.bind('awl', urlCmdLink + 'wget "{url}"')
-config.bind('akk', urlCmd + 'kindle "{hint-url}"')
-config.bind('aka', urlCmdRapid + 'kindle "{hint-url}"')
-config.bind('akl', urlCmdLink + 'kindle "{url}"')
-config.bind('arr', urlCmd + 'read "{hint-url}"')
-config.bind('arl', urlCmdLink + 'read "{url}"')
-config.bind('ass', urlCmd + 'speed "{hint-url}"')
-config.bind('asl', urlCmdLink + 'speed "{url}"')
+# ======================= URL, MEDIA scripts ============= {{{
+# hints for media and 
+# types: h-hint; l-link/location →url from current site; a-all → rapid 
+# bind-type-script: ahk
+urlCmdHint= 'hint links spawn '
+urlCmdRapid = 'hint --rapid links spawn '
+config.bind('ahd', urlCmdHint+ 'url.lua audio "{hint-url}"')
+config.bind('aad', urlCmdRapid + 'url.lua audio "{hint-url}"')
+config.bind('ald', 'spawn url.lua audio "{url}"')
+config.bind('aht', urlCmdHint+ 'url.lua tor "{hint-url}"')
+config.bind('aat', urlCmdRapid + 'url.lua tor "{hint-url}"')
+config.bind('ahy', urlCmdHint+ 'url.lua yt "{hint-url}"')
+config.bind('aay', urlCmdRapid + 'url.lua yt "{hint-url}"')
+config.bind('aly', 'spawn url.lua yt "{url}"')
+config.bind('ahg', urlCmdHint+ 'url.lua gallery "{hint-url}"')
+config.bind('aag', urlCmdRapid + 'url.lua gallery "{hint-url}"')
+config.bind('alg', 'spawn url.lua gallery "{url}"')
+config.bind('ahw', urlCmdHint+ 'url.lua wget "{hint-url}"')
+config.bind('aaw', urlCmdRapid + 'url.lua wget "{hint-url}"')
+config.bind('alw', 'spawn url.lua wget "{url}"')
+config.bind('ahk', urlCmdHint+ 'url.lua kindle "{hint-url}"')
+config.bind('aak', urlCmdRapid + 'url.lua kindle "{hint-url}"')
+config.bind('alk', 'spawn url.lua kindle "{url}"')
+config.bind('ahr', urlCmdHint+ 'url.lua read "{hint-url}"')
+config.bind('alr', 'spawn url.lua read "{url}"')
+config.bind('ahs', urlCmdHint+ 'url.lua speed "{hint-url}"')
+config.bind('als', 'spawn url.lua speed "{url}"')
+# MEDIA
+config.bind('<Ctrl-w>', 'hint --rapid links spawn -u mpv.lua push {hint-url}')
+config.bind('<Shift-w>', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
+config.bind('ahv', urlCmdHint + '-v mpv.lua videoplay {hint-url}')
+config.bind('aav', 'spawn -v mpv.lua videolist')
+config.bind('alv', 'spawn -v mpv.lua videoplay "{url}"')
+config.bind('ahp', urlCmdHint + '-v mpv.lua videopopup {hint-url}')
+config.bind('aap', 'spawn -v mpv.lua popuplist')
+config.bind('alp', 'spawn -v mpv.lua videopopup {url}')
+config.bind('aha', urlCmdHint + '-v mpv.lua audioplay {hint-url}')
+config.bind('aaa', 'spawn -v mpv.lua audiolist')
+config.bind('ala', 'spawn -v mpv.lua audioplay "{url}"')
 # }}}
 
 # ======================= COPING OR CREATE ============= {{{
