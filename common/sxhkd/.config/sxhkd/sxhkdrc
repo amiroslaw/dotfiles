@@ -179,7 +179,7 @@ super + a ; b
 # ______________    
 #
 super + Return
-	$TERM_DEF
+	$TERMINAL
 
 super + shift + Return
 	$TERM_LT
@@ -201,7 +201,7 @@ super + {shift, ctrl} + x
 super + F{1,2,3,4,7,8,9,10,11,12}
 	{ $BROWSER, \
 	/opt/idea-IU-212.5284.40/bin/idea.sh, \
-	$TERM_DEF start --class vifm -- vifm, \
+	$TERMINAL start --class vifm -- vifm, \
 	pcmanfm, \
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
 	todo.lua show, \

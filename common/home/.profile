@@ -1,4 +1,4 @@
-# device specific
+# general
 
 #Set our umask
 umask 022
@@ -14,28 +14,37 @@ PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/b
 export PATH
 
 # paths
-export TOR_WATCH="$HOME/Downloads/.torrenty"
-export TOR_DIR="/media/multi/Downloads"
-export NOTE="$HOME/Documents/notebook"
-export CONFIG="$HOME/Documents/Ustawienia"
-export PRIVATE="$HOME/Documents/Ustawienia/stow-private"
-export USER_HOME="/home/miro"
-export GUI_EDITOR=/usr/bin/nvim-qt
-export BACKUP_LOG="$HOME/Documents/Ustawienia/logs/borg-pc"
-export BACKUP="/media/winD/backup-borg/daily"
-export COURSES="/media/multimedia/kursy"
+export ROFI="$HOME/.config/rofi/scripts"
+export GRAVEYARD="$HOME/.local/share/Trash"
+export LUA_INIT="@$HOME/Documents/dotfiles/common/scripts/.bin/init.lua"
+export ZPLUG_HOME=~/.config/zplug
+
 # Default Apps
-export READER="zathura"
+export EDITOR="nvim"
+export VISUAL="nvim"
+export GUI_EDITOR=/usr/bin/nvim-qt
+export OPENER="xdg-open"
+export PAGER="less"
 export TERMINAL="wezterm"
-export TERM_DEF="wezterm"
 export TERM_LT="st"
 export BROWSER="qutebrowser"
-export VIDEO="smplayer"
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-# export MANPAGER="nvim -c 'set ft=man' -"
+# export BROWSER="org.qutebrowser.qutebrowser.desktop"
+export READER="zathura"
 
-# vars
+# for my scripts
+export VIDEO="smplayer"
+export IMAGE="pqiv"
+
+# configs
+export XDG_CONFIG_DIRS=/usr/etc/xdg:/etc/xdg
+export QT_QPA_PLATFORMTHEME="qt5ct"
+export WM="bspwm"
+export PANEL_FIFO="/tmp/panel-fifo"
+export PANEL_FIFO PANEL_HEIGHT PANEL_FONT_FAMILY
+export BSPWM_SOCKET="/tmp/bspwm-socket"
+export MPD_PORT=6666
 export CLIPSTER_HISTORY_SIZE=1000
+
 
 # Load profiles from /etc/profile.d
 if test -d /etc/profile.d/; then
@@ -49,10 +58,20 @@ fi
 if test "$PS1" && test "$BASH" && test -r /etc/bash.bashrc; then
 	. /etc/bash.bashrc
 fi
-
+# load zsh files
 if [ -f "$HOME/.zshenv" ] && [ -f "$HOME/.zprofile" ]; then
 	. "$HOME/.zshenv"
 	. "$HOME/.zprofile"
 else
 	echo "Failed to find ~/.zshenv or ~/.zprofile"
+fi
+
+#[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec starx
+# Following automatically calls "startx" when you login:
+[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx -- -keeptty -nolisten tcp > ~/.xorg.log 2>&1
+
+# fix java apps with bspwm
+export _JAVA_AWT_WM_NONREPARENTING=1
+if [ -n "`which wmname`" ]; then
+    wmname LG3D
 fi
