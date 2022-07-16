@@ -1,10 +1,9 @@
 require 'plugins'
-
 -- S-k - jump to help page
+-- VARIABLES
 local HOME = os.getenv 'HOME'
---"""""""""""""""""""""""""
 
--- COLORSCHEMES
+-- COLORSCHEMES {{{
 --let scheme = strftime("%H") > 5 && strftime("%H") < 18 ? "one" : "dracula"
 --execute 'colorscheme ' . scheme
 --let &background =strftime("%H") > 5 && strftime("%H") < 18 ? "light" : "dark"
@@ -20,36 +19,17 @@ require('onedark').setup {
 require('onedark').load()
 -- vime-one - support dark and light theme
 -- vim.cmd("set background=light")
--- let g:one_allow_italics = 1
+-- let g:one_allow_italics = 1 
+-- }}} 
 
---"""""""""""""""""""""""""
---""""" SETTINGS
-
--- if vim.fn.has 'termguicolors' == 1 then
-vim.o.termguicolors = true
--- end
-vim.b.buftype = '' -- fix Cannot write buftype option is set
-vim.o.laststatus = 3
--- podpowiedzi
-vim.o.wildmode = 'longest,list,full'
---" Status bar
-vim.cmd 'filetype plugin indent on'
-vim.o.encoding = 'utf-8'
-vim.o.fileencoding = 'utf-8'
-vim.o.fileencodings = 'utf-8', 'latin1'
-vim.o.linebreak = true
-vim.cmd 'syntax enable'
-vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
-
--- -------------------------------------------------------------------------
---                       Autocommands
--- -------------------------------------------------------------------------
+-- Autocommands {{{
 vim.api.nvim_create_autocmd( -- go to last loc when opening a buffe
 	'BufReadPost',
 	{
 		command = [[if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif]],
 	}
 )
+-- vim.g.java_fold=1 do not work
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'lua', 'java', 'javascript', 'typescript', 'css', 'scss' },
 	command = [[setlocal foldmethod=syntax]],
@@ -87,7 +67,24 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 	group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }), -- clear true is default
 })
 -- doesn't work with keybinding in zsh
--- autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif
+-- autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif 
+-- }}} 
+
+-- SETTINGS {{{
+vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
+vim.o.termguicolors = true
+vim.b.buftype = '' -- fix Cannot write buftype option is set
+vim.o.laststatus = 3
+-- podpowiedzi
+vim.o.wildmode = 'longest,list,full'
+--" Status bar
+vim.cmd 'filetype plugin indent on'
+vim.o.encoding = 'utf-8'
+vim.o.fileencoding = 'utf-8'
+vim.o.fileencodings = 'utf-8', 'latin1'
+vim.o.linebreak = true
+vim.cmd 'syntax enable'
+
 
 -- IncSearch
 vim.o.smartcase = true
@@ -113,8 +110,10 @@ vim.o.hidden = true
 vim.wo.cursorline = true
 vim.wo.cursorcolumn = true
 
---""""""""""""""""""
---""""" SHORTCUTS
+-- }}} 
+
+-- SHORTCUTS {{{
+-- map functions {{{
 function map(mode, shortcut, command, opts)
 	local options = { noremap = true, silent = true }
 	-- if opts ~= nil and opts.nowait then options.nowait = true end
@@ -140,7 +139,8 @@ function xmap(shortcut, command, opts)
 end
 function omap(shortcut, command, opts)
 	map('o', shortcut, command, opts)
-end
+end -- }}} 
+
 
 vim.g.mapleader = ';'
 nmap('<leader>/', ':nohlsearch<cr>') -- from nvim 0.6 it's by default c-l
@@ -191,6 +191,8 @@ nmap('<C-k>', 'gk')
 imap('<C-j>', '<Esc>gj')
 imap('<C-k>', '<Esc>gk')
 
+-- Tabs, windows and terminal{{{
+
 -- Tabs
 nmap('<tab>', 'gt')
 nmap('<s-tab>', 'gT')
@@ -216,6 +218,7 @@ tmap('<Esc>', '<C-\\><C-n>')
 -- Prefer Neovim terminal insert mode to normal mode.
 nmap('<F2>', ':vsplit term://zsh<cr>')
 nmap('<S-F2>', ':split term://zsh<cr>') -- TODO can't have shift
+-- }}} 
 
 --""""""""""""""""""
 --""""" NOTE TAKING
@@ -232,20 +235,18 @@ imap('<C-e>', 'z=')
 nmap('<S-e>', '[s')
 --replace from selection/ substitution, produce error but it's workaround for showing command line mode
 vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
+-- }}} 
 
---""""""""""""""""""
--- TEXT OBJECTS
---""""""""""""""""""
+-- TEXT OBJECTS {{{
 -- current line
 -- xmap('il', '^vg_')
 xmap('ol', '^og_')
 omap('ol', ':normal vol<CR>')
 -- all document
 xmap('oa', ':<c-u>normal! G$Vgg0<cr>')
-omap('oa', ':<c-u>normal! GVgg<cr>')
+omap('oa', ':<c-u>normal! GVgg<cr>') -- }}} 
 
---"""""""""""""""""""
---"""""" MACROS
+-- MACROS {{{
 --"""" kindle put cursor on ===
 vim.g['@k'] = 'V3jd2j'
 -- adoc
@@ -259,28 +260,50 @@ vim.g['@s'] = '$a  j0'
 vim.g['@z'] = 'ggO- (pbi#bi[po'
 --links
 vim.g['@h'] = 'a]()hp0i['
-vim.g['@f'] = 'f)a kb  '
+vim.g['@f'] = 'f)a kb  ' 
+-- }}} 
+
+-- PLUGINS {{{
+-- ZenMode more readable text
+nmap('<F6>', ':ZenMode <CR>')
+
+-- nmap('<leader>f', '<cmd> !stylua --config-path ~/.config/stylua/stylua.toml % <cr>')
+nmap('<leader>f', '<cmd> lua vim.lsp.buf.formatting_sync() <cr>')
+vmap('<leader>f', '<cmd> lua vim.lsp.buf.range_formatting() <cr>')
 
 --""""""""""""""""""
---""" PLUGINS
---""""""""""""""""""
+-- https://github.com/sbdchd/neoformat
+vmap('<a-f>', ':Neoformat! java astyle <CR>')
 
 --""""""""""""""""""
 -- https://github.com/kdheepak/lazygit.nvim
 nmap(',g', ':LazyGit <cr>')
 
 --""""""""""""""""""
--- calendar.vim
+-- surround
+nmap('<leader>s', 'ysiW', { noremap = false }) -- surround a word
+
+--"""""""""""""""""""
+-- jqx https://github.com/gennaro-tedesco/nvim-jqx
+nmap('<leader>x', '<Plug>JqxList', { noremap = false })
+
+--""""""""""""""""""
+-- startify disable changing dir
+vim.g.startify_change_to_dir = 0
+
+--"""""""""""""""""
+-- repeat
+vim.cmd 'silent! call repeat#set("\\<Plug>MyWonderfulMap", v:count)'
+
+-- calendar.vim {{{
 vim.g.calendar_google_calendar = 1
 vim.g.calendar_google_task = 1
 vim.g.calendar_first_day = 'monday'
-
 nmap('<F9>', ':Calendar <CR>')
-nmap('<S-F9>', ':Calendar -view=year -split=horizontal -position=below -height=10 <CR>') -- TODO shift, can't be done
+nmap('<S-F9>', ':Calendar -view=year -split=horizontal -position=below -height=10 <CR>') -- TODO shift, can't be done -- }}} 
 
--- -------------------------------------------------------------------------
---                       marks https://github.com/chentoast/marks.nvim
--- -------------------------------------------------------------------------
+-- marks {{{
+-- https://github.com/chentoast/marks.nvim
 require('marks').setup {
 	mappings = {
 		preview = 'm;', -- m;a show mark in popup
@@ -301,19 +324,16 @@ require('marks').setup {
 }
 nmap('ml', ':MarksListBuf<cr>')
 nmap('mA', ':MarksListAll<cr>')
-nmap('mL', ':BookmarksListAll<cr>')
+nmap('mL', ':BookmarksListAll<cr>') -- }}} 
 
---""""""""""""""""""
--- undo tree
+-- undo tree {{{
 nmap('<A-u>', ':UndotreeToggle<cr>')
-
 if vim.fn.has 'persistent_undo' == 1 then
 	vim.o.undodir = HOME .. '/.local/share/nvim/undo'
 	vim.o.undofile = true
-end
+end -- }}} 
 
---""""""""""""""""""
--- lazyList
+-- lazyList {{{
 nmap('gll', ":LazyList '- '<CR>")
 vmap('gll', ":LazyList '- '<CR>")
 nmap('g*', ":LazyList '* '<CR>")
@@ -331,24 +351,12 @@ vmap('gl3', ":LazyList '### '<CR>")
 nmap('gl4', ":LazyList '#### '<CR>")
 vmap('gl4', ":LazyList '#### '<CR>")
 nmap('gl5', ":LazyList '##### '<CR>")
-vmap('gl5', ":LazyList '##### '<CR>")
+vmap('gl5', ":LazyList '##### '<CR>") -- }}} 
 
---""""""""""""""""""
--- startify disable changing dir
-vim.g.startify_change_to_dir = 0
-
---"""""""""""""""""
--- repeat
-vim.cmd 'silent! call repeat#set("\\<Plug>MyWonderfulMap", v:count)'
-
--- ZenMode more readable text
-nmap('<F6>', ':ZenMode <CR>')
-
---""""""""""""""""""
--- vim-asciidoctor  https://github.com/habamax/vim-asciidoctor
+-- vim-asciidoctor {{{
+--  https://github.com/habamax/vim-asciidoctor
 nmap('<F7>', ':!preview-ascii.sh % <CR>')
 nmap('<S-F7>', ':Asciidoctor2DOCX<CR>') -- TODO shift, can't be bind
-
 vim.g.asciidoctor_syntax_conceal = 1
 vim.g.asciidoctor_folding = 2
 vim.g.asciidoctor_folding_level = 6
@@ -356,81 +364,60 @@ vim.g.asciidoctor_fenced_languages = { 'java', 'typescript', 'javascript', 'bash
 -- vim.g.asciidoctor_syntax_indented = 0
 -- vim.g.asciidoctor_fold_options = 0
 vim.g.asciidoctor_img_paste_command = 'xclip -selection clipboard -t image/png -o > %s%s'
-nmap('<A-p>', ':AsciidoctorPasteImage<CR>')
+nmap('<A-p>', ':AsciidoctorPasteImage<CR>') -- }}} 
 
---vim-markdown syntax
+-- vim-markdown syntax {{{
 vim.g.vim_markdown_fenced_languages = 'java=java'
 vim.g.vim_markdown_toc_autofit = 1
 vim.g.vim_markdown_folding = 0
 vim.g.vim_markdown_fold_options = 0
 -- vim.g.vim_markdown_folding_level = 6
--- vim.g.vim_markdown_folding_style_pythonic = 1
+-- vim.g.vim_markdown_folding_style_pythonic = 1 -- }}} 
 
---""""""""""""""""""
--- TAGBAR
+-- TAGBAR {{{
 nmap('<leader>t', ':TagbarToggle<CR>')
 vim.g.tagbar_autoclose = 1
 vim.g.tagbar_autofocus = 1
 vim.g.tagbar_zoomwidth = 0
 vim.g.tagbar_sort = 0
 vim.wo.conceallevel = 3
+vim.g.tagbar_type_asciidoctor = {
+	ctagstype = 'asciidoc',
+	kinds =  {
+		'h:table of contents',
+		'a:anchors:1',
+		't:titles:1',
+		'n:includes:1',
+		'i:images:1',
+		'I:inline images:1'
+		}
+}
+vim.g.tagbar_type_markdown = {
+    ctagstype = 'markdown',
+    kinds = {'h:table of contents' }
+ } -- }}} 
 
-vim.cmd [[
-let g:tagbar_type_asciidoctor = {
-	\ 'ctagstype' : 'asciidoc',
-	\ 'kinds' : [
-		\ 'h:table of contents',
-		\ 'a:anchors:1',
-		\ 't:titles:1',
-		\ 'n:includes:1',
-		\ 'i:images:1',
-		\ 'I:inline images:1'
-	\ ]
-\ }
-]]
-
-vim.cmd [[ 
-let g:tagbar_type_markdown = {
-    \ 'ctagstype' : 'markdown',
-    \ 'kinds' : [
-        \ 'h:table of contents',
-    \ ]
-\ } 
-]]
-
---"""""""""""""""""""
--- rest https://github.com/NTBBloodbath/rest.nvim#usage
+-- RestNvim {{{
+-- https://github.com/NTBBloodbath/rest.nvim#usage
 nmap('<leader>r', '<Plug>RestNvim<cr>', { noremap = false })
 nmap('<leader>rr', '<Plug>RestNvimLast<cr>', { noremap = false })
-nmap('<leader>rp', '<Plug>RestNvimPreview<cr>', { noremap = false })
+nmap('<leader>rp', '<Plug>RestNvimPreview<cr>', { noremap = false }) -- }}} 
 
--- -------------------------------------------------------------------------
---              browser search         https://github.com/voldikss/vim-browser-search
--- -------------------------------------------------------------------------
+-- browser search {{{
+-- https://github.com/voldikss/vim-browser-search
 nmap('gs', '<Plug>SearchNormal', { noremap = false }) -- can operate with text objects: gss
 vmap('gs', '<Plug>SearchVisual', { noremap = false })
 nmap('<Leader>g', ':BrowserSearch<cr>') -- search in default (google)
 vmap('<Leader>g', ':BrowserSearch<cr>')
+vim.g.browser_search_default_engine = 'google'
+vim.g.browser_search_engines = { -- have to change sourcecode to change default list
+    deepl ='https://www.deepl.com/en/translator#en/pl/%s',
+    diki = 'https://www.diki.pl/slownik-angielskiego?q=%s',
+    ceneo= 'https://www.ceneo.pl/;szukaj-%s',
+  } -- }}} 
 
--- doesn't work
--- vim.g.browser_search_engines = {
--- 	['duckduckgo']='https://duckduckgo.com/?q=%s',
--- 	['github']='https://github.com/search?q=%s',
--- 	['google']='https://google.com/search?q=%s',
--- 	['translate']='https://translate.google.com/?sl=auto&tl=it&text=%s',
--- 	['wikipedia']='https://en.wikipedia.org/wiki/%s',
--- 	['youtube']='https://www.youtube.com/results?search_query=%s&page=&utm_source=opensearch',
--- 	['stackoverflow']='https://stackoverflow.com/search?q=%s',
---   }
-
-
---"""""""""""""""""""
--- jqx https://github.com/gennaro-tedesco/nvim-jqx
-nmap('<leader>x', '<Plug>JqxList', { noremap = false })
-
--- -------------------------------------------------------------------------
---  Telescope https://github.com/nvim-telescope/telescope.nvim#pickers
--- -------------------------------------------------------------------------
+-- Telescope {{{
+--  https://github.com/nvim-telescope/telescope.nvim#pickers
 vim.o.maxmempattern = 3000 -- fix pattern uses more memory than 'maxmempattern', default is 2000
 
 local telescope = require 'telescope'
@@ -497,40 +484,33 @@ if telescope then
 
 	require('telescope').load_extension 'ultisnips'
 	nmap('tu', '<cmd>Telescope ultisnips <cr>')
-end
+end -- }}} 
 
--- -------------------------------------------------------------------------
+-- urlview {{{
 --                       urlview https://github.com/axieax/urlview.nvim
--- -------------------------------------------------------------------------
 require('urlview').setup {
 	default_picker = 'telescope', -- native,
 	sorted = false,
 }
-nmap('<Leader>u', ':UrlView<cr>')
+nmap('<Leader>u', ':UrlView<cr>') -- }}} 
 
---""""""""""""""""""
--- previm https://github.com/previm/previm
+-- previm {{{
+--  https://github.com/previm/previm
 vim.g.previm_open_cmd = 'firefox'
 nmap('<leader>v', ':PrevimOpen <CR>')
 -- vim.g.previm_enable_realtime =  1
 -- to change style turn 0 to 1 in previm_disable_default_css and put path to
 vim.g.previm_disable_default_css = 1
-vim.g.previm_custom_css_path = HOME .. '/.config/nvim/custom/md-prev.css'
+vim.g.previm_custom_css_path = HOME .. '/.config/nvim/custom/md-prev.css' -- }}} 
 
---""""""""""""""""""
--- eighties automatyczne dostosowanie okien
+-- eighties automatyczne dostosowanie okien {{{
 vim.g.eighties_enabled = 1
 vim.g.eighties_minimum_width = 80
 vim.g.eighties_extra_width = 0 -- Increase this if you want some extra room
 vim.g.eighties_compute = 1 -- Disable this if you just want the minimum + extra
-vim.g.eighties_bufname_additional_patterns = { 'fugitiveblame' } -- Defaults to [], 'fugitiveblame' is only an example. Takes a comma delimited list of bufnames as strings.
+vim.g.eighties_bufname_additional_patterns = { 'fugitiveblame' } -- Defaults to [], 'fugitiveblame' is only an example. Takes a comma delimited list of bufnames as strings. -- }}} 
 
---""""""""""""""""""
--- surround
-nmap('<leader>s', 'ysiW', { noremap = false }) -- surround a word
-
---""""""""""""""""""
--- ultisnips
+-- ultisnips {{{
 vim.g.UltiSnipsEditSplit = 'vertical'
 vim.g.UltiSnipsExpandTrigger = '<c-l>'
 -- shortcut to go to next position
@@ -538,31 +518,21 @@ vim.g.UltiSnipsJumpForwardTrigger = '<c-l>'
 -- shortcut to go to previous position
 vim.g.UltiSnipsJumpBackwardTrigger = '<c-k>'
 vim.g.UltiSnipsSnippetsDir = HOME .. '~/.config/nvim/UltiSnips'
-vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' }
+vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' } -- }}} 
 
---""""""""""""""""""
--- NvimTreeToggle https://github.com/kyazdani42/nvim-tree.lua
+-- NvimTreeToggle {{{
+--  https://github.com/kyazdani42/nvim-tree.lua
 nmap('<F3>', ':NvimTreeToggle<CR>')
-nmap('<leader>n', ':NvimTreeToggle<CR>')
+nmap('<leader>n', ':NvimTreeToggle<CR>') -- }}} 
 
---""""""""""""""""""
+-- miniyank {{{
 -- https://github.com/bfredl/nvim-miniyank
 vim.g.miniyank_filename = HOME .. '/.local/share/nvim/miniyank.mpack'
-
 nmap('p', '<Plug>(miniyank-autoput)', { noremap = false })
 nmap('<A-n>', '<Plug>(miniyank-cycle)', { noremap = false })
-nmap('<A-p>', '<Plug>(miniyank-cycleback)', { noremap = false })
+nmap('<A-p>', '<Plug>(miniyank-cycleback)', { noremap = false }) -- }}} 
 
---""""""""""""""""""
--- https://github.com/sbdchd/neoformat
-vmap('<a-f>', ':Neoformat! java astyle <CR>')
-
--- nmap('<leader>f', '<cmd> !stylua --config-path ~/.config/stylua/stylua.toml % <cr>')
-nmap('<leader>f', '<cmd> lua vim.lsp.buf.formatting_sync() <cr>')
-vmap('<leader>f', '<cmd> lua vim.lsp.buf.range_formatting() <cr>')
-
------------------------------
--- Status and tab bars
+-- Status and tab bars {{{
 nmap('<leader><Tab>', ':BufferLineCycleNext <cr>')
 nmap('<leader>b', ':BufferLinePick <cr>') -- jumping to tab, like hop
 nmap('<leader>B', ':BufferLineSortByDirectory <cr>')
@@ -574,13 +544,10 @@ require('bufferline').setup {
 		always_show_bufferline = false,
 	},
 }
+require('lualine').setup { options = { theme = 'onedark', component_separators = '|', globalstatus = true } } -- }}} 
 
-require('lualine').setup { options = { theme = 'onedark', component_separators = '|', globalstatus = true } }
-
--- -------------------------------------------------------------------------
---                       -- nvim-cmp
+-- nvim-cmp {{{
 -- https://github.com/hrsh7th/nvim-cmp
--- -------------------------------------------------------------------------
 local cmp = require 'cmp'
 cmp.setup {
 	snippet = {
@@ -655,11 +622,9 @@ require('cmp_dictionary').setup {
 	capacity = 5,
 	debug = false,
 	-- debug = true,
-}
+} -- }}} 
 
--- -------------------------------------------------------------------------
---                       null-ls
--- -------------------------------------------------------------------------
+-- nullLs {{{
 local nullLs = require 'null-ls'
 local formatting = nullLs.builtins.formatting
 local diagnostics = nullLs.builtins.diagnostics
@@ -676,12 +641,10 @@ nullLs.setup {
 			filetypes = { 'java', 'asciidoctor' },
 		},
 	},
-	debug = false,
-}
+	debug = false, 
+} -- }}} 
 
--- -------------------------------------------------------------------------
---                       gitsigns
--- -------------------------------------------------------------------------
+-- gitsigns {{{
 require('gitsigns').setup {
 	on_attach = function(bufnr)
 		local gs = package.loaded.gitsigns
@@ -718,13 +681,15 @@ require('gitsigns').setup {
 		omap('oh', ':<C-U>Gitsigns select_hunk<CR>')
 		xmap('oh', ':<C-U>Gitsigns select_hunk<CR>')
 	end,
-}
+} -- }}} 
 
--- -------------------------------------------------------------------------
---                      lightspeed https://github.com/ggandor/lightspeed.nvim#-configuration
--- -------------------------------------------------------------------------
+-- {{{ lightspeed 
+-- https://github.com/ggandor/lightspeed.nvim#-configuration
 require'lightspeed'.setup {
   ignore_case = false,
   exit_after_idle_msecs = { unlabeled = 3000, labeled = nil },
   jump_to_unique_chars = { safety_timeout = 400 },
-}
+} -- }}}
+
+-- }}} 
+-- vim: foldmethod=marker

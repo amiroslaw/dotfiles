@@ -68,6 +68,23 @@ snippet comment "comment for bash" b
 $0
 endsnippet
 
+snippet fold "nvim fold comment" b
+# $1 {{{
+${2:`xclip -o -sel clip`} # }}} 
+$0
+endsnippet
+
+snippet foldlua "nvim fold comment for lua" b
+-- $1 {{{
+${2:`xclip -o -sel clip`} -- }}} 
+$0
+endsnippet
+
+snippet foldset "vim fold setting" b
+# vim: foldmethod=marker
+$0
+endsnippet
+
 # vim:ft=snippets:
 
 
