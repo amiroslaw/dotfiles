@@ -262,12 +262,13 @@ function run(cmd)
 
       Command_s = "( " .. Command_s .. " )" .. " 1> " .. OutFile_s .. " 2> " .. ErrFile_s
 -- maybe change status when is 0 to nil for better assertion
-   local Status_b = os.execute(Command_s)
+   local Status_code = os.execute(Command_s)
   Out_t = readf(OutFile_s)
   Err_t = readf(ErrFile_s)
   os.remove(OutFile_s)
   os.remove(ErrFile_s)
-  return Status_b, Out_t, Err_t
+  local status = Status_code == 0 and true or false
+  return status, Out_t, Err_t, Status_code
 end -- >>>
 -- str <<<
 --[[

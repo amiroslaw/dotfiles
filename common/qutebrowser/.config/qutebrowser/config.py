@@ -159,6 +159,7 @@ config.bind('zf', 'jseval -qf ~/.config/qutebrowser/js/general-save.js') # TODO
 
 # ======================= HINTS ============= {{{
 config.bind(';;', 'hint links tab-bg')
+config.bind(';a', 'hint --rapid links tab-bg')
 config.bind(';y', 'hint links yank-primary')
 config.bind(';Y', 'hint --rapid links yank-primary')
 config.bind(';c', 'hint links yank')
