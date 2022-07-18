@@ -4,6 +4,27 @@ local tmpPlaylist = '/tmp/qt_mpvplaylist.m3u'
 local tmpPlay = '/tmp/qt_mpv.m3u'
 local dirPlaylists = os.getenv 'HOME' .. '/Templates/mpvlists'
 
+function help()
+print [[
+Utility script for managing stream with the mpv program. 
+Using: mpv.lua action [url]
+The url argument is optional. It will be pulled from the clipboard using the clipster application.
+actions:
+	push - Add an url to the playlist
+	audioplay - Play audio from the url
+	audiolist - Play audio from the playlist
+	videoplay - Play video from the url
+	videolist - Play video from the playlist
+	videopopup - Play video in lower resolution from the url
+	popuplist - Play video in lower resolution from the playlist
+	make - Create playlist (m3u) from the directories in current location 
+	help - Show help
+
+In order to change stream format and options it's needed to add the profiles `stream` and `stream-popup` into the mpv.conf file.
+	]]
+
+end
+
 function errorMsg(msg)
 	print(msg)
 	notifyError(msg)
@@ -34,6 +55,7 @@ function savePlaylist(mediaType)
 end
 
 function writeUrlToFile(filePath, url)
+	print(url)
 	local file = assert(io.open(filePath, 'w'), 'Could not write to file ' .. filePath)
 	file:write(url)
 	file:close()
@@ -81,9 +103,20 @@ local cases = {
 	['videopopup'] = videopopup,
 	['popuplist'] = popuplist,
 	['make'] = make,
-	[false] = videoplay,
+	['help'] = help,
+	[false] = help,
 }
 
 local switchFunction = switch(cases, arg[1])
-local url = split(arg[2],"&list=" )[1]
+local url = arg[2]
+if arg[2] and arg[1] ~= 'make' then
+	url = split(url,"&list=" )[1]
+else
+	local status, clipboard = run('clipster -o --clipboard -n 1')
+	if status then
+		url = clipboard[1]
+	else
+		notifyError('Could not retrieve clipboard from the clipster app')
+	end
+end
 xpcall(switchFunction, errorMsg, url)
