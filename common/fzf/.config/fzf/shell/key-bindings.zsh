@@ -8,15 +8,18 @@
 # -------------------------------------------------------------------------
 #                       shortcuts
 # -------------------------------------------------------------------------
-# ALT-F - Paste the selected file path(s) into the command line
-# ALT-D - cd into the selected directory
-# ALT-O - Open or edit the file
-# ALT-E - Open or edit the file from fasd
-# ALT-J - cd into the selected directory from fasd
-# ALT-H - Paste the selected command from history into the command line
-# ALT-Q - Kill process
-# ALT-W - Run application
-# ALT-V - Edit line in vim with ctrl-e: oh-my-zsh do it by esc; v
+# ALT-f - Paste the selected file path(s) into the command line
+# ALT-F - Paste the selected file path(s) into the command line  with hidden
+# ALT-d - cd into the selected directory
+# ALT-D - cd into the selected directory with hidden
+# ALT-o - Open or edit the file
+# ALT-O - Open or edit the file with hidden
+# ALT-e - Open or edit the file from fasd
+# ALT-j - cd into the selected directory from fasd
+# ALT-h - Paste the selected command from history into the command line
+# ALT-q - Kill process
+# ALT-w - Run application
+# ALT-v - Edit line in vim with ctrl-e: oh-my-zsh do it by esc; v
 
 # bindkey '\ef' → alt '^F' ctr
 # global
@@ -25,7 +28,9 @@ export FZF_DEFAULT_COMMAND='fd'
 
 export FZF_PATH_COMMAND='fd'
 export FZF_FILE_COMMAND='fd --type f'
+export FZF_HIDDEN_FILE_COMMAND='fd --hidden --type f'
 export FZF_DIR_COMMAND='fd --type d'
+export FZF_HIDDEN_DIR_COMMAND='fd --hidden --type d'
 export FZF_FILE_OPTS='--preview "bat --style=numbers --color=always --line-range :500 {}"'
 # export FZF_DIR_OPTS
 CMD=''
@@ -89,6 +94,17 @@ fzf-file-widget() {
 zle     -N   fzf-file-widget
 bindkey '\ef' fzf-file-widget
 
+fzf-hidden-file-widget() {
+	CMD="$FZF_HIDDEN_FILE_COMMAND"
+	OPTS="$FZF_FILE_OPTS"
+  LBUFFER="${LBUFFER}$(__fsel)"
+  local ret=$?
+  zle reset-prompt
+  return $ret
+}
+zle     -N   fzf-hidden-file-widget
+bindkey '\eF' fzf-hidden-file-widget
+
 fzf-path-widget() {
 	CMD="$FZF_PATH_COMMAND"
   LBUFFER="${LBUFFER}$(__fsel)"
@@ -119,6 +135,28 @@ fzf-cd-widget() {
 }
 zle     -N    fzf-cd-widget
 bindkey '\ed' fzf-cd-widget
+
+# ALT-Shift-D - cd into the selected directory
+fzf-cd-hidden-widget() {
+  local cmd="${FZF_HIDDEN_DIR_COMMAND:-"command find -L . -mindepth 1 \\( -path '*/\\.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune \
+    -o -type d -print 2> /dev/null | cut -b3-"}"
+  setopt localoptions pipefail no_aliases 2> /dev/null
+  local dir="$(eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse --bind=ctrl-z:ignore $FZF_DEFAULT_OPTS $FZF_CD_OPTS" $(__fzfcmd) +m)"
+  if [[ -z "$dir" ]]; then
+    zle redisplay
+    return 0
+  fi
+  zle push-line # Clear buffer. Auto-restored on next prompt.
+  BUFFER="cd -- ${(q)dir}"
+  zle accept-line
+  local ret=$?
+  unset dir # ensure this doesn't end up appearing in prompt expansion
+  zle reset-prompt
+  return $ret
+}
+zle     -N    fzf-cd-hidden-widget
+bindkey '\eD' fzf-cd-hidden-widget
+
 
 # ALT-H - Paste the selected command from history into the command line
 fzf-history-widget() {
@@ -180,6 +218,19 @@ fzf_open() {
 }
 zle     -N   fzf_open;
 bindkey '\eo' fzf_open
+
+fzf_open_hidden() {
+	zle -I;
+	FZF_CMD="$FZF_HIDDEN_FILE_COMMAND | fzf $FZF_DEFAULT_OPTS $FZF_FILE_OPTS --query="$1" --exit-0 --expect=alt-o,ctrl-e --prompt='alt-o→open;else→edit >'"
+	IFS=$'\n' out=("$(eval "$FZF_CMD" )")
+	key=$(head -1 <<< "$out")
+	file=$(head -2 <<< "$out" | tail -1)
+	if [ -n "$file" ]; then
+		[ "$key" = alt-o ] && devour xdg-open "$file" || ${EDITOR:-vim} "$file"
+	fi
+}
+zle     -N   fzf_open_hidden;
+bindkey '\eO' fzf_open_hidden
 
 fzf_fasd_open() {
 	zle -I;

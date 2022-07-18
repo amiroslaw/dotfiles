@@ -73,4 +73,5 @@ local cases = {
 }
 
 local switchFunction = switch(cases, arg[1])
-xpcall(switchFunction, errorMsg, arg[2])
+local url = split(arg[2],"&list=" )[1]
+xpcall(switchFunction, errorMsg, url)
