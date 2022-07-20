@@ -407,6 +407,7 @@ nmap('<leader>rp', '<Plug>RestNvimPreview<cr>', { noremap = false }) -- }}}
 -- https://github.com/voldikss/vim-browser-search
 nmap('gs', '<Plug>SearchNormal', { noremap = false }) -- can operate with text objects: gss
 vmap('gs', '<Plug>SearchVisual', { noremap = false })
+nmap('gS', 'gsiw', { noremap = false }) -- can operate with text objects: gss
 nmap('<Leader>g', ':BrowserSearch<cr>') -- search in default (google)
 vmap('<Leader>g', ':BrowserSearch<cr>')
 vim.g.browser_search_default_engine = 'google'

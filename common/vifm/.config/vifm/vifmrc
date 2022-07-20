@@ -404,10 +404,10 @@ set classify+=' ::*.avi,,*.ts,,*.axv,,*.divx,,*.m2v,,*.m4p,,*.m4v,,.mka,,*.mk
 " office files
 set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx]::, ::*.pptx,,*.ppt::'
 
-" BOOKMARKS
+" BOOKMARKS {{{
+ 
 " show all bookmarks
-nmap bb :marks <cr>
-
+nmap bb :marks <cr> 
 " :mark mark /full/directory/path [filename]
 " mark z /home/miro/.vifm ../
 mark / /
@@ -420,6 +420,7 @@ mark T /home/miro/.local/share/Trash
 mark W /media/winC
 mark b /home/miro/.bin
 mark c /home/miro/.config
+mark q /home/miro/.config/qutebrowser
 mark d /home/miro/Downloads
 mark e /home/miro/Ext
 mark h /home/miro 
@@ -434,4 +435,7 @@ mark s /home/miro/Code/blog/scully/miroslaw
 mark t /home/miro/.local/share/vifm/Trash
 mark u /home/miro/Documents/Ustawienia
 mark v /home/miro/Videos
-mark w /media/winD
+mark w /media/winD " }}} 
+
+
+" vim: foldmethod=marker

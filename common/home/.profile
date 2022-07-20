@@ -37,6 +37,7 @@ export IMAGE="pqiv"
 
 # configs
 export XDG_CONFIG_DIRS=/usr/etc/xdg:/etc/xdg
+export XDG_DOWNLOAD_DIR="$HOME/Downloads"
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export WM="bspwm"
 export PANEL_FIFO="/tmp/panel-fifo"

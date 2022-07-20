@@ -31,7 +31,7 @@ function errorMsg(msg)
 end
 
 function make()
-	local find = assert(io.popen('fd --absolute-path --type f --follow -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e mp3 -e flac -e wav -e aac'):read '*a')
+	local find = assert(io.popen('fd --absolute-path --type f --follow -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e wmv -e mp3 -e flac -e wav -e aac'):read '*a')
 	local pwd = assert(io.popen('pwd'):read '*a')
 	pwd = split(pwd, '/')
 	local playlistName = pwd[#pwd]:gsub('\n', '') .. '.m3u'

@@ -52,7 +52,8 @@ c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save --only-active-window
 c.auto_save.session = False
 c.confirm_quit = ["multiple-tabs", "downloads"]
 c.session.lazy_restore = True
-c.downloads.location.directory = os.environ["HOME"] + "/Downloads"
+c.downloads.location.directory = os.environ["XDG_DOWNLOAD_DIR"]
+# c.downloads.location.directory =  "/home/miro/Downloads"
 # c.downloads.location.prompt = False
 
 c.completion.shrink = True
@@ -62,6 +63,7 @@ c.tabs.close_mouse_button = "right"
 c.tabs.show = 'multiple' # hide the tab bar if one tab
 c.tabs.new_position.unrelated = 'next'
 c.tabs.last_close = 'startpage'
+c.tabs.background = True
 c.url.open_base_url = True # Open the searchengine if a shortcut is invoked without parameters.
 
 c.editor.command = [ os.environ["TERM_LT"], "-c", "qb", "-e", os.environ["EDITOR"], "-f", "{file}", "-c", "normal {line}G{column0}1", ]
@@ -90,7 +92,7 @@ c.content.blocking.adblock.lists = [
         ]
 # }}}
 
-# ======================= BINDINGS =================== {{{
+# ======================= BINDINGS general =================== {{{
 config.unbind('ad')
 config.bind('<Alt-s>', ':set spellcheck.languages ["en-US"]', 'insert') 
 config.bind('<Shift-Alt-s>', ':set spellcheck.languages ["pl-PL"]', 'insert')
@@ -117,7 +119,7 @@ config.bind('<Ctrl-k>', 'scroll-px 0 -50', 'caret')
 # config.bind('<Ctrl-j>', 'scroll-px 0 50', 'hint') # hints are static
 config.bind('<Alt-a>', 'navigate next')
 config.bind('<Alt-x>', 'navigate prev')
-
+# }}}
 
 # ======================= TABS AND WINDOWS ============= {{{
 config.bind(']', 'tab-next')
@@ -154,17 +156,19 @@ config.bind('zl', 'jseval -qf ~/.config/qutebrowser/js/general-save.js')
 config.bind('zu', 'jseval -qf ~/.config/qutebrowser/js/general-unsave.js') 
 config.bind('zc', 'jseval -qf ~/.config/qutebrowser/js/general-copy.js') 
 config.bind('zs', 'jseval -qf ~/.config/qutebrowser/js/general-sort.js') 
-config.bind('zf', 'jseval -qf ~/.config/qutebrowser/js/general-save.js') # TODO
+config.bind('zh', 'jseval -qf ~/.config/qutebrowser/js/general-home.js')
+config.bind('zf', 'jseval -qf ~/.config/qutebrowser/js/general-filter.js')
 # }}}
 
 # ======================= HINTS ============= {{{
 config.bind(';;', 'hint links tab-bg')
+config.bind(';d', 'hint all download')
+config.bind(';D', 'hint --rapid all download')
 config.bind(';a', 'hint --rapid links tab-bg')
 config.bind(';y', 'hint links yank-primary')
 config.bind(';Y', 'hint --rapid links yank-primary')
 config.bind(';c', 'hint links yank')
 config.bind(';C', 'hint --rapid links yank')
-config.bind(';D', 'hint --rapid links download')
 config.bind(';x', 'hint all delete')
 config.bind(';m', 'hint all right-click')
 config.bind(';q', 'hint media')
@@ -304,12 +308,11 @@ config.bind('xw', 'config-cycle --temp --print qt.workarounds.remove_service_wor
 config.bind('xp', 'set-cmd-text --space :screenshot ') # todo bind to print scr and get current date
 config.bind('xs', 'set-cmd-text --space :scroll-to-anchor ')
 # }}}
-# }}}
 
 # ======================= Searchengines ============= {{{
 # engine name (such as `DEFAULT`, or `ddg`) to a URL with a `{}` placeholder. The placeholder will be replaced by the search term, use `{{` and `}}` for literal `{`/`}` braces.  
 c.url.searchengines = {
-    'DEFAULT': 'https://www.google.com/search?q={}',
+    'DEFAULT': 'https://duckduckgo.com/?q={}',
     'g': 'https://www.google.com/search?q={}',
     'dd': 'https://duckduckgo.com/?q={}',
     'b': 'https://search.brave.com/search?q={}',
@@ -338,9 +341,9 @@ c.url.searchengines = {
         }
 
 # ======================= SEARCH bindings ============= {{{
-config.bind('ss', 'open -b g {primary} ')
-config.bind('sS', 'open -b g {clipboard} ')
-config.bind('ss', 'spawn -u selection.sh g', 'caret')
+config.bind('ss', 'open -b dd {primary} ')
+config.bind('sS', 'open -b dd {clipboard} ')
+config.bind('ss', 'spawn -u selection.sh dd', 'caret')
 config.bind('si', 'open -b gi {primary} ')
 config.bind('sI', 'open -b gi {clipboard} ')
 config.bind('si', 'spawn -u selection.sh gi', 'caret')
@@ -396,7 +399,7 @@ c.hints.selectors["code"] = [ ":not(pre) > code", "pre" ]
 c.hints.selectors["p"] = [ "p" ]
 c.hints.selectors["copyable"] = [ "p", "ul", "ol", "table", "strong", "header", "article", "section", "main", 
     "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "i", "dl", "mark" ]
-c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'input[type="checkbox"]', 'input[type="radio"]', 'input[type="range"]', 'input[type="submit"]', 'input[type="reset"]', 'input[type="button"]', 'input[type="image"]', 'form button', 'select' ]
+c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'input[type="checkbox"]', 'input[type="radio"]', 'input[type="range"]', 'input[type="submit"]', 'input[type="reset"]', 'input[type="button"]', 'input[type="image"]', 'form button', 'select', '.dropdown' ]
 # }}}
 
 # ======================= Test ============= {{{

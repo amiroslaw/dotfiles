@@ -1,14 +1,10 @@
-alert('test');
 var url = document.location.hostname;
 
-if(url.includes("")) {
-
-} else if(url.includes("")) {
-
-} else if(url.includes("")) {
-
+if(url.includes("duckduckgo")) {
+	// toggle local region 
+	document.querySelector('.dropdown__switch').click()
 } else {
-	alert('url pattern not found');
+	alert('filter - url pattern not found');
 }
 
 
