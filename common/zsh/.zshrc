@@ -67,7 +67,7 @@ if ! zgenom saved; then
 	zgenom load zsh-users/zsh-autosuggestions
 	zgenom load zsh-users/zsh-syntax-highlighting
 	zgenom load romkatv/powerlevel10k powerlevel10k
-	zgenom load jeffreytse/zsh-vi-mode # can override some keybindings
+	# zgenom load jeffreytse/zsh-vi-mode # can override some keybindings
 	zgenom load arzzen/calc.plugin.zsh
 	zgenom load ChrisPenner/copy-pasta
 	zgenom load urbainvaes/fzf-marks # mark alias_name ctrl-g
@@ -80,6 +80,7 @@ fi
 # -------------------------------------------------------------------------
 #                       bindkey
 # -------------------------------------------------------------------------
+# bindkey -v
 # autosuggestions
 bindkey '^l' autosuggest-accept
 bindkey '^j' autosuggest-execute
@@ -90,7 +91,7 @@ bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -v '^?' backward-delete-char
+# bindkey -v '^?' backward-delete-char
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
