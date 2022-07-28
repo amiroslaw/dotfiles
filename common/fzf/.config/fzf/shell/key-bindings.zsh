@@ -197,7 +197,7 @@ fzf-dmenu() {
 zle -N fzf-dmenu;
 bindkey '\ew' fzf-dmenu
 
-# Edit line in vim with ctrl-v: oh-my-zsh do it by esc; v
+# Edit line in vim with ctrl-v 
 autoload edit-command-line; zle -N edit-command-line
 bindkey '\ev' edit-command-line
 

@@ -52,8 +52,8 @@ c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save --only-active-window
 c.auto_save.session = False
 c.confirm_quit = ["multiple-tabs", "downloads"]
 c.session.lazy_restore = True
-c.downloads.location.directory = os.environ["XDG_DOWNLOAD_DIR"]
-# c.downloads.location.directory =  "/home/miro/Downloads"
+# c.downloads.location.directory = os.environ["XDG_DOWNLOAD_DIR"]
+c.downloads.location.directory =  "/home/miro/Downloads"
 # c.downloads.location.prompt = False
 
 c.completion.shrink = True
