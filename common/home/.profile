@@ -45,7 +45,8 @@ export PANEL_FIFO PANEL_HEIGHT PANEL_FONT_FAMILY
 export BSPWM_SOCKET="/tmp/bspwm-socket"
 export MPD_PORT=6666
 export CLIPSTER_HISTORY_SIZE=1000
-
+export GTK2_RC_FILES="/home/miro/.config/gtkrc-2.0"
+# export GTK3_RC_FILES=/home/miro/.config/gtkrc-3.0
 
 # Load profiles from /etc/profile.d
 if test -d /etc/profile.d/; then

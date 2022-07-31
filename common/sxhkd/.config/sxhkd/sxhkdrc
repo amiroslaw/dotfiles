@@ -258,7 +258,7 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 
 # open media or dir with xdg-open
 super + o ; {o,j,d,D,v,c,y,a}
-	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ns-stream-video\ns-stream-audio", \
+	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream-video\na-stream-audio", \
 		$ROFI/open.sh fasd-dir, \
 		$ROFI/open.sh dir, \
 		$ROFI/open.sh dir-hidden, \

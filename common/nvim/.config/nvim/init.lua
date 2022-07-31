@@ -4,22 +4,19 @@ require 'plugins'
 local HOME = os.getenv 'HOME'
 
 -- COLORSCHEMES {{{
---let scheme = strftime("%H") > 5 && strftime("%H") < 18 ? "one" : "dracula"
---execute 'colorscheme ' . scheme
---let &background =strftime("%H") > 5 && strftime("%H") < 18 ? "light" : "dark"
--- vim.cmd 'colorscheme dracula'
--- vim.cmd 'colorscheme moonfly'
--- Lua
-require('onedark').setup {
-	style = 'deep',
-	colors = { -- https://github.com/navarasu/onedark.nvim/blob/master/lua/lualine/themes/onedark.lua
-		fg = '#fffffe',
-	},
-}
-require('onedark').load()
--- vime-one - support dark and light theme
--- vim.cmd("set background=light")
--- let g:one_allow_italics = 1 
+function getBackground(hour)
+		local hour = hour and hour or 18
+		local currentHour = tonumber(os.date '%H')
+		if currentHour > 5 and currentHour < hour then
+			return 'light'
+		else
+			return 'dark'
+		end
+end
+vim.cmd 'colorscheme solarized8_high'
+vim.o.background = getBackground()
+vim.cmd [[let ayucolor="light" ]]
+-- vim.cmd 'colorscheme flattened_light'
 -- }}} 
 
 -- Autocommands {{{
@@ -66,6 +63,28 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 	command = 'silent! lua vim.highlight.on_yank {timeout=600}',
 	group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }), -- clear true is default
 })
+-- compile and execute 
+local lang_maps = {
+	python = { exec = "python %" },
+	lua = { exec = "lua %" },
+	java = { build = "javac %", exec = "java %:r" },
+	sh = { exec = "./%" },
+	-- TODO
+	typescript = { build = "deno compile %", exec = "deno run %" },
+	javascript = { build = "deno compile %", exec = "deno run %" },
+}
+for lang, data in pairs(lang_maps) do
+	if data.build ~= nil then
+		vim.api.nvim_create_autocmd(
+			"FileType",
+			{ command = "nnoremap <Leader>c :!" .. data.build .. "<CR>", pattern = lang }
+		)
+	end
+	vim.api.nvim_create_autocmd(
+		"FileType",
+		{ command = "nnoremap <Leader>e :split<CR>:terminal " .. data.exec .. "<CR>", pattern = lang }
+	)
+end
 -- doesn't work with keybinding in zsh
 -- autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif 
 -- }}} 
@@ -109,6 +128,12 @@ vim.o.hidden = true
 --" highlighting cursor
 vim.wo.cursorline = true
 vim.wo.cursorcolumn = true
+
+-- LSP 
+vim.cmd "sign define DiagnosticSignError text= texthl=DiagnosticSignError"
+vim.cmd "sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn"
+vim.cmd "sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo"
+vim.cmd "sign define DiagnosticSignHint text= texthl=DiagnosticSignHint"
 
 -- }}} 
 
@@ -276,8 +301,11 @@ vmap('<leader>f', '<cmd> lua vim.lsp.buf.range_formatting() <cr>')
 vmap('<a-f>', ':Neoformat! java astyle <CR>')
 
 --""""""""""""""""""
--- https://github.com/kdheepak/lazygit.nvim
-nmap(',g', ':LazyGit <cr>')
+-- https://github.com/is0n/fm-nvim
+nmap(',g', ':Lazygit <cr>')
+nmap('<F3>', ':Vifm<CR>')
+nmap('<leader>n', ':Vifm<CR>')
+nmap('<leader>N', ':Ranger<CR>')
 
 --""""""""""""""""""
 -- surround
@@ -521,10 +549,6 @@ vim.g.UltiSnipsJumpBackwardTrigger = '<c-k>'
 vim.g.UltiSnipsSnippetsDir = HOME .. '~/.config/nvim/UltiSnips'
 vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' } -- }}} 
 
--- NvimTreeToggle {{{
---  https://github.com/kyazdani42/nvim-tree.lua
-nmap('<F3>', ':NvimTreeToggle<CR>')
-nmap('<leader>n', ':NvimTreeToggle<CR>') -- }}} 
 
 -- miniyank {{{
 -- https://github.com/bfredl/nvim-miniyank
@@ -545,7 +569,7 @@ require('bufferline').setup {
 		always_show_bufferline = false,
 	},
 }
-require('lualine').setup { options = { theme = 'onedark', component_separators = '|', globalstatus = true } } -- }}} 
+require('lualine').setup { options = { theme = 'dracula', component_separators = '|', globalstatus = true } } -- }}} 
 
 -- nvim-cmp {{{
 -- https://github.com/hrsh7th/nvim-cmp
@@ -643,7 +667,8 @@ nullLs.setup {
 		},
 	},
 	debug = false, 
-} -- }}} 
+} 
+-- }}} 
 
 -- gitsigns {{{
 require('gitsigns').setup {

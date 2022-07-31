@@ -31,8 +31,8 @@ AUDIO_DIR = '~/Musics/PODCASTS/'
 GALLERY_DIR = '~/Pictures/gallery-dl/'
 LINK_REGEX = "^https?://(([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))"
 TOR_REGEX = "xt=urn:btih:([^&/]+)"
-action = arg[1]
-urlArg = arg[2] and arg[2] or 1
+local action = arg[1]
+local urlArg = arg[2] and arg[2] or 1
 
 function execXargs(args, cmd)
 	args = table.concat(args, '\n')

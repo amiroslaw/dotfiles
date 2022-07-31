@@ -4,8 +4,6 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-source ~/.config/fzf/fzf.zsh
-source ~/.config/broot/launcher/bash/br
 source "${HOME}/.config/aliases"
 
 # -------------------------------------------------------------------------
@@ -60,18 +58,18 @@ if ! zgenom saved; then
 	zgenom ohmyzsh plugins/history 
 	zgenom ohmyzsh plugins/web-search 
 	zgenom ohmyzsh plugins/colored-man-pages
-	# zgenom ohmyzsh plugins/git 
 	# zgenom ohmyzsh plugins/fasd # has error
 	zgenom load wookayin/fzf-fasd
 	zgenom load zsh-users/zsh-completions
 	zgenom load zsh-users/zsh-autosuggestions
 	zgenom load zsh-users/zsh-syntax-highlighting
 	zgenom load romkatv/powerlevel10k powerlevel10k
-	# zgenom load jeffreytse/zsh-vi-mode # can override some keybindings
 	zgenom load arzzen/calc.plugin.zsh
-	zgenom load ChrisPenner/copy-pasta
-	zgenom load urbainvaes/fzf-marks # mark alias_name ctrl-g
+	zgenom load urbainvaes/fzf-marks # mark alias_name ctrl-g TODO check if it works
 	zgenom load ptavares/zsh-sdkman
+	# zgenom load jeffreytse/zsh-vi-mode # can override some keybindings
+	# zgenom ohmyzsh plugins/git 
+	# zgenom load ChrisPenner/copy-pasta #alternative xclip-copyfile; xclip-pastefile
 
 	zgenom save
     zgenom compile "$HOME/.zshrc" # Compile your zsh files
@@ -80,18 +78,21 @@ fi
 # -------------------------------------------------------------------------
 #                       bindkey
 # -------------------------------------------------------------------------
-# bindkey -v
 # autosuggestions
-bindkey '^l' autosuggest-accept
-bindkey '^j' autosuggest-execute
-bindkey '^ ' autosuggest-clear
+bindkey '\el' autosuggest-accept
+bindkey '\ex' autosuggest-execute
+bindkey '\ec' autosuggest-clear
 
 # Use vim keys in tab complete menu:
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
-# bindkey -v '^?' backward-delete-char
+bindkey -v '^?' backward-delete-char
+
+bindkey -e
+source ~/.config/fzf/fzf.zsh
+source ~/.config/broot/launcher/bash/br
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm

@@ -125,3 +125,37 @@ use 'MattesGroeger/vim-bookmarks'
 	nmap('tm', '<cmd>Telescope vim_bookmarks current_file <cr>')
 	nmap('tM', '<cmd>Telescope vim_bookmarks all <cr>')
 
+-- -------------------------------------------------------------------------
+--                       colorschemes
+-- -------------------------------------------------------------------------
+
+	use {'rakr/vim-one', as = 'one'}
+	use 'iCyMind/NeoSolarized'
+	use 'patstockwell/vim-monokai-tasty'
+use 'ayu-theme/ayu-vim'
+use 'navarasu/onedark.nvim'
+vim.cmd 'colorscheme dracula'
+vim.cmd 'colorscheme moonfly'
+require('onedark').setup {
+	style = 'deep',
+	colors = { -- https://github.com/navarasu/onedark.nvim/blob/master/lua/lualine/themes/onedark.lua
+		fg = '#fffffe',
+	},
+}
+require('onedark').load()
+
+-- let g:one_allow_italics = 1 
+
+use { 'kdheepak/lazygit.nvim', branch = 'main', cmd = { 'LazyGit' } }
+
+-- NvimTreeToggle {{{
+--  https://github.com/kyazdani42/nvim-tree.lua
+	use {
+		'kyazdani42/nvim-tree.lua',
+		cmd = { 'NvimTreeToggle' },
+		config = function()
+			require('nvim-tree').setup {}
+		end,
+	}
+nmap('<F3>', ':NvimTreeToggle<CR>')
+nmap('<leader>n', ':NvimTreeToggle<CR>') -- }}} 

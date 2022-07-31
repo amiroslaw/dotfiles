@@ -8,7 +8,7 @@ function help()
 print [[
 Utility script for managing stream with the mpv program. 
 Using: mpv.lua action [url]
-The url argument is optional. It will be pulled from the clipboard using the clipster application.
+The url argument is optional. It will be pulled from the clipboard using the clipster application or if it is not a url it will take it from the temporary file.
 actions:
 	push - Add an url to the playlist
 	audioplay - Play audio from the url
@@ -25,13 +25,15 @@ In order to change stream format and options it's needed to add the profiles `st
 
 end
 
+local LINK_REGEX = "^https?://(([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))"
+
 function errorMsg(msg)
 	print(msg)
 	notifyError(msg)
 end
 
 function make()
-	local find = assert(io.popen('fd --absolute-path --type f --follow -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e wmv -e mp3 -e flac -e wav -e aac'):read '*a')
+	local find = assert(io.popen('fd --type f --follow -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e wmv -e mp3 -e flac -e wav -e aac'):read '*a')
 	local pwd = assert(io.popen('pwd'):read '*a')
 	pwd = split(pwd, '/')
 	local playlistName = pwd[#pwd]:gsub('\n', '') .. '.m3u'
@@ -99,6 +101,7 @@ local cases = {
 	['push'] = push,
 	['audioplay'] = audioplay,
 	['audiolist'] = audiolist,
+	['videoplay'] = videoplay,
 	['videolist'] = videolist,
 	['videopopup'] = videopopup,
 	['popuplist'] = popuplist,
@@ -114,9 +117,17 @@ if arg[2] and arg[1] ~= 'make' then
 else
 	local status, clipboard = run('clipster -o --clipboard -n 1')
 	if status then
-		url = clipboard[1]
-	else
-		notifyError('Could not retrieve clipboard from the clipster app')
+		local match = clipboard[1]:match(LINK_REGEX)
+		if match then
+			url = match
+		else
+			local tmpPlayUrl = readf(tmpPlay)
+			if tmpPlayUrl then
+				url = tmpPlayUrl[1]	
+			else
+				notifyError('Could not retrieve clipboard from the clipster app')
+			end
+		end
 	end
 end
 xpcall(switchFunction, errorMsg, url)

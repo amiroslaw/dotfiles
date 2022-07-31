@@ -39,12 +39,8 @@ return require('packer').startup(function()
 
 	-- for neovim and lua
 	use { 'gennaro-tedesco/nvim-jqx', ft = { 'json' } }
-	use {
-		'kyazdani42/nvim-tree.lua',
-		cmd = { 'NvimTreeToggle' },
-		config = function()
-			require('nvim-tree').setup {}
-		end,
+	use {'is0n/fm-nvim', 
+		cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit' }
 	}
 	use {
 		'numToStr/Comment.nvim',
@@ -109,16 +105,9 @@ return require('packer').startup(function()
 
 	use 'nvim-lualine/lualine.nvim'
 	use {'akinsho/bufferline.nvim', branch = 'main',}
-	use { 'kdheepak/lazygit.nvim', branch = 'main', cmd = { 'LazyGit' } }
 	use { 'lewis6991/gitsigns.nvim', }
 	-- COLORSCHEMES
-	-- https://www.dunebook.com/best-vim-themes/
-	-- https://vimcolorschemes.com/top
-	-- ayu, vim-one, one-half, drakula NeoSolarized, pepertheme
-	-- use {'rakr/vim-one', as = 'one'}
-	-- use 'iCyMind/NeoSolarized'
-	-- use 'patstockwell/vim-monokai-tasty'
+	use 'rafi/awesome-vim-colorschemes' -- https://vimcolorschemes.com/rafi/awesome-vim-colorschemes
 	use { 'dracula/vim', as = 'dracula' }
 	use 'bluz71/vim-moonfly-colors'
-	use 'navarasu/onedark.nvim'
 end)

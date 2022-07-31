@@ -317,6 +317,7 @@ c.url.searchengines = {
     'dd': 'https://duckduckgo.com/?q={}',
     'b': 'https://search.brave.com/search?q={}',
     'y': 'https://www.youtube.com/results?search_query={}',
+    'p': 'https://piped.kavin.rocks/results?search_query={}',
     'w': 'https://en.wikipedia.org/wiki/{}',
     'wp': 'https://pl.wikipedia.org/wiki/{}',
     'c': 'https://www.ceneo.pl/;szukaj-{}',
