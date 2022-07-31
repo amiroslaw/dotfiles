@@ -1,7 +1,7 @@
 -- any change requiers :PackerCompile
 -- https://github.com/wbthomason/packer.nvim
 return require('packer').startup(function()
--- Lua
+	-- Lua
 	use {
 		'Pocco81/AutoSave.nvim',
 		branch = 'main',
@@ -19,14 +19,14 @@ return require('packer').startup(function()
 	use 'bfredl/nvim-miniyank'
 	use 'voldikss/vim-browser-search'
 	-- CODE
-	use 'tpope/vim-surround'
+	use { 'kylechui/nvim-surround'}
 	use { 'sbdchd/neoformat', cmd = { 'Neoformat' } }
 
 	-- NOTE
 	use { 'itchyny/calendar.vim', cmd = { 'Calendar' } } -- problem with api
 	use { 'aserebryakov/vim-todo-lists', tag = '0.7.1' }
 	use { 'kabbamine/lazyList.vim', cmd = { 'LazyList' } }
-	use'axieax/urlview.nvim'
+	use 'axieax/urlview.nvim'
 	-- asciidoctor
 	use { 'habamax/vim-asciidoctor', ft = { 'asciidoctor' } }
 	-- markdown
@@ -39,9 +39,7 @@ return require('packer').startup(function()
 
 	-- for neovim and lua
 	use { 'gennaro-tedesco/nvim-jqx', ft = { 'json' } }
-	use {'is0n/fm-nvim', 
-		cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit' }
-	}
+	use { 'is0n/fm-nvim', cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit' } }
 	use {
 		'numToStr/Comment.nvim',
 		config = function()
@@ -61,7 +59,23 @@ return require('packer').startup(function()
 		run = ':TSUpdate',
 		config = function()
 			require('nvim-treesitter.configs').setup {
-				ensure_installed = {"java", "scala", "javascript", "typescript", "lua",  "markdown", "http", "json", "css", "http", "kotlin", "scss", "toml", "yaml", "bash"}, -- TSInstall css html "asciidoc"  
+				ensure_installed = {
+					'java',
+					'scala',
+					'javascript',
+					'typescript',
+					'lua',
+					'markdown',
+					'http',
+					'json',
+					'css',
+					'http',
+					'kotlin',
+					'scss',
+					'toml',
+					'yaml',
+					'bash',
+				}, -- TSInstall css html "asciidoc"
 				highlight = {
 					enable = true,
 					additional_vim_regex_highlighting = false,
@@ -69,7 +83,7 @@ return require('packer').startup(function()
 			}
 		end,
 	}
-	use "ggandor/lightspeed.nvim"
+	use 'ggandor/lightspeed.nvim'
 	use { 'abecodes/tabout.nvim', after = { 'nvim-cmp' } } -- doesn't support asciidoc
 	use {
 		'hrsh7th/nvim-cmp',
@@ -104,15 +118,15 @@ return require('packer').startup(function()
 	}
 
 	use 'nvim-lualine/lualine.nvim'
-	use {'akinsho/bufferline.nvim', branch = 'main',}
-	use { 'lewis6991/gitsigns.nvim', }
+	use { 'akinsho/bufferline.nvim', branch = 'main' }
+	use { 'lewis6991/gitsigns.nvim' }
 	use {
-	  "folke/which-key.nvim",
-	  config = function()
-		require("which-key").setup {
-		 spelling = { enabled = true, sugesstions = 20}
-		}
-	  end
+		'folke/which-key.nvim',
+		config = function()
+			require('which-key').setup {
+				spelling = { enabled = true, sugesstions = 20 },
+			}
+		end,
 	}
 
 	-- COLORSCHEMES

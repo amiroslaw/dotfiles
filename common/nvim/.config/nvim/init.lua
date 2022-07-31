@@ -4,7 +4,7 @@ require 'plugins'
 local HOME = os.getenv 'HOME'
 
 -- COLORSCHEMES {{{
-function getBackground(hour)
+local function getBackground(hour)
 		local hour = hour and hour or 18
 		local currentHour = tonumber(os.date '%H')
 		if currentHour > 5 and currentHour < hour then
@@ -310,6 +310,23 @@ nmap('<leader>N', ':Ranger<CR>')
 --""""""""""""""""""
 -- surround
 nmap('<leader>s', 'ysiW', { noremap = false }) -- surround a word
+nmap('<leader>s', 'ySiW', { noremap = false }) -- surround a word, custom pairs
+require("nvim-surround").setup({
+    delimiters = {
+        pairs = {
+            ["l"] = function() -- surround text and append url in asciidoc
+                return {
+                    vim.fn.getreg("+") .. "[", "]",
+                }
+            end,
+            ["L"] = function() -- surround url 
+                return {
+                    "", "[" .. vim.fn.getreg("+") .. "]",
+                }
+            end,
+        },
+    },
+})
 
 --"""""""""""""""""""
 -- jqx https://github.com/gennaro-tedesco/nvim-jqx
