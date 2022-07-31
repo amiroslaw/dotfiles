@@ -106,6 +106,15 @@ return require('packer').startup(function()
 	use 'nvim-lualine/lualine.nvim'
 	use {'akinsho/bufferline.nvim', branch = 'main',}
 	use { 'lewis6991/gitsigns.nvim', }
+	use {
+	  "folke/which-key.nvim",
+	  config = function()
+		require("which-key").setup {
+		 spelling = { enabled = true, sugesstions = 20}
+		}
+	  end
+	}
+
 	-- COLORSCHEMES
 	use 'rafi/awesome-vim-colorschemes' -- https://vimcolorschemes.com/rafi/awesome-vim-colorschemes
 	use { 'dracula/vim', as = 'dracula' }
