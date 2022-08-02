@@ -1,6 +1,6 @@
 # Auto-completion
 # ---------------
-[[ $- == *i* ]] && source "~/.config/fzf/shell/completion.zsh" 2> /dev/null
+# [[ $- == *i* ]] && source "~/.config/fzf/shell/completion.zsh" 2> /dev/null
 
 # Key bindings
 # ------------
