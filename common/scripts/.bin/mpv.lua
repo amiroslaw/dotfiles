@@ -124,8 +124,6 @@ else
 			local tmpPlayUrl = readf(tmpPlay)
 			if tmpPlayUrl then
 				url = tmpPlayUrl[1]	
-			else
-				notifyError('Could not retrieve clipboard from the clipster app')
 			end
 		end
 	end
