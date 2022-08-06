@@ -66,8 +66,6 @@ function sendToKindle(linkTab)
 		if #title ~= 0 then 
 			-- converting to pdf has error in pandoc, html need to have <html> <body> tags and has problem with encoding
 			local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. title .. '.docx')
-			-- TODO amazon will support epub from 08.2022
-			-- local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to epub --output ' .. tmpDir .. title .. '.epub')
 
 			--[[ 
 			append link to the article - I have to do it before pandoc
@@ -77,6 +75,9 @@ function sendToKindle(linkTab)
 
 			-- print('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Kindle" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
 			local sendFile = os.execute('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Convert" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
+			-- TODO amazon will support epub from 08.2022
+			-- local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to epub --output ' .. tmpDir .. title .. '.epub')
+			-- local sendFile = os.execute('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Convert" -a' .. tmpDir .. title .. '.epub ' .. kindleEmail)
 			if createFile ~= 0 or sendFile ~= 0 then -- readability-cli return 0 in error 
 				table.insert(articlesWithErrors, link)
 			end

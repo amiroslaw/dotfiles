@@ -409,23 +409,21 @@ set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx]::, ::*.pptx,,*.pp
 " show all bookmarks
 nmap bb :marks <cr> 
 " :mark mark /full/directory/path [filename]
-" mark z /home/miro/.vifm ../
 mark / /
 mark A /etc/apt
-mark C /home/miro/Code
-mark D /home/miro/Documents
-mark I /home/miro/Documents/Nauka/inwestycje
-mark M /media/multi/.mumia
-mark T /home/miro/.local/share/Trash
-mark W /media/winC
 mark b /home/miro/.bin
 mark c /home/miro/.config
-mark q /home/miro/.config/qutebrowser
+mark C /home/miro/Code
 mark d /home/miro/Downloads
+mark D /home/miro/Documents
 mark e /home/miro/Ext
+mark q /home/miro/.config/qutebrowser
 mark h /home/miro 
+mark i /home/miro/Documents/Nauka/inwestycje
 mark k /media/multimedia/kursy/Spring
+mark l /home/miro/.local
 mark m /media/multimedia
+mark M /media/multi/.mumia
 mark n /home/miro/Documents/notebook
 mark o /home/miro/Pictures
 mark p /home/miro/Code/Projects
@@ -433,9 +431,12 @@ mark r /run/media/miro
 " mark s /home/miro/Code/SourceCode
 mark s /home/miro/Code/blog/scully/miroslaw
 mark t /home/miro/.local/share/vifm/Trash
+mark T /home/miro/.local/share/Trash
 mark u /home/miro/Documents/Ustawienia
 mark v /home/miro/Videos
-mark w /media/winD " }}} 
-
+mark y /home/miro/Videos/YouTube
+mark w /media/winD
+mark W /media/winC
+" }}} 
 
 " vim: foldmethod=marker

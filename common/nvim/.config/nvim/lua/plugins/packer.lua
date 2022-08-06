@@ -3,10 +3,10 @@
 return require('packer').startup(function()
 	-- Lua
 	use {
-		'Pocco81/AutoSave.nvim',
+		'Pocco81/auto-save.nvim',
 		branch = 'main',
 		config = function()
-			require('autosave').setup { enabled = true, events = { 'InsertLeave' } }
+			require('auto-save').setup { enabled = true, trigger_events = { 'InsertLeave' } }
 		end,
 	}
 	use 'justincampbell/vim-eighties' -- Automatically resizes your windows

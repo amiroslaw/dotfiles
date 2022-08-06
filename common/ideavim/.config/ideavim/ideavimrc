@@ -168,7 +168,7 @@ inoremap <A-l> :action NextSplitter<cr>
 
 nma mp :action GotoPreviousBookmark<cr>
 nma mn :action GotoNextBookmark<cr>
-nma ma :action ShowBookmarks<cr>
+nma ml :action ShowBookmarks<cr>
 nma mm :action ToggleBookmark<cr>
 
 nmap <c-s-h> :action PreviousTab <cr>

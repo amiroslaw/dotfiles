@@ -312,19 +312,13 @@ nmap('<leader>N', ':Ranger<CR>')
 nmap('<leader>s', 'ysiW', { noremap = false }) -- surround a word
 nmap('<leader>s', 'ySiW', { noremap = false }) -- surround a word, custom pairs
 require("nvim-surround").setup({
-    delimiters = {
-        pairs = {
-            ["l"] = function() -- surround text and append url in asciidoc
-                return {
-                    vim.fn.getreg("+") .. "[", "]",
-                }
-            end,
-            ["L"] = function() -- surround url 
-                return {
-                    "", "[" .. vim.fn.getreg("+") .. "]",
-                }
-            end,
-        },
+    surrounds = {
+            ["l"] =  { -- surround text and append url in asciidoc
+				add = { {vim.fn.getreg("+") .. "["},{ "]"} }
+			},
+            ["L"] =  {
+				add = {"", "[" .. vim.fn.getreg("+") .. "]"} 
+			}
     },
 })
 
