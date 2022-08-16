@@ -79,7 +79,6 @@ fi
 #                       bindkey
 # -------------------------------------------------------------------------
 # autosuggestions
-bindkey -e
 bindkey '\el' autosuggest-accept
 bindkey '\ex' autosuggest-execute
 bindkey '\ec' autosuggest-clear
@@ -93,6 +92,7 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 
 source ~/.config/fzf/fzf.zsh
 source ~/.config/broot/launcher/bash/br
+bindkey -e
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
