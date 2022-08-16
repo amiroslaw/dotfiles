@@ -110,10 +110,10 @@ alias search='pacman -Ss'
 #}}}
 
 #{{{ Programs alias
-alias pfile='xclip-pastefile'
-alias yfile='xclip-copyfile'
-alias cfile='xclip-cutfile'
-alias tor='abduco -A tor rtorrent'
+alias pp='xclip-pastefile'
+alias yy='xclip-copyfile'
+alias cc='xclip-cutfile'
+alias tor='screen -x tor'
 alias huliomail='tmpmail -g Huliofff@1secmail.org && tmpmail -r'
 alias ping='prettyping'
 alias vi='nvim'
@@ -330,6 +330,7 @@ alias -g SN='| sort -n'
 alias -g L='| less'
 alias -g W='| wc'
 alias -g Jq='| jq .'
+alias -g N=' | nvim - +"file /tmp/nvim-pipe$(date +%s)"'
 
 # copy terminal output into clipboard
 alias -g C='| xclip -sel clip'

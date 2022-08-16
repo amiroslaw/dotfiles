@@ -5,6 +5,16 @@
 " DON'T put a comment in the end of the keybinging
 " , for git
 " - for run
+"   TODO
+
+" Diff.NextChange                                    <M-S-]> <C-Right>
+" Diff.PrevChange                                    <M-S-[> <C-Left>
+" Diff.ShowDiff                                      <M-D>
+" DirDiffMenu.SetCopyToLeft                         
+" DirDiffMenu.SetCopyToRight                        
+" NextTab
+" PreviousTab                                        <M-S-[> <C-Left>
+" NextEditorTab                                      <C-S-Right>
 
 
 " SETS
@@ -165,15 +175,19 @@ nnoremap <A-h> :action PrevSplitter<cr>
 inoremap <A-h> :action PrevSplitter<cr>
 nnoremap <A-l> :action NextSplitter<cr>
 inoremap <A-l> :action NextSplitter<cr>
+nmap ] :action NextTab<cr>
+nmap [ :action PreviousTab <cr>
+nmap <c-h> :action ActivateNextWindow<cr>
+" nmap <c-s-h> :action PreviousTab <cr>
+" nmap <c-s-l> :action NextTab<cr>
 
 nma mp :action GotoPreviousBookmark<cr>
 nma mn :action GotoNextBookmark<cr>
 nma ml :action ShowBookmarks<cr>
 nma mm :action ToggleBookmark<cr>
 
-nmap <c-s-h> :action PreviousTab <cr>
-nmap <c-s-l> :action NextTab<cr>
 nmap U :action ReopenClosedTab<cr>
+nmap ZZ :action CloseContent<cr>
 
 " # -------------------------------------------------------------------------
 " #                       Refactorings -generate
@@ -199,7 +213,9 @@ noremap to :action Move<CR>
 nmap <leader>r :action Replace<cr>
 noremap tA :action AnalyzeMenu<CR>
 nmap ta :action InspectCode<cr>
-nnoremap <leader>c :CodeCleanup<cr>
+nnoremap <leader>c :RearrangeCode<cr>
+" nnoremap <leader>c :CodeCleanup<cr>
+" OptimizeImports
 " nmap tp :action IntroduceFunctionalParameter<cr>
 " nmap tm :action IntroduceParameterObject<cr>
 

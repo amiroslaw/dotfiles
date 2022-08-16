@@ -11,7 +11,11 @@ end
 
 return {
 	wezterm.on('trigger-vim-with-scrollback', function(window, pane)
-		local scrollback = pane:get_lines_as_text()
+		-- pane:get_logical_lines_as_text([nlines])
+		-- scrollback_rows the total number of lines in the scrollback and viewport - all text (set in scrollback_lines)
+		-- physical_top the top of the physical non-scrollback screen expressed as a stable index.
+		local dimensions = pane:get_dimensions()
+		local scrollback = pane:get_lines_as_text(dimensions.scrollback_rows) -- empty or physical_top? will copy only visible pane
 		local name = os.tmpname()
 		local f = io.open(name, 'w+')
 		f:write(scrollback)

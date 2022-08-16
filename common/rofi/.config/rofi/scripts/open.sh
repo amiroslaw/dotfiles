@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ROFI_OPTIONS=(-theme-str 'window {width:  80%;}' -l 25 -i -dmenu -multi-select -monitor -4 -matching fuzzy)
+ROFI_OPTIONS=(-theme-str 'window {width:  80%;}' -l 25 -i -dmenu -multi-select -monitor -4 -matching normal)
 STREAM_PLAYLIST=~/Templates/mpvlists
 
 case "$1" in
@@ -11,7 +11,7 @@ case "$1" in
 	dir) fd --type d --follow | rofi "${ROFI_OPTIONS[@]}" -p "dir" | xargs -r -P 0 -I {} xdg-open {} ;;
 	dir-hidden) fd --type d --hidden | rofi "${ROFI_OPTIONS[@]}" -p "open hidden dir:" | xargs -r -P 0 -I {} xdg-open {} ;;
 	video) cd "$HOME/Videos" && fd --follow --type=f -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg | rofi "${ROFI_OPTIONS[@]}" -p "open video:" | awk '{print "\""$0"\""}' | xargs -r "$VIDEO" ;;
-	course) cd "$COURSES" && fd --follow --type=f -e m3u | rofi "${ROFI_OPTIONS[@]}" -p "open course:" | awk '{print "\""$0"\""}' | xargs -r mpv ;;
+	course) cd "$COURSES" && fd --type=f -e m3u | rofi "${ROFI_OPTIONS[@]}" -p "open course:" | awk '{print "\""$0"\""}' | xargs -r mpv ;;
 	yt) cd "$STREAM_PLAYLIST" && mpv --profile=stream "$(ls -r | grep -e "-video-" | rofi "${ROFI_OPTIONS[@]}")";;
 	audio) cd "$STREAM_PLAYLIST" && mpv --profile=stream "$(ls -r | grep -e "-audio-" | rofi "${ROFI_OPTIONS[@]}")"
 esac

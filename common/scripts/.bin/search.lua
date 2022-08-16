@@ -50,15 +50,15 @@ function cheat()
 	local status = 1
 	if topics[topic] == 'lang' then
 		if query == '' then query = ':list' elseif query == 'l' then query = ':learn' end -- :learn; def=:list
-		status = os.execute('curl cht.sh/' .. topic .. '/' .. query .. ' > ' .. tmpname)
+		print('curl cht.sh/' .. topic .. '/' .. query .. ' > ' .. tmpname .. '?T')
+		status = os.execute('curl cht.sh/' .. topic .. '/' .. query .. '?T' .. ' > ' .. tmpname) -- ?T without ascii
 	else
-		status = os.execute('curl cht.sh/' .. topic .. '~' .. query .. ' > ' .. tmpname)
+		status = os.execute('curl cht.sh/' .. topic .. '~' .. query .. '?T' .. ' > ' .. tmpname)
 	end
 	assert(status == 0, 'Can not fetch data')
 	-- terminal = os.getenv('TERM') - won't have class or title name option
-	-- ?T without ascii
-	-- os.execute("alacritty --class cheatsh -t cheatsh -e less -R " .. tmpname)
-	os.execute("wezterm start --class cheatsh -- less -R " .. tmpname)
+	-- os.execute("wezterm start --class cheatsh -- less -R " .. tmpname)
+	os.execute('st -c cheatsh -n cheatsh -e nvim ' .. tmpname)
 end
 
 function browser(url)

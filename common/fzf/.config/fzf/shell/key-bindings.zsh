@@ -217,7 +217,7 @@ fzf_open() {
 	fi
 }
 zle     -N   fzf_open;
-bindkey '\eo' fzf_open
+bindkey '\ee' fzf_open
 
 fzf_open_hidden() {
 	zle -I;
@@ -243,7 +243,7 @@ fzf_fasd_open() {
   fi
 }
 zle     -N   fzf_fasd_open
-bindkey '\ee' fzf_fasd_open
+bindkey '\eo' fzf_fasd_open
 
 fzf_fasd_cd() {
 	zle -I;

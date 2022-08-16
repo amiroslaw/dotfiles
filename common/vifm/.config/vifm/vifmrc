@@ -249,13 +249,13 @@ nmap tp :tabprevious <cr>
 
 " CLIPBOARD COPY
 " yank current directory path into the clipboard
-nnoremap yd :!echo -n %d | xclip %i<cr>
+nnoremap yd :!echo -n %d | xclip -sel clip %i<cr>
 " yank current file path into the clipboard
-nnoremap yf :!echo -n %c:p | xclip %i<cr>
+nnoremap yf :!echo -n %c:p | xclip -sel clip %i<cr>
 " yank current filename without path into the clipboard
-nnoremap yn :!echo -n %c | xclip %i<cr>
+nnoremap yn :!echo -n %c | xclip -sel clip %i<cr>
 " yank root of current file's name into the clipboard
-nnoremap yr :!echo -n %c:r | xclip %i<cr>
+nnoremap yr :!echo -n %c:r | xclip -sel clip %i<cr>
 
 nmap md :!typora %f &<cr>
 nmap <C-e> :!goneovim %f &<cr>
@@ -356,12 +356,12 @@ fileviewer {*.md,*.txt,*.adoc,*.lua,*.csv,*.html,*.htm,*.java,*.kt,*.kts,*.sh,*.
 	\ bat --color always --plain %c
 
 " Images
-filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm,*.svg},<image/*>
+filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm,*.svg,*avif},<image/*>
         \ pqiv -f %f,
         \ sxiv -fa %f %i,
 		" \ echo %f > ~/test,
 " kitty 
-" fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm},<image/*>
+" fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*avif},<image/*>
 " 	\ kitty +icat --place %pwx%ph@%pxx%py  --silent %c
 " 	\ %pc
 " 	\ kitty icat --clear --silent %pd
@@ -369,7 +369,7 @@ filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm,*.svg},<image/*>
 	 " \ identify %f
 
 " wezterm
-fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm wezterm imgcat --width %pw --height %ph %c:p %pd
+fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*avif wezterm imgcat --width %pw --height %ph %c:p %pd
 
  " w3m
  " fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
@@ -396,7 +396,7 @@ set classify+=' ::../::, ::*.sh::, ::*.[hc]pp::, ::*.[hc]::, ::/^
 " archives
 set classify+=' ::*.7z,,*.ace,,*.arj,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::'
 " images
-set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*.ppm,,*.svg,,*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,*.xwd::'
+set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*avif,,*.ppm,,*.svg,,*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,*.xwd::'
 " audio
 set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
 " media

@@ -48,10 +48,10 @@ mapCS('l', act { ActivateTabRelative = 1 })
 mapCS('Tab', act { ActivateTabRelative = 1 })
 -- Modes X,Space, O, U, E
 -- mapCS('o', 'ShowLauncher')
-mapCS('o', wezterm.action{ShowLauncherArgs={flags="FUZZY|LAUNCH_MENU_ITEMS"}})
+mapCS('e', wezterm.action{ShowLauncherArgs={flags="FUZZY|LAUNCH_MENU_ITEMS"}})
 map('F1', wezterm.action{ShowLauncherArgs={flags="FUZZY|KEY_ASSIGNMENTS"}}, 'ALT')
 -- Custom Actions
-mapCS('e', wezterm.action { EmitEvent = 'trigger-vim-with-scrollback' })
+mapCS('o', wezterm.action { EmitEvent = 'trigger-vim-with-scrollback' })
 mapCS('s', plugins.openUrl)
 map('F2', wezterm.action { EmitEvent = 'toggle-opacity' }, 'ALT')
 map('F3', wezterm.action { EmitEvent = 'open-file-manager' }, 'ALT')

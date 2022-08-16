@@ -10,7 +10,10 @@ if(url.includes("youtube")) {
 		document.querySelector('[icon="close"]').click();
 	}, 1000);
 	
-
+} else if(url.includes("piped")) {
+	let favoriteButton = document.querySelector('.modal-container > button');
+	console.log(favoriteButton)
+	favoriteButton.click();
 } else if(url.includes("deezer")) {
 	let favoriteButton = getHtmlElement("#page_player [aria-label=\'Add to Favorite tracks\']", "#page_player [aria-label=\'Dodaj do ♡\']");
 	if(favoriteButton == null) {
