@@ -139,7 +139,7 @@ If t is a table it shall contain numerical indices (1 to n) with strings as valu
 t = table or string containing file lines
 f = filename
 n = newline character (optional, default is "\n")
-m = write mode ["w"|"a"|"w+"|"a+"] (optional, default is "w")
+m = write mode ["w"|"a"|"w+"|"a+"] (optional, default is "w") - a mode, doesn't add new line after secoundary append
 --]]
 function writef(t, f, n, m)
 
@@ -150,9 +150,12 @@ function writef(t, f, n, m)
    if (type(f) ~= "string")                                       then return nil end
    if (type(n) ~= "string")                                       then return nil end
    if (type(m) ~= "string") or (not string.match(m, "^[wa]%+?$")) then return nil end
-
+	local existed = exist(f)
    local File_h = io.open(f, m)
    if File_h then
+	   if existed and ( m == 'a' or m == 'a+' ) then
+            File_h:write('\n')
+	   end
       if (type(t) == "table") then
          for _,l in ipairs(t) do
             File_h:write(l)
@@ -320,6 +323,20 @@ function str(x)
 	 
 end -- >>>
 
+--- exist <<<
+-- Check if file or directory exist
+function exist(file)
+   local ok, err, code = os.rename(file, file)
+   if not ok then
+      if code == 13 then
+         -- Permission denied, but it exists
+         return true
+      end
+   end
+   return ok, err
+end --- >>> 
+
+
 --- switch <<<
 -- the argument cases is a key-value table. Values can be either variables or functions.
 function switch(cases, pattern)
@@ -455,6 +472,37 @@ function splitFlags(optionsTxt)
 		end
 	end)
 	return flags
+end -- >>>
+
+-- log <<<
+--[[
+log takes a table or string and writes it to a file and returns true if writing was successful, otherwise nil.
+If t is a table it shall contain numerical indices (1 to n) with strings as values, and no nil values in-between.
+
+input = table or string containing file lines
+level(optional) = default 'INFO'
+file(optional) = filename or path - default  '/tmp/lua.log'
+
+--]]
+function log(input, level, file)
+	if (type(input) ~= 'table') and (type(input) ~= 'string') then
+		return nil
+	end
+	local file = file or '/tmp/lua.log'
+	local level = level or 'INFO'
+	level = '[' .. level .. '] '
+	local date = '[' .. os.date '%Y-%m-%d %H:%M:%S' .. '] '
+	local logPrefix = date .. level
+
+	if type(input) == 'table' then
+		for i, l in ipairs(input) do
+			input[i] = logPrefix .. l
+		end
+	else
+		input = logPrefix .. input
+	end
+
+	writef(input, file, '\n', 'a+')
 end -- >>>
 
 -- >>>

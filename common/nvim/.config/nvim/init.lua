@@ -310,7 +310,6 @@ nmap('<leader>N', ':Ranger<CR>')
 --""""""""""""""""""
 -- surround
 nmap('<leader>s', 'ysiW', { noremap = false }) -- surround a word
-nmap('<leader>s', 'ySiW', { noremap = false }) -- surround a word, custom pairs
 require("nvim-surround").setup({
     surrounds = {
             ["l"] =  { -- surround text and append url in asciidoc
@@ -458,6 +457,7 @@ vim.g.browser_search_engines = { -- have to change sourcecode to change default 
 
 -- Telescope {{{
 --  https://github.com/nvim-telescope/telescope.nvim#pickers
+-- excluded files and folders in .ignore
 vim.o.maxmempattern = 3000 -- fix pattern uses more memory than 'maxmempattern', default is 2000
 
 local telescope = require 'telescope'
@@ -484,13 +484,6 @@ if telescope then
 					['<C-n>'] = 'cycle_history_next',
 					['<C-p>'] = 'cycle_history_prev',
 				},
-			},
-		},
-		pickers = {
-			live_grep = {
-				additional_args = function()
-					return { '--glob', '!/old/*' } -- exclude old folder
-				end,
 			},
 		},
 	}

@@ -29,6 +29,7 @@ local LINK_REGEX = "^https?://(([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(
 
 function errorMsg(msg)
 	print(msg)
+	log(msg, 'ERROR')
 	notifyError(msg)
 end
 

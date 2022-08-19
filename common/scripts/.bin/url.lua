@@ -61,33 +61,35 @@ function sendToKindle(linkTab)
 	os.execute('mkdir -p ' .. tmpDir)
 
 	for i, link in ipairs(linkTab) do
-		local title = io.popen('readable -A "Mozilla" -q true "' .. link .. '" -p title'):read('*a'):gsub('[^a-zA-Z0-9-_]', '-')
-
-		if #title ~= 0 then 
-			-- converting to pdf has error in pandoc, html need to have <html> <body> tags and has problem with encoding
-			local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. title .. '.docx')
-
-			--[[ 
-			append link to the article - I have to do it before pandoc
-			doc = io.open(tmpDir .. title .. '.docx', "a+")
-			doc:write(link)
-			doc:close() ]]
-
-			-- print('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Kindle" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
-			local sendFile = os.execute('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Convert" -a' .. tmpDir .. title .. '.docx ' .. kindleEmail)
-			-- TODO amazon will support epub from 08.2022
-			-- local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to epub --output ' .. tmpDir .. title .. '.epub')
-			-- local sendFile = os.execute('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Convert" -a' .. tmpDir .. title .. '.epub ' .. kindleEmail)
-			if createFile ~= 0 or sendFile ~= 0 then -- readability-cli return 0 in error 
-				table.insert(articlesWithErrors, link)
-			end
-		else
+		local title = io.popen('readable -A "Mozilla" -q true "' .. link .. '" -p title'):read('*a'):gsub("\n", "")
+		if #title == 0 then 
+			title = ' '
+		end 
+		-- converting to pdf has error in pandoc, html need to have <html> <body> tags and has problem with encoding
+		-- epub has nice metadata options but I don't know how to create few of them.
+		local date = os.date('%Y-%m-%d')
+		local htmlExe = run('readable -A "Mozilla" -q true "' .. link .. '" -p length,html-content -o "' .. tmpDir .. title .. '"')
+		print('pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata rights=' .. link .. ' --metadata date='..date..' --metadata title="'.. title .. '" "' .. tmpDir .. title.. '"')
+		local epubExe = run('pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata rights=' .. link .. ' --metadata date='..date..' --metadata title="'.. title .. '" "' .. tmpDir .. title.. '"')
+		local sendFile = run('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Convert" -a"' .. tmpDir .. title .. '.epub" ' .. kindleEmail)
+		if not epubExe or not htmlExe or not sendFile then
 			table.insert(articlesWithErrors, link)
 		end
-
 	end
 	assert(#articlesWithErrors == 0, 'Could not send ' .. #articlesWithErrors .. ' articles\n' .. table.concat(articlesWithErrors, '\n'))
 	return 'Sent ' .. #linkTab .. ' articles'
+			-- creating docx
+			-- local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. titleUrl .. '.docx')
+			-- local sendFile = os.execute('echo "' .. titleUrl .. '\nKindle article from readability-cli" | mailx -v -s "Convert" -a' .. tmpDir .. titleUrl .. '.docx ' .. kindleEmail)
+		-- local titleUrl = title:gsub('[^a-zA-Z0-9-_]', '-')
+			--[[ 
+			append link to the article - I have to do it before pandoc
+			doc = io.open(tmpDir .. title, "a+")
+			doc:write(link)
+			doc:close() ]]
+		-- else
+			-- table.insert(articlesWithErrors, link)
+		-- end
 end
 
 function readable(linkTab)
@@ -186,5 +188,6 @@ local status, val = pcall(exec, linkTab, cmd)
 if status then
 	notify(val)
 else
+	log(val, 'ERROR')
 	notifyError(val)
 end

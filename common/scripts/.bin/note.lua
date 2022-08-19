@@ -72,9 +72,10 @@ local exec, param = switch(action)
 local ok, val = pcall(exec, param)
 
 if not ok then 
+	log(val, 'ERROR')
 	notifyError(val)
 else
-	local ok, val = pcall(writeToFile, val)
+	local ok, out = pcall(writeToFile, val)
 	notify(val)
 end
 

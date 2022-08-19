@@ -121,5 +121,6 @@ local exec, param = switch(action, phraseArg)
 local ok, val = pcall(exec, param)
 
 if not ok then 
+	log(val, 'ERROR')
 	notifyError(val)
 end

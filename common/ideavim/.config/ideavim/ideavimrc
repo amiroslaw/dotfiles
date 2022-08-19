@@ -63,8 +63,9 @@ let g:NERDTreeMapJumpParent='h'
 " navigation, open close tree
 
 " visual select and then S, conflict with yssb
+" TODO IDK if easymotion Overrides `s`
 set surround            
-" SurroundWith nie wiem czy działa                                       
+" SurroundWith menu from livetemplates
 vnoremap <leader>s :action SurroundWith<cr>
 nnoremap <leader>s :action SurroundWith<cr>  
 " gcc, gc + motion, v_gc
@@ -85,12 +86,12 @@ set argtextobj
 set easymotion
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_override_acejump = 0
-map s <Plug>(easymotion-f)
-map S <Plug>(easymotion-F)
-map f <Plug>(easymotion-j)
-map F <Plug>(easymotion-k)
-map <leader>t <Plug>(easymotion-eol-j)
-map <leader>T <Plug>(easymotion-eol-k)
+nmap s <Plug>(easymotion-f)
+nmap S <Plug>(easymotion-F)
+nmap f <Plug>(easymotion-j)
+nmap F <Plug>(easymotion-k)
+nmap <leader>t <Plug>(easymotion-eol-j)
+nmap <leader>T <Plug>(easymotion-eol-k)
 " t and s is used?
 " map <leader>T <Plug>(easymotion-b)
 " map <leader>t <Plug>(easymotion-w)
@@ -175,9 +176,11 @@ nnoremap <A-h> :action PrevSplitter<cr>
 inoremap <A-h> :action PrevSplitter<cr>
 nnoremap <A-l> :action NextSplitter<cr>
 inoremap <A-l> :action NextSplitter<cr>
-nmap ] :action NextTab<cr>
-nmap [ :action PreviousTab <cr>
-nmap <c-h> :action ActivateNextWindow<cr>
+" nmap ] :action NextTab<cr>
+" nmap [ :action PreviousTab <cr>
+nmap <c-h> :action PreviousTab <cr>
+nmap <c-l> :action NextTab<cr>
+" nmap <c-h> :action ActivateNextWindow<cr>
 " nmap <c-s-h> :action PreviousTab <cr>
 " nmap <c-s-l> :action NextTab<cr>
 
@@ -213,7 +216,7 @@ noremap to :action Move<CR>
 nmap <leader>r :action Replace<cr>
 noremap tA :action AnalyzeMenu<CR>
 nmap ta :action InspectCode<cr>
-nnoremap <leader>c :RearrangeCode<cr>
+nnoremap <leader>c :action RearrangeCode<cr>
 " nnoremap <leader>c :CodeCleanup<cr>
 " OptimizeImports
 " nmap tp :action IntroduceFunctionalParameter<cr>
@@ -263,11 +266,12 @@ nmap ,H :action LocalHistory.ShowSelectionHistory<cr>
 " #                       Building, Running and Debugging
 " # -------------------------------------------------------------------------
 nmap -r :action Run<cr>
-nmap -R :action RunAnything<cr>
+" 2x ctrl
+nmap -a :action RunAnything<cr> 
 nmap -d :action Debug<cr>
 nmap -t :action RerunTests<cr>                                         
 nmap -T :action RerunFailedTests<cr>
-nmap -D :action DebugClass<cr>
+nmap -d :action DebugClass<cr>
 nmap -c :action RunClass<cr>
 map <leader>b <Action>(ToggleLineBreakpoint)
 nmap -j :action JShell.Console<cr>
@@ -305,28 +309,34 @@ nmap <leader>m :action Maven.Reimport <cr>
 " prefix Tools
 nmap <leader>v :action Tool_External Tools_nvim-qt<cr>
 
+" vim: foldmethod=marker
+
+
+" {{{ vim settings
 " # -------------------------------------------------------------------------
 " #                       Override intellij keybingings
 " ~/.config/JetBrains/IntelliJIdea2021.2/options/vim_settings.xml
 " # -------------------------------------------------------------------------
-sethandler <c-c> a:vim
-sethandler <c-u> a:vim
+sethandler <c-;> a:vim
 sethandler <c-a> a:vim
-sethandler <c-w> a:vim
-sethandler <c-n> a:vim
+"TODO change in ide to IDE
+" sethandler <c-c> a:vim
 sethandler <c-d> a:vim
+sethandler <c-g> a:vim
+sethandler <c-h> a:vim
+sethandler <c-i> a:vim
+sethandler <c-l> a:vim
+sethandler <c-n> a:vim
 sethandler <c-r> a:vim
 sethandler <c-s> a:vim
-sethandler <c-i> a:vim
 sethandler <c-t> a:vim
-sethandler <c-h> a:vim
+sethandler <c-u> a:vim
+sethandler <c-w> a:vim
 sethandler <c-y> a:vim
-sethandler <c-g> a:vim
-sethandler <c-;> a:vim
 sethandler <c-s-;> a:vim
 sethandler <c-a-k> a:vim
 sethandler <c-a-j> a:vim
-sethandler <s-a-j> a:vim
+sethandler <s-a-j> a:vim " }}} 
 
 
 " MAYBE LATER
@@ -366,4 +376,5 @@ sethandler <s-a-j> a:vim
 " parameter info
 "
 
-" vim:filetype=vim
+" vim: foldmethod=marker
+
