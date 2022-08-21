@@ -42,26 +42,27 @@ mapCS('n', act { ActivatePaneDirection = 'Next' })
 mapCS('p', act { ActivatePaneDirection = 'Prev' })
 -- mapCS('N', act { ActivatePaneDirection = 'Down' })
 -- Tabs
-mapCS('a', act { SpawnTab = 'CurrentPaneDomain' })
+-- mapCS('a', act { SpawnTab = 'CurrentPaneDomain' })
 mapCS('h', act { ActivateTabRelative = -1 })
 mapCS('l', act { ActivateTabRelative = 1 })
 mapCS('Tab', act { ActivateTabRelative = 1 })
 -- Modes X,Space, O, U, E
 -- mapCS('o', 'ShowLauncher')
-mapCS('e', wezterm.action{ShowLauncherArgs={flags="FUZZY|LAUNCH_MENU_ITEMS"}})
-map('F1', wezterm.action{ShowLauncherArgs={flags="FUZZY|KEY_ASSIGNMENTS"}}, 'ALT')
+mapCS('e', wezterm.action { ShowLauncherArgs = { flags = 'FUZZY|LAUNCH_MENU_ITEMS' } })
+map('F1', wezterm.action { ShowLauncherArgs = { flags = 'FUZZY|KEY_ASSIGNMENTS' } }, 'ALT')
 -- Custom Actions
 mapCS('o', wezterm.action { EmitEvent = 'trigger-vim-with-scrollback' })
 mapCS('s', plugins.openUrl)
 map('F2', wezterm.action { EmitEvent = 'toggle-opacity' }, 'ALT')
 map('F3', wezterm.action { EmitEvent = 'open-file-manager' }, 'ALT')
-map('F4', wezterm.action { EmitEvent = 'toggle-ligatures' }, 'ALT') -- don't work 
+map('F4', wezterm.action { EmitEvent = 'toggle-ligatures' }, 'ALT') -- don't work
 map('F7', wezterm.action { Search = { Regex = 'ERROR' } }, 'ALT')
 map('F12', 'ShowDebugOverlay', 'ALT')
 --disable key
 map('Enter', 'DisableDefaultAssignment', 'ALT')
 -- key table don't work
 -- map('m', wezterm.action{ ActivateKeyTable={ name="activate_pane", timeout_milliseconds=1000, replace_current=true, one_shot=true} }, "LEADER")
+map('r', act.ActivateKeyTable { name = 'resize_pane', one_shot = false }, 'LEADER')
 
 local mouse_bindings = {
 	{ -- Alt-Middle click pastes from the clipboard selection
@@ -71,22 +72,49 @@ local mouse_bindings = {
 		action = wezterm.action { PasteFrom = 'Clipboard' },
 	},
 }
+-- Show which key table is active in the status area
+wezterm.on('update-right-status', function(window, pane)
+  local name = window:active_key_table()
+  if name then
+    name = 'TABLE: ' .. name
+  end
+  window:set_right_status(name or '')
+end)
 
 return {
 	keys = keys,
 	mouse_bindings = mouse_bindings,
-	leader = {key="a", mods="CTRL", timeout_milliseconds=1000},
-	activate_pane = {
-      {key="LeftArrow", action=wezterm.action{ActivatePaneDirection="Left"}},
-      {key="h", action=wezterm.action{ActivatePaneDirection="Left"}},
+	-- leader = {key="a", mods="CTRL"},
+	leader = { key = 'a', mods = 'CTRL|SHIFT' },
+	key_tables = {
+		activate_pane = {
+			{ key = 'LeftArrow', action = wezterm.action { ActivatePaneDirection = 'Left' } },
+			{ key = 'h', action = wezterm.action { ActivatePaneDirection = 'Left' } },
 
-      {key="RightArrow", action=wezterm.action{ActivatePaneDirection="Right"}},
-      {key="l", action=wezterm.action{ActivatePaneDirection="Right"}},
+			{ key = 'RightArrow', action = wezterm.action { ActivatePaneDirection = 'Right' } },
+			{ key = 'l', action = wezterm.action { ActivatePaneDirection = 'Right' } },
 
-      {key="UpArrow", action=wezterm.action{ActivatePaneDirection="Up"}},
-      {key="k", action=wezterm.action{ActivatePaneDirection="Up"}},
+			{ key = 'UpArrow', action = wezterm.action { ActivatePaneDirection = 'Up' } },
+			{ key = 'k', action = wezterm.action { ActivatePaneDirection = 'Up' } },
 
-      {key="DownArrow", action=wezterm.action{ActivatePaneDirection="Down"}},
-      {key="j", action=wezterm.action{ActivatePaneDirection="Down"}},
-    },
+			{ key = 'DownArrow', action = wezterm.action { ActivatePaneDirection = 'Down' } },
+			{ key = 'j', action = wezterm.action { ActivatePaneDirection = 'Down' } },
+		},
+		resize_pane = {
+			{ key = 'LeftArrow', action = act.AdjustPaneSize { 'Left', 1 } },
+			{ key = 'h', action = act.AdjustPaneSize { 'Left', 1 } },
+
+			{ key = 'RightArrow', action = act.AdjustPaneSize { 'Right', 1 } },
+			{ key = 'l', action = act.AdjustPaneSize { 'Right', 1 } },
+
+			{ key = 'UpArrow', action = act.AdjustPaneSize { 'Up', 1 } },
+			{ key = 'k', action = act.AdjustPaneSize { 'Up', 1 } },
+
+			{ key = 'DownArrow', action = act.AdjustPaneSize { 'Down', 1 } },
+			{ key = 'j', action = act.AdjustPaneSize { 'Down', 1 } },
+
+			-- Cancel the mode by pressing escape
+			{ key = 'Escape', action = 'PopKeyTable' },
+		},
+	},
 }
