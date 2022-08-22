@@ -261,11 +261,9 @@ nmap ,H :action LocalHistory.ShowSelectionHistory<cr>
 " VcsToobarActions                                  
 " nmap <leader>yr :action Git.ResolveConflicts<cr>                          
 
-
-" # -------------------------------------------------------------------------
-" #                       Building, Running and Debugging
-" # -------------------------------------------------------------------------
-nmap -r :action Run<cr>
+"  Building, Running and Debugging {{{
+nmap -- :action Run<cr>
+nmap -r :action ChooseRunConfiguration<cr>
 " 2x ctrl
 nmap -a :action RunAnything<cr> 
 nmap -d :action Debug<cr>
@@ -275,7 +273,7 @@ nmap -d :action DebugClass<cr>
 nmap -c :action RunClass<cr>
 map <leader>b <Action>(ToggleLineBreakpoint)
 nmap -j :action JShell.Console<cr>
-" nmap ,c :action CompileDirty<cr>
+" nmap ,c :action CompileDirty<cr> " }}} 
 
 " # -------------------------------------------------------------------------
 " #                       Definitions

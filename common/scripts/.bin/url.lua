@@ -63,13 +63,12 @@ function sendToKindle(linkTab)
 	for i, link in ipairs(linkTab) do
 		local title = io.popen('readable -A "Mozilla" -q true "' .. link .. '" -p title'):read('*a'):gsub("\n", "")
 		if #title == 0 then 
-			title = ' '
+			title = 'untitled-' .. math.random(10000)
 		end 
 		-- converting to pdf has error in pandoc, html need to have <html> <body> tags and has problem with encoding
 		-- epub has nice metadata options but I don't know how to create few of them.
 		local date = os.date('%Y-%m-%d')
 		local htmlExe = run('readable -A "Mozilla" -q true "' .. link .. '" -p length,html-content -o "' .. tmpDir .. title .. '"')
-		print('pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata rights=' .. link .. ' --metadata date='..date..' --metadata title="'.. title .. '" "' .. tmpDir .. title.. '"')
 		local epubExe = run('pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata rights=' .. link .. ' --metadata date='..date..' --metadata title="'.. title .. '" "' .. tmpDir .. title.. '"')
 		local sendFile = run('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Convert" -a"' .. tmpDir .. title .. '.epub" ' .. kindleEmail)
 		if not epubExe or not htmlExe or not sendFile then
