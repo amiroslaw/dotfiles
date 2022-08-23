@@ -61,15 +61,17 @@ function sendToKindle(linkTab)
 	os.execute('mkdir -p ' .. tmpDir)
 
 	for i, link in ipairs(linkTab) do
-		local title = io.popen('readable -A "Mozilla" -q true "' .. link .. '" -p title'):read('*a'):gsub("\n", "")
+		local readableCmd =  'readable --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" "' .. link .. '" '
+		
+		local title = io.popen(readableCmd .. ' -p title'):read('*a'):gsub("\n", ""):gsub('/', '')
 		if #title == 0 then 
-			title = 'untitled-' .. math.random(10000)
+			title = 'untitled-' .. os.date('%Y-%m-%dT%H:%M:%S')
 		end 
 		-- converting to pdf has error in pandoc, html need to have <html> <body> tags and has problem with encoding
 		-- epub has nice metadata options but I don't know how to create few of them.
 		local date = os.date('%Y-%m-%d')
-		local htmlExe = run('readable -A "Mozilla" -q true "' .. link .. '" -p length,html-content -o "' .. tmpDir .. title .. '"')
-		local epubExe = run('pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata rights=' .. link .. ' --metadata date='..date..' --metadata title="'.. title .. '" "' .. tmpDir .. title.. '"')
+		local htmlExe = run(readableCmd .. ' -p length,html-content -o "' .. tmpDir .. title .. '"')
+		local epubExe = run('pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata rights=' .. link .. ' --metadata date='..date..' --metadata title="'.. title .. '" "' .. tmpDir .. title .. '"')
 		local sendFile = run('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Convert" -a"' .. tmpDir .. title .. '.epub" ' .. kindleEmail)
 		if not epubExe or not htmlExe or not sendFile then
 			table.insert(articlesWithErrors, link)
@@ -77,6 +79,8 @@ function sendToKindle(linkTab)
 	end
 	assert(#articlesWithErrors == 0, 'Could not send ' .. #articlesWithErrors .. ' articles\n' .. table.concat(articlesWithErrors, '\n'))
 	return 'Sent ' .. #linkTab .. ' articles'
+		-- local title = os.time() - special chars in filename
+		-- local epubExe = run('pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata rights=' .. link .. ' --metadata date='..date..' --metadata title="'.. title .. '" "' .. tmpDir .. title .. '"')
 			-- creating docx
 			-- local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. titleUrl .. '.docx')
 			-- local sendFile = os.execute('echo "' .. titleUrl .. '\nKindle article from readability-cli" | mailx -v -s "Convert" -a' .. tmpDir .. titleUrl .. '.docx ' .. kindleEmail)
