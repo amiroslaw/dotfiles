@@ -42,7 +42,7 @@ mapCS('n', act { ActivatePaneDirection = 'Next' })
 mapCS('p', act { ActivatePaneDirection = 'Prev' })
 -- mapCS('N', act { ActivatePaneDirection = 'Down' })
 -- Tabs
--- mapCS('a', act { SpawnTab = 'CurrentPaneDomain' })
+mapCS('a', act { SpawnTab = 'CurrentPaneDomain' })
 mapCS('h', act { ActivateTabRelative = -1 })
 mapCS('l', act { ActivateTabRelative = 1 })
 mapCS('Tab', act { ActivateTabRelative = 1 })
@@ -85,7 +85,7 @@ return {
 	keys = keys,
 	mouse_bindings = mouse_bindings,
 	-- leader = {key="a", mods="CTRL"},
-	leader = { key = 'a', mods = 'CTRL|SHIFT' },
+	-- leader = { key = 'a', mods = 'CTRL|SHIFT' },
 	key_tables = {
 		activate_pane = {
 			{ key = 'LeftArrow', action = wezterm.action { ActivatePaneDirection = 'Left' } },

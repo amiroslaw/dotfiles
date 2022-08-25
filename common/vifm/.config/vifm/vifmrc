@@ -168,7 +168,8 @@ nmap cp	:!pdfunite %f %d:t.pdf <cr>
 "pdftotext
 nmap cP	:!pdftotext %c %c:r <cr>
 "Tesseract OCR
-nmap ct	:!tesseract %c %c:r <cr>
+noremap ct :!echo %f | xargs -n1 | xargs -r -I @ -P 0  tesseract "@" "@" <cr>
+noremap cT :!for i in %f; do  tesseract "$i"  "${i%%.png}"; done <cr>
 "dragon dr - drag from and dl drop to
 nmap dr :!dragon-drop %f <cr> 
 nmap dl :!dragon-pull.sh <cr>
