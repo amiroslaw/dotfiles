@@ -198,7 +198,7 @@ nmap('<leader>sudo ', ':w !sudo tee % <CR><CR>') -- leader to backslash \w savin
 nmap('<S-X>', '<C-^>') -- alternate-file file that was last edited in the current window.
 
 -- coping and pasting
-nmap('P', ':pu<cr>')
+-- nmap('P', ':pu<cr>') -- use yanky
 nmap('<leader>P', [["_diwP]]) -- keep pasting over the same thing
 nmap('Y', 'y$') -- from nvim 0.6 it's by default
 imap('<C-v>', '<Esc>pa ')
@@ -263,7 +263,7 @@ vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
 -- }}} 
 
 -- TEXT OBJECTS {{{
--- current line
+-- current line e.g. yol
 -- xmap('il', '^vg_')
 xmap('ol', '^og_')
 omap('ol', ':normal vol<CR>')
@@ -510,13 +510,16 @@ if telescope then
 	nmap('tl', '<cmd>Telescope<cr>') -- list of the pickers
 	-- nmap('tl', '<cmd>Telescope loclist<cr> ')
 
-	telescope.load_extension 'heading'
-	nmap('tt', '<cmd>Telescope heading <cr>')
 	-- nmap('tt', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope current_buffer_tags<CR>')
 	nmap('T', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope tags<CR>')
-
-	require('telescope').load_extension 'ultisnips'
-	nmap('tu', '<cmd>Telescope ultisnips <cr>')
+	telescope.load_extension 'heading'
+	nmap('tt', '<cmd>Telescope heading <cr>')
+	telescope.load_extension 'changes'
+	nmap('tu', '<cmd>Telescope changes <cr>')
+	telescope.load_extension 'ultisnips'
+	nmap('tU', '<cmd>Telescope ultisnips <cr>')
+	-- telescope.load_extension("yank_history")
+	-- nmap('ty', '<cmd>Telescope yank_history <cr>')
 end -- }}} 
 
 -- urlview {{{
@@ -553,13 +556,17 @@ vim.g.UltiSnipsJumpBackwardTrigger = '<c-k>'
 vim.g.UltiSnipsSnippetsDir = HOME .. '~/.config/nvim/UltiSnips'
 vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' } -- }}} 
 
+ 
+-- yanky {{{
+-- https://github.com/gbprod/yanky.nvim#%EF%B8%8F-special-put
+nmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
+nmap('P', "<Plug>(YankyPutAfterLinewise)", { noremap = false })
+-- nmap('y', "<Plug>(YankyYank)", { noremap = false }) -- preserve_cursor_position
+nmap('<c-p>', ':YankyRingHistory <cr>') -- can be manage by Telescope
+xmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
+nmap("<A-n>", "<Plug>(YankyCycleForward)", { noremap = false })
+nmap("<A-p>", "<Plug>(YankyCycleBackward)", { noremap = false }) -- }}} 
 
--- miniyank {{{
--- https://github.com/bfredl/nvim-miniyank
-vim.g.miniyank_filename = HOME .. '/.local/share/nvim/miniyank.mpack'
-nmap('p', '<Plug>(miniyank-autoput)', { noremap = false })
-nmap('<A-n>', '<Plug>(miniyank-cycle)', { noremap = false })
-nmap('<A-p>', '<Plug>(miniyank-cycleback)', { noremap = false }) -- }}} 
 
 -- Status and tab bars {{{
 nmap('<leader><Tab>', ':BufferLineCycleNext <cr>')

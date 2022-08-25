@@ -159,3 +159,12 @@ use { 'kdheepak/lazygit.nvim', branch = 'main', cmd = { 'LazyGit' } }
 	}
 nmap('<F3>', ':NvimTreeToggle<CR>')
 nmap('<leader>n', ':NvimTreeToggle<CR>') -- }}} 
+
+
+use 'bfredl/nvim-miniyank'
+-- miniyank {{{
+-- https://github.com/bfredl/nvim-miniyank
+vim.g.miniyank_filename = HOME .. '/.local/share/nvim/miniyank.mpack'
+nmap('p', '<Plug>(miniyank-autoput)', { noremap = false })
+nmap('<A-n>', '<Plug>(miniyank-cycle)', { noremap = false })
+nmap('<A-p>', '<Plug>(miniyank-cycleback)', { noremap = false }) -- }}} 

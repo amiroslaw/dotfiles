@@ -11,6 +11,7 @@ run executes external command and optionally capture the output
 str converts any non-string type to string, and strings to quoted strings
 
 switch
+trim
 isArray
 enum
 split
@@ -347,7 +348,10 @@ function switch(cases, pattern)
 	end
 	return cases[false]
 end -- >>>
-
+--- trim <<<
+function trim(s)
+   return s:match'^()%s*$' and '' or s:match'^%s*(.*%S)'
+end -- >>>
 -- isArray <<<
 -- if a table is a dictionary it will return false
 --]]
