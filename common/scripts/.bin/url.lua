@@ -79,6 +79,7 @@ function sendToKindle(linkTab)
 	end
 	assert(#articlesWithErrors == 0, 'Could not send ' .. #articlesWithErrors .. ' articles\n' .. table.concat(articlesWithErrors, '\n'))
 	return 'Sent ' .. #linkTab .. ' articles'
+		-- local epubExe = run('pandoc --from html --to docx --output "' .. tmpDir .. title .. '.doxc" "' .. tmpDir .. title .. '"') -- docx
 		-- local title = os.time() - special chars in filename
 		-- local epubExe = run('pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata rights=' .. link .. ' --metadata date='..date..' --metadata title="'.. title .. '" "' .. tmpDir .. title .. '"')
 			-- creating docx

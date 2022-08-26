@@ -167,9 +167,12 @@ nmap ii	:!identify %f %S <cr>
 nmap cp	:!pdfunite %f %d:t.pdf <cr>
 "pdftotext
 nmap cP	:!pdftotext %c %c:r <cr>
+" remove spaces from filename
+noremap c- :!echo %f:gs? ?^? | xargs -n1 | xargs -r -I@ -P 0  sh -c 'V="@"; mv "${V//^/ }" "${V//^/-}"' <cr>
 "Tesseract OCR
-noremap ct :!echo %f | xargs -n1 | xargs -r -I @ -P 0  tesseract "@" "@" <cr>
-noremap cT :!for i in %f; do  tesseract "$i"  "${i%%.png}"; done <cr>
+noremap cT :!for i in %f; do tesseract "$i"  "${i%%.png}"; done <cr>
+noremap ct :!echo %f:gs? ?^? | xargs -n1 | xargs -r -I @ -P 0 sh -c 'V="@"; tesseract "${V//^/ }" "${V//^/ }"' <cr>
+" noremap ct :!echo %f | xargs -n1 | xargs -r -I @ -P 0  tesseract "@" "@" <cr>
 "dragon dr - drag from and dl drop to
 nmap dr :!dragon-drop %f <cr> 
 nmap dl :!dragon-pull.sh <cr>

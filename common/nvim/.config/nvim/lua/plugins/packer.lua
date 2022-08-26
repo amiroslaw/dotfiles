@@ -42,7 +42,7 @@ return require('packer').startup(function()
 			{ 'fhill2/telescope-ultisnips.nvim' },
 			{ 'crispgm/telescope-heading.nvim', lock = true }, -- I added asciidoc support
 			{ 'nvim-lua/plenary.nvim' },
-			{ 'LinArcX/telescope-changes.nvim', lock = true }, -- I added jump support
+			{ 'amiroslaw/telescope-changes.nvim' },
 			-- { 'gbprod/yanky.nvim'},
 		},
 	}
