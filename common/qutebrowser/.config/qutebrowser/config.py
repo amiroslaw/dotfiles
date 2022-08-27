@@ -214,6 +214,8 @@ config.bind('alp', 'spawn -v mpv.lua videopopup {url}')
 config.bind('aha', urlCmdHint + '-v mpv.lua audioplay {hint-url}')
 config.bind('aaa', 'spawn -v mpv.lua audiolist')
 config.bind('ala', 'spawn -v mpv.lua audioplay "{url}"')
+config.bind(';w', 'hint video userscript yt.lua')
+config.bind(';W', 'spawn --userscript yt.lua')
 # }}}
 
 # ======================= COPING OR CREATE ============= {{{
@@ -404,6 +406,7 @@ c.hints.selectors["p"] = [ "p" ]
 c.hints.selectors["copyable"] = [ "p", "ul", "ol", "table", "strong", "header", "article", "section", "main", 
     "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "i", "dl", "mark" ]
 c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'input[type="checkbox"]', 'input[type="radio"]', 'input[type="range"]', 'input[type="submit"]', 'input[type="reset"]', 'input[type="button"]', 'input[type="image"]', 'form button', 'select', '.dropdown' ]
+c.hints.selectors["video"] = [ "ytd-thumbnail a#thumbnail", '.video-grid > div > a:first-child', 'a.router-link-active.router-link-exact-active' ]
 # }}}
 
 # ======================= Test ============= {{{
