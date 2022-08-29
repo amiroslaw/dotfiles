@@ -1,84 +1,121 @@
 #!/usr/bin/luajit
--- TODO maybe add flag for url of the website that it copied from, don't forget to add the second arg in the wrapper script
-
 local gumbo = require 'gumbo'
 
-local selectedHtml = os.getenv 'QUTE_SELECTED_HTML'
-local quteFifo = os.getenv 'QUTE_FIFO'
-local readerTmp = '/tmp/qute-speedread.txt'
+local CONST = enum({
+	selectedTxt = os.getenv 'QUTE_SELECTED_TEXT',
+	selectedHtml = os.getenv 'QUTE_SELECTED_HTML',
+	quteFifo = os.getenv 'QUTE_FIFO',
+	quteUrl = os.getenv 'QUTE_URL',
+	readerTmp = '/tmp/qb-reader.txt',
+	clipFile = '/tmp/qb-clipboard',
+	clipFileHtml = '/tmp/qb-clip.html',
+	argFile = '/tmp/qb-arg',
+	argEngineSeparator = ':',
+	defaultSearchEngine = ' ',
+})
 
-local arg = ''
-local argFile = io.open('/tmp/qute-arg', 'r+')
-if argFile then
-	arg = argFile:read '*all'
-	argFile:seek('set')
-	argFile:write('no argument')
-	argFile:close()
+function copy(txt)
+	local txt = txt and txt or CONST.selectedTxt
+	assert(writef(txt, CONST.clipFile), 'Did not copy to clipboard - IO error')
+	assert(os.execute('xclip -sel clip -i ' .. CONST.clipFile) == 0, 'Did not copy to clipboard -xclip')
 end
 
-local document = gumbo.parse(selectedHtml)
-local selectedTxt = document:getElementsByTagName '*'
-selectedTxt = selectedTxt[1].textContent
-
-if arg == '--split' then
+local function splitSentences()
 	local sentences = {}
 	-- regex = '[^%.!?]+[!?%.]%s*'
 	-- regex = '.-[!?:%.]'
 	-- regex = '.-[!?:%.]%s'
-	regex = '.-[%.:!?]%f[%z%s]'
-	for match in selectedTxt:gmatch(regex) do
+	local regex = '.-[%.:!?]%f[%z%s]'
+	for match in CONST.selectedTxt:gmatch(regex) do
 		table.insert(sentences, match)
 	end
-	selectedTxt = rofiMenu(sentences, 'Sentence')
+	local rofiOutput = rofiMenu(sentences, 'Sentence')
+	copy(rofiOutput)
 end
 
-if arg == '--url' then
-	for i, element in ipairs(document.links) do
-		selectedTxt = selectedTxt .. '\n' .. element:getAttribute 'href'
+function adoc()
+	local document = gumbo.parse(CONST.selectedHtml)
+	local gumboElement = document:getElementsByTagName '*'
+	local html = gumboElement[1].outerHTML
+	assert(writef(html, CONST.clipFileHtml), 'adoc - IO error')
+	local ok, out = run('pandoc --wrap=none --from html --to asciidoc --output ' .. CONST.clipFile .. ' ' .. CONST.clipFileHtml)
+	
+	if ok then
+		assert(os.execute('xclip -sel clip -i ' .. CONST.clipFile) == 0, 'Did not copy to clipboard -xclip')
+	else
+		writef('message-warning "Could not convert to adoc - copied plain text"', CONST.quteFifo, 'a')
+		copy()
 	end
 end
 
-if arg == '--speed' then
-	local file = io.open(readerTmp, 'w')
-	file:write(selectedTxt)
-	file:close()
-	os.execute( 'wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. readerTmp .. ' | speedread -w 300"')
+function colpyWithUrl()
+	local document = gumbo.parse(CONST.selectedHtml)
+	local urls = '' -- urls will have relative path
+	for _, element in ipairs(document.links) do
+		urls = urls .. '\n' .. element:getAttribute 'href'
+	end
+	copy(CONST.selectedTxt .. urls)
 end
 
-if arg == '--read' then
-	local tmpName = os.tmpname()
-	tmpName = tmpName .. '.txt'
-	local file = io.open(tmpName, 'w')
-	file:write(selectedTxt)
-	file:close()
-	os.execute('st -c read -n read -e nvim ' .. tmpName)
+function colpyAdocUrl()
+	copy(CONST.quteUrl .. '[' .. trim(CONST.selectedTxt) .. ']')
 end
 
-function searchEngine(engine)
-	local fifo = io.open(quteFifo, 'a')
-	selectedTxt = selectedTxt:gsub('\t', ' ')
-	selectedTxt = selectedTxt:gsub('\n', ' ')
-	fifo:write('open -t ' .. engine .. ' ' .. selectedTxt)
-	fifo:close()
-	
+function speed()
+	assert(os.execute( 'wezterm --config font_size=19.0 start --class rsvp -- sh -c "echo ' .. CONST.selectedTxt .. ' | speedread -w 300"') == 0, 'Error in function speed()')
 end
 
-if arg == '--translate' then
-	searchEngine('l')
+function read()
+	assert(writef(CONST.selectedTxt, CONST.readerTmp), 'read() - IO error')
+	os.execute('st -c read -n read -e nvim ' .. CONST.readerTmp)
 end
 
-if arg == '--search' then
-	searchEngine(' ')
+function searchEngine(engine, txt)
+	txt = txt:gsub('\t', ' ')
+	txt = txt:gsub('\n', ' ')
+	txt = txt:gsub('/', '\\')
+
+	local cmd = 'open -t ' .. engine .. ' ' .. txt
+	writef(cmd, CONST.quteFifo, 'a')
 end
 
-local ok = os.execute('echo "' .. selectedTxt .. '" | xclip -sel clip')
-if ok then
-	io.open(quteFifo, 'a'):write 'message-info "Selected"'
-	-- io.open(quteFifo, 'a'):write('message-info "Copied: ' .. split(selectedTxt, '\n')[1] .. '"')
-else
-	io.open(quteFifo, 'a'):write 'message-error Selection field'
+function search(engine)
+	engine = engine and engine or CONST.defaultSearchEngine
+	searchEngine(engine, CONST.selectedTxt)
 end
 
--- io.open(quteFifo, 'a'):write("message-info 'anchor not found'" )
--- io.open('/tmp/qb-output', 'w+'):write(anchors[selectedAnchor])
--- io.open(quteFifo, 'a'):write("message-info 'Bookmark added to Buku!'" )
+local cases = {
+	['--adoc'] = adoc,
+	['--adoc-url'] = colpyAdocUrl,
+	['--url'] = colpyWithUrl,
+	['--speed'] = speed,
+	['--read'] = read,
+	['--split'] = splitSentences,
+	['--search'] = search,
+	[false] = copy,
+}
+
+local arg = 'no argument'
+local argFile = io.open(CONST.argFile, 'r+')
+if argFile then
+	arg = argFile:read '*all'
+	argFile:seek 'set'
+	argFile:write 'no argument'
+	argFile:close()
+end
+
+-- argument `--search` can have value provided after colon - `--search:l`
+local engine = CONST.defaultSearchEngine
+if arg:match '--search' then
+	engine = split(arg, CONST.argEngineSeparator)[2]
+	arg = '--search'
+end
+
+local switchFun = switch(cases, arg)
+local ok, error = pcall(switchFun, engine)
+if ok and arg ~= '--search' then -- probably qb is too slow so it join info and cmd
+	writef('message-info "Selected"', CONST.quteFifo, 'a')
+end
+if not ok then
+	writef('message-error "' .. error .. '"', CONST.quteFifo, 'a')
+end

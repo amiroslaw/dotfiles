@@ -8,6 +8,7 @@
  # \~fullscreen "~\" toggle
 # aviailable
 # super + ctrl + f 
+ # urgent u, ctrl i shift jest nieużywana
 # unused 
 # b - balance
  
@@ -322,9 +323,13 @@ super + d
 super + shift + d
 	rofi -modi drun,run,window -show drun -show-icons -sidebar-mode -monitor -4 -matching fuzzy
 
-# rofi scripts TODO path
+# mount 
 super + ctrl + d
-	 $ROFI/mbmain
+	$ROFI/mount-launcher.sh
+
+# rofi scripts TODO path or delete
+# super + ctrl + d
+	 # $ROFI/mbmain
 # bindsym $mod+shift+d exec --no-startup-id "rofi -modi window,top,drun -show window -show-icons -sidebar-mode -terminal st"
 
 alt + space
@@ -340,9 +345,6 @@ super + {_,shift,ctrl} + t
 		$ROFI/tran/trans-launcher.sh, \
 		search.lua plen primary
 	}
-# mount 
-super + ctrl + u
-	$ROFI/mount-launcher.sh
 #
 # MEDIA KEYS
 # ______________    

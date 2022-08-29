@@ -2,25 +2,26 @@
 -- https://github.com/marcotrosi/init.lua
 --
 --[[
-printt to print tables on screen or to file
-copyt copy table
-readf read file, return table
-writef write table/string to file
+printt(table, file) to print tables on screen or to file
+copyt(table) copy table
+readf(file) read file, return table
+writef(string|table, file, [readmode]) write table/string to file
 eq compares 2 values for equality
-run executes external command and optionally capture the output
+run(cmd) executes external command and optionally capture the output
 str converts any non-string type to string, and strings to quoted strings
 
-switch
+switch(cases, pattern)
+log(logMsg, [ level ], [ file ])
 trim
 isArray
-enum
-split
-splitFlags
-notify
-notifyError
-rofiMenu 
-rofiInput 
-rofiNumberInput 
+enum({ 'a', 'b' })
+split(string, separator)
+splitFlags(string)
+notify(string)
+notifyError(string)
+rofiMenu(optionTab, [prompt], [menuHeight])
+rofiInput([prompt], [width]) 
+rofiNumberInput([prompt])
 --]]
 
 
@@ -348,6 +349,7 @@ function switch(cases, pattern)
 	end
 	return cases[false]
 end -- >>>
+
 --- trim <<<
 function trim(s)
    return s:match'^()%s*$' and '' or s:match'^%s*(.*%S)'
@@ -372,7 +374,7 @@ function split(str, delimiter)
 end -- >>>
 
 -- enum <<<
--- Enum table. When accessing or modifying an entry of non -existing value, the error will be thrown.
+-- Enum table. When accessing or modifying an entry of existing or notexisting value, the error will be thrown.
 function enum(tab)
 	local meta_table = {
 		__index = function(self, key)

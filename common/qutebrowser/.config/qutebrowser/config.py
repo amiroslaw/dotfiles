@@ -222,16 +222,19 @@ config.bind(';W', 'spawn --userscript yt.lua')
 config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}')
 config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}', 'caret')
 config.bind('cN', 'spawn -u ~/.bin/note.lua clip {clipboard}')
-# select custom hints - use hint_wrapper if you need to pass an argument
+# select custom hints - use hint_wrapper if you need to pass an argument in hint
 config.bind('ck', 'hint code userscript select.lua')
 config.bind('cK', 'hint --rapid code userscript select.lua')
 config.bind('cc', 'spawn -u hint_wrapper copyable select.lua --url')
+config.bind('ca', 'spawn -u hint_wrapper copyable select.lua --adoc')
+config.bind('cu', 'spawn -u hint_wrapper links select.lua --adoc-url')
 config.bind('cC', 'hint --rapid copyable userscript select.lua')
 config.bind('ch', 'spawn -u hint_wrapper copyable select.lua --split') #hunk -multi-select → S-enter 
 config.bind('cs', 'spawn -u hint_wrapper copyable select.lua --speed')
 config.bind('cr', 'spawn -u hint_wrapper copyable select.lua --read')
-config.bind('cl', 'spawn -u hint_wrapper copyable select.lua --translate')
 config.bind('cg', 'spawn -u hint_wrapper copyable select.lua --search')
+config.bind('cl', 'spawn -u hint_wrapper copyable select.lua --search:l')
+config.bind('ct', 'spawn -u hint_wrapper copyable select.lua --search:t')
 
 config.bind('cp', 'print') # create PDF
 
@@ -241,7 +244,7 @@ config.bind('cI', 'hint --rapid images download')
 
 config.bind('pc', 'open -t {primary}')
 config.bind('pC', 'open -t {clipboard}')
-config.bind('ya', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-formatted link”
+config.bind('yu', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-formatted link”
 # }}}
 
 # ======================= LEADER and SESSION ============= {{{
