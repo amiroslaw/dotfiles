@@ -14,7 +14,13 @@ local CONST = enum({
 	defaultSearchEngine = ' ',
 })
 
-function copy(txt)
+function getHtmlElement()
+	local document = gumbo.parse(CONST.selectedHtml)
+	local gumboElement = document:getElementsByTagName '*'
+	return gumboElement[1]
+end
+
+local function copy(txt)
 	local txt = txt and txt or CONST.selectedTxt
 	assert(writef(txt, CONST.clipFile), 'Did not copy to clipboard - IO error')
 	assert(os.execute('xclip -sel clip -i ' .. CONST.clipFile) == 0, 'Did not copy to clipboard -xclip')
@@ -34,9 +40,7 @@ local function splitSentences()
 end
 
 function adoc()
-	local document = gumbo.parse(CONST.selectedHtml)
-	local gumboElement = document:getElementsByTagName '*'
-	local html = gumboElement[1].outerHTML
+	local html = getHtmlElement().outerHTML
 	assert(writef(html, CONST.clipFileHtml), 'adoc - IO error')
 	local ok, out = run('pandoc --wrap=none --from html --to asciidoc --output ' .. CONST.clipFile .. ' ' .. CONST.clipFileHtml)
 	
@@ -71,7 +75,7 @@ function read()
 end
 
 function searchEngine(engine, txt)
-	txt = txt:gsub('\t', ' ')
+	local txt = txt:gsub('\t', ' ')
 	txt = txt:gsub('\n', ' ')
 	txt = txt:gsub('/', '\\')
 
@@ -105,7 +109,7 @@ if argFile then
 end
 
 -- argument `--search` can have value provided after colon - `--search:l`
-local engine = CONST.defaultSearchEngine
+local engine
 if arg:match '--search' then
 	engine = split(arg, CONST.argEngineSeparator)[2]
 	arg = '--search'

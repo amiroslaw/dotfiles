@@ -299,6 +299,7 @@ vmap('<leader>f', '<cmd> lua vim.lsp.buf.range_formatting() <cr>')
 --""""""""""""""""""
 -- https://github.com/sbdchd/neoformat
 vmap('<a-f>', ':Neoformat! java astyle <CR>')
+nmap('<a-f>', ':Neoformat! java astyle <CR>')
 
 --""""""""""""""""""
 -- https://github.com/is0n/fm-nvim
