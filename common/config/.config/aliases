@@ -174,7 +174,7 @@ alias icat='kitty +kitten icat '
 alias plen='trans -shell pl:en -show-original n  -show-prompt-message n -show-languages n -play'
 alias enpl='trans -shell en:pl -show-original n  -show-prompt-message n -show-languages n -play -speak'
 alias dic='trans -sp en: -show-prompt-message n -show-languages n'
-alias irr='cat $path_note/Home/angielski/irregular.adoc | grep'
+alias irr='cat $path_note/home/angielski/irregular.adoc | grep'
 alias backup_note='cp -r $path_note ~/Templates/backup/note/notebook-$(date -u +"%Y-%m-%d")'
 #}}}
 
