@@ -71,6 +71,7 @@ return require('packer').startup(function()
 	-- NOTE
 	use { 'itchyny/calendar.vim', cmd = { 'Calendar' } } -- problem with api; maybe delete
 	use { 'aserebryakov/vim-todo-lists', tag = '0.7.1' }
+	use 'dbeniamine/todo.txt-vim'
 	use { 'kabbamine/lazyList.vim', cmd = { 'LazyList' } }
 	use 'axieax/urlview.nvim'
 	-- asciidoctor
@@ -80,7 +81,6 @@ return require('packer').startup(function()
 	use { 'previm/previm', ft = { 'markdown' } }
 	use { 'godlygeek/tabular', ft = { 'markdown' } } -- do wyrównywania np w tabelach http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ :Tab /|
 	use 'majutsushi/tagbar'
-
 	-- CODE
 	use { 'lewis6991/gitsigns.nvim' }
 	use { 'kylechui/nvim-surround' }

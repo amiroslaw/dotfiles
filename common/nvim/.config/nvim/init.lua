@@ -63,6 +63,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 	command = 'silent! lua vim.highlight.on_yank {timeout=600}',
 	group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }), -- clear true is default
 })
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+	pattern = { '*/todo/*' },
+	command = [[set filetype=todo]],
+})
 -- compile and execute 
 local lang_maps = {
 	python = { exec = "python %" },
@@ -166,8 +170,8 @@ function omap(shortcut, command, opts)
 	map('o', shortcut, command, opts)
 end -- }}} 
 
-
 vim.g.mapleader = ';'
+vim.g.maplocalleader=" " --space
 nmap('<leader>/', ':nohlsearch<cr>') -- from nvim 0.6 it's by default c-l
 nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>')
 nmap('Zz', ' :q! <cr>')
@@ -185,7 +189,7 @@ nmap('gf', '<c-w>gF') -- open file in a new tab
 nmap('gF', '<c-w>F')
 
 -- page scroll, disable half-page because I'll use hop plugin
-nmap('<Space>', '<C-f> <cr>', { nowait = true })
+nmap('<C-d>', '<C-f> <cr>', { nowait = true })
 nmap('<C-u>', '<C-b> <cr>')
 --folds
 nmap('zn', ']z <cr>')
@@ -260,6 +264,7 @@ imap('<C-e>', 'z=')
 nmap('<S-e>', '[s')
 --replace from selection/ substitution, produce error but it's workaround for showing command line mode
 vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
+vmap('<S-A-r>', '"hy:%s/<C-r>h/^M/g<left><left><cmd>') -- add special char for enter c-v enter
 -- }}} 
 
 -- TEXT OBJECTS {{{
@@ -728,6 +733,8 @@ require'lightspeed'.setup {
   exit_after_idle_msecs = { unlabeled = 3000, labeled = nil },
   jump_to_unique_chars = { safety_timeout = 400 },
 } -- }}}
+
+
 
 -- }}} 
 -- vim: foldmethod=marker

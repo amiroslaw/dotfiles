@@ -12,19 +12,25 @@ List of the options:
 ]]
 todoPath = os.getenv('NOTE') ..  '/ZADANIA/week.todo'
 function show() 
-	local todoTxt = io.input(todoPath):read("*a")
-	local start, last = todoTxt:find("# Week")
-	local todayTxt = string.sub(todoTxt, 1, start -1)
-
-	os.execute('echo "' .. todayTxt .. '" | zenity --text-info')
+	local ok, err = run('todo.sh -p ls @t' .. ' | zenity --text-info')
+	-- local todoTxt = io.input(todoPath):read("*a")
+	-- local start, last = todoTxt:find("# Week")
+	-- local todayTxt = string.sub(todoTxt, 1, start -1)
+ --
+	-- os.execute('echo "' .. todayTxt .. '" | zenity --text-info')
 end
 function add() 
-	task = io.popen('zenity --entry --text="Add task"'):read('*a')
-	file = io.open(todoPath, "a+")
-	file:write("- [ ] " .. task)
-	file:close()
+	local task = io.popen('zenity --entry --text="Add task"'):read('*a')
+	local ok, err = run('todo.sh add "' .. task .. '" +x')
+	-- file = io.open(todoPath, "a+")
+	-- file:write("- [ ] " .. task)
+	-- file:close()
 
-	os.execute('dunstify "Task added"')
+	if ok then
+		os.execute('dunstify "Task added"')
+	else
+		notifyError(err[1])
+	end
 end
 local switch = (function(name,args)
 	local sw = {

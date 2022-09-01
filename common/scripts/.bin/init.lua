@@ -7,7 +7,7 @@ copyt(table) copy table
 readf(file) read file, return table
 writef(string|table, file, [readmode]) write table/string to file
 eq compares 2 values for equality
-run(cmd) executes external command and optionally capture the output
+status,out,err = run(cmd) - out and err are tables; executes external command and optionally capture the output
 str converts any non-string type to string, and strings to quoted strings
 
 switch(cases, pattern)
