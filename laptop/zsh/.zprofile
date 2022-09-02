@@ -17,6 +17,7 @@ export USER_HOME="/home/miro"
 # export LC_ALL=C
 export LC_ALL=en_US.UTF-8
 
+bindkey -e
 
 # if [[ "$(tty)" = "/dev/tty1" ]]; then
 #	pgrep bspwm || startx

@@ -55,7 +55,6 @@ alias cfncmpcpp='nvim ~/.ncmpcpp/config'
 alias cfzsh='nvim ~/.zshrc'
 alias cftmux='nvim ~/.tmux.conf'
 alias cfsxiv='nvim ~/.config/sxiv/exec/key-handler'
-alias cfconky='nvim ~/.config/conky/conky_todo'
 alias cfbspwm='nvim ~/.config/bspwm/bspwmrc'
 alias cfautostart='nvim ~/.config/bspwm/autostart'
 alias cfsxhkd='nvim ~/.config/sxhkd/sxhkdrc'
@@ -65,8 +64,8 @@ alias cfqute='nvim ~/.config/qutebrowser/config.py'
 #}}}
 
 # {{{ RÓŹNE
-
-alias weather='curl wttr.in/lubartów'
+alias setup='$EDITOR "$NOTE"/finance/inwestycje/setup.adoc'
+alias weather='curl wttr.in/warszawa'
 alias cl='clear'
 alias se='sudoedit'
 alias permissionX='sudo chmod -R +x'
@@ -114,6 +113,10 @@ alias pp='xclip-pastefile'
 alias yy='xclip-copyfile'
 alias cc='xclip-cutfile'
 alias t='todo.sh'
+alias ta='todo.sh add +x '
+alias tt='todo.sh ls @t'
+alias td='todo.sh done '
+alias to='$EDITOR "$NOTE"/todo/todo.txt'
 alias tor='screen -x tor'
 alias huliomail='tmpmail -g Huliofff@1secmail.org && tmpmail -r'
 alias ping='prettyping'
@@ -362,11 +365,6 @@ take () {
   mkdir -p "$1" && cd "$1"
   }
 
-function zadAdd() { 
-	echo "add task"
-	read task
-	echo "- [ ]" $task >> $NOTE/ZADANIA/today.todo
-}
 
 wypakuj () {
     if [ -f $1 ] ; then
@@ -407,8 +405,18 @@ bindkey -M isearch " " magic-space    # normal space during searches
 #}}}
 
 #{{{ old
-alias sr='sr -browser=firefox'
-alias surfraw='surfraw -browser=w3m'
+# alias sr='sr -browser=firefox'
+# alias surfraw='surfraw -browser=w3m'
+## job
+# alias vpn='cd /home/miro/eversis/amiroslaw/eversis-pfs-node1-UDP4-1195-amiroslaw && sudo openvpn --config eversis-pfs-node1-UDP4-1195-amiroslaw.ovpn --auth-user-pass pass.txt'
+
+# alias zadView='cat $path_note/ZADANIA/today.todo' i have script for this
+# alias cfconky='nvim ~/.config/conky/conky_todo'
+# function zadAdd() { 
+# 	echo "add task"
+# 	read task
+# 	echo "- [ ]" $task >> $NOTE/ZADANIA/today.todo
+# }
 # alias dic='python ~/Exe/ProgramFile/dictator-0.9.7/dictator_start.py&'      
 # alias kee='kpcli --kdb ~/Documents/Ustawienia/personal/KeePass2.kdbx'
 # alias pom='~/Documents/Ustawienia/sync/pomodoro/pomodoro'
@@ -482,9 +490,5 @@ alias surfraw='surfraw -browser=w3m'
 #alias gg='tmux attach -t gg'
 #}}}
 
-## job
-# alias vpn='cd /home/miro/eversis/amiroslaw/eversis-pfs-node1-UDP4-1195-amiroslaw && sudo openvpn --config eversis-pfs-node1-UDP4-1195-amiroslaw.ovpn --auth-user-pass pass.txt'
-
-# alias zadView='cat $path_note/ZADANIA/today.todo' i have script for this
 
 # vim: foldmethod=marker
