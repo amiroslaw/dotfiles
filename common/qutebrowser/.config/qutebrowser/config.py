@@ -404,7 +404,7 @@ config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
 
 # ================== Custom hints ======================= {{{
 # Selects all code tags whose direct parent is not a pre tag
-c.hints.selectors["code"] = [ ":not(pre) > code", "pre" ]
+c.hints.selectors["code"] = [ ":not(pre) > code", "pre", "div.enlighter" ]
 c.hints.selectors["p"] = [ "p" ]
 c.hints.selectors["copyable"] = [ "p", "ul", "ol", "table", "strong", "header", "article", "section", "main", 
     "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "i", "dl", "mark" ]
