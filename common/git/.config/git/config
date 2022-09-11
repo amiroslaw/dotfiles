@@ -12,7 +12,11 @@
 	prompt = false
 [difftool "meld"]
     cmd = meld "$LOCAL" "$REMOTE"
+[mergetool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [core]
     pager = delta --side-by-side
 	autocrlf = input
 	editor = nvim
+[mergetool "meld"]
+	trustExitCode = true
