@@ -24,7 +24,7 @@ local launch_menu = {
 	},
 }
 return { -- Must be in the end
-	color_scheme = plugins.getColorscheme 'Dracula',
+	color_scheme = plugins.getColorscheme 'kanagawabones',
 	default_cursor_style = 'SteadyBar', -- the best in vim
 	font_size = 11,
 	font = wezterm.font_with_fallback(
@@ -36,7 +36,7 @@ return { -- Must be in the end
 	scrollback_lines = 10000,
 	harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, -- Disable Ligatures, can by set as toggle
 
-	window_background_opacity = 0.8,
+	window_background_opacity = 1.0,
 	inactive_pane_hsb = {
 		saturation = 0.8,
 		brightness = 0.7,

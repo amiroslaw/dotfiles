@@ -71,17 +71,15 @@ news.version=2.6.0
 #include dark-red-256.theme
 #include dark-green-256.theme
 #include dark-blue-256.theme
-#include dark-violets-256.theme
-include dark-yellow-green.theme
+include dark-violets-256.theme
+#include dark-yellow-green.theme
 #include dark-gray-256.theme
 #include dark-gray-blue-256.theme
 #include solarized-dark-256.theme
 #include solarized-light-256.theme
 #include no-color.theme
 
-#WingTask sync server
-taskd.server=app.wingtask.com:53589
-taskd.key=~/.wingtask_certs/Huliofff@1secmail.org.key.pem
-taskd.ca=~/.wingtask_certs/letsencrypt_root_cert.pem
-taskd.certificate=~/.wingtask_certs/Huliofff@1secmail.org.cert.pem
-taskd.credentials=WingTask/Huliofff@1secmail.org/571d8866-6124-4dff-b772-991ad10d965b
+<<<<<<< HEAD
+include ~/Documents/Ustawienia/stow-private/task/wingtask-config
+=======
+>>>>>>> 6786c1c (tweaks)

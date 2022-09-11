@@ -127,10 +127,10 @@ config.bind('[', 'tab-prev')
 config.bind(',,', 'tab-close')
 config.bind('tm', 'tab-mute')
 config.bind('tg', 'tab-give')
-config.bind('tt', 'tab-select')
 config.bind('tc', 'tab-clone')
 config.bind('>', 'tab-move +')
 config.bind('<', 'tab-move -')
+config.bind('tt', 'set-cmd-text -sr :tab-focus')
 config.bind('<Ctrl-o>', 'tab-focus last')
 config.bind('$', 'tab-focus -1')
 config.bind('wn', 'open -w')
@@ -248,7 +248,6 @@ config.bind('yu', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-format
 # }}}
 
 # ======================= LEADER and SESSION ============= {{{
-config.bind('ee', 'set-cmd-text -sr :tab-focus')
 config.bind('er', 'config-source')
 config.bind('ep', 'spawn -u jspdfdownload')
 config.bind('eu', 'edit-url')

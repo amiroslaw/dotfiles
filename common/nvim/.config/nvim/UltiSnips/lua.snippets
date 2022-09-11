@@ -8,7 +8,7 @@ snippet #! "#!/usr/bin/env lua" b
 $0
 endsnippet
 
-snippet assert "Assertion" b
+snippet ass "Assertion" b
 assert(${1:condition}`!p
 if t[2]:
 	snip.rv = ", "
@@ -30,7 +30,7 @@ print(${1:`xclip -o -sel clip`})
 endsnippet
 
 snippet fun(ction)?! "New function" b
-function ${1:new_function}($2)
+local function ${1:new_function}($2)
 	$0
 end
 endsnippet
@@ -112,11 +112,11 @@ ${3:else
 }end
 endsnippet
 
-snippet local "local x = 1"
+snippet lo "local x = 1"
 local ${1:x} = ${0:1}
 endsnippet
 
-snippet switch "switch"
+snippet sw "switch"
 local switch = (function(name,args)
 	local sw = {
 		["${1:opiton1}"] = $0,

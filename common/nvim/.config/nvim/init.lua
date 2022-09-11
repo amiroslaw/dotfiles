@@ -381,12 +381,12 @@ if vim.fn.has 'persistent_undo' == 1 then
 end -- }}} 
 
 -- lazyList {{{
-nmap('gll', ":LazyList '- '<CR>")
-vmap('gll', ":LazyList '- '<CR>")
+nmap('glm', ":LazyList '- '<CR>")
+vmap('glm', ":LazyList '- '<CR>")
 nmap('glo', ":LazyList '. '<CR>")
 vmap('glo', ":LazyList '. '<CR>")
-nmap('gla', ":LazyList '* '<CR>")
-vmap('gla', ":LazyList '* '<CR>")
+nmap('gll', ":LazyList '* '<CR>")
+vmap('gll', ":LazyList '* '<CR>")
 nmap('gln', ":LazyList '1. '<CR>")
 vmap('gln', ":LazyList '1. '<CR>")
 nmap('glz', ":LazyList '* [ ] '<CR>")
@@ -576,8 +576,9 @@ nmap('P', "<Plug>(YankyPutAfterLinewise)", { noremap = false })
 nmap('<c-p>', ':YankyRingHistory <cr>') -- can be manage by Telescope
 xmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
 nmap("<A-n>", "<Plug>(YankyCycleForward)", { noremap = false })
-nmap("<A-p>", "<Plug>(YankyCycleBackward)", { noremap = false }) -- }}} 
-
+nmap("<A-p>", "<Plug>(YankyCycleBackward)", { noremap = false }) 
+nmap('yu', ':let @+ = expand("%:p")<cr>') -- copy current file path and name into clipboard
+-- }}} 
 
 -- Status and tab bars {{{
 nmap('<leader><Tab>', ':BufferLineCycleNext <cr>')
