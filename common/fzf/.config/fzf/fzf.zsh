@@ -4,7 +4,6 @@
 
 # Key bindings
 # ------------
-# source "~/.config/fzf/shell/key-bindings.zsh"
 source "$HOME/.config/fzf/shell/key-bindings.zsh"
 
 # Doesn't matter if fzf was installed from aur

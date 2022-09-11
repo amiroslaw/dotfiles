@@ -107,3 +107,7 @@ eval "$(fasd --init auto)"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/miro/.local/share/sdkman"
 [[ -s "/home/miro/.local/share/sdkman/bin/sdkman-init.sh" ]] && source "/home/miro/.local/share/sdkman/bin/sdkman-init.sh"
+
+if (( $(uname --nodename) == "hp" )) ; then
+	bindkey -e
+fi

@@ -734,7 +734,5 @@ require'lightspeed'.setup {
   jump_to_unique_chars = { safety_timeout = 400 },
 } -- }}}
 
-
-
 -- }}} 
 -- vim: foldmethod=marker
