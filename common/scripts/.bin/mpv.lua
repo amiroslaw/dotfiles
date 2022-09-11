@@ -66,31 +66,31 @@ end
 
 function videoplay(url)
 	writeUrlToFile(tmpPlay, url)
-	assert(os.execute('mpv --profile=stream --playlist=' .. tmpPlay) == 0)
+	assert(os.execute('mpv --profile=stream --playlist=' .. tmpPlay) == 0, 'Error: run mpv')
 end
 
 function videolist()
-	assert(os.execute('mpv --profile=stream --playlist=' .. tmpPlaylist) == 0)
+	assert(os.execute('mpv --profile=stream --playlist=' .. tmpPlaylist) == 0, 'Error: run mpv')
 	savePlaylist 'video'
 end
 
 function videopopup(url)
 	writeUrlToFile(tmpPlay, url)
-	assert(os.execute('mpv --x11-name=videopopup --profile=stream-popup --playlist=' .. tmpPlay) == 0)
+	assert(os.execute('mpv --x11-name=videopopup --profile=stream-popup --playlist=' .. tmpPlay) == 0, 'Error: run mpv')
 end
 
 function popuplist()
-	assert(os.execute('mpv --x11-name=videopopup --profile=stream-popup --playlist=' .. tmpPlaylist) == 0)
+	assert(os.execute('mpv --x11-name=videopopup --profile=stream-popup --playlist=' .. tmpPlaylist) == 0, 'Error: run mpv')
 	savePlaylist 'video'
 end
 
 function audioplay(url)
 	writeUrlToFile(tmpPlay, url)
-	assert( os.execute( 'st -c audio -e mpv --ytdl --no-video --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --playlist=' .. tmpPlay) == 0)
+	assert( os.execute( 'st -c audio -e mpv --ytdl --no-video --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --playlist=' .. tmpPlay) == 0, 'Error: run mpv')
 end
 
 function audiolist()
-	assert( os.execute( 'st -c audio -e mpv --ytdl --no-video --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --input-ipc-server=/tmp/mpvsocket --playlist=' .. tmpPlaylist) == 0)
+	assert( os.execute( 'st -c audio -e mpv --ytdl --no-video --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --input-ipc-server=/tmp/mpvsocket --playlist=' .. tmpPlaylist) == 0, 'Error: run mpv')
 	savePlaylist 'audio'
 end
 

@@ -123,9 +123,9 @@ vim.o.clipboard = 'unnamedplus'
 --vim.opt.clipboard:append('unnamedplus')
 
 vim.o.smartindent = true
-vim.bo.tabstop = 4
-vim.bo.shiftwidth = 4
-vim.bo.softtabstop = 4
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 4
 vim.o.scrolloff = 5 -- margin
 vim.o.hidden = true
 
@@ -188,9 +188,11 @@ vmap('<c-a-k>', ':m .-2<CR>gv=gv')
 nmap('gf', '<c-w>gF') -- open file in a new tab
 nmap('gF', '<c-w>F')
 
--- page scroll, disable half-page because I'll use hop plugin
+-- page scroll, override defaults
 nmap('<C-d>', '<C-f> <cr>', { nowait = true })
 nmap('<C-u>', '<C-b> <cr>')
+nmap('<C-a-d>', '<C-d> <cr>')
+nmap('<C-a-u>', '<C-u> <cr>')
 --folds
 nmap('zn', ']z <cr>')
 nmap('zp', '[z <cr>')
@@ -309,6 +311,7 @@ nmap('<a-f>', ':Neoformat! java astyle <CR>')
 --""""""""""""""""""
 -- https://github.com/is0n/fm-nvim
 nmap(',g', ':Lazygit <cr>')
+nmap('<leader>w', ':TaskWarriorTUI <cr>')
 nmap('<F3>', ':Vifm<CR>')
 nmap('<leader>n', ':Vifm<CR>')
 nmap('<leader>N', ':Ranger<CR>')
@@ -380,22 +383,24 @@ end -- }}}
 -- lazyList {{{
 nmap('gll', ":LazyList '- '<CR>")
 vmap('gll', ":LazyList '- '<CR>")
-nmap('g*', ":LazyList '* '<CR>")
-vmap('g*', ":LazyList '* '<CR>")
+nmap('glo', ":LazyList '. '<CR>")
+vmap('glo', ":LazyList '. '<CR>")
+nmap('gla', ":LazyList '* '<CR>")
+vmap('gla', ":LazyList '* '<CR>")
 nmap('gln', ":LazyList '1. '<CR>")
 vmap('gln', ":LazyList '1. '<CR>")
-nmap('glz', ":LazyList '[ ] '<CR>")
-vmap('glz', ":LazyList '[ ] '<CR>")
-nmap('gl1', ":LazyList '# '<CR>")
-vmap('gl1', ":LazyList '# '<CR>")
-nmap('gl2', ":LazyList '## '<CR>")
-vmap('gl2', ":LazyList '## '<CR>")
-nmap('gl3', ":LazyList '### '<CR>")
-vmap('gl3', ":LazyList '### '<CR>")
-nmap('gl4', ":LazyList '#### '<CR>")
-vmap('gl4', ":LazyList '#### '<CR>")
-nmap('gl5', ":LazyList '##### '<CR>")
-vmap('gl5', ":LazyList '##### '<CR>") -- }}} 
+nmap('glz', ":LazyList '* [ ] '<CR>")
+vmap('glz', ":LazyList '* [ ] '<CR>")
+nmap('gl1', ":LazyList '= '<CR>")
+vmap('gl1', ":LazyList '= '<CR>")
+nmap('gl2', ":LazyList '== '<CR>")
+vmap('gl2', ":LazyList '== '<CR>")
+nmap('gl3', ":LazyList '=== '<CR>")
+vmap('gl3', ":LazyList '=== '<CR>")
+nmap('gl4', ":LazyList '==== '<CR>")
+vmap('gl4', ":LazyList '==== '<CR>")
+nmap('gl5', ":LazyList '===== '<CR>")
+vmap('gl5', ":LazyList '===== '<CR>") -- }}} 
 
 -- vim-asciidoctor {{{
 --  https://github.com/habamax/vim-asciidoctor

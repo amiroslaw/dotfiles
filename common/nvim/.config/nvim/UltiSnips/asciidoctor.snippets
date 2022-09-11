@@ -43,6 +43,11 @@ endglobal
 #                           Titles and Sections
 # -------------------------------------------------------------------------
 
+snippet adocexp "adoc experimental atribute" !b
+:experimental:
+$0
+endsnippet
+
 snippet h1 "Header 1" !b
 = $1
 $0
@@ -107,6 +112,13 @@ snippet code "Code from clipboard" !b
 ----
 ${2:`xclip -o -sel clip`}
 ----
+$0
+endsnippet
+
+snippet codemd "Source short (md) Code Block" !b
+\`\`\`${1:java}
+${2:`xclip -o -sel clip`}
+\`\`\`
 $0
 endsnippet
 

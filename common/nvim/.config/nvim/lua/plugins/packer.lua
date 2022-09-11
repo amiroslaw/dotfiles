@@ -16,7 +16,7 @@ return require('packer').startup(function()
 	}
 	use 'voldikss/vim-browser-search'
 	use 'kyazdani42/nvim-web-devicons'
-	use { 'is0n/fm-nvim', cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit' } }
+	use { 'is0n/fm-nvim', cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit', 'TaskWarriorTUI' } }
 	use { 'folke/zen-mode.nvim', branch = 'main', cmd = { 'ZenMode' } }
 	use 'nvim-lualine/lualine.nvim'
 	use { 'akinsho/bufferline.nvim', branch = 'main' }
