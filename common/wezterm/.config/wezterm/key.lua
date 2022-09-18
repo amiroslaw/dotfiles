@@ -48,15 +48,16 @@ mapCS('l', act { ActivateTabRelative = 1 })
 mapCS('Tab', act { ActivateTabRelative = 1 })
 -- Modes X,Space, O, U, E
 -- mapCS('o', 'ShowLauncher')
-mapCS('e', wezterm.action { ShowLauncherArgs = { flags = 'FUZZY|LAUNCH_MENU_ITEMS' } })
-map('F1', wezterm.action { ShowLauncherArgs = { flags = 'FUZZY|KEY_ASSIGNMENTS' } }, 'ALT')
+mapCS('>', act.CharSelect { copy_on_select = true, copy_to = 'ClipboardAndPrimarySelection', }) -- emoji
+mapCS('e', act { ShowLauncherArgs = { flags = 'FUZZY|LAUNCH_MENU_ITEMS' } })
+map('F1', act { ShowLauncherArgs = { flags = 'FUZZY|KEY_ASSIGNMENTS' } }, 'ALT')
 -- Custom Actions
-mapCS('o', wezterm.action { EmitEvent = 'trigger-vim-with-scrollback' })
+mapCS('o', act { EmitEvent = 'trigger-vim-with-scrollback' })
 mapCS('s', plugins.openUrl)
-map('F2', wezterm.action { EmitEvent = 'toggle-opacity' }, 'ALT')
-map('F3', wezterm.action { EmitEvent = 'open-file-manager' }, 'ALT')
-map('F4', wezterm.action { EmitEvent = 'toggle-ligatures' }, 'ALT') -- don't work
-map('F7', wezterm.action { Search = { Regex = 'ERROR' } }, 'ALT')
+map('F2', act { EmitEvent = 'toggle-opacity' }, 'ALT')
+map('F3', act { EmitEvent = 'open-file-manager' }, 'ALT')
+map('F4', act { EmitEvent = 'toggle-ligatures' }, 'ALT') -- don't work
+map('F7', act { Search = { Regex = 'ERROR' } }, 'ALT')
 map('F12', 'ShowDebugOverlay', 'ALT')
 --disable key
 map('Enter', 'DisableDefaultAssignment', 'ALT')

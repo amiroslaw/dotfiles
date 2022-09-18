@@ -133,12 +133,6 @@ vim.o.hidden = true
 vim.wo.cursorline = true
 vim.wo.cursorcolumn = true
 
--- LSP 
-vim.cmd "sign define DiagnosticSignError text= texthl=DiagnosticSignError"
-vim.cmd "sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn"
-vim.cmd "sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo"
-vim.cmd "sign define DiagnosticSignHint text= texthl=DiagnosticSignHint"
-
 -- }}} 
 
 -- SHORTCUTS {{{
@@ -174,6 +168,8 @@ vim.g.mapleader = ';'
 vim.g.maplocalleader=" " --space
 nmap('<leader>/', ':nohlsearch<cr>') -- from nvim 0.6 it's by default c-l
 nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>')
+nmap(',l', '<cmd>luafile dev/init.lua<cr>', {}) -- for plugin development
+vmap(',w', '<cmd>lua require("taskwarrior-asciidoc").setup()<cr>') -- temp for plugin development
 nmap('Zz', ' :q! <cr>')
 -- nmap('ZZ', ' :write | bdelete!<cr>')
 
@@ -221,6 +217,17 @@ nmap('<C-j>', 'gj')
 nmap('<C-k>', 'gk')
 imap('<C-j>', '<Esc>gj')
 imap('<C-k>', '<Esc>gk')
+
+
+-- LSP {{{
+vim.cmd "sign define DiagnosticSignError text= texthl=DiagnosticSignError"
+vim.cmd "sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn"
+vim.cmd "sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo"
+vim.cmd "sign define DiagnosticSignHint text= texthl=DiagnosticSignHint"
+nmap(',j', '<cmd>lua vim.diagnostic.goto_next() <CR>' )
+nmap(',k', '<cmd>lua vim.diagnostic.goto_prev() <CR> ')
+-- }}} 
+
 
 -- Tabs, windows and terminal{{{
 
@@ -503,12 +510,12 @@ if telescope then
 	nmap('<c-s>', '<cmd>Telescope live_grep<cr>')
 	nmap('tp', '<cmd>Telescope find_files find_command=rg,--hidden,--files<cr>') -- with hidden files
 	nmap('to', '<cmd>Telescope oldfiles<cr>')
-	nmap('ti', '<cmd>Telescope current_buffer_fuzzy_find<cr>') -- lines in file
+	nmap('tl', '<cmd>Telescope current_buffer_fuzzy_find<cr>') -- lines in file
 	nmap('tj', '<cmd>Telescope jumplist<cr> ') -- I changed source code for showing only current file
 	nmap('tb', '<cmd>Telescope buffers<cr>') -- closed files
 	nmap('tc', '<cmd>Telescope commands <cr> ')
-	nmap('th', '<cmd>Telescope command_history<cr> ')
-	nmap('tH', '<cmd>Telescope help_tags<cr> ')
+	nmap('th', '<cmd>Telescope help_tags<cr> ') -- nivm api
+	nmap('tH', '<cmd>Telescope command_history<cr> ')
 	nmap('tg', '<cmd>Telescope git_status<cr>')
 	nmap('tk', '<cmd>Telescope keymaps<cr>')
 	nmap('tf', '<cmd>Telescope file_browser<cr>') -- can go to the parent dir
@@ -518,7 +525,7 @@ if telescope then
 	nmap('t1', '<cmd>Telescope man_pages<cr>')
 	nmap('tC', '<cmd>Telescope colorscheme<cr>')
 	nmap('tm', '<cmd>Telescope marks<cr>') -- list of the pickers
-	nmap('tl', '<cmd>Telescope<cr>') -- list of the pickers
+	nmap('ti', '<cmd>Telescope<cr>') -- list of the pickers
 	-- nmap('tl', '<cmd>Telescope loclist<cr> ')
 
 	-- nmap('tt', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope current_buffer_tags<CR>')
@@ -739,6 +746,25 @@ require'lightspeed'.setup {
   exit_after_idle_msecs = { unlabeled = 3000, labeled = nil },
   jump_to_unique_chars = { safety_timeout = 400 },
 } -- }}}
+
+-- TESTING
+
+local task = require('taskmaker')
+if task then
+task.setup({
+	app = 'taskwarrior', -- {'taskwarrior', 'todo.txt'}
+	-- app = 'todo.txt', -- {'taskwarrior', 'todo.txt'}
+	feedback = true,
+	default_context = 'inbox',
+	sync = true, -- synchronization
+	prefix = {
+		project = '+',
+		context = '@',
+	},
+})
+end
+
+vmap('<LocalLeader>t', '<cmd>lua require("taskmaker").addTasks() <CR>')
 
 -- }}} 
 -- vim: foldmethod=marker

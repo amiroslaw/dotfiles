@@ -53,13 +53,6 @@ uda.taskwarrior-tui.shortcuts.1=~/.config/task/tui/sort-projects.sh
 # uda.taskwarrior-tui.keyconfig.shortcut1=n
 
 # INBOX
-context.in.read=+in
-context.in.write=+in
-# nieporzebne ogarne to contextem
-report.in.columns = id,description
-report.in.description = inbox
-report.in.filter = status:pending (+in)
-report.in.labels = ID,Description
 #uda.taskwarrior-tui.shortcuts.2=~/.config/task/tui/show-inbox.sh
 
 news.version=2.6.0
@@ -80,3 +73,5 @@ include dark-yellow-green.theme
 #include no-color.theme
 
 include ~/Documents/Ustawienia/stow-private/task/wingtask-config
+context.home.read=+home
+context.home.write=+home

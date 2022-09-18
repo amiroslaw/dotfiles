@@ -38,6 +38,7 @@ alias gry='$java8 -jar ~/Documents/Ustawienia/sync/grywalizacja/Grywalizacja.jar
 # {{{ config files
 alias batalias='bat ~/.config/aliases'
 alias cfportfolio='nvim ~/.config/investing/portfolio.yaml'
+alias cftask='nvim ~/.config/task/taskrc'
 alias cfidea='nvim ~/.config/ideavim//ideavimrc'
 alias cfpqiv='nvim ~/.config/pqivrc'
 alias cfaliases='nvim ~/.config/aliases'

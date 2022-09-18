@@ -31,7 +31,7 @@ return require('packer').startup(function()
 		'folke/which-key.nvim',
 		config = function()
 			require('which-key').setup {
-				spelling = { enabled = true, sugesstions = 20 },
+				spelling = { enabled = true, sugesstions = 20, ignore_missing = true },
 			}
 		end,
 	}
@@ -58,7 +58,6 @@ return require('packer').startup(function()
 			{ 'quangnguyen30192/cmp-nvim-ultisnips' },
 			{ 'hrsh7th/cmp-nvim-lua' }, -- vim.api
 			{ 'hrsh7th/cmp-nvim-lsp' },
-			-- {"github/copilot.vim"},  github AI
 			{ 'uga-rosa/cmp-dictionary' },
 			config = function()
 				require('cmp-nvim-ultisnips').setup {}
@@ -69,6 +68,7 @@ return require('packer').startup(function()
 	use 'SirVer/ultisnips'
 
 	-- NOTE
+	use 'amiroslaw/taskmaker.nvim'
 	use { 'itchyny/calendar.vim', cmd = { 'Calendar' } } -- problem with api; maybe delete
 	use { 'aserebryakov/vim-todo-lists', tag = '0.7.1' }
 	use 'dbeniamine/todo.txt-vim'

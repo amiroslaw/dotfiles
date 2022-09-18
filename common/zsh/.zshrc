@@ -67,6 +67,7 @@ if ! zgenom saved; then
 	zgenom load arzzen/calc.plugin.zsh
 	zgenom load urbainvaes/fzf-marks # mark alias_name ctrl-g TODO check if it works
 	zgenom load ptavares/zsh-sdkman
+	zgenom load plugins/taskwarrior
 	# zgenom load jeffreytse/zsh-vi-mode # can override some keybindings
 	# zgenom ohmyzsh plugins/git 
 	# zgenom load ChrisPenner/copy-pasta #alternative xclip-copyfile; xclip-pastefile
@@ -111,3 +112,6 @@ export SDKMAN_DIR="/home/miro/.local/share/sdkman"
 if (( $(uname --nodename) == "hp" )) ; then
 	bindkey -e
 fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.config/p10k.zsh ]] || source ~/config/.p10k.zsh
