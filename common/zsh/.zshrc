@@ -114,4 +114,4 @@ if (( $(uname --nodename) == "hp" )) ; then
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.config/p10k.zsh ]] || source ~/config/.p10k.zsh
+[[ ! -f ~/.config/p10k.zsh ]] || source ~/.config/p10k.zsh

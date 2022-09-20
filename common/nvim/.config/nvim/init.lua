@@ -749,20 +749,12 @@ require'lightspeed'.setup {
 
 -- TESTING
 
-local task = require('taskmaker')
-if task then
-task.setup({
+local task = require('taskmaker').setup({
 	app = 'taskwarrior', -- {'taskwarrior', 'todo.txt'}
-	-- app = 'todo.txt', -- {'taskwarrior', 'todo.txt'}
 	feedback = true,
-	default_context = 'inbox',
+	default_context = 'in',
 	sync = true, -- synchronization
-	prefix = {
-		project = '+',
-		context = '@',
-	},
 })
-end
 
 vmap('<LocalLeader>t', '<cmd>lua require("taskmaker").addTasks() <CR>')
 
