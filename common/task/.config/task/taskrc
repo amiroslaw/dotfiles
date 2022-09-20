@@ -19,6 +19,8 @@ data.location=~/.local/share/task
 hooks.location=~/.config/task/hooks
 weekstart=monday
 
+calendar.holidays=full
+alias.@=context
 
 # urgency.user.tag.next.coefficient           15.0 # +next tag
 # urgency.due.coefficient                     12.0 # overdue or near due date
@@ -57,7 +59,7 @@ uda.taskwarrior-tui.shortcuts.1=~/.config/task/tui/sort-projects.sh
 
 news.version=2.6.0
 # Color theme (uncomment one to use)
-#include light-16.theme
+include light-16.theme
 #include light-256.theme
 #include dark-16.theme
 #include dark-256.theme
@@ -65,13 +67,16 @@ news.version=2.6.0
 #include dark-green-256.theme
 #include dark-blue-256.theme
 #include dark-violets-256.theme
-include dark-yellow-green.theme
+#include dark-yellow-green.theme
 #include dark-gray-256.theme
 #include dark-gray-blue-256.theme
 #include solarized-dark-256.theme
 #include solarized-light-256.theme
 #include no-color.theme
 
-include ~/Documents/Ustawienia/stow-private/task/wingtask-config
-context.home.read=+home
-context.home.write=+home
+include ~/Documents/Ustawienia/stow-private/task/wingtask/wingtask-config
+#include ~/Documents/Ustawienia/stow-private/task/inthe/inthe-config
+# context.home.read=+home
+# context.home.write=+home
+
+# vim:ft=python
