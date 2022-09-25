@@ -388,17 +388,37 @@ if vim.fn.has 'persistent_undo' == 1 then
 end -- }}} 
 
 -- lazyList {{{
-nmap('glm', ":LazyList '- '<CR>")
-vmap('glm', ":LazyList '- '<CR>")
-nmap('glo', ":LazyList '. '<CR>")
-vmap('glo', ":LazyList '. '<CR>")
-nmap('gll', ":LazyList '* '<CR>")
+nmap('glt', ":LazyList '.'<CR>") -- title
+vmap('glt', ":LazyList '.'<CR>")
+nmap('gll', ":LazyList '* '<CR>") -- undordered list
 vmap('gll', ":LazyList '* '<CR>")
-nmap('gln', ":LazyList '1. '<CR>")
-vmap('gln', ":LazyList '1. '<CR>")
-nmap('glz', ":LazyList '* [ ] '<CR>")
+nmap('gll2', ":LazyList '** '<CR>")
+vmap('gll2', ":LazyList '** '<CR>")
+nmap('gll3', ":LazyList '*** '<CR>")
+vmap('gll3', ":LazyList '*** '<CR>")
+nmap('glo', ":LazyList '. '<CR>") -- ordered list
+vmap('glo', ":LazyList '. '<CR>")
+nmap('glo2', ":LazyList '.. '<CR>")
+vmap('glo2', ":LazyList '.. '<CR>")
+nmap('glo3', ":LazyList '... '<CR>")
+vmap('glo3', ":LazyList '... '<CR>")
+nmap('glz', ":LazyList '* [ ] '<CR>") -- task
 vmap('glz', ":LazyList '* [ ] '<CR>")
-nmap('gl1', ":LazyList '= '<CR>")
+nmap('glz2', ":LazyList '** [ ] '<CR>")
+vmap('glz2', ":LazyList '** [ ] '<CR>")
+nmap('glz3', ":LazyList '*** [ ] '<CR>")
+vmap('glz3', ":LazyList '*** [ ] '<CR>")
+nmap('gln', ":LazyList ':NOTE '<CR>") --asciidoc admonitions
+vmap('gln', ":LazyList ':NOTE '<CR>")
+nmap('gli', ":LazyList ':IMPORTANT '<CR>")
+vmap('gli', ":LazyList ':IMPORTANT '<CR>")
+nmap('glw', ":LazyList ':WARNING '<CR>")
+vmap('glw', ":LazyList ':WARNING '<CR>")
+nmap('glp', ":LazyList ':TIP '<CR>")
+vmap('glp', ":LazyList ':TIP '<CR>")
+nmap('glc', ":LazyList ':CAUTION '<CR>")
+vmap('glc', ":LazyList ':CAUTION '<CR>")
+nmap('gl1', ":LazyList '= '<CR>") -- header
 vmap('gl1', ":LazyList '= '<CR>")
 nmap('gl2', ":LazyList '== '<CR>")
 vmap('gl2', ":LazyList '== '<CR>")
@@ -407,7 +427,12 @@ vmap('gl3', ":LazyList '=== '<CR>")
 nmap('gl4', ":LazyList '==== '<CR>")
 vmap('gl4', ":LazyList '==== '<CR>")
 nmap('gl5', ":LazyList '===== '<CR>")
-vmap('gl5', ":LazyList '===== '<CR>") -- }}} 
+vmap('gl5', ":LazyList '===== '<CR>") 
+nmap('glmm', ":LazyList '- '<CR>") -- markdown
+vmap('glmm', ":LazyList '- '<CR>")
+nmap('glmo', ":LazyList '1. '<CR>")
+vmap('glmo', ":LazyList '1. '<CR>")
+-- }}} 
 
 -- vim-asciidoctor {{{
 --  https://github.com/habamax/vim-asciidoctor

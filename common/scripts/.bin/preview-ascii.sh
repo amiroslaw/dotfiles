@@ -1,6 +1,29 @@
 #!/bin/bash
 
-# killall entr
+killall entr
 
-ls "$1" | entr -n asciidoctor -o "$NOTE/preview.html" -a source-highlighter=highlightjs -a source-language=java -a highlightjs-languages=java,js,lua,sql,css,html,typescript,kotlin -a hardbreaks -a experimental -a toc=left -a toclevels=5 -a icons=font "$1" &
+ls "$1" | entr -n asciidoctor -o "$NOTE/preview.html" -a source-highlighter=highlight.js -a source-language=java -a highlightjs-languages=java,js,lua,sql,css,html,typescript,kotlin -a hardbreaks -a experimental=true -a toc=left -a toclevels=5 -a icons=font@ -a allow-uri-read=true "$1" &
 
+# https://docs.asciidoctor.org/asciidoc/latest/attributes/document-attributes-ref/#source-highlighting-and-formatting-attributes
+#
+# asciidocFX:
+# allow-uri-read=true
+# showtitle=true
+# idprefix=true is def
+# apply-data-line=true ??
+# apply-image-cacher=true
+# imagesdir=images
+#
+#
+# source-highlighter=highlight.js
+# * coderay
+# * highlight.js
+# * pygments
+# * rouge
+
+
+# :doctype: article
+# :encoding: utf-8
+# :lang: en
+# :toc: left
+# :numbered:

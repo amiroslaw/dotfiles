@@ -3,18 +3,18 @@
 --
 --[[
 printt(table, file) to print tables on screen or to file
-copyt(table) copy table
+copyt(table) deep copy table
 readf(file) read file, return table
 writef(string|table, file, [readmode]) write table/string to file
 eq compares 2 values for equality
-status,out,err = run(cmd) - out and err are tables; executes external command and optionally capture the output
+status,out,err = run(cmd) - status is boolean; out and err are tables; executes external command and optionally capture the output
 str converts any non-string type to string, and strings to quoted strings
 
 switch(cases, pattern)
 log(logMsg, [ level ], [ file ])
 trim
 isArray
-enum({ 'a', 'b' })
+enum({ a =1 , b =1 }) return table; problems with deep copy or loops
 split(string, separator)
 splitFlags(string)
 notify(string)
@@ -374,7 +374,7 @@ function split(str, delimiter)
 end -- >>>
 
 -- enum <<<
--- Enum table. When accessing or modifying an entry of existing or notexisting value, the error will be thrown.
+-- Enum table. Takes "map" as a parameter. When accessing or modifying an entry of existing or notexisting value, the error will be thrown.
 function enum(tab)
 	local meta_table = {
 		__index = function(self, key)

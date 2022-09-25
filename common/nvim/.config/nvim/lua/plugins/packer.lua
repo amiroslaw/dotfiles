@@ -79,7 +79,7 @@ return require('packer').startup(function()
 	-- markdown
 	use { 'plasticboy/vim-markdown', ft = { 'markdown' } }
 	use { 'previm/previm', ft = { 'markdown' } }
-	use { 'godlygeek/tabular', ft = { 'markdown' } } -- do wyrównywania np w tabelach http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ :Tab /|
+	use { 'godlygeek/tabular', cmd = {'Tab'}  } -- do wyrównywania np w tabelach http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ :Tab /| ft = { 'markdown', 'asciidoctor' }
 	use 'majutsushi/tagbar'
 	-- CODE
 	use { 'lewis6991/gitsigns.nvim' }
