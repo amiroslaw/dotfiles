@@ -207,7 +207,7 @@ imap('<C-v>', '<Esc>pa ')
 --" insert mode
 -- move to the nexst/previous word
 imap('<C-a>', '<C-o>b')
-imap('<C-d>', '<C-o>w')
+imap('<C-d>', '<C-o>e')
 -- move to the nexst/previous occurrence
 nmap('<A-a>', '#')
 nmap('<A-d>', '*')
@@ -303,6 +303,16 @@ vim.g['@f'] = 'f)a kb  '
 -- }}} 
 
 -- PLUGINS {{{
+
+local task = require('taskmaker').setup({
+	app = 'taskwarrior', -- {'taskwarrior', 'todo.txt'}
+	feedback = true,
+	default_context = 'in',
+	sync = true, -- synchronization
+})
+vmap('<LocalLeader>t', '<cmd>lua require("taskmaker").addTasks() <CR>')
+nmap('<LocalLeader>x', '<cmd>lua require("taskmaker").toggleTask() <CR>')
+
 -- ZenMode more readable text
 nmap('<F6>', ':ZenMode <CR>')
 
@@ -772,16 +782,6 @@ require'lightspeed'.setup {
   jump_to_unique_chars = { safety_timeout = 400 },
 } -- }}}
 
--- TESTING
-
-local task = require('taskmaker').setup({
-	app = 'taskwarrior', -- {'taskwarrior', 'todo.txt'}
-	feedback = true,
-	default_context = 'in',
-	sync = true, -- synchronization
-})
-
-vmap('<LocalLeader>t', '<cmd>lua require("taskmaker").addTasks() <CR>')
 
 -- }}} 
 -- vim: foldmethod=marker

@@ -1,3 +1,4 @@
+# vim:ft=python
 # [Created by task 2.6.2 9/8/2022 23:26:18]
 # For more documentation, see https://taskwarrior.org or try 'man task', 'man task-color',
 # 'man task-sync' or 'man taskrc'
@@ -81,11 +82,10 @@ uda.taskwarrior-tui.shortcuts.4=~/.config/task/scripts/tui.lua add-project
 uda.taskwarrior-tui.shortcuts.6=~/.config/task/scripts/tui.lua priority
 uda.taskwarrior-tui.shortcuts.7=~/.config/task/scripts/duplicate-completed.sh
 uda.taskwarrior-tui.shortcuts.8=~/.config/task/scripts/tui.lua rm-context
+uda.taskwarrior-tui.shortcuts.0=~/.config/task/scripts/sync-inthe.sh
 # doesn't work
 uda.taskwarrior-tui.keyconfig.shortcut1=n
 
-include ~/Documents/Ustawienia/stow-private/task/wingtask/wingtask-config
-#include ~/Documents/Ustawienia/stow-private/task/inthe/inthe-config
 
 # Color theme (uncomment one to use)
 #include light-16.theme
@@ -104,4 +104,4 @@ include dark-yellow-green.theme
 #include no-color.theme
 news.version=2.6.0
 
-# vim:ft=python
+include ~/Documents/Ustawienia/stow-private/task/wingtask/wingtask-config
