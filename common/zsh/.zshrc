@@ -109,9 +109,5 @@ eval "$(fasd --init auto)"
 export SDKMAN_DIR="/home/miro/.local/share/sdkman"
 [[ -s "/home/miro/.local/share/sdkman/bin/sdkman-init.sh" ]] && source "/home/miro/.local/share/sdkman/bin/sdkman-init.sh"
 
-if (( $(uname --nodename) == "hp" )) ; then
-	bindkey -e
-fi
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.config/p10k.zsh ]] || source ~/.config/p10k.zsh

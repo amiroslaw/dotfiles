@@ -313,6 +313,10 @@ local task = require('taskmaker').setup({
 vmap('<LocalLeader>t', '<cmd>lua require("taskmaker").addTasks() <CR>')
 nmap('<LocalLeader>x', '<cmd>lua require("taskmaker").toggleTask() <CR>')
 
+-- Windows {{{
+nmap('<leader>M', '<Cmd>WindowsToggleAutowidth<CR>')
+nmap('<leader>m', '<Cmd>WindowsMaximize<CR>') -- }}} 
+
 -- ZenMode more readable text
 nmap('<F6>', ':ZenMode <CR>')
 
@@ -591,13 +595,6 @@ nmap('<leader>v', ':PrevimOpen <CR>')
 -- to change style turn 0 to 1 in previm_disable_default_css and put path to
 vim.g.previm_disable_default_css = 1
 vim.g.previm_custom_css_path = HOME .. '/.config/nvim/custom/md-prev.css' -- }}} 
-
--- eighties automatyczne dostosowanie okien {{{
-vim.g.eighties_enabled = 1
-vim.g.eighties_minimum_width = 80
-vim.g.eighties_extra_width = 0 -- Increase this if you want some extra room
-vim.g.eighties_compute = 1 -- Disable this if you just want the minimum + extra
-vim.g.eighties_bufname_additional_patterns = { 'fugitiveblame' } -- Defaults to [], 'fugitiveblame' is only an example. Takes a comma delimited list of bufnames as strings. -- }}} 
 
 -- ultisnips {{{
 vim.g.UltiSnipsEditSplit = 'vertical'

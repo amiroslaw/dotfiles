@@ -2,7 +2,10 @@
 -- https://github.com/wbthomason/packer.nvim
 return require('packer').startup(function()
 	use 'ggandor/lightspeed.nvim'
-	use 'justincampbell/vim-eighties' -- Automatically resizes your windows
+	use { "anuvyklack/windows.nvim", -- Automatically resizes your windows
+	   requires = "anuvyklack/middleclass",
+	   config = function() require('windows').setup() end
+	}
 	use { 'mg979/vim-visual-multi', branch = 'master' }
 	use 'tpope/vim-repeat'
 	use 'chentoast/marks.nvim'

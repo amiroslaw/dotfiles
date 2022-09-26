@@ -168,3 +168,12 @@ vim.g.miniyank_filename = HOME .. '/.local/share/nvim/miniyank.mpack'
 nmap('p', '<Plug>(miniyank-autoput)', { noremap = false })
 nmap('<A-n>', '<Plug>(miniyank-cycle)', { noremap = false })
 nmap('<A-p>', '<Plug>(miniyank-cycleback)', { noremap = false }) -- }}} 
+
+
+use 'justincampbell/vim-eighties' 
+-- eighties automatyczne dostosowanie okien {{{
+vim.g.eighties_enabled = 1
+vim.g.eighties_minimum_width = 80
+vim.g.eighties_extra_width = 0 -- Increase this if you want some extra room
+vim.g.eighties_compute = 1 -- Disable this if you just want the minimum + extra
+vim.g.eighties_bufname_additional_patterns = { 'fugitiveblame' } -- Defaults to [], 'fugitiveblame' is only an example. Takes a comma delimited list of bufnames as strings. -- }}} 

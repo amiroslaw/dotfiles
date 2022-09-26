@@ -15,7 +15,7 @@ xset -dpms &
 feh --no-fehbg --randomize --recursive --bg-fill /home/miro/Pictures/wall/* &
 sleep 200 && light -S 80 &
 # xbacklight -set 15 &
-
+trackpoint.sh
 
 sleep 300 && megasync &
 clipster -d &
