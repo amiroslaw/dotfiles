@@ -169,7 +169,6 @@ vim.g.maplocalleader=" " --space
 nmap('<leader>/', ':nohlsearch<cr>') -- from nvim 0.6 it's by default c-l
 nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>')
 nmap(',l', '<cmd>luafile dev/init.lua<cr>', {}) -- for plugin development
-vmap(',w', '<cmd>lua require("taskwarrior-asciidoc").setup()<cr>') -- temp for plugin development
 nmap('Zz', ' :q! <cr>')
 -- nmap('ZZ', ' :write | bdelete!<cr>')
 
@@ -310,8 +309,8 @@ local task = require('taskmaker').setup({
 	default_context = 'in',
 	sync = true, -- synchronization
 })
-vmap('<LocalLeader>t', '<cmd>lua require("taskmaker").addTasks() <CR>')
-nmap('<LocalLeader>x', '<cmd>lua require("taskmaker").toggleTask() <CR>')
+vmap('<LocalLeader>t', '<cmd>TaskmakerAddTasks <CR>')
+nmap('<LocalLeader>x', '<cmd>TaskmakerToggle <CR>')
 
 -- Windows {{{
 nmap('<leader>M', '<Cmd>WindowsToggleAutowidth<CR>')
@@ -450,7 +449,6 @@ vmap('glmo', ":LazyList '1. '<CR>")
 
 -- vim-asciidoctor {{{
 --  https://github.com/habamax/vim-asciidoctor
-nmap('<F7>', ':!preview-ascii.sh % <CR>')
 nmap('<S-F7>', ':Asciidoctor2DOCX<CR>') -- TODO shift, can't be bind
 vim.g.asciidoctor_syntax_conceal = 1
 vim.g.asciidoctor_folding = 2
