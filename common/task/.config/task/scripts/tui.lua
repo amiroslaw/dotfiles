@@ -9,18 +9,20 @@ local function errorMsg(msg)
 	notifyError(msg)
 end
 
-local taskConfirmationCmd = 'task rc.bulk=0 rc.confirmation=off rc.dependency.confirmation=off rc.recurrence.confirmation=off '
+local taskConfirmationCmd =
+	'task rc.bulk=0 rc.confirmation=off rc.dependency.confirmation=off rc.recurrence.confirmation=off '
 local contextPrefix = enum { ADD = '+', REMOVE = '-' }
 local contextAliases = {
-	code = 'cod',
-	easy = 'eas',
-	finance = 'fin',
 	inbox = 'in',
-	kindle = 'kin',
-	laptop = 'lap',
-	listen = 'lis',
-	personal = 'per',
 	routine = 'rou',
+	carrer = 'car',
+	code = 'cod',
+	finance = 'fin',
+	personal = 'per',
+	laptop = 'lap',
+	kindle = 'kin',
+	listen = 'lis',
+	easy = 'eas',
 }
 
 local option = arg[1]
@@ -50,16 +52,16 @@ local function modifyTask(modification)
 end
 
 local function setPriority(priority)
-	local priority = priority and priority or rofiMenu ({ ' ', 'L', 'M', 'H' }, 'Set priority')
+	local priority = priority and priority or rofiMenu({ ' ', 'L', 'M', 'H' }, 'Set priority')
 	modifyTask('priority:' .. priority)
-end
-
-local function setProject(project)
-	modifyTask('project:' .. project)
 end
 
 local function setContext(prefix, context)
 	modifyTask(prefix .. contextAliases[context])
+end
+
+local function setProject(project)
+	modifyTask('project:' .. project)
 end
 
 local function addProject()
@@ -67,8 +69,22 @@ local function addProject()
 	-- maybe check if empty cos it will delete project
 	setProject(name)
 end
-local function setWait(prefix, date)
+
+local function setWait(date)
 	modifyTask('wait:' .. date)
+end
+
+local function modifyTag(tag, alias)
+	notify(tag)
+	notify(alias)
+	if alias == 'project' then
+		print 'setProject'
+		setProject(tag)
+	elseif alias == 'wait' then
+		setWait(tag)
+	else
+		setContext(contextPrefix.ADD, tag)
+	end
 end
 
 local function addTag()
@@ -77,21 +93,33 @@ local function addTag()
 	for _, project in ipairs(projects) do
 		tags[project] = 'project'
 	end
-	tags['removeProject'] = 'project'
 	tags['someday'] = 'wait'
 
-	-- TODO change rofiMenu - it should return table via run() for multi-select
-	local selected = rofiMenu(tags, 'Add tag')
-	if tags[selected] == 'context' then
-		setContext(contextPrefix.ADD, selected)
-	elseif tags[selected] == 'wait' then
-		setWait(contextPrefix.ADD, selected)
+	local selection = rofiMenu(tags, 'Add tag')
+	if type(selection) == 'string' then
+		modifyTag(selection, tags[selection])
 	else
-		if selected == 'removeProject' then
-			setProject ' '
-		else
-			setProject(selected)
+		for _, sel in ipairs(selection) do
+			modifyTag(sel, tags[sel])
 		end
+	end
+end
+
+local function removeTag()
+	local tags = copyt(contextAliases)
+	tags['remove project'] = 'project'
+	tags['all contexts'] = 'allContexts'
+	tags['wait/someday'] = 'wait'
+	local selected = rofiMenu(tags, 'Remove tag')
+
+	if tags[selected] == 'project' then
+		setProject ''
+	elseif tags[selected] == 'wait' then
+		setWait ''
+	elseif tags[selected] == 'allContexts' then
+		--TODO loop all tasks  task _get id.tags
+	else
+		setContext(contextPrefix.REMOVE, selected)
 	end
 end
 
@@ -100,18 +128,23 @@ local cases = {
 	['priority'] = setPriority,
 	['add-tag'] = addTag,
 	['add-project'] = addProject,
-	['rm-inbox'] = function() setContext(contextPrefix.REMOVE, 'inbox') end,
-	['rm-context'] = function() setContext(contextPrefix.REMOVE, rofiMenu(contextAliases, 'Remove context')) end,
-	[false] = function() errorMsg 'Invalid command argument' end,
+	['rm-inbox'] = function()
+		setContext(contextPrefix.REMOVE, 'inbox')
+	end,
+	['rm-tag'] = removeTag,
+	[false] = function()
+		errorMsg 'Invalid command argument'
+	end,
 }
 
 local switchFunction = switch(cases, option)
 
 xpcall(switchFunction, errorMsg)
 
--- IDK how to retrive all tags _context returns only defined contexts 
-	-- local tags = {}
-	-- local _, contexts = run 'task _context'
-	-- for _, context in ipairs(contexts) do
-	-- 	tags[context] = 'context'
-	-- end
+-- with not hardcoded contexts
+-- IDK how to retrive all tags _context returns only defined contexts
+-- local tags = {}
+-- local _, contexts = run 'task _context'
+-- for _, context in ipairs(contexts) do
+-- 	tags[context] = 'context'
+-- end

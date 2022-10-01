@@ -14,7 +14,7 @@ weekstart=monday
 calendar.holidays=full
 
 # -------------------------------------------------------------------------
-#                       context and reports
+#                       context
 # -------------------------------------------------------------------------
 alias.rep=+rou
 context.routine.read=+rou
@@ -38,41 +38,37 @@ context.listen.write=+lis
 context.easy.read=+eas
 context.easy.write=+eas
 
+# -------------------------------------------------------------------------
+#                       reports
+# -------------------------------------------------------------------------
 # projects; niby wyświela listę po t project??
 report.pro.description= Project sorting
-report.pro.columns  =   id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description,urgency
+report.pro.columns  =   id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.oneline,urgency
 report.pro.filter   =   status:pending -WAITING limit:page project
 report.pro.labels   =   ID,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,Description,Urg
 report.pro.sort=project+/,urgency-
 #report.pro.sort=project+\/,start.age+\/,urgency-
 
 alias.in=inbox
-report.inbox.description= Project sorting
+report.inbox.description= Inbox
 report.inbox.columns  =   id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description,urgency
 report.inbox.filter   =   status:pending -WAITING +in
 report.inbox.labels   =   ID,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,Description,Urg
 report.inbox.sort=project+/,urgency-
 
+# OVERRIDED
+report.minimal.columns=id,project,tags.list,description.count
+report.minimal.sort=urgency-/,project+ 
+
 # -------------------------------------------------------------------------
 #                       urgency
 # -------------------------------------------------------------------------
-# Just because its tagged/annotated doesn't mean its important
-urgency.tags.coefficient=0
+urgency.user.tag.in.coefficient=-3
+urgency.user.tag.car.coefficient=4
+urgency.user.tag.cod.coefficient=3
+urgency.user.tag.fin.coefficient=2
+urgency.tags.coefficient=0 # Just because its tagged/annotated doesn't mean its important
 # urgency.annotations.coefficient=0
-
-# urgency.user.project.My Project.coefficient  5.0 # assigned to project:"My Project"
-# urgency.uda.priority.H.coefficient           6.0 # high Priority
-# urgency.uda.priority.M.coefficient           3.9 # medium Priority
-# urgency.uda.priority.L.coefficient           1.8 # low Priority
-# urgency.user.tag.next.coefficient           15.0 # +next tag
-# urgency.due.coefficient                     12.0 # overdue or near due date
-# urgency.blocking.coefficient                 8.0 # blocking other tasks
-# urgency.scheduled.coefficient=5.0 # scheduled tasks
-# urgency.active.coefficient                   4.0 # already started tasks
-# urgency.age.coefficient=2.0 # coefficient for age
-# urgency.project.coefficient=1.0
-# urgency.waiting.coefficient                 -3.0 # waiting task
-# urgency.blocked.coefficient                 -5.0 # blocked by other tasks
 
 # -------------------------------------------------------------------------
 #                       TUI
@@ -83,7 +79,7 @@ uda.taskwarrior-tui.shortcuts.3=~/.config/task/scripts/tui.lua add-tag
 uda.taskwarrior-tui.shortcuts.4=~/.config/task/scripts/tui.lua add-project
 uda.taskwarrior-tui.shortcuts.6=~/.config/task/scripts/tui.lua priority
 uda.taskwarrior-tui.shortcuts.7=~/.config/task/scripts/duplicate-completed.sh
-uda.taskwarrior-tui.shortcuts.8=~/.config/task/scripts/tui.lua rm-context
+uda.taskwarrior-tui.shortcuts.8=~/.config/task/scripts/tui.lua rm-tag
 uda.taskwarrior-tui.shortcuts.0=~/.config/task/scripts/sync-inthe.sh
 # doesn't work
 uda.taskwarrior-tui.keyconfig.shortcut1=n

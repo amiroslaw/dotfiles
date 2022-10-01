@@ -4,7 +4,7 @@
 --[[
 printt(table, file) to print tables on screen or to file
 copyt(table) deep copy table
-readf(file) read file, return table
+readf(file) read file, returns table
 writef(string|table, file, [readmode]) write table/string to file
 eq compares 2 values for equality
 status,out,err = run(cmd) - status is boolean; out and err are tables; executes external command and optionally capture the output
@@ -14,12 +14,12 @@ switch(cases, pattern)
 log(logMsg, [ level ], [ file ])
 trim
 isArray
-enum({ a =1 , b =1 }) return table; problems with deep copy or loops
+enum({ a =1 , b =1 }) returns table; problems with deep copy or loops
 split(string, separator)
 splitFlags(string)
 notify(string)
 notifyError(string)
-rofiMenu(optionTab, [prompt], [menuHeight])
+rofiMenu(optionTab, [prompt], [menuHeight]), returns table if selected multiple items or string otherwise
 rofiInput([prompt], [width]) 
 rofiNumberInput([prompt])
 --]]
@@ -452,7 +452,16 @@ function rofiMenu(optionTab, prompt, menuHeight)
 	if lines > menuHeight then
 		lines = menuHeight
 	end
-	return io.popen('echo "' .. options .. '" | rofi -multi-select -monitor -4 -i -l ' .. lines .. ' -sep "|" -dmenu -p "' .. prompt .. '"'):read('*a'):gsub('\n', '')
+	local stat, selected, err= run('echo "' .. options .. '" | rofi -multi-select -monitor -4 -i -l ' .. lines .. ' -sep "|" -dmenu -p "' .. prompt .. '"')
+	if stat then
+		if #selected == 1 then
+			return selected[1]
+		else
+			return selected
+		end
+	else 
+		return ''
+	end
 end -- >>>
 
 -- getConfigProperties <<<
