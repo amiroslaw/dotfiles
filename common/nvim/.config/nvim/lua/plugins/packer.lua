@@ -73,7 +73,7 @@ return require('packer').startup(function()
 	-- NOTE
 	use 'amiroslaw/taskmaker.nvim'
 	use { 'itchyny/calendar.vim', cmd = { 'Calendar' } } -- problem with api; maybe delete
-	use { 'aserebryakov/vim-todo-lists', tag = '0.7.1' }
+	use { 'aserebryakov/vim-todo-lists' } -- , tag = '0.7.1'
 	-- use 'dbeniamine/todo.txt-vim'
 	use { 'kabbamine/lazyList.vim', cmd = { 'LazyList' } }
 	use 'axieax/urlview.nvim'

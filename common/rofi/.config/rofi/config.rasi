@@ -1,4 +1,5 @@
-@theme "one-light"
+@theme "gruvbox-light"
+/* @theme "one-light" */
 
 configuration {
 

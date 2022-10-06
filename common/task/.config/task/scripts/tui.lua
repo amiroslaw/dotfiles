@@ -3,7 +3,6 @@ local function errorMsg(msg)
 	if type(msg) == 'table' then
 		msg = msg[1]
 	end
-	print 'errorMsg'
 	printt(msg)
 	log(msg, 'ERROR')
 	notifyError(msg)
@@ -75,11 +74,8 @@ local function setWait(date)
 end
 
 local function modifyTag(tag, alias)
-	notify(tag)
-	notify(alias)
-	if alias == 'project' then
-		print 'setProject'
-		setProject(tag)
+	if not alias or alias == 'project'  then
+		setProject(tag:sub(2, #tag))
 	elseif alias == 'wait' then
 		setWait(tag)
 	else
@@ -87,10 +83,14 @@ local function modifyTag(tag, alias)
 	end
 end
 
+-- projects have `#` prefix
+-- empty string will remove project 
+-- new item is a new project
 local function addTag()
 	local tags = copyt(contextAliases)
 	local _, projects = run 'task _projects'
 	for _, project in ipairs(projects) do
+		project = project:gsub('^%a', '#'.. project:match('^%a'))
 		tags[project] = 'project'
 	end
 	tags['someday'] = 'wait'
@@ -122,6 +122,14 @@ local function removeTag()
 		setContext(contextPrefix.REMOVE, selected)
 	end
 end
+local function sync()
+	local stat, _, err = run('task sync')
+	if not stat then
+		notifyError(err[1])
+	else
+		notify('Synchronized')
+	end
+end
 
 local cases = {
 	['view'] = switchView,
@@ -132,6 +140,7 @@ local cases = {
 		setContext(contextPrefix.REMOVE, 'inbox')
 	end,
 	['rm-tag'] = removeTag,
+	['sync'] = sync,
 	[false] = function()
 		errorMsg 'Invalid command argument'
 	end,

@@ -64,7 +64,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 	group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }), -- clear true is default
 })
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
-	pattern = { '*/todo/*' },
+	pattern = { '*.todo' },
 	command = [[set filetype=todo]],
 })
 -- compile and execute 
@@ -94,7 +94,7 @@ end
 -- }}} 
 
 -- SETTINGS {{{
--- vim.o.ch = 0 -- hide command, from v8
+vim.o.ch = 0 -- hide command, from v8
 vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
 vim.o.termguicolors = true
 vim.b.buftype = '' -- fix Cannot write buftype option is set
@@ -307,8 +307,8 @@ vim.g['@f'] = 'f)a kb  '
 local task = require('taskmaker').setup({
 	app = 'taskwarrior', -- {'taskwarrior', 'todo.txt'}
 	feedback = true,
-	default_context = 'in',
 	sync = true, -- synchronization
+	-- default_context = 'in',
 })
 vmap('<LocalLeader>t', '<cmd>TaskmakerAddTasks <CR>')
 nmap('<LocalLeader>x', '<cmd>TaskmakerToggle <CR>')
