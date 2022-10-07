@@ -14,9 +14,9 @@ local function getBackground(hour)
 		end
 end
 vim.cmd 'colorscheme solarized8_high'
+-- vim.cmd 'colorscheme flattened_light'
 vim.o.background = getBackground()
 vim.cmd [[let ayucolor="light" ]]
--- vim.cmd 'colorscheme flattened_light'
 -- }}} 
 
 -- Autocommands {{{
@@ -169,6 +169,7 @@ vim.g.mapleader = ';'
 vim.g.maplocalleader=" " --space
 nmap('<leader>/', ':nohlsearch<cr>') -- from nvim 0.6 it's by default c-l
 nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>')
+nmap('<F1>', ':term taskwarrior-tui<CR>')
 nmap(',l', '<cmd>luafile dev/init.lua<cr>', {}) -- for plugin development
 nmap('Zz', ' :q! <cr>')
 -- nmap('ZZ', ' :write | bdelete!<cr>')
