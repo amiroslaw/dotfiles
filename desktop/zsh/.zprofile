@@ -4,6 +4,7 @@
 export TOR_WATCH="$HOME/Downloads/.torrenty"
 export TOR_DIR="/media/multi/Downloads"
 export NOTE="$HOME/Documents/notebook"
+export SETUP="$NOTE/finance/inwestycje/setup.adoc"
 export CONFIG="$HOME/Documents/Ustawienia"
 export PRIVATE="$HOME/Documents/Ustawienia/stow-private"
 export USER_HOME="/home/miro"

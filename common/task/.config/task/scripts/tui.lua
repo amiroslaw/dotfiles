@@ -74,8 +74,8 @@ local function setWait(date)
 end
 
 local function modifyTag(tag, alias)
-	if not alias or alias == 'project'  then
-		setProject(tag:sub(2, #tag))
+	if not alias or alias == 'project' then
+		setProject(tag:gsub('^#', ''))
 	elseif alias == 'wait' then
 		setWait(tag)
 	else
@@ -84,13 +84,13 @@ local function modifyTag(tag, alias)
 end
 
 -- projects have `#` prefix
--- empty string will remove project 
+-- empty string will remove project
 -- new item is a new project
 local function addTag()
 	local tags = copyt(contextAliases)
 	local _, projects = run 'task _projects'
 	for _, project in ipairs(projects) do
-		project = project:gsub('^%a', '#'.. project:match('^%a'))
+		project = project:gsub('^%a', '#' .. project:match '^%a')
 		tags[project] = 'project'
 	end
 	tags['someday'] = 'wait'
@@ -123,11 +123,39 @@ local function removeTag()
 	end
 end
 local function sync()
-	local stat, _, err = run('task sync')
+	local stat, _, err = run 'task sync'
 	if not stat then
 		notifyError(err[1])
 	else
-		notify('Synchronized')
+		notify 'Synchronized'
+	end
+end
+
+local function openInBrowser(url)
+	print(url)
+	local stat, _, err = run('xdg-open "' .. url .. '"')
+	if not stat then
+		notifyError(err[1])
+	end
+end
+
+local function parseUrls(taskId, annotationId)
+	local urlPattern = '(https?://([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))'
+	local _, annotation = run('task _get ' .. taskId .. '.annotations.' .. annotationId .. '.description')
+	for match in annotation[1]:gmatch(urlPattern) do
+		openInBrowser(match)
+	end
+end
+
+local function openUrl()
+	for i = 2, #arg do
+		local taskId = arg[i]
+		local stat, annoCount = run('task _get ' .. taskId .. '.annotations.count')
+		if stat then
+			for j = 1, annoCount[1] do
+				parseUrls(taskId, j)
+			end
+		end
 	end
 end
 
@@ -141,6 +169,7 @@ local cases = {
 	end,
 	['rm-tag'] = removeTag,
 	['sync'] = sync,
+	['url'] = openUrl,
 	[false] = function()
 		errorMsg 'Invalid command argument'
 	end,
