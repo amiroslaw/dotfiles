@@ -660,6 +660,7 @@ cmp.setup {
 		{ name = 'path' },
 		{ name = 'calc' },
 		{ name = 'dictionary' },
+		{ name = "buffer-lines", keyword_length = 4, },
 	},
 	completion = {
 		completeopt = 'menu,menuone,noinsert',
@@ -682,7 +683,6 @@ cmp.setup {
 		end,
 	},
 }
-
 -- CMD mode - if you are in that mode and put / or : ' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline('/', {
 	sources = {
@@ -709,7 +709,14 @@ require('cmp_dictionary').setup {
 	capacity = 5,
 	debug = false,
 	-- debug = true,
-} -- }}} 
+} 
+-- Only enable `buffer-lines` for filetypes
+require "cmp".setup.filetype({ "lua", "java", "bash", "css", "html", "javascript", "typescript" }, {
+    sources = {
+        { name = "buffer-lines" }
+    }
+})
+-- }}} 
 
 -- nullLs {{{
 local nullLs = require 'null-ls'

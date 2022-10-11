@@ -55,6 +55,11 @@ report.inbox.filter   =   status:pending -WAITING +in
 report.inbox.labels   =   ID,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,Description,Urg
 report.inbox.sort=project+/,urgency-/,start.age+
 
+report.pomodoro.description = Active tasks for pomodoro
+report.pomodoro.columns = id,start.age,start,tags,project,description
+report.pomodoro.labels = ID,Active,Started,Tags,Project,Description
+report.pomodoro.filter = status:pending and +ACTIVE
+
 # OVERRIDED
 report.minimal.columns=id,project,tags.list,description.count
 report.minimal.sort=urgency-/,project+
@@ -66,7 +71,7 @@ urgency.user.tag.in.coefficient=-3
 urgency.user.tag.car.coefficient=4
 urgency.user.tag.cod.coefficient=3
 urgency.user.tag.fin.coefficient=2
-urgency.user.tag.next.coefficient=8
+urgency.user.tag.next.coefficient=5
 urgency.blocking.coefficient =2.0
 urgency.blocked.coefficient = -3.0
 urgency.tags.coefficient=0 # Just because its tagged/annotated doesn't mean its important

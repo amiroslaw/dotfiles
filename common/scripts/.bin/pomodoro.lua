@@ -1,10 +1,5 @@
 #!/bin/luajit
 -- TODO 
--- help
--- config - daily_goal albo zmieniać config lub czytać z linni
--- dodawanie pomodoro przez cli
--- przy stopie dodawać niedokończony czas - test
--- maybe use coroutine when when adds alert
 -- weird output
 -- 24 notyfikacja 25 → break 1; output jest po tym jak się wykona skrypt czyli będzie notyfikacja
 -- 4 notyfikacja 5 → work 0 lub
@@ -210,7 +205,7 @@ function dailyInfo()
 	return taskCounter .. '/' .. config['daily_goal'], os.date('%M:%S', sum)
 end
 
-function notify()
+function annotate()
 	local takskRatio, duration = dailyInfo()
 	local currentTask = io.open(CURRENT_PATH):read('*a')
 	notify(currentTask:gsub(DELIMITER, '\n') .. dailyInfo())
@@ -236,7 +231,7 @@ local options = {
 	["repeat"] = duplicateTask,
 	["pause"] = pauseToggle,
 	["status"] = getState,
-	["notify"] = function() print(notify()) end,
+	["notify"] = function() print(annotate()) end,
 	["stop"] = function() print(stop()) end,
 	["history"] = function() print(history()) end,
 	["duration"] = function() print(dailyInfo()) end,

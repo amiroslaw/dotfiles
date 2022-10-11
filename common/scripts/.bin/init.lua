@@ -15,7 +15,7 @@ log(logMsg, [ level ], [ file ])
 trim
 isArray
 enum({ a =1 , b =1 }) returns table; problems with deep copy or loops
-split(string, separator)
+split(string, separator) returns table;
 splitFlags(string)
 notify(string)
 notifyError(string)
