@@ -34,6 +34,7 @@ function cheat()
 		js = 'lang',
 		typescript = 'lang',
 		kotlin = 'lang',
+		python = 'lang',
 		css = 'lang',
 		html = 'lang',
 		bash = 'lang',

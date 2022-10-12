@@ -1,16 +1,17 @@
-#!/bin/luajit
--- TODO 
+#!/bin/env luajit
+-- TODO
+-- dailyGoal IDK if next actions is ok 
 -- weird output
 -- 24 notyfikacja 25 → break 1; output jest po tym jak się wykona skrypt czyli będzie notyfikacja
 -- 4 notyfikacja 5 → work 0 lub
 
-HELP = [[
+local HELP = [[
 The pomodoro app for system bar like polybar with support of the work history.
 pomodoro.lua option [-flags]
 List of the options:
 	add - add new pomodoro. If session is active it will update it, the  description and tag will remain the same if you won't provide them.
 	status - print status message 
-	duration - shows daily spent time 
+	info - shows daily spent time 
 	history - display pomodoro history
 	-h help - show help
 
@@ -23,7 +24,6 @@ flags (short options) in a format: -ca
 	s - show secunds in the status - not implemented
 
 Examples:
-	pomodoro.lua history -j | jq '.[].tag' - prints history in the JSON format 
 	pomodoro.lua status -ac - prints current status with daily ratio of the finished tasks, gives sound alert with notification if status changed
 
 [module/pomodoro]
@@ -33,56 +33,64 @@ click-middle = pomodoro.lua notify
 click-right = pomodoro.lua stop -n
 click-left = pomodoro.lua pause -n
 interval = 60
--- dependency: rofi, ffmpeg
+-- dependency: taskwarrior, rofi, ffmpeg
 ]]
-POMODORO_DIR = os.getenv('XDG_CONFIG_HOME') .. '/pomodoro'
-HISTORY_PATH = POMODORO_DIR .. '/history'
-CURRENT_PATH = POMODORO_DIR .. '/current'
-CONFIG_PATH = POMODORO_DIR .. '/settings'
-ALERT_PATH = POMODORO_DIR .. '/alert.mp3'
-STATUS_PATH = '/tmp/pomodoro'
-DELIMITER = '|'
 
-config = getConfigProperties(CONFIG_PATH)
-flags = splitFlags(arg[2])
+local POMODORO_DIR = os.getenv 'XDG_CONFIG_HOME' .. '/pomodoro'
+local HISTORY_PATH = POMODORO_DIR .. '/history'
+local CURRENT_PATH = POMODORO_DIR .. '/current'
+local CONFIG_PATH = POMODORO_DIR .. '/settings'
+local ALERT_PATH = POMODORO_DIR .. '/alert.mp3'
+local STATUS_PATH = '/tmp/pomodoro'
+local DELIMITER = '|'
 
-function getHistoryTasks()
-	local tasks = {}
-	for line in io.lines(HISTORY_PATH) do
-		table.insert(tasks, line)
+local config = getConfigProperties(CONFIG_PATH)
+local flags = splitFlags(arg[2])
+
+function alert(msg)
+	if flags['n'] then
+		os.execute("dunstify Pomodoro '" .. msg .. "'")
 	end
-	return tasks
+	if flags['a'] then
+		os.execute('ffplay -nodisp -autoexit -loglevel -8 -volume 10 ' .. ALERT_PATH)
+	end
+end
+
+local function changeTWstate(state)
+	local taskId = io.open(CURRENT_PATH):read '*a'
+	local ok, _, err
+	if state == stateEnum.STOP then
+		ok, _, err = run('task stop ' .. taskId)
+	else
+		ok, _, err = run('task start ' .. taskId)
+	end
+	assert(ok, 'Can not execute taskwarrior ' .. err[1])
 end
 
 function archiveTask(duration)
 	duration = duration and duration or config['default_pomodoro_duration']
-	local current = io.open(CURRENT_PATH):read('*a')
+	local date = os.date '%Y-%m-%d'
 	local file = io.open(HISTORY_PATH, 'a+')
-	file:write(current .. duration, '\n')
+	file:write(date .. DELIMITER .. duration, '\n')
 	file:close()
 end
 
 function getModifiedDateDiff()
-	local modifiedDate = io.popen('stat -c%Y ' .. STATUS_PATH):read('*a')
+	local modifiedDate = io.popen('stat -c%Y ' .. STATUS_PATH):read '*a'
 	assert(#modifiedDate ~= 0, 'Can not get modification file date')
 	local diff = os.difftime(os.time(), tonumber(modifiedDate))
-	return math.floor(diff/60)
+	return math.floor(diff / 60)
 end
 
-function duplicateTask() 
-	local current = io.open(CURRENT_PATH):read('*a')
-	local taskInfo = split(current, DELIMITER)
-	taskInfo[1] = os.date('%Y-%m-%dT%H:%M:%S')
-	taskInfo[#taskInfo] = nil
-	local file = io.open(CURRENT_PATH, 'w')
-	file:write(table.concat(taskInfo, DELIMITER) .. DELIMITER)
-	file:close()
-	io.open(STATUS_PATH, 'w'):write(taskInfo[3])
+function duplicateTask()
+	changeTWstate(stateEnum.WORK)
+	io.open(STATUS_PATH, 'w'):write 'work'
 end
 
 function pauseStatus()
-	local workDuration = io.open(STATUS_PATH):read('*a')
+	local workDuration = io.open(STATUS_PATH):read '*a'
 	io.write(workDuration, '  ')
+	changeTWstate(stateEnum.STOP)
 end
 
 function breakStatus()
@@ -90,13 +98,14 @@ function breakStatus()
 	local breakDuration = config['default_break_duration'] and config['default_break_duration'] or 5
 	io.write(diff, '  ')
 	if diff >= tonumber(breakDuration) then
+		io.open(STATUS_PATH, 'w'):write 'work'
 		duplicateTask()
 		workStatus()
-		alert('Break finished')
-	end	
+		alert 'Break finished'
+	end
 end
 
-function workStatus() 
+function workStatus()
 	local diff = getModifiedDateDiff()
 	io.write(diff, '  ')
 
@@ -105,19 +114,30 @@ function workStatus()
 		archiveTask(defaultDuration)
 		io.open(STATUS_PATH, 'w'):close()
 		breakStatus()
-		alert('Work finished')
-	end	
+		changeTWstate(stateEnum.STOP)
+		alert 'Work finished'
+	end
+end
+
+function stopStatus()
+	io.write('')
+	os.execute('rm ' .. STATUS_PATH)
+	if flags['n'] then
+		os.execute "dunstify Pomodoro 'Finished'"
+	end
+	changeTWstate(stateEnum.STOP)
 end
 
 function getState()
 	local file = io.open(STATUS_PATH)
-	if not file then 
-		return stateEnum.STOP 
-	end 
-	local taskStatus = file:read('*a')
-	if taskStatus == '' then 
+	if not file then
+		return stateEnum.STOP
+	end
+	local taskStatus = file:read '*a'
+	local state
+	if taskStatus == '' then
 		state = stateEnum.BREAK
-	elseif type(tonumber(taskStatus)) == 'number' then 
+	elseif type(tonumber(taskStatus)) == 'number' then
 		state = stateEnum.PAUSE
 	else
 		state = stateEnum.WORK
@@ -126,55 +146,11 @@ function getState()
 	return state
 end
 
-function add()
-	-- assert(os.execute( "test -f " .. STATUS_PATH ) ~= 0, 'Task exist')
-	local description = rofiInput('description')
-	local tags = {}
-	for _, line in ipairs(getHistoryTasks()) do
-		local taskInfo = split(line, DELIMITER)
-		if taskInfo[2] then 
-			tags[taskInfo[2]] = taskInfo[2]
-		end
-	end
-	local selectedTag = rofiMenu(tags, 'Tags')
-
-	local file
-	local date = os.date('%Y-%m-%dT%H:%M:%S')
-	if getState() == stateEnum.STOP then 
-		file = io.open(CURRENT_PATH, 'w')
-		io.open(STATUS_PATH, 'w'):write(description)
-	else
-		file = io.open(CURRENT_PATH, 'r+')
-		local current = file:read('*a')
-		file:seek('set')
-		local taskInfo = split(current, DELIMITER)
-		date = taskInfo[1]
-		if selectedTag == '' then selectedTag = taskInfo[2] end
-		if description == '' then description = taskInfo[3] end
-	end
-	file:write(date, DELIMITER, selectedTag, DELIMITER, description, DELIMITER)
-	file:close()
-end
-
-function alert(msg)
-	if flags['n'] then os.execute("dunstify Pomodoro '" .. msg .. "'") end
-	if flags['a'] then os.execute('ffplay -nodisp -autoexit -loglevel -8 -volume 10 ' .. ALERT_PATH) end
-end
-
-function stop()
-	os.execute('rm ' .. STATUS_PATH)
-	if flags['n'] then os.execute("dunstify Pomodoro 'Finished'") end
-	stateEnum.STOP()
-	--TODO save duration when is running 
-		-- local stoppedDuration = io.open(CURRENT_PATH):read('*a')
-		-- archiveTask(stoppedDuration)
-end
-
 function pauseToggle()
 	local state = getState()
 	if state == stateEnum.BREAK then -- finish
 		archiveTask()
-		stop()
+		stopStatus()
 	elseif state == stateEnum.WORK then -- pause
 		local difftime = getModifiedDateDiff()
 		local file = io.open(STATUS_PATH, 'w')
@@ -183,16 +159,52 @@ function pauseToggle()
 		stateEnum.PAUSE()
 	elseif state == stateEnum.PAUSE then -- restart
 		local file = io.open(STATUS_PATH, 'r+')
-		local workDuration = file:read('*a')
-		file:write('restarted')
+		local workDuration = file:read '*a'
+		file:write 'restarted'
 		file:close()
-		assert(os.execute('touch -d "' .. workDuration .. ' minutes ago" ' .. STATUS_PATH) == 0, 'Can not change modification date')
+		assert( os.execute('touch -d "' .. workDuration .. ' minutes ago" ' .. STATUS_PATH) == 0, 'Can not change modification date')
 		stateEnum.WORK()
+		changeTWstate(stateEnum.WORK)
 	end
 end
 
+function add()
+	local okContext, _, err = run 'task context none'
+	local ok, tasks, err = run 'task rc.verbose=nothing minimal'
+	local selected = rofiMenu(tasks)
+	local selectedId = selected:match '^%d+'
+	local file
+	if getState() == stateEnum.STOP then
+		file = io.open(CURRENT_PATH, 'w')
+		io.open(STATUS_PATH, 'w'):write 'work'
+	else
+		file = io.open(CURRENT_PATH, 'r+')
+		local current = file:read '*a'
+		file:seek 'set'
+	end
+	file:write(selectedId)
+	file:close()
+	changeTWstate(stateEnum.WORK)
+end
+
+function getHistoryTasks()
+	local tasks = {}
+	for line in io.lines(HISTORY_PATH) do
+		table.insert(tasks, line)
+	end
+	return tasks
+end
+function getNextActionCount()
+	local ok, nextCounter = run('task stat:pending +next count')
+	if ok then
+		return	nextCounter[1] 
+	end
+	return config['daily_goal']
+end
 function dailyInfo()
-	local today = os.date('%Y.%m.%d')
+	local dailyGoal = config['daily_goal'] -- or getNextActionCount
+	dailyGoal = dailyGoal and dailyGoal or 8
+	local today = os.date '%Y.%m.%d'
 	local sum = 0
 	local taskCounter = 0
 	for _, task in ipairs(getHistoryTasks()) do
@@ -202,45 +214,38 @@ function dailyInfo()
 			taskCounter = taskCounter + 1
 		end
 	end
-	return taskCounter .. '/' .. config['daily_goal'], os.date('%M:%S', sum)
+
+	local taskId = io.open(CURRENT_PATH):read '*a'
+	local taskDesc = ''
+	local ok, description = run('task _get ' .. taskId .. '.description')
+	if ok then
+		taskDesc = description[1]
+	end
+	return taskCounter .. '/' .. dailyGoal, os.date('%M:%S', sum), taskDesc
 end
 
 function annotate()
-	local takskRatio, duration = dailyInfo()
-	local currentTask = io.open(CURRENT_PATH):read('*a')
-	notify(currentTask:gsub(DELIMITER, '\n') .. dailyInfo())
+	local takskRatio, sumDuration, taskDescription  = dailyInfo()
+	notify('Progress: ' .. takskRatio .. '\nDaily duration: ' .. sumDuration .. '\nCurrent task:' .. taskDescription)
 end
 
-function history()
-	if flags['j'] then 
-		tasksJson = '['
-		for _, historyEntry in ipairs(getHistoryTasks()) do
-			local task = split(historyEntry, DELIMITER)
-			tasksJson = tasksJson .. '{"description":"' .. task[3] .. '",' .. '"tag":"' .. task[2] .. '","duration":' .. task[4] .. ', "date":"' .. task[1] .. '"},' end 
-		io.write(tasksJson:sub(1,-2), ']')
-	else
-		print(io.open(HISTORY_PATH):read('*a'))
-	end
-end
-
-stateEnum = enum({STOP = function() print'' end, BREAK = breakStatus, WORK = workStatus, PAUSE = pauseStatus})
+stateEnum = enum { STOP = function() print '' end, BREAK = breakStatus, WORK = workStatus, PAUSE = pauseStatus, }
 
 local defaultOption = 'status'
 local options = {
-	["add"] = add,
-	["repeat"] = duplicateTask,
-	["pause"] = pauseToggle,
-	["status"] = getState,
-	["notify"] = function() print(annotate()) end,
-	["stop"] = function() print(stop()) end,
-	["history"] = function() print(history()) end,
-	["duration"] = function() print(dailyInfo()) end,
-	["-h"]= function() print(HELP); os.exit() end,
+	['add'] = add,
+	['pause'] = pauseToggle,
+	['stop'] = stopStatus,
+	['repeat'] = duplicateTask,
+	['status'] = getState,
+	['notify'] = annotate,
+	['info'] = function() print(dailyInfo()) end,
+	['-h'] = function() print(HELP) os.exit() end,
 }
-local switch = (function(name,args)
+local switch = function(name, args)
 	local sw = options
-	return (sw[name]and{sw[name]}or{sw[defaultOption]})[1](args)
-end)
+	return (sw[name] and { sw[name] } or { sw[defaultOption] })[1](args)
+end
 
 local action = arg[1] and arg[1] or defaultOption
 if action == 'menu' then
@@ -249,10 +254,18 @@ end
 local exec, param = switch(action)
 local ok, val = pcall(exec, param)
 
-if flags['d'] and not ok then 
+if flags['d'] and not ok then
 	print(val)
 end
-if flags['c'] then 
+if flags['c'] then
 	local ratio = dailyInfo()
 	io.write(ratio)
 end
+
+-- not used
+-- function getDuration()
+-- 	local ok, report, err = run 'task rc.verbose=nothing pomodoro'
+-- 	assert(ok, 'Can not get duration')
+-- 	return report[1]:match '(%d+)min'
+-- end
+
