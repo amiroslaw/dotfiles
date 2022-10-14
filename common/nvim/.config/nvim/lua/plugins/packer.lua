@@ -62,7 +62,7 @@ return require('packer').startup(function()
 			{ 'hrsh7th/cmp-nvim-lua' }, -- vim.api
 			{ 'hrsh7th/cmp-nvim-lsp' },
 			{ 'uga-rosa/cmp-dictionary' },
-			{ 'amarakon/nvim-cmp-buffer-lines' },
+			-- { 'amarakon/nvim-cmp-buffer-lines' },
 			config = function()
 				require('cmp-nvim-ultisnips').setup {}
 			end,

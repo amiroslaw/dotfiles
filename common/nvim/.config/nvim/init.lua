@@ -660,7 +660,6 @@ cmp.setup {
 		{ name = 'path' },
 		{ name = 'calc' },
 		{ name = 'dictionary' },
-		{ name = "buffer-lines", keyword_length = 4, },
 	},
 	completion = {
 		completeopt = 'menu,menuone,noinsert',
@@ -710,12 +709,6 @@ require('cmp_dictionary').setup {
 	debug = false,
 	-- debug = true,
 } 
--- Only enable `buffer-lines` for filetypes
-require "cmp".setup.filetype({ "lua", "java", "bash", "css", "html", "javascript", "typescript" }, {
-    sources = {
-        { name = "buffer-lines" }
-    }
-})
 -- }}} 
 
 -- nullLs {{{

@@ -5,6 +5,7 @@
 # Timewarrior extension: catreport
 # Author: Frank Stollmeier
 # License: MIT
+# dependency python-wimew-report
 
 
 import sys

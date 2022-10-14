@@ -177,3 +177,14 @@ vim.g.eighties_minimum_width = 80
 vim.g.eighties_extra_width = 0 -- Increase this if you want some extra room
 vim.g.eighties_compute = 1 -- Disable this if you just want the minimum + extra
 vim.g.eighties_bufname_additional_patterns = { 'fugitiveblame' } -- Defaults to [], 'fugitiveblame' is only an example. Takes a comma delimited list of bufnames as strings. -- }}} 
+
+
+-- cmp plugin buffer-lines
+-- nie działał w lua i nie mogłem wyłączyć go dla adoc
+		{ name = "buffer-lines", keyword_length = 4, },
+-- Only enable `buffer-lines` for filetypes
+cmp.setup.filetype({ "lua", "java", "bash", "css", "html", "javascript", "typescript" }, {
+    sources = {
+        { name = "buffer-lines" }
+    }
+})

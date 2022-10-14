@@ -171,7 +171,7 @@ end
 function add()
 	local okContext, _, err = run 'task context none'
 	local ok, tasks, err = run 'task rc.verbose=nothing minimal'
-	local selected = rofiMenu(tasks)
+	local selected = rofiMenu(tasks, '90%') -- TODO change rofiMenu for adding width height via table option
 	local selectedId = selected:match '^%d+'
 	local file
 	if getState() == stateEnum.STOP then
