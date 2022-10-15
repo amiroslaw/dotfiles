@@ -12,16 +12,24 @@ str converts any non-string type to string, and strings to quoted strings
 
 switch(cases, pattern)
 log(logMsg, [ level ], [ file ])
-trim
+trim(s) - trim string from whitespaces
 isArray
 enum({ a =1 , b =1 }) returns table; problems with deep copy or loops
 split(string, separator) returns table;
 splitFlags(string)
 notify(string)
 notifyError(string)
-rofiMenu(optionTab, [prompt], [menuHeight]), returns table if selected multiple items or string otherwise
-rofiInput([prompt], [width]) 
 rofiNumberInput([prompt])
+rofiInput([rofiOptions]) 
+rofiMenu(optionTab, [rofiOptions]), returns table if selected multiple items or string otherwise
+Shows a rofi menu. Returns string or table if multiple-select option was enabled.
+params:
+optionTab - Options can be parser form an array (ordered table) or a dictionary.
+rofiInput - optional arguments that can be passed via table
+	prompt (string)
+	height (number)-  max lines than rofi can show
+	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
+	multi (boolean)- If true rofi will allow to select multiple rows, and it will return table with selected options
 --]]
 
 
@@ -406,37 +414,58 @@ function notifyError(msg)
 end -- >>>
 
 -- rofi <<<
-
+local function combineOptions(opt)
+local defaultOpt = {prompt = 'Select', width = '500px', height = 25, multi = ''}
+if opt then
+	for name,val in pairs(opt) do
+		if name == 'multi' and val then
+			defaultOpt[name] = ' -multi-select '
+		else
+			defaultOpt[name] = val
+		end
+	end
+end
+return defaultOpt
+end
 --[[
-Shows a rofi input. 
-Prompt or width can be adjusted. The width accepts following units:
-80px;80%;80ch
+Shows a rofi string input 
+Returns provided string.
+opt - optional arguments that can be passed via table
+	prompt (string)
+	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
 --]]
-function rofiInput(prompt, width) 
-	prompt = prompt and prompt or 'Input'
-	width = width and width or '500px'
-	return io.popen('rofi -monitor -4 -theme-str "window {width:  ' .. width .. ';}" -l 0 -dmenu -p "'.. prompt ..'"'):read('*a'):gsub('\n', '')
+function rofiInput(opt) 
+	local rofiOpt = combineOptions(opt)
+	return io.popen('rofi -monitor -4 -theme-str "window {width:  ' .. rofiOpt.width .. ';}" -l 0 -dmenu -p "'.. rofiOpt.prompt ..'"'):read('*a'):gsub('\n', '')
 end 
 
 --[[
-Shows a rofi input for a number. Input will be appear until it will get valid type.
-Prompt can be adjusted, default is "Input".
+Shows the rofi input for a number. Input will be appear until it will get valid type.
+Returns provided value.
+optional arguments that can be passed
+	prompt (string)
 --]]
 function rofiNumberInput(prompt)
+	prompt = prompt and prompt or 'Enter number'
 	local input
 	repeat
-		input = rofiInput(prompt, #prompt + 11 .. 'ch')
+		input = rofiInput({prompt = prompt, width = #prompt + 11 .. 'ch'})
 	until tonumber(input)
 	return input
 end 
 
 --[[
-Shows a rofi menu. Option can be parser form an array (ordered table) or a dictionary.
-prompt or menuHeight can be adjusted 
+Shows a rofi menu. Returns string or table if multiple-select option was enabled.
+params:
+optionTab - Options can be parser form an array (ordered table) or a dictionary.
+opt - optional arguments that can be passed via table
+	prompt (string)
+	height (number)-  max lines than rofi can show
+	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
+	multi (boolean)- If true rofi will allow to select multiple rows, and it will return table with selected options
 --]]
-function rofiMenu(optionTab, prompt, menuHeight)
-	local prompt = prompt and prompt or 'Select'
-	local menuHeight = menuHeight and menuHeight or 25
+function rofiMenu(optionTab, opt)
+	local rofiOpt = combineOptions(opt)
 	local options = ''
 	local lines = 0
 	local isArray = isArray(optionTab)
@@ -449,18 +478,21 @@ function rofiMenu(optionTab, prompt, menuHeight)
 		end
 		lines = lines + 1
 	end
-	if lines > menuHeight then
-		lines = menuHeight
+	options = options:sub(1, #options -1)
+	if lines > rofiOpt.height then
+		lines = rofiOpt.height
 	end
-	local stat, selected, err= run('echo "' .. options .. '" | rofi -multi-select -monitor -4 -i -l ' .. lines .. ' -sep "|" -dmenu -p "' .. prompt .. '"')
-	if stat then
-		if #selected == 1 then
-			return selected[1]
-		else
-			return selected
-		end
-	else 
+	local ok, selected, err= run('echo "' .. options .. '" | rofi -monitor -4 -i ' .. rofiOpt.multi .. ' -l ' .. lines .. ' -sep "|" -dmenu -p "' .. rofiOpt.prompt .. '" -theme-str "window {width:  ' .. rofiOpt.width .. ';}" ')
+	if not ok then
 		return ''
+	end
+	if opt and opt.multi then
+		if selected[#selected] == "" then
+			selected[#selected] = nil
+		end
+		return selected
+	else
+		return selected[1]
 	end
 end -- >>>
 

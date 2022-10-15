@@ -45,7 +45,7 @@ function clipster(clipType)
 end
 
 function writeNote() 
-	return '\n' .. rofiInput('Note', '70%') .. '\n'
+	return '\n' .. rofiInput({prompt = 'Note', width = '70%'}) .. '\n'
 end
 
 function writeToFile(text) 

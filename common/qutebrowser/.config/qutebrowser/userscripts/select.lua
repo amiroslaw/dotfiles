@@ -33,9 +33,13 @@ local function splitSentences()
 	-- regex = '.-[!?:%.]%s'
 	local regex = '.-[%.:!?]%f[%z%s]'
 	for match in CONST.selectedTxt:gmatch(regex) do
-		table.insert(sentences, match)
+		local sentence = trim(match):gsub('\n', ' ')
+		table.insert(sentences, sentence)
 	end
-	local rofiOutput = rofiMenu(sentences, 'Sentence')
+	local rofiOutput = rofiMenu(sentences, {prompt = 'Select sentence', multi = true, width = '95%'} )
+	if type(rofiOutput) == 'table' then
+		rofiOutput = table.concat(rofiOutput, '\n')
+	end
 	copy(rofiOutput)
 end
 

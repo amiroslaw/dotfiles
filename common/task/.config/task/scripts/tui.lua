@@ -22,6 +22,7 @@ local contextAliases = {
 	kindle = 'kin',
 	listen = 'lis',
 	easy = 'eas',
+	next = 'next',
 }
 
 local option = arg[1]
@@ -34,7 +35,7 @@ local function switchView()
 	views['none'] = 'none'
 	views['pro'] = 'report'
 	views['waiting'] = 'report'
-	local selected = rofiMenu(views, 'Switch view')
+	local selected = rofiMenu(views, {prompt = 'Switch view', width = '25ch'})
 
 	local stat
 	if views[selected] == 'report' then
@@ -51,7 +52,7 @@ local function modifyTask(modification)
 end
 
 local function setPriority(priority)
-	local priority = priority and priority or rofiMenu({ ' ', 'L', 'M', 'H' }, 'Set priority')
+	local priority = priority and priority or rofiMenu({ ' ', 'L', 'M', 'H' }, {prompt = 'Set priority', width = '15ch'})
 	modifyTask('priority:' .. priority)
 end
 
@@ -64,7 +65,7 @@ local function setProject(project)
 end
 
 local function addProject()
-	local name = rofiInput('Add project', '400px'):gsub('%s', '-')
+	local name = rofiInput({prompt ='Add project', width = '400px'}):gsub('%s', '-')
 	-- maybe check if empty cos it will delete project
 	setProject(name)
 end
@@ -95,7 +96,7 @@ local function addTag()
 	end
 	tags['someday'] = 'wait'
 
-	local selection = rofiMenu(tags, 'Add tag')
+	local selection = rofiMenu(tags, {prompt ='Add tag'})
 	if type(selection) == 'string' then
 		modifyTag(selection, tags[selection])
 	else
@@ -110,7 +111,7 @@ local function removeTag()
 	tags['remove project'] = 'project'
 	tags['all contexts'] = 'allContexts'
 	tags['wait/someday'] = 'wait'
-	local selected = rofiMenu(tags, 'Remove tag')
+	local selected = rofiMenu(tags, {prompt = 'Remove tag', width = '25ch'})
 
 	if tags[selected] == 'project' then
 		setProject ''

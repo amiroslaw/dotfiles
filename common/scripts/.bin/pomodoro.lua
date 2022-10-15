@@ -171,7 +171,7 @@ end
 function add()
 	local okContext, _, err = run 'task context none'
 	local ok, tasks, err = run 'task rc.verbose=nothing minimal'
-	local selected = rofiMenu(tasks, '90%') -- TODO change rofiMenu for adding width height via table option
+	local selected = rofiMenu(tasks, {prompt = 'Start pomodoro task', width = '94%'})
 	local selectedId = selected:match '^%d+'
 	local file
 	if getState() == stateEnum.STOP then
@@ -249,7 +249,7 @@ end
 
 local action = arg[1] and arg[1] or defaultOption
 if action == 'menu' then
-	action = rofiMenu(options)
+	action = rofiMenu(options, {prompt = 'Pomodoro menu'})
 end
 local exec, param = switch(action)
 local ok, val = pcall(exec, param)

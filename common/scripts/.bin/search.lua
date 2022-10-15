@@ -21,7 +21,7 @@ action = arg[1]
 phraseArg = arg[2] and arg[2] or 'primary'
 
 if not phraseArg or phraseArg == 'input' then
-	phraseArg =	rofiInput('Search')	
+	phraseArg =	rofiInput({prompt = 'Search'})	
 end 
 if phraseArg == 'primary' or phraseArg == 'clip' then
 	phraseArg = io.popen('xclip -out -selection ' .. phraseArg):read('*a')
@@ -46,7 +46,7 @@ function cheat()
 	}
 
 	local tmpname = os.tmpname()
-	local topic = rofiMenu(topics)
+	local topic = rofiMenu(topics, {prompt = 'cheatsh', width = '25ch'})
 	local query = phraseArg:gsub('%s', '+')
 	local status = 1
 	if topics[topic] == 'lang' then
@@ -115,7 +115,7 @@ local switch = (function(name,args)
 end)
 
 if action == 'menu' then
-	action = rofiMenu(options)
+	action = rofiMenu(options, {prompt = 'Search', width = '25ch'})
 end
 
 local exec, param = switch(action, phraseArg)

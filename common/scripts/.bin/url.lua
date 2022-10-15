@@ -177,7 +177,7 @@ end
 
 linkTab = {}
 if urlArg == 'input' then
-	urlArg = rofiInput('No. urls')	
+	urlArg = rofiInput({prompt = 'No. urls'})	
 end
 if action == '-h' or action == 'help' then 
 	action = '-h'
