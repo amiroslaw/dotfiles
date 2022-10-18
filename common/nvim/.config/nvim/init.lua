@@ -109,7 +109,6 @@ vim.o.fileencodings = 'utf-8', 'latin1'
 vim.o.linebreak = true
 vim.cmd 'syntax enable'
 
-
 -- IncSearch
 vim.o.smartcase = true
 vim.o.ignorecase = true
@@ -288,19 +287,18 @@ omap('oa', ':<c-u>normal! GVgg<cr>') -- }}}
 
 -- MACROS {{{
 --"""" kindle put cursor on ===
-vim.g['@k'] = 'V3jd2j'
+vim.fn.setreg('k', 'd3jj' )
 -- adoc
-vim.g['@p'] = '$a  +j0'
-vim.g['@l'] = 'pA['
-
+vim.fn.setreg('p', '$a  +j0')
+vim.fn.setreg('l', 'pA[')
 -- markdown
 -- dwie spacje na koncu linii s
-vim.g['@s'] = '$a  j0'
+vim.fn.setreg('s', '$a  j0')
 -- bookmarks should copy word
-vim.g['@z'] = 'ggO- (pbi#bi[po'
+vim.fn.setreg('z', 'ggO- (pbi#bi[po')
 --links
-vim.g['@h'] = 'a]()hp0i['
-vim.g['@f'] = 'f)a kb  ' 
+vim.fn.setreg('h', 'a]()hp0i[')
+vim.fn.setreg('f', 'f)a kb  ') 
 -- }}} 
 
 -- PLUGINS {{{

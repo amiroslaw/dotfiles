@@ -8,8 +8,7 @@ local function errorMsg(msg)
 	notifyError(msg)
 end
 
-local taskConfirmationCmd =
-	'task rc.bulk=0 rc.confirmation=off rc.dependency.confirmation=off rc.recurrence.confirmation=off '
+local taskConfirmationCmd = 'task rc.bulk=0 rc.confirmation=off rc.dependency.confirmation=off rc.recurrence.confirmation=off '
 local contextPrefix = enum { ADD = '+', REMOVE = '-' }
 local contextAliases = {
 	inbox = 'in',
@@ -35,6 +34,7 @@ local function switchView()
 	views['none'] = 'none'
 	views['pro'] = 'report'
 	views['waiting'] = 'report'
+	views['completed'] = 'report'
 	local selected = rofiMenu(views, {prompt = 'Switch view', width = '25ch'})
 
 	local stat
@@ -48,7 +48,7 @@ end
 
 local function modifyTask(modification)
 	local stat, _, err = run(taskConfirmationCmd .. 'modify ' .. modification .. ' ' .. taskIDs)
-	assert(stat, err)
+	assert(stat, err[1])
 end
 
 local function setPriority(priority)
@@ -160,6 +160,11 @@ local function openUrl()
 	end
 end
 
+local function duplicate()
+	local stat, _, err = run(taskConfirmationCmd .. 'duplicate ' .. taskIDs)
+	assert(stat, err[1])
+end
+
 local cases = {
 	['view'] = switchView,
 	['priority'] = setPriority,
@@ -171,6 +176,7 @@ local cases = {
 	['rm-tag'] = removeTag,
 	['sync'] = sync,
 	['url'] = openUrl,
+	['duplicate'] = duplicate,
 	[false] = function()
 		errorMsg 'Invalid command argument'
 	end,

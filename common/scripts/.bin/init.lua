@@ -409,8 +409,10 @@ function notify(msg)
 end 
 
 function notifyError(msg)
-	os.execute("dunstify -u critical Error: '" .. msg .. "'")
-	error(msg) -- does not work?
+	if msg then
+		os.execute("dunstify -u critical Error: '" .. msg .. "'")
+		error(msg) -- does not work?
+	end
 end -- >>>
 
 -- rofi <<<

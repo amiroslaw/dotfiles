@@ -57,12 +57,12 @@ function alert(msg)
 end
 
 local function changeTWstate(state)
-	local taskId = io.open(CURRENT_PATH):read '*a'
+	local taskUuid = io.open(CURRENT_PATH):read '*a'
 	local ok, _, err
 	if state == stateEnum.STOP then
-		ok, _, err = run('task stop ' .. taskId)
+		ok, _, err = run('task stop ' .. taskUuid)
 	else
-		ok, _, err = run('task start ' .. taskId)
+		ok, _, err = run('task start ' .. taskUuid)
 	end
 	assert(ok, 'Can not execute taskwarrior ' .. err[1])
 end
@@ -170,19 +170,23 @@ end
 
 function add()
 	local okContext, _, err = run 'task context none'
-	local ok, tasks, err = run 'task rc.verbose=nothing minimal'
+	local _, tasks, err = run 'task rc.verbose=nothing minimal'
 	local selected = rofiMenu(tasks, {prompt = 'Start pomodoro task', width = '94%'})
+	assert(selected ~= '', 'Select task')
 	local selectedId = selected:match '^%d+'
+	local okUuid, uuid = run('task _uuid ' .. selectedId)
 	local file
 	if getState() == stateEnum.STOP then
 		file = io.open(CURRENT_PATH, 'w')
 		io.open(STATUS_PATH, 'w'):write 'work'
 	else
 		file = io.open(CURRENT_PATH, 'r+')
-		local current = file:read '*a'
+		file:read '*a'
 		file:seek 'set'
 	end
-	file:write(selectedId)
+	assert(okUuid, 'Could not fetch task uuid')
+	uuid = split(uuid[1], '-')
+	file:write(uuid[1])
 	file:close()
 	changeTWstate(stateEnum.WORK)
 end
@@ -215,9 +219,9 @@ function dailyInfo()
 		end
 	end
 
-	local taskId = io.open(CURRENT_PATH):read '*a'
+	local taskUuid = io.open(CURRENT_PATH):read '*a'
 	local taskDesc = ''
-	local ok, description = run('task _get ' .. taskId .. '.description')
+	local ok, description = run('task _get ' .. taskUuid .. '.description')
 	if ok then
 		taskDesc = description[1]
 	end
