@@ -119,15 +119,6 @@ function workStatus()
 	end
 end
 
-function stopStatus()
-	io.write('')
-	os.execute('rm ' .. STATUS_PATH)
-	if flags['n'] then
-		os.execute "dunstify Pomodoro 'Finished'"
-	end
-	changeTWstate(stateEnum.STOP)
-end
-
 function getState()
 	local file = io.open(STATUS_PATH)
 	if not file then
@@ -146,6 +137,21 @@ function getState()
 	return state
 end
 
+function stopStatus()
+	local state = getState()
+	if state == stateEnum.STOP then
+		ok, count = run('task +ACTIVE count')
+		io.write(count[1])
+	else
+		os.execute('rm ' .. STATUS_PATH)
+		if flags['n'] then
+			os.execute "dunstify Pomodoro 'Finished'"
+		end
+		changeTWstate(stateEnum.STOP)
+	end
+	io.write('  ')
+end
+
 function pauseToggle()
 	local state = getState()
 	if state == stateEnum.BREAK then -- finish
@@ -156,15 +162,20 @@ function pauseToggle()
 		local file = io.open(STATUS_PATH, 'w')
 		file:write(difftime)
 		file:close()
-		stateEnum.PAUSE()
+		pauseStatus()
 	elseif state == stateEnum.PAUSE then -- restart
 		local file = io.open(STATUS_PATH, 'r+')
 		local workDuration = file:read '*a'
 		file:write 'restarted'
 		file:close()
 		assert( os.execute('touch -d "' .. workDuration .. ' minutes ago" ' .. STATUS_PATH) == 0, 'Can not change modification date')
-		stateEnum.WORK()
 		changeTWstate(stateEnum.WORK)
+		workStatus()
+	elseif state == stateEnum.STOP then -- repeat
+		local taskUuid = io.open(CURRENT_PATH):read '*a'
+		io.open(STATUS_PATH, 'w'):write 'work'
+		changeTWstate(stateEnum.WORK)
+		workStatus()
 	end
 end
 
@@ -233,7 +244,7 @@ function annotate()
 	notify('Progress: ' .. takskRatio .. '\nDaily duration: ' .. sumDuration .. '\nCurrent task:' .. taskDescription)
 end
 
-stateEnum = enum { STOP = function() print '' end, BREAK = breakStatus, WORK = workStatus, PAUSE = pauseStatus, }
+stateEnum = enum { STOP = stopStatus, BREAK = breakStatus, WORK = workStatus, PAUSE = pauseStatus, }
 
 local defaultOption = 'status'
 local options = {
