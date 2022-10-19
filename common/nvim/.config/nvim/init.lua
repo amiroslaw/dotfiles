@@ -109,6 +109,7 @@ vim.o.fileencodings = 'utf-8', 'latin1'
 vim.o.linebreak = true
 vim.cmd 'syntax enable'
 
+
 -- IncSearch
 vim.o.smartcase = true
 vim.o.ignorecase = true
