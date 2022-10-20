@@ -70,13 +70,14 @@ report.pomodoro.filter = status:pending and +ACTIVE
 # -------------------------------------------------------------------------
 #                       urgency
 # -------------------------------------------------------------------------
-urgency.user.tag.in.coefficient=-3
-urgency.user.tag.car.coefficient=4
-urgency.user.tag.cod.coefficient=3
+urgency.user.tag.car.coefficient=6
+urgency.user.tag.cod.coefficient=4
 urgency.user.tag.fin.coefficient=2
-urgency.user.tag.next.coefficient=5
+urgency.user.tag.in.coefficient=-5
+urgency.user.tag.next.coefficient=10
+urgency.due.coefficient=20
 urgency.blocking.coefficient =2.0
-urgency.blocked.coefficient = -3.0
+urgency.blocked.coefficient = -8.0
 urgency.tags.coefficient=0 # Just because its tagged/annotated doesn't mean its important
 # urgency.annotations.coefficient=0
 

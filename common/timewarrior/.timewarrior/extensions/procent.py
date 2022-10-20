@@ -100,7 +100,7 @@ def parse(input_stream: TextIO) -> ParsedData:
         error_and_exit("This report only works without tags.")
     totals: ParsedData = defaultdict(lambda: 0)
     tracked = json.loads(body)
-    personal = ['car', 'cod', 'fin', 'per']
+    personal = ['+car', '+cod', '+fin', '+per']
     for session in tracked:
         start = datetime.strptime(session["start"], DATEFORMAT)
         if "end" in session:

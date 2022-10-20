@@ -181,8 +181,12 @@ imap('<c-A-k>', '<Esc>:m .-2<CR>==gi')
 vmap('<c-a-j>', ":m '>+1<CR>gv-gv")
 vmap('<c-a-k>', ':m .-2<CR>gv=gv')
 
-nmap('gf', '<c-w>gF') -- open file in a new tab
-nmap('gF', '<c-w>F')
+nmap('gf', '<c-w>gf') -- open file in a new tab
+vmap('gf', '<c-w>gf')
+nmap('<LocalLeader>f', '<c-w>gf') -- open file in a new tab
+vmap('<LocalLeader>f', '<c-w>gf')
+nmap('gF', '<c-w>vgf') -- in vertical split
+vmap('gF', '<c-w>vgf')
 
 -- page scroll, override defaults
 nmap('<C-d>', '<C-f> <cr>', { nowait = true })
@@ -271,6 +275,7 @@ imap('<A-s>', '<cmd>setlocal spell spelllang=en_us<CR>')
 nmap('<C-e>', 'z=')
 imap('<C-e>', 'z=')
 nmap('<S-e>', '[s')
+nmap('<a-e>', '[s1z=`]') -- auto correction last occurrence
 --replace from selection/ substitution, produce error but it's workaround for showing command line mode
 vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
 vmap('<S-A-r>', '"hy:%s/<C-r>h/^M/g<left><left><cmd>') -- add special char for enter c-v enter

@@ -179,7 +179,7 @@ ${1:`xclip -o -sel clip`}[${2:`xclip -o -sel prim`}] $0
 endsnippet
 
 snippet file "File link" !w
-link:${1:`xclip -o -sel clip`}[${2:${VISUAL:file ref}}] $0
+file://${1:`xclip -o -sel clip`}[${2:${VISUAL:file ref}}] $0
 endsnippet
 
 snippet filerel "Relative file link" !w
