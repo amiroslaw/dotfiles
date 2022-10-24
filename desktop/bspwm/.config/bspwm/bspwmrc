@@ -85,6 +85,7 @@ bspc rule -a '*:music' state=floating center=true rectangle=1000x1150+0+0
 bspc rule -a qb state=floating rectangle=700x400+0+0 center=true
 bspc rule -a audio state=floating rectangle=500x150+0+0 center=true
 bspc rule -a '*:videopopup' state=floating sticky=on focus=off layer=above rectangle=380x210+1530+1330
+bspc rule -a 'application.Main' state=floating
 
 #bspc rule -a firefox desktop=I
 #bspc rule -a nautilus state=pseudo_tiled

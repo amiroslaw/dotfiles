@@ -180,10 +180,21 @@ function pauseToggle()
 end
 
 function add()
+	local STOP = '#stop'
+	local PAUSE = '#pause'
 	local okContext, _, err = run 'task context none'
 	local _, tasks, err = run 'task rc.verbose=nothing minimal'
+	table.insert(tasks, STOP)
+	table.insert(tasks, PAUSE)
 	local selected = rofiMenu(tasks, {prompt = 'Start pomodoro task', width = '94%'})
 	assert(selected ~= '', 'Select task')
+	if selected == STOP then
+		stopStatus()
+		return
+	elseif selected == PAUSE then
+		pauseStatus()
+		return
+	end
 	local selectedId = selected:match '^%d+'
 	local okUuid, uuid = run('task _uuid ' .. selectedId)
 	local file

@@ -199,12 +199,13 @@ super + {shift, ctrl} + x
 	{ gksu net-restart.sh, \
 	nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
 
-super + F{1,2,3,4,7,8,9,10,11,12}
+super + F{1,2,3,4,6,7,8,9,10,11,12}
 	{ firefox, \
 	/opt/idea-IU-212.5284.40/bin/idea.sh, \
 	$TERMINAL start --class vifm -- vifm, \
 	pcmanfm, \
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
+	java -jar grywalizacja.jar
 	todo.lua show, \
 	todo.lua add, \
 	pamac-manager, \

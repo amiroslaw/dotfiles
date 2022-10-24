@@ -34,6 +34,7 @@ export READER="zathura"
 # for my scripts
 export VIDEO="smplayer"
 export IMAGE="pqiv"
+export GAMIFICATION="/home/miro/Documents/Ustawienia/configs/grywalizacja"
 
 # configs
 export XDG_CONFIG_DIRS=/usr/etc/xdg:/etc/xdg
