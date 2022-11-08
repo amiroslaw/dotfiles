@@ -554,9 +554,9 @@ if telescope then
 	nmap('<c-s>', '<cmd>Telescope live_grep<cr>')
 	nmap('tp', '<cmd>Telescope find_files find_command=rg,--hidden,--files<cr>') -- with hidden files
 	nmap('to', '<cmd>Telescope oldfiles<cr>')
-	nmap('tl', '<cmd>Telescope current_buffer_fuzzy_find<cr>') -- lines in file
+	nmap('tl', '<cmd>Telescope current_buffer_fuzzy_find skip_empty_lines=true<cr>') -- lines in file
 	nmap('tj', '<cmd>Telescope jumplist<cr> ') -- I changed source code for showing only current file
-	nmap('tb', '<cmd>Telescope buffers<cr>') -- closed files
+	nmap('tb', '<cmd>Telescope buffers show_all_buffers=false<cr>') -- closed files
 	nmap('tc', '<cmd>Telescope commands <cr> ')
 	nmap('th', '<cmd>Telescope help_tags<cr> ') -- nivm api
 	nmap('tH', '<cmd>Telescope command_history<cr> ')
