@@ -113,6 +113,7 @@ alias search='pacman -Ss'
 alias pp='xclip-pastefile'
 alias yy='xclip-copyfile'
 alias cc='xclip-cutfile'
+alias jj='java -jar'
 alias t='task'
 alias ta='task add +in'
 alias td='task done '
@@ -213,7 +214,7 @@ alias gst='git status'  # 'status' is protected name so using 'stat' instead
 # }}}
 
 # gcalcli {{{
-alias kal='gcalcli quick'
+alias kal='gcalcli quick --config-folder="/home/miro/.config/gcalcli"'
 alias kalw='gcalcli calw --config-folder="/home/miro/.config/gcalcli"'
 alias kalm='gcalcli calm --config-folder="/home/miro/.config/gcalcli"'
 alias kala='gcalcli agenda --config-folder="/home/miro/.config/gcalcli"'

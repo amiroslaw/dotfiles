@@ -276,6 +276,7 @@ nmap('<C-e>', 'z=')
 imap('<C-e>', 'z=')
 nmap('<S-e>', '[s')
 nmap('<a-e>', '[s1z=`]') -- auto correction last occurrence
+vmap('<a-e>', '[s1z=`]') -- auto correction last occurrence
 --replace from selection/ substitution, produce error but it's workaround for showing command line mode
 vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
 vmap('<S-A-r>', '"hy:%s/<C-r>h/^M/g<left><left><cmd>') -- add special char for enter c-v enter

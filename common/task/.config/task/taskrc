@@ -12,6 +12,7 @@ hooks.location=~/.config/task/hooks
 
 weekstart=monday
 calendar.holidays=full
+search.case.sensitive=0
 
 # -------------------------------------------------------------------------
 #                       context

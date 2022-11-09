@@ -8,8 +8,8 @@
  # \~fullscreen "~\" toggle
 # aviailable
 # super + ctrl + f 
- # urgent u, ctrl i shift jest nieużywana
 # unused 
+# y
 # b - balance
  
 # make sxhkd reload its configuration files:
@@ -64,7 +64,7 @@ super + {_,shift} + f
 super + a ; {l,m,s,p}
 	bspc node -g {locked,marked,sticky,private}
 
-super + u
+super + shift + a
 	bspc node -f any.urgent
 
 #
@@ -145,7 +145,6 @@ super + ctrl + {h,j,k,l}
 super + ctrl + {Left,Down,Up,Right}
 	bspwm_resize.sh {west,south,north,east}
 
-
 # Toggle Balance tree
 super + {_,shift} + b
 	bspc node @/ -{B,E}
@@ -199,23 +198,18 @@ super + {shift, ctrl} + x
 	{ gksu net-restart.sh, \
 	nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
 
-super + F{1,2,3,4,6,7,8,9,10,11,12}
+super + F{1,2,3,4,6,7,9,10,11,12}
 	{ firefox, \
 	/opt/idea-IU-212.5284.40/bin/idea.sh, \
 	$TERMINAL start --class vifm -- vifm, \
 	pcmanfm, \
+	sh -c "java -jar grywalizacja.jar", \
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
-	java -jar grywalizacja.jar
-	todo.lua show, \
 	todo.lua add, \
 	pamac-manager, \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu
 	}
-
-# show/add into todo list; add event to the google calendar
-super + {_,shift,ctrl} + y
-	{ pomodoro.lua add, todo.lua add, gcal-add.lua }
 
 super + {shift,ctrl,_} + Delete 
 	{ rmmpv-playing.sh, \
@@ -223,6 +217,7 @@ super + {shift,ctrl,_} + Delete
 	echo 0 | trash-restore "$(trash-list | cut -d" " -f3- | rofi -dmenu -threads 0 -monitor -4 -i -l 25 -p "restore" -theme-str 'window \{width:  90%;\}')"
 	}
 
+# linux process
 super + {_,shift,ctrl} + BackSpace
 	{$TERM_LT -t top -c top -e btop,$ROFI/kill,xkill}
 
@@ -230,6 +225,24 @@ super + {_,shift,ctrl} + BackSpace
 super + {_, shift,ctrl} + g
 	{search.lua google clip, search.lua google primary, search.lua brave clip}
 
+# tasks; todo; calendar
+super + {shift,ctrl} + u
+	{ pomodoro.lua add, pomodoro.lua stop }
+super + u ; {u,c,g,f,i,t,r,p,n,a,s}
+	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\ns-gcal notify\na-gcal agenda", \
+	gcal-add.lua, \
+	sh -c "java -jar grywalizacja.jar", \
+	timefx, \
+	todo.lua add, \
+	todo.lua show, \
+	pomodoro.lua repeat, \
+	pomodoro.lua pause, \
+	gcal-show.sh, \
+	gcalcli --nocolor agenda --config-folder="/home/miro/.config/gcalcli"  | zenity --text-info, \
+	setup.lua | zenity --text-info
+	}
+
+#search
 super + s ; {s,h,g,G,b,B,u,U,y,Y,m,M}
 	{ dunstify options: " (capital-clipboard):\nh-help menu\ng-google\nb-brave\nu-duckduck\ny-yt\nm-maps\nw-wiki\nc-ceneo\no-cenowarka\na-allegro\nz-amazon\ns-so\nf-filmweb\nd-diki\nl-deepL\nr-translator\np-pl-en trans\ne-en-pl trans\nx-tuxi\nt-tor\ni-info from cheatsh", \
 	search.lua menu input, \
