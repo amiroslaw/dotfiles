@@ -161,7 +161,9 @@ config.bind('zf', 'jseval -qf ~/.config/qutebrowser/js/general-filter.js')
 # }}}
 
 # ======================= HINTS ============= {{{
-config.bind(';;', 'hint links tab-bg')
+config.bind('f', 'hint links tab-bg')
+config.bind('F', 'hint links')
+config.bind(';;', 'hint all')
 config.bind(';d', 'hint all download')
 config.bind(';D', 'hint --rapid all download')
 config.bind(';a', 'hint --rapid links tab-bg')
@@ -316,7 +318,7 @@ config.bind('xs', 'set-cmd-text --space :scroll-to-anchor ')
 # ======================= Searchengines ============= {{{
 # engine name (such as `DEFAULT`, or `ddg`) to a URL with a `{}` placeholder. The placeholder will be replaced by the search term, use `{{` and `}}` for literal `{`/`}` braces.  
 c.url.searchengines = {
-    'DEFAULT': 'https://duckduckgo.com/?q={}',
+    'DEFAULT': 'https://www.google.com/search?q={}',
     'g': 'https://www.google.com/search?q={}',
     'dd': 'https://duckduckgo.com/?q={}',
     'b': 'https://search.brave.com/search?q={}',
@@ -346,9 +348,12 @@ c.url.searchengines = {
         }
 
 # ======================= SEARCH bindings ============= {{{
-config.bind('ss', 'open -b dd {primary} ')
-config.bind('sS', 'open -b dd {clipboard} ')
-config.bind('ss', 'spawn -u selection.sh dd', 'caret')
+config.bind('ss', 'open -b g {primary} ')
+config.bind('sS', 'open -b g {clipboard} ')
+config.bind('ss', 'spawn -u selection.sh g', 'caret')
+config.bind('sk', 'open -b dd {primary} ')
+config.bind('sK', 'open -b dd {clipboard} ')
+config.bind('sk', 'spawn -u selection.sh dd', 'caret')
 config.bind('si', 'open -b gi {primary} ')
 config.bind('sI', 'open -b gi {clipboard} ')
 config.bind('si', 'spawn -u selection.sh gi', 'caret')

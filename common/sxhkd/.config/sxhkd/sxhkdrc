@@ -198,13 +198,14 @@ super + {shift, ctrl} + x
 	{ gksu net-restart.sh, \
 	nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
 
-super + F{1,2,3,4,6,7,9,10,11,12}
+super + F{1,2,3,4,6,7,8,9,10,11,12}
 	{ firefox, \
 	/opt/idea-IU-212.5284.40/bin/idea.sh, \
 	$TERMINAL start --class vifm -- vifm, \
 	pcmanfm, \
 	sh -c "java -jar grywalizacja.jar", \
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
+	wezterm start --class 'portfolio'  -- nvim ~/.config/investing/portfolio.yaml, \
 	todo.lua add, \
 	pamac-manager, \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
@@ -228,8 +229,8 @@ super + {_, shift,ctrl} + g
 # tasks; todo; calendar
 super + {shift,ctrl} + u
 	{ pomodoro.lua add, pomodoro.lua stop }
-super + u ; {u,c,g,f,i,t,r,p,n,a,s}
-	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\ns-gcal notify\na-gcal agenda", \
+super + u ; {u,c,g,f,i,t,r,p,n,a,w}
+	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-setup\ns-show setup\nw-TW-tui", \
 	gcal-add.lua, \
 	sh -c "java -jar grywalizacja.jar", \
 	timefx, \
@@ -239,7 +240,14 @@ super + u ; {u,c,g,f,i,t,r,p,n,a,s}
 	pomodoro.lua pause, \
 	gcal-show.sh, \
 	gcalcli --nocolor agenda --config-folder="/home/miro/.config/gcalcli"  | zenity --text-info, \
-	setup.lua | zenity --text-info
+	wezterm start --class 'tw-tui' -- taskwarrior-tui, \
+	}
+
+super + u ; {s,S,e,o}
+	{ setup.lua add, \
+	setup.lua | zenity --text-info, \
+	wezterm start --class 'setup' -- nvim $SETUP, \
+	wezterm start --class 'portfolio'  -- nvim ~/.config/investing/portfolio.yaml, \
 	}
 
 #search

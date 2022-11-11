@@ -280,7 +280,7 @@ function run(cmd)
   Err_t = readf(ErrFile_s)
   os.remove(OutFile_s)
   os.remove(ErrFile_s)
-  local status = Status_code == 0 and true or false
+  local status = Status_code == 0
   return status, Out_t, Err_t, Status_code
 end -- >>>
 -- str <<<

@@ -1,7 +1,7 @@
 [bar/main]
 modules-left = bspwm polywins
 modules-center = investing
-modules-right = pomodoro cpu temp-amd fan-amd memory temp-nvidia fan-nvidia uptime filesystem date weather pulseaudio powermenu updates
+modules-right = pomodoro cpu memory uptime filesystem date weather pulseaudio powermenu updates
 ; mpd - daemon should be launch first
 ; system-usb-udev doesn't work
 ; moduel/network
