@@ -240,7 +240,7 @@ super + u ; {u,c,g,f,i,t,r,p,n,a,w}
 	pomodoro.lua pause, \
 	gcal-show.sh, \
 	gcalcli --nocolor agenda --config-folder="/home/miro/.config/gcalcli"  | zenity --text-info, \
-	wezterm start --class 'tw-tui' -- taskwarrior-tui, \
+	task sync && wezterm start --class 'tw-tui' -- taskwarrior-tui, \
 	}
 
 super + u ; {s,S,e,o}

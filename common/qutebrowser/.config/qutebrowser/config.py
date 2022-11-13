@@ -103,7 +103,12 @@ config.bind('gf', 'fullscreen')
 config.bind('gl', 'open -t ;; messages')
 config.bind('gs', 'view-source') # -p
 config.bind('gS', 'view-source --edit') 
-config.bind('gb', 'back -t') # -p
+config.bind('gb', 'back -t')
+# override 
+config.bind('[', 'scroll left')
+config.bind(']', 'scroll right')
+# config.bind('J', 'scroll left')
+# config.bind('K', 'scroll right')
 
 config.bind('<Ctrl+T>', 'spawn --userscript translate')
 
@@ -122,8 +127,8 @@ config.bind('<Alt-x>', 'navigate prev')
 # }}}
 
 # ======================= TABS AND WINDOWS ============= {{{
-config.bind(']', 'tab-next')
-config.bind('[', 'tab-prev')
+config.bind('l', 'tab-next')
+config.bind('h', 'tab-prev')
 config.bind(',,', 'tab-close')
 config.bind('tm', 'tab-mute')
 config.bind('tg', 'tab-give')
