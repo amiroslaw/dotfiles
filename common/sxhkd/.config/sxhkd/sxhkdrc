@@ -184,26 +184,12 @@ super + Return
 super + shift + Return
 	$TERM_LT
 
-# left/middle click emulation
-super + {x,v} 
-	xdotool click --clearmodifiers {1,2}
-
-super + {_,shift,ctrl} + i
-	{ rofi-buku, \
-	~/.config/qutebrowser/userscripts/session.sh, \
-	~/.config/qutebrowser/userscripts/session.sh webapp
-	}
-
-super + {shift, ctrl} + x
-	{ gksu net-restart.sh, \
-	nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
-
 super + F{1,2,3,4,6,7,8,9,10,11,12}
 	{ firefox, \
 	/opt/idea-IU-212.5284.40/bin/idea.sh, \
 	$TERMINAL start --class vifm -- vifm, \
 	pcmanfm, \
-	sh -c "java -jar grywalizacja.jar", \
+	java -jar ~/.bin/grywalizacja.jar, \
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
 	wezterm start --class 'portfolio'  -- nvim ~/.config/investing/portfolio.yaml, \
 	todo.lua add, \
@@ -212,27 +198,13 @@ super + F{1,2,3,4,6,7,8,9,10,11,12}
 	rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu
 	}
 
-super + {shift,ctrl,_} + Delete 
-	{ rmmpv-playing.sh, \
-	rmmpd-playing.sh, \
-	echo 0 | trash-restore "$(trash-list | cut -d" " -f3- | rofi -dmenu -threads 0 -monitor -4 -i -l 25 -p "restore" -theme-str 'window \{width:  90%;\}')"
-	}
-
-# linux process
-super + {_,shift,ctrl} + BackSpace
-	{$TERM_LT -t top -c top -e btop,$ROFI/kill,xkill}
-
-# search
-super + {_, shift,ctrl} + g
-	{search.lua google clip, search.lua google primary, search.lua brave clip}
-
 # tasks; todo; calendar
 super + {shift,ctrl} + u
 	{ pomodoro.lua add, pomodoro.lua stop }
 super + u ; {u,c,g,f,i,t,r,p,n,a,w}
 	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-setup\ns-show setup\nw-TW-tui", \
 	gcal-add.lua, \
-	sh -c "java -jar grywalizacja.jar", \
+	java -jar ~/.bin/grywalizacja.jar, \
 	timefx, \
 	todo.lua add, \
 	todo.lua show, \
@@ -300,7 +272,6 @@ super + shift + o ; {o,i,p,b,t,z,f,F}
 		$ROFI/open.sh file-hidden, \
 		}
 
-
 # script in background - url.lua menu will ask for the number of the links
 super + e ; {e,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
 	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr-speed reader\nR-read\nc-calendar\nk(K)-kindle\ni-investing", \
@@ -315,9 +286,6 @@ super + e ; {e,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
     url.lua speed 1, url.lua read 1,  \
 	gcal-show.sh, investing-cli -n
 }
-
-ctrl + shift + z
-	$ROFI/clipster/roficlip
 
 # clipster and notes; add J nad fix previous-copy primary
 super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}
@@ -334,6 +302,38 @@ super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}
 	}
 super + shift + c 
 	clipster.lua next clipboard 
+
+#keepassxc
+super + y
+	keecli.sh
+
+# left/middle click emulation
+super + {x,v} 
+	xdotool click --clearmodifiers {1,2}
+
+super + {_,shift,ctrl} + i
+	{ rofi-buku, \
+	~/.config/qutebrowser/userscripts/session.sh, \
+	~/.config/qutebrowser/userscripts/session.sh webapp
+	}
+
+super + {shift, ctrl} + x
+	{ gksu net-restart.sh, \
+	nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
+super + {shift,ctrl,_} + Delete 
+	{ rmmpv-playing.sh, \
+	rmmpd-playing.sh, \
+	echo 0 | trash-restore "$(trash-list | cut -d" " -f3- | rofi -dmenu -threads 0 -monitor -4 -i -l 25 -p "restore" -theme-str 'window \{width:  90%;\}')"
+	}
+
+# linux process
+super + {_,shift,ctrl} + BackSpace
+	{$TERM_LT -t top -c top -e btop,$ROFI/kill,xkill}
+
+# search
+super + {_, shift,ctrl} + g
+	{search.lua google clip, search.lua google primary, search.lua brave clip}
+
 #
 # ROFI 
 # ______________    
@@ -356,6 +356,9 @@ super + ctrl + d
 
 alt + space
 	 $ROFI/expander/expander.sh
+
+ctrl + shift + z
+	$ROFI/clipster/roficlip
 
 # rofi video
 super + {shift,ctrl} + v
