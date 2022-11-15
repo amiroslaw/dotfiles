@@ -257,6 +257,20 @@ end
 
 stateEnum = enum { STOP = stopStatus, BREAK = breakStatus, WORK = workStatus, PAUSE = pauseStatus, }
 
+local function modify()
+	local cmd = [[timew summary :ids :week | awk '/@/ {o=""; {for(i=4;i<=NF;i++)if($i !~/:/) o=o" "$i}; print o" "$NF; o=""}' ]]
+	local ok, tasks, err = run(cmd)
+	printt(tasks)
+	local action = rofiMenu({'lengthen', 'shorten'}, {prompt = 'modify interval'})
+	assert(action ~= '' and ok, "Can not modify")
+	table.sort(tasks)
+	local selectedTask = rofiMenu(tasks, {prompt = 'choose task (empty == last)', width = '94%'})
+	selectedTask = selectedTask ~= '' and selectedTask or ' @1'
+	local taskId = selectedTask:match '^%s@%d+'
+	local minutes = rofiNumberInput('Minutes')
+	run('timew ' .. action .. taskId .. ' ' .. minutes .. 'min')
+end
+
 local defaultOption = 'status'
 local options = {
 	['add'] = add,
@@ -265,6 +279,7 @@ local options = {
 	['repeat'] = duplicateTask,
 	['status'] = getState,
 	['notify'] = annotate,
+	['modify'] = modify,
 	['info'] = function() print(dailyInfo()) end,
 	['-h'] = function() print(HELP) os.exit() end,
 }

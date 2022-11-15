@@ -32,7 +32,7 @@ alias mag='$path_script/magnet.sh "$(xclip -o -selection clipboard)"'
 alias crypto='investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)'
 alias yahoo-key='cd $PRIVATE && java -jar $PRIVATE/selenium.jar yahoo'
 alias selenium='cd $PRIVATE && java -jar $PRIVATE/selenium.jar '
-alias gry='$java8 -jar ~/Documents/Ustawienia/sync/grywalizacja/Grywalizacja.jar &'
+alias gry='java -jar ~/.bin/grywalizacja.jar &'
 #}}}
 
 # {{{ config files
@@ -129,7 +129,7 @@ alias ti='timew'
 alias tis='timew summary :ids'
 alias tisw='timew summary :week'
 alias tiw='timew week'
-alias tia='timew summary :week && timew tagsum :week && timew procent :week'
+alias tia='timew summary :lastweek && timew tagsum :lastweek && timew procent :lastweek'
 alias tip='timew percentage'
 alias tidi='timew dist'
 alias in='$EDITOR "$NOTE"/tasks/inbox.adoc'

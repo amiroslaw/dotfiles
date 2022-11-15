@@ -202,7 +202,7 @@ super + F{1,2,3,4,6,7,8,9,10,11,12}
 super + {shift,ctrl} + u
 	{ pomodoro.lua add, pomodoro.lua stop }
 super + u ; {u,c,g,f,i,t,r,p,n,a,w}
-	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-setup\ns-show setup\nw-TW-tui", \
+	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-setup\ns-show setup\nw-TW-tui\nm-modify task", \
 	gcal-add.lua, \
 	java -jar ~/.bin/grywalizacja.jar, \
 	timefx, \
@@ -215,11 +215,12 @@ super + u ; {u,c,g,f,i,t,r,p,n,a,w}
 	task sync && wezterm start --class 'tw-tui' -- taskwarrior-tui, \
 	}
 
-super + u ; {s,S,e,o}
+super + u ; {s,S,e,o,m}
 	{ setup.lua add, \
 	setup.lua | zenity --text-info, \
 	wezterm start --class 'setup' -- nvim $SETUP, \
 	wezterm start --class 'portfolio'  -- nvim ~/.config/investing/portfolio.yaml, \
+	pomodoro.lua modify,\
 	}
 
 #search
