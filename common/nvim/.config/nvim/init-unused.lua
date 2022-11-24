@@ -188,3 +188,20 @@ cmp.setup.filetype({ "lua", "java", "bash", "css", "html", "javascript", "typesc
         { name = "buffer-lines" }
     }
 })
+
+-- -------------------------------------------------------------------------
+--                       https://github.com/cbochs/portal.nvim[GitHub - cbochs/portal.nvim: Neovim plugin for improved jumplist navigation]
+-- -------------------------------------------------------------------------
+
+use {
+    "cbochs/portal.nvim",
+    config = function()
+        require("portal").setup({
+		query = { "modified", "valid" },
+		-- query = { "modified", "different", "valid" },
+        })
+    end,
+}
+vim.keymap.set("n", "<LocalLeader>o", require("portal").jump_backward, {})
+vim.keymap.set("n", "<LocalLeader>i", require("portal").jump_forward, {})
+

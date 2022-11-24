@@ -294,7 +294,7 @@ omap('oa', ':<c-u>normal! GVgg<cr>') -- }}}
 
 -- MACROS {{{
 --"""" kindle put cursor on ===
-vim.fn.setreg('k', 'd3jj' )
+vim.fn.setreg('k', 'd3joj' )
 -- adoc
 vim.fn.setreg('p', '$a  +j0')
 vim.fn.setreg('l', 'pA[')
@@ -783,7 +783,6 @@ require'lightspeed'.setup {
   exit_after_idle_msecs = { unlabeled = 3000, labeled = nil },
   jump_to_unique_chars = { safety_timeout = 400 },
 } -- }}}
-
 
 -- }}} 
 -- vim: foldmethod=marker
