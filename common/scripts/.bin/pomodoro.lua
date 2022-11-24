@@ -195,7 +195,8 @@ function add()
 		pauseStatus()
 		return
 	end
-	local selectedId = selected:match '^%d+'
+	-- local selectedId = selected:match '^%d+'
+	local selectedId = selected:match '^%s*%d+'
 	local okUuid, uuid = run('task _uuid ' .. selectedId)
 	local file
 	if getState() == stateEnum.STOP then
