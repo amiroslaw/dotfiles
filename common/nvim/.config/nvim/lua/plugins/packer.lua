@@ -11,12 +11,12 @@ return require('packer').startup(function()
 	use 'chentoast/marks.nvim'
 	use 'mhinz/vim-startify' -- start screen
 	use { 'mbbill/undotree', cmd = { 'UndotreeToggle' } }
-	use {
-		'gbprod/yanky.nvim',
-		config = function()
-			require('yanky').setup {}
-		end,
-	}
+	-- use { maybe will fix crash
+	-- 	'gbprod/yanky.nvim',
+	-- 	config = function()
+	-- 		require('yanky').setup {}
+	-- 	end,
+	-- }
 	use 'voldikss/vim-browser-search'
 	use 'kyazdani42/nvim-web-devicons'
 	use { 'amiroslaw/fm-nvim', cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit', 'TaskWarriorTUI' } }

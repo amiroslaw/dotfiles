@@ -281,6 +281,7 @@ vmap('<a-e>', '[s1z=`]') -- auto correction last occurrence
 --replace from selection/ substitution, produce error but it's workaround for showing command line mode
 vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
 vmap('<S-A-r>', '"hy:%s/<C-r>h/^M/g<left><left><cmd>') -- add special char for enter c-v enter
+nmap('yu', ':let @+ = expand("%:p")<cr>') -- copy current file path and name into clipboard
 -- }}} 
 
 -- TEXT OBJECTS {{{
@@ -613,15 +614,15 @@ vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' } -- }}}
 
  
 -- yanky {{{
+	-- maybe causes crash
 -- https://github.com/gbprod/yanky.nvim#%EF%B8%8F-special-put
-nmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
-nmap('P', "<Plug>(YankyPutAfterLinewise)", { noremap = false })
--- nmap('y', "<Plug>(YankyYank)", { noremap = false }) -- preserve_cursor_position
-nmap('<c-p>', ':YankyRingHistory <cr>') -- can be manage by Telescope
-xmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
-nmap("<A-n>", "<Plug>(YankyCycleForward)", { noremap = false })
-nmap("<A-p>", "<Plug>(YankyCycleBackward)", { noremap = false }) 
-nmap('yu', ':let @+ = expand("%:p")<cr>') -- copy current file path and name into clipboard
+-- nmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
+-- nmap('P', "<Plug>(YankyPutAfterLinewise)", { noremap = false })
+-- -- nmap('y', "<Plug>(YankyYank)", { noremap = false }) -- preserve_cursor_position
+-- nmap('<c-p>', ':YankyRingHistory <cr>') -- can be manage by Telescope
+-- xmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
+-- nmap("<A-n>", "<Plug>(YankyCycleForward)", { noremap = false })
+-- nmap("<A-p>", "<Plug>(YankyCycleBackward)", { noremap = false }) 
 -- }}} 
 
 -- Status and tab bars {{{
