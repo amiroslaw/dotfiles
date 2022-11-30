@@ -296,6 +296,8 @@ omap('oa', ':<c-u>normal! GVgg<cr>') -- }}}
 -- MACROS {{{
 --"""" kindle put cursor on ===
 vim.fn.setreg('k', 'd3joj' )
+-- code
+vim.fn.setreg('m', 'Vf{%y' ) -- copy method with curry bracket 
 -- adoc
 vim.fn.setreg('p', '$a  +j0')
 vim.fn.setreg('l', 'pA[')
@@ -328,7 +330,7 @@ nmap('<leader>m', '<Cmd>WindowsMaximize<CR>') -- }}}
 nmap('<F6>', ':ZenMode <CR>')
 
 -- nmap('<leader>f', '<cmd> !stylua --config-path ~/.config/stylua/stylua.toml % <cr>')
-nmap('<leader>f', '<cmd> lua vim.lsp.buf.formatting_sync() <cr>')
+nmap('<leader>f', '<cmd> lua vim.lsp.buf.format() <cr>')
 vmap('<leader>f', '<cmd> lua vim.lsp.buf.range_formatting() <cr>')
 
 --""""""""""""""""""
