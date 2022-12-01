@@ -22,7 +22,7 @@ List of the options:
 		url - link of the website
 		-h help - show help
 
-dependencies: mpv, youtube-dl or yt-dlp, gallery-dl, clipster, readability-cli (node 12), mailx, speedread
+dependencies: mpv, youtube-dl or yt-dlp, gallery-dl, clipster, rdrview, mailx, speedread, pandoc
 ]]
 
 YT_DIR = '~/Videos/YouTube/'
@@ -53,7 +53,6 @@ function createTorrent(magnetlinks)
 	return '⬇️ Start downloading torrent'
 end
 
--- require node 12
 function sendToKindle(linkTab)
 	local tmpDir = '/tmp/kindle/'
 	local kindleEmail = io.input(os.getenv('PRIVATE') .. '/kindle_email'):read('*l'):gsub('%s', '')
@@ -61,48 +60,31 @@ function sendToKindle(linkTab)
 	os.execute('mkdir -p ' .. tmpDir)
 
 	for i, link in ipairs(linkTab) do
-		local readableCmd =  'readable --user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" "' .. link .. '" '
+		local readerCmd =  'rdrview -A "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" "' .. link .. '" '
 		
-		local title = io.popen(readableCmd .. ' -p title'):read('*a'):gsub("\n", ""):gsub('/', ''):gsub('\"','')
+		local title = io.popen(readerCmd .. ' -M | head -1 | cut -d ":" -f 2'):read('*a'):gsub("\n", ""):gsub('/', ''):gsub('\"','')
 		if #title == 0 then 
 			title = 'untitled-' .. os.date('%Y-%m-%dT%H:%M:%S')
 		end 
-		-- converting to pdf has error in pandoc, html need to have <html> <body> tags and has problem with encoding
-		-- epub has nice metadata options but I don't know how to create few of them.
+		-- pandoc has error when converting to pdf, html need to have <html> <body> tags and has problem with encoding
+		-- epub has nice metadata options each one has to have `--metadata` param
 		local date = os.date('%Y-%m-%d')
-		local htmlExe = run(readableCmd .. ' -p length,html-content -o "' .. tmpDir .. title .. '"')
-		print(readableCmd .. ' -p length,html-content -o "' .. tmpDir .. title .. '"')
-		local epubExe = run('pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata rights=' .. link .. ' --metadata date='..date..' --metadata title="'.. title .. '" "' .. tmpDir .. title .. '"')
-		print('pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata rights=' .. link .. ' --metadata date='..date..' --metadata title="'.. title .. '" "' .. tmpDir .. title .. '"')
-		local sendFile = run('echo "' .. title .. '\nKindle article from readability-cli" | mailx -v -s "Convert" -a"' .. tmpDir .. title .. '.epub" ' .. kindleEmail)
-		if not epubExe or not htmlExe or not sendFile then
+		print(readerCmd .. ' -T title,excerpt,url,sitename,byline -H | pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata date='..date)
+		local epubExe = run(readerCmd .. ' -T title,byline,sitename,url -H | pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata date='..date)
+		local sendFile, out, err = run('echo "' .. title .. '\nKindle article from reader" | mailx -v -s "Convert" -a"' .. tmpDir .. title .. '.epub" ' .. kindleEmail)
+		if not epubExe or not sendFile then
 			table.insert(articlesWithErrors, link)
 		end
 	end
 	assert(#articlesWithErrors == 0, 'Could not send ' .. #articlesWithErrors .. ' articles\n' .. table.concat(articlesWithErrors, '\n'))
 	return 'Sent ' .. #linkTab .. ' articles'
-		-- local epubExe = run('pandoc --from html --to docx --output "' .. tmpDir .. title .. '.doxc" "' .. tmpDir .. title .. '"') -- docx
-		-- local title = os.time() - special chars in filename
-		-- local epubExe = run('pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata rights=' .. link .. ' --metadata date='..date..' --metadata title="'.. title .. '" "' .. tmpDir .. title .. '"')
-			-- creating docx
-			-- local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to docx --output ' .. tmpDir .. titleUrl .. '.docx')
-			-- local sendFile = os.execute('echo "' .. titleUrl .. '\nKindle article from readability-cli" | mailx -v -s "Convert" -a' .. tmpDir .. titleUrl .. '.docx ' .. kindleEmail)
-		-- local titleUrl = title:gsub('[^a-zA-Z0-9-_]', '-')
-			--[[ 
-			append link to the article - I have to do it before pandoc
-			doc = io.open(tmpDir .. title, "a+")
-			doc:write(link)
-			doc:close() ]]
-		-- else
-			-- table.insert(articlesWithErrors, link)
-		-- end
 end
 
 function readable(linkTab)
 	local tmpname = os.tmpname()
 	for i, link in ipairs(linkTab) do
-		local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to asciidoc --output ' .. tmpname .. '.adoc')
-		os.execute('st -c read -n read -e nvim ' .. tmpname .. '.adoc') -- can read form evns
+		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to asciidoc --output ' .. tmpname .. '.adoc')
+		os.execute('st -c read -n read -e nvim ' .. tmpname .. '.adoc')
 		assert(createFile == 0, 'Could not create file')
 	end
 	return 'Created file ' .. tmpname
@@ -111,9 +93,9 @@ end
 function speed(linkTab)
 	local tmpname = os.tmpname()
 	for i, link in ipairs(linkTab) do
-		local createFile = os.execute('readable -A "Mozilla" -q true "' .. link .. '" -p html-title,length,html-content | pandoc --from html --to plain --output ' .. tmpname)
-		-- os.execute('st -c rsvp -n rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 330"') 
+		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to plain --output ' .. tmpname)
 		os.execute('wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. tmpname .. ' | speedread -w 330"') 
+		-- os.execute('st -c rsvp -n rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 330"') 
 		assert(createFile == 0, 'Could not create file')
 	end
 	return 'RSVP finished ' .. tmpname
