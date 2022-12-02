@@ -62,15 +62,14 @@ function sendToKindle(linkTab)
 	for i, link in ipairs(linkTab) do
 		local readerCmd =  'rdrview -A "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" "' .. link .. '" '
 		
-		local title = io.popen(readerCmd .. ' -M | head -1 | cut -d ":" -f 2'):read('*a'):gsub("\n", ""):gsub('/', ''):gsub('\"','')
+		local title = io.popen(readerCmd .. ' -M | head -1 | cut -d ":" -f 2'):read('*a'):gsub("\n", ""):gsub('/', ''):gsub('\"',''):gsub('^%s', '')
 		if #title == 0 then 
 			title = 'untitled-' .. os.date('%Y-%m-%dT%H:%M:%S')
 		end 
 		-- pandoc has error when converting to pdf, html need to have <html> <body> tags and has problem with encoding
-		-- epub has nice metadata options each one has to have `--metadata` param
+		-- metadata title is required by the kindle server
 		local date = os.date('%Y-%m-%d')
-		print(readerCmd .. ' -T title,excerpt,url,sitename,byline -H | pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata date='..date)
-		local epubExe = run(readerCmd .. ' -T title,byline,sitename,url -H | pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata date='..date)
+		local epubExe = run(readerCmd .. ' -H -T excerpt,url,sitename,byline | pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata title="' .. title .. '" --metadata date='..date)
 		local sendFile, out, err = run('echo "' .. title .. '\nKindle article from reader" | mailx -v -s "Convert" -a"' .. tmpDir .. title .. '.epub" ' .. kindleEmail)
 		if not epubExe or not sendFile then
 			table.insert(articlesWithErrors, link)
