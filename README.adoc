@@ -1,0 +1,93 @@
+== dot files 
+My configurations. Currently, I use Manjaro with bspwm as a window manager and sxhkd. My goal is to make ergonomically environment - mostly I try to avoid using a mice and automate the mostly used actions. I like to follow to https://en.wikipedia.org/wiki/Unix_philosophy[Unix philosophy], so many programs that I use are small and can be run in terminal.
+
+=== The favorite programs 
+I want to highlight apps that I heavily use and they are crucial to my daily workflow. Many keybindings run my custom scripts. I prefer lua(jit) for scripting.
+
+
+* https://qutebrowser.org/[qutebrowser - web browser]
+* https://davedavenport.github.io/rofi/[rofi - dmenu replacement]
+* https://wezfurlong.org/wezterm/index.html[wezterm - terminal]
+* https://vifm.info/[Vifm - terminal file mangaer]
+* https://github.com/baskerville/sxhkd[sxhkd: Simple X hotkey daemon]
+* https://github.com/phillipberndt/pqiv[pqiv: image viewer]
+* https://taskwarrior.org/[Taskwarrior - task manger]
+* https://timewarrior.net/[Timewarrior - tracking time]
+* https://github.com/polybar/polybar[polybar status bar]
+* nvim and ideavim
+
+=== File hierarchy
+For managing my dots I use https://www.gnu.org/software/stow/manual/stow.html[stow], but by aware that I sync configuration between my desktop and laptop, so some directories have to be created manually and after that you can make aliases. In this case, the root folder can't be an alias.
+
+.File hierarchy
+....
+ ├── common
+ │  ├── alacritty
+ │  ├── bottom
+ │  ├── broot
+ │  ├── btop
+ │  ├── config
+ │  ├── ctags
+ │  ├── dunst
+ │  ├── easystroke
+ │  ├── feh
+ │  ├── fzf
+ │  ├── git
+ │  ├── gtk
+ │  ├── home
+ │  ├── ideavim
+ │  ├── kitty
+ │  ├── lazygit
+ │  ├── local
+ │  ├── mozilla
+ │  ├── mpv
+ │  ├── ncmpcpp
+ │  ├── nvim
+ │  ├── picom
+ │  ├── polybar
+ │  ├── pqiv
+ │  ├── qutebrowser
+ │  ├── rofi
+ │  ├── rofi-buku
+ │  ├── scripts
+ │  ├── smplayer
+ │  ├── stylua
+ │  ├── sxhkd
+ │  ├── sxiv
+ │  ├── task
+ │  ├── tealdeer
+ │  ├── tg
+ │  ├── timewarrior
+ │  ├── vifm
+ │  ├── vim
+ │  ├── wezterm
+ │  └── zsh
+ ├── desktop
+ │  ├── alacritty
+ │  ├── bspwm
+ │  ├── config
+ │  ├── home
+ │  ├── mpd
+ │  ├── nfancurve
+ │  ├── polybar
+ │  ├── rtorrent
+ │  ├── scripts
+ │  └── zsh
+ ├── laptop
+ │  ├── alacritty
+ │  ├── bspwm
+ │  ├── config
+ │  ├── home
+ │  ├── mpd
+ │  ├── polybar
+ │  ├── rtorrent
+ │  ├── scripts
+ │  └── zsh
+ ├── old
+ │  ├── i3
+ │  ├── scripts
+ │  └── tmux
+ └── system
+    └── hibernate
+....
+
