@@ -312,7 +312,7 @@ vim.fn.setreg('f', 'f)a kb  ')
 -- }}} 
 
 -- PLUGINS {{{
-
+-- taskmaker {{{
 local task = require('taskmaker').setup({
 	app = 'taskwarrior', -- {'taskwarrior', 'todo.txt'}
 	feedback = true,
@@ -320,7 +320,8 @@ local task = require('taskmaker').setup({
 	-- default_context = 'in',
 })
 vmap('<LocalLeader>t', '<cmd>TaskmakerAddTasks <CR>')
-nmap('<LocalLeader>x', '<cmd>TaskmakerToggle <CR>')
+nmap('<LocalLeader>x', '<cmd>TaskmakerToggle <CR>') -- }}} 
+
 
 -- Windows {{{
 nmap('<leader>M', '<Cmd>WindowsToggleAutowidth<CR>')
@@ -786,6 +787,42 @@ require'lightspeed'.setup {
   exit_after_idle_msecs = { unlabeled = 3000, labeled = nil },
   jump_to_unique_chars = { safety_timeout = 400 },
 } -- }}}
+
+-- translate {{{
+--https://github.com/uga-rosa/translate.nvim
+-- let g:deepl_api_auth_key = 'MY_AUTH_KEY'
+-- command = "deepl_free", -- require credit card
+require("translate").setup({
+    default = {
+	    output = 'insert', -- split, floating, insert, replace, register
+		    lang_abbr = {
+		        pl = "polish",
+		    },
+		    end_marks = {
+		        polish = { ".", "?", "!", },
+		    },
+    },
+})
+xmap('<LocalLeader>e', '<Cmd>Translate EN -source=PL<CR>')
+nmap('<LocalLeader>e', '<Cmd>Translate EN -source=PL<CR>')
+nmap('<LocalLeader>er', 'viw:Translate EN -source=PL -output=replace<CR>') 
+xmap('<LocalLeader>er', 'viw:Translate EN -source=PL -output=replace<CR>') 
+nmap('<LocalLeader>p', '<Cmd>Translate PL -source=EN<CR>')
+xmap('<LocalLeader>p', '<Cmd>Translate PL -source=EN<CR>')
+nmap('<LocalLeader>pr', 'viw:Translate PL -source=EN -output=replace<CR>') 
+xmap('<LocalLeader>pr', 'viw:Translate PL -source=EN -output=replace<CR>') 
+-- }}} 
+
+-- grammarous {{{
+vim.g['grammarous#use_vim_spelllang'] = 1
+-- vim.g['grammarous#enable_spell_check'] = 1
+nmap('<LocalLeader>c', '<cmd>GrammarousCheck --lang=en<CR>')
+nmap('<LocalLeader>cp', '<cmd>GrammarousCheck --lang=pl <CR>')
+nmap('<LocalLeader>ch', '<Plug>(grammarous-move-to-previous-error)', { noremap = false }) -- Move cursor to the previous error
+nmap('<LocalLeader>cl', '<Plug>(grammarous-move-to-next-error)', { noremap = false }) -- Move cursor to the next error
+nmap('<LocalLeader>cf', '<Plug>(grammarous-fixit)', { noremap = false }) --	Fix the error under the cursor automatically
+ -- }}} 
+
 
 -- }}} 
 -- vim: foldmethod=marker

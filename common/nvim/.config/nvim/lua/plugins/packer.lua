@@ -1,6 +1,8 @@
 -- any change requiers :PackerCompile
 -- https://github.com/wbthomason/packer.nvim
 return require('packer').startup(function()
+	use {'uga-rosa/translate.nvim', cmd = {'Translate'}}
+	use {'rhysd/vim-grammarous', cmd = {'GrammarousCheck'}}
 	use 'ggandor/lightspeed.nvim'
 	use { "anuvyklack/windows.nvim", -- Automatically resizes your windows
 	   requires = "anuvyklack/middleclass",
