@@ -1,114 +1,126 @@
-
-# This configuration file lets you define new commands
-# or change the shortcut or triggering keys of built-in verbs.
-# You can change the colors of broot too.
-#
 # Configuration documentation is available at https://dystroy.org/broot
-#
+# internal - overrite shortcut
 
 #####################
-# user defined verbs:
+icon_theme = "vscode"
+# modal = true
 
-# If $EDITOR isn't set on your computer, you should either set it using
-#  something similar to
-# export EDITOR=/usr/bin/nvim
-#  or just replace it with your editor of choice in the 'execution'
-#  pattern.
-# Example:
-# execution = "/usr/bin/nvim {file}"
-
+# files aren't open in $EDITOR 
 [[verbs]]
+key = "ctrl-o"
 invocation = "edit"
-key = "enter"
 shortcut = "e"
 execution = "/usr/bin/nvim {file}"
 leave_broot = false
 # execution = "$EDITOR {file}"
 
 [[verbs]]
-shortcut = "f"
-invocation = "open file"
 key = "ctrl-o"
+shortcut = "f"
+invocation = "open_stay_filter"
 internal = ":open_stay_filter"
 
 [[verbs]]
-invocation = "home"
-key = "ctrl-b"
-internal = ":focus ~"
+key = "ctrl-s"
+invocation = "toggle_stage"
+internal= ":toggle_stage"
+[[verbs]]
+key = "ctrl-z"
+invocation = "stage_all"
+internal = ":stage_all_files"
 
 ## VIMLIKE
 [[verbs]]
 key = "ctrl-k"
-execution = ":line_up"
-
+invocation = "line_up"
+internal = ":line_up"
 [[verbs]]
-name = "line_down"
 key = "ctrl-j"
-execution = ":line_down"
-
+invocation = "line_down"
+internal = ":line_down"
 [[verbs]]
 key = "ctrl-l"
-execution = ":open_stay"
-
+invocation = "open_stay"
+internal = ":open_stay"
 [[verbs]]
 key = "ctrl-h"
-execution = ":parent"
-
+invocation = "parent"
+internal = ":parent"
 [[verbs]]
-invocation = "top"
 key = "ctrl-u"
-execution = ":select_first"
-
+invocation = "page_up"
+internal = ":page_up"
 [[verbs]]
-invocation = "bottom"
 key = "ctrl-d"
-execution = ":select_last"
+invocation = "page_down"
+internal = ":page_down"
+[[verbs]]
+key = "ctrl-g"
+invocation = "bottom"
+internal = ":select_last"
 
 ##### Panels
 [[verbs]]
-invocation = "panel_new"
 key = "ctrl-v"
+invocation = "panel_new"
 internal = ":start_end_panel"
 [[verbs]]
-invocation = "panel_close"
+key = "ctrl-w"
+invocation = "toggle_preview"
+internal = ":toggle_preview"
+#can't change to c-q
+[[verbs]]
 key = "ctrl-c"
+invocation = "close_panel_cancel"
 internal = ":close_panel_cancel"
 [[verbs]]
-invocation = "panel_left"
 key = "ctrl-p"
+invocation = "panel_left"
 internal = ":panel_left"
 [[verbs]]
-invocation = "panel_right"
 key = "ctrl-n"
+invocation = "panel_right"
 internal = ":panel_right"
-
+[[verbs]]
+key = "ctrl-x"
+invocation = "clear_stage"
+internal = ":clear_stage"
 
 # toggles
 [[verbs]]
-name = "preview"
-key = "ctrl-w"
-invocation = "preview"
-execution = ":toggle_preview"
-
-[[verbs]]
 key = "ctrl-t"
-execution = ":toggle_dates"
-
+invocation = "toggle_dates"
+internal = ":toggle_dates"
 [[verbs]]
 key = "ctrl-a"
-execution = ":toggle_hidden"
-
+invocation = "toggle_hidden"
+internal = ":toggle_hidden"
+# doesn't work
+[[verbs]]
+key = "ctrl-i"
+invocation = "toggle_git_ignore"
+internal = ":toggle_git_ignore"
 [[verbs]]
 key = "ctrl-f"
-execution = ":toggle_files"
-
+invocation = "toggle_files"
+internal = ":toggle_files"
 [[verbs]]
-key = "ctrl-x"
-execution = ":toggle_perm"
-
+key = "F9"
+invocation="toggle_perm"
+internal = ":toggle_perm"
+##### SORT
 [[verbs]]
-key = "ctrl-s"
-execution = ":toggle_sizes"
+key = "F10"
+invocation="sort_by_size"
+internal = ":sort_by_size"
+[[verbs]]
+key = "F11"
+invocation="sort_by_date"
+internal = ":sort_by_date"
+[[verbs]]
+key = "F12"
+invocation="sort_by_type"
+internal = ":sort_by_type"
 
 ##### EXECUTION
 [[verbs]]
@@ -118,31 +130,39 @@ leave_broot = false
 execution = "trash-put {file}"
 # or {directory} it not match dir or file it will delete parrent!
 # execution = "rm -rf {file}"
-
 [[verbs]]
-invocation = "copy to panel"
+key = "F1"
+invocation = "refresh"
+internal = ":refresh"
+[[verbs]]
 key = "F5"
+invocation = "copy_to_panel"
 execution = "cp -r {file} {other-panel-directory}"
 leave_broot = false
-
+# internal = ":cpp" can't be overrited 
 [[verbs]]
-invocation = "move to panel"
 key = "F6"
+invocation = "move_to_panel"
 execution = "mv {file} {other-panel-directory}"
 leave_broot = false
-
-[[verbs]]
-invocation = "move to panel"
-key = "F8"
-execution = "touch {directory}/{new_file}"
-leave_broot = false
-
+# internal = ":move_to_panel" can't be overrited 
 [[verbs]]
 key = "F7"
-invocation = "mkdir"
+invocation = "mkdir {new_dir}"
 execution = "/bin/mkdir -p {directory}/{new_dir}"
 leave_broot = false
 # execution = "mkdir -p {subpath:path-from-directory}"
+[[verbs]]
+key = "F8"
+invocation = "touch {new_file}"
+execution = "touch {directory}/{new_file}"
+leave_broot = false
+
+# BOOKMARKS
+[[verbs]]
+invocation = "home"
+key = "alt-h"
+internal = ":focus ~/"
 
 # If $PAGER isn't set on your computer, you should either set it
 #  or just replace it with your viewer of choice in the 'execution'

@@ -381,6 +381,10 @@ take () {
   mkdir -p "$1" && cd "$1"
   }
 
+# deep broot cd "I'm feeling lucky" of broot
+function c {
+    br -h --only-folders --cmd "$1;:cd"
+}
 
 wypakuj () {
     if [ -f $1 ] ; then
