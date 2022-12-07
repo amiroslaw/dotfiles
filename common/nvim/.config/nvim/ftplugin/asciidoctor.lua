@@ -12,7 +12,9 @@ function AdocPasteFileLink()
 		vim.fn.append(vim.fn.line '.', adocLink)
 	end
 end
-nmap('<localleader>p', ':lua AdocPasteFileLink()<esc>')
+
+nmap('<localleader>l', ':lua AdocPasteFileLink()<esc>')
+vmap('<localleader>t', '<cmd>Tab /|<CR>') -- format table by `|`
 nmap('<F7>', ':!preview-ascii.sh % <CR>')
 
 -- todolist

@@ -5,6 +5,7 @@ local plugins = require 'plugins'
 
 local keys = {}
 local act = wezterm.action
+
 local function map(key, cmd, modKey)
 	table.insert(keys, {
 		key = key,
@@ -48,7 +49,7 @@ mapCS('l', act { ActivateTabRelative = 1 })
 mapCS('Tab', act { ActivateTabRelative = 1 })
 -- Modes X,Space, O, U, E
 -- mapCS('o', 'ShowLauncher')
-mapCS('>', act.CharSelect { copy_on_select = true, copy_to = 'ClipboardAndPrimarySelection', }) -- emoji
+mapCS('>', act.CharSelect { copy_on_select = true, copy_to = 'ClipboardAndPrimarySelection' }) -- emoji
 mapCS('e', act { ShowLauncherArgs = { flags = 'FUZZY|LAUNCH_MENU_ITEMS' } })
 map('F1', act { ShowLauncherArgs = { flags = 'FUZZY|KEY_ASSIGNMENTS' } }, 'ALT')
 -- Custom Actions
@@ -61,9 +62,6 @@ map('F7', act { Search = { Regex = 'ERROR' } }, 'ALT')
 map('F12', 'ShowDebugOverlay', 'ALT')
 --disable key
 map('Enter', 'DisableDefaultAssignment', 'ALT')
--- key table don't work
--- map('m', wezterm.action{ ActivateKeyTable={ name="activate_pane", timeout_milliseconds=1000, replace_current=true, one_shot=true} }, "LEADER")
-map('r', act.ActivateKeyTable { name = 'resize_pane', one_shot = false }, 'LEADER')
 
 local mouse_bindings = {
 	{ -- Alt-Middle click pastes from the clipboard selection
@@ -75,47 +73,53 @@ local mouse_bindings = {
 }
 -- Show which key table is active in the status area
 wezterm.on('update-right-status', function(window, pane)
-  local name = window:active_key_table()
-  if name then
-    name = 'TABLE: ' .. name
-  end
-  window:set_right_status(name or '')
+	local name = window:active_key_table()
+	if name then
+		name = 'TABLE: ' .. name
+	end
+	window:set_right_status(name or '')
 end)
 
+-- key table don't work
+map('m', act{ ActivateKeyTable={ name="activate_pane", timeout_milliseconds=1000, replace_current=true, one_shot=true} }, "LEADER")
+map('r', act.ActivateKeyTable { name = 'resize_pane', one_shot = false }, 'LEADER')
+activate_pane = {
+	{ key = 'LeftArrow', action = wezterm.action { ActivatePaneDirection = 'Left' } },
+	{ key = 'h', action = wezterm.action { ActivatePaneDirection = 'Left' } },
+
+	{ key = 'RightArrow', action = wezterm.action { ActivatePaneDirection = 'Right' } },
+	{ key = 'l', action = wezterm.action { ActivatePaneDirection = 'Right' } },
+
+	{ key = 'UpArrow', action = wezterm.action { ActivatePaneDirection = 'Up' } },
+	{ key = 'k', action = wezterm.action { ActivatePaneDirection = 'Up' } },
+
+	{ key = 'DownArrow', action = wezterm.action { ActivatePaneDirection = 'Down' } },
+	{ key = 'j', action = wezterm.action { ActivatePaneDirection = 'Down' } },
+}
+resize_pane = {
+	{ key = 'LeftArrow', action = act.AdjustPaneSize { 'Left', 1 } },
+	{ key = 'h', action = act.AdjustPaneSize { 'Left', 1 } },
+
+	{ key = 'RightArrow', action = act.AdjustPaneSize { 'Right', 1 } },
+	{ key = 'l', action = act.AdjustPaneSize { 'Right', 1 } },
+
+	{ key = 'UpArrow', action = act.AdjustPaneSize { 'Up', 1 } },
+	{ key = 'k', action = act.AdjustPaneSize { 'Up', 1 } },
+
+	{ key = 'DownArrow', action = act.AdjustPaneSize { 'Down', 1 } },
+	{ key = 'j', action = act.AdjustPaneSize { 'Down', 1 } },
+
+	-- Cancel the mode by pressing escape
+	{ key = 'Escape', action = 'PopKeyTable' },
+}
+
+local defaultKeysTable = wezterm.gui.default_key_tables()
+table.insert(defaultKeysTable, activate_pane)
+table.insert(defaultKeysTable, resize_pane)
+
 return {
+	  -- leader = { key = 'Space', mods = 'CTRL|SHIFT' },
 	keys = keys,
 	mouse_bindings = mouse_bindings,
-	-- leader = {key="a", mods="CTRL"},
-	-- leader = { key = 'a', mods = 'CTRL|SHIFT' },
-	key_tables = {
-		activate_pane = {
-			{ key = 'LeftArrow', action = wezterm.action { ActivatePaneDirection = 'Left' } },
-			{ key = 'h', action = wezterm.action { ActivatePaneDirection = 'Left' } },
-
-			{ key = 'RightArrow', action = wezterm.action { ActivatePaneDirection = 'Right' } },
-			{ key = 'l', action = wezterm.action { ActivatePaneDirection = 'Right' } },
-
-			{ key = 'UpArrow', action = wezterm.action { ActivatePaneDirection = 'Up' } },
-			{ key = 'k', action = wezterm.action { ActivatePaneDirection = 'Up' } },
-
-			{ key = 'DownArrow', action = wezterm.action { ActivatePaneDirection = 'Down' } },
-			{ key = 'j', action = wezterm.action { ActivatePaneDirection = 'Down' } },
-		},
-		resize_pane = {
-			{ key = 'LeftArrow', action = act.AdjustPaneSize { 'Left', 1 } },
-			{ key = 'h', action = act.AdjustPaneSize { 'Left', 1 } },
-
-			{ key = 'RightArrow', action = act.AdjustPaneSize { 'Right', 1 } },
-			{ key = 'l', action = act.AdjustPaneSize { 'Right', 1 } },
-
-			{ key = 'UpArrow', action = act.AdjustPaneSize { 'Up', 1 } },
-			{ key = 'k', action = act.AdjustPaneSize { 'Up', 1 } },
-
-			{ key = 'DownArrow', action = act.AdjustPaneSize { 'Down', 1 } },
-			{ key = 'j', action = act.AdjustPaneSize { 'Down', 1 } },
-
-			-- Cancel the mode by pressing escape
-			{ key = 'Escape', action = 'PopKeyTable' },
-		},
-	},
+	key_tables = defaultKeysTable,
 }

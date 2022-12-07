@@ -61,8 +61,10 @@ local function changeTWstate(state)
 	local ok, _, err
 	if state == stateEnum.STOP then
 		ok, _, err = run('task stop ' .. taskUuid)
+		alert 'Work stopped'
 	else
 		ok, _, err = run('task start ' .. taskUuid)
+		alert 'Work started'
 	end
 	assert(ok, 'Can not execute taskwarrior ' .. err[1])
 end
@@ -101,7 +103,6 @@ function breakStatus()
 		io.open(STATUS_PATH, 'w'):write 'work'
 		duplicateTask()
 		workStatus()
-		alert 'Break finished'
 	end
 end
 
@@ -115,7 +116,6 @@ function workStatus()
 		io.open(STATUS_PATH, 'w'):close()
 		breakStatus()
 		changeTWstate(stateEnum.STOP)
-		alert 'Work finished'
 	end
 end
 

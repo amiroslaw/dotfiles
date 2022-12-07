@@ -217,9 +217,9 @@ imap('<C-d>', '<C-o>e')
 nmap('<A-a>', '#')
 nmap('<A-d>', '*')
 
--- go to the line
-nmap('<C-j>', 'gj')
-nmap('<C-k>', 'gk')
+-- jump paragraphs next line in insert mode
+nmap('<C-j>', '}')
+nmap('<C-k>', '{')
 imap('<C-j>', '<Esc>gj')
 imap('<C-k>', '<Esc>gk')
 
