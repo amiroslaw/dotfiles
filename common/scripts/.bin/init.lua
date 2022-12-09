@@ -485,7 +485,8 @@ function rofiMenu(optionTab, opt)
 		lines = rofiOpt.height
 	end
 	local ok, selected, err= run('echo "' .. options .. '" | rofi -monitor -4 -i ' .. rofiOpt.multi .. ' -l ' .. lines .. ' -sep "|" -dmenu -p "' .. rofiOpt.prompt .. '" -theme-str "window {width:  ' .. rofiOpt.width .. ';}" ')
-	if not ok then
+	if not ok or selected == nil then
+		notifyError(ok .. str(selected))
 		return ''
 	end
 	if opt and opt.multi then

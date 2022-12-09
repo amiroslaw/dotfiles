@@ -66,7 +66,7 @@ local function changeTWstate(state)
 		ok, _, err = run('task start ' .. taskUuid)
 		alert 'Work started'
 	end
-	assert(ok, 'Can not execute taskwarrior ' .. err[1])
+	assert(ok, 'Can not execute taskwarrior ' .. str(err))
 end
 
 function archiveTask(duration)
@@ -144,9 +144,9 @@ function stopStatus()
 		io.write(count[1])
 	else
 		os.execute('rm ' .. STATUS_PATH)
-		if flags['n'] then
-			os.execute "dunstify Pomodoro 'Finished'"
-		end
+		-- if flags['n'] then
+		-- 	os.execute "dunstify Pomodoro 'Finished'"
+		-- end
 		changeTWstate(stateEnum.STOP)
 	end
 	io.write('  ')

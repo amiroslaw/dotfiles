@@ -200,16 +200,16 @@ super + F{1,2,3,4,6,7,8,9,10,11,12}
 
 # tasks; todo; calendar
 super + {shift,ctrl} + u
-	{ pomodoro.lua add, pomodoro.lua stop }
+	{ pomodoro.lua add -n, pomodoro.lua stop -n}
 super + u ; {u,c,g,f,i,t,r,p,n,a,w}
-	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-setup\ns-show setup\nw-TW-tui\nm-modify task", \
+	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nm-modify task", \
 	gcal-add.lua, \
 	java -jar ~/.bin/grywalizacja.jar, \
 	timefx, \
 	todo.lua add, \
 	todo.lua show, \
-	pomodoro.lua repeat, \
-	pomodoro.lua pause, \
+	pomodoro.lua repeat -n, \
+	pomodoro.lua pause -n, \
 	gcal-show.sh, \
 	gcalcli --nocolor agenda --config-folder="/home/miro/.config/gcalcli"  | zenity --text-info, \
 	task sync && wezterm start --class 'tw-tui' -- taskwarrior-tui, \
