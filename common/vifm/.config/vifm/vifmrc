@@ -105,6 +105,8 @@ set vifminfo=bookmarks,chistory,shistory,phistory,savedirs,dhistory
 
 """""""""" my config
 """""""
+" viewcolumn - lua plugin - brakes modification column for sorting by e.g. modification
+" set viewcolumns=-{NameLink},8.7{LsSize}
 set relativenumber
 "don't create shortcut with d,y,p key
 set ignorecase
@@ -153,8 +155,9 @@ noremap il :!for f in %f; do  "$f"; done<A-B><A-B><Left>
 "atool don't work with rar?
 nmap rr	:!atool -x %f <cr>
 nmap RR	:!atool --extract-to=%D %f <cr>
-nmap rc	:!atool -a %d:t.7z %f <cr> 
 nmap rl	:!atool -l %f %m <cr> 
+nmap rc :Pack 7z <cr>
+" nmap rc	:!atool -a %d:t.7z %f <cr> 
 " nmap rr	:!patool extract %f <cr>
 " nmap RR	:!patool extract --outdir %D %f <cr>
 " nmap rc	:!patool create %d:t.7z %f <cr> 
@@ -162,6 +165,8 @@ nmap rl	:!atool -l %f %m <cr>
 
 " magicimage display resolution of image
 nmap ii	:!identify %f %S <cr> 
+
+nmap cx	:chmod+x<cr>
 
 "pdf combine
 nmap cp	:!pdfunite %f %d:t.pdf <cr>
@@ -203,13 +208,12 @@ nmap <F4> :! pcmanfm %d %i & <cr>
 nmap <F5> :!cp -r %f %D<cr>
 " move files to the opposite pane
 nmap <F6> :!mv %f %D &<cr>
-nmap <F7> :mkdir <space>
+"make dir and cd - form plugin, nested directory allowed 
+nmap <F7> :MkCd <space> 
 " make dir from selected file name
 nmap cd :mkdir %c:r <cr> 
-
 nmap <F8> :touch <space> 
-nmap cf :touch %c:r <cr> 
-
+nmap cf :touch %c.txt <space> 
 
 "COMAND VIFM
 " shortcut list
@@ -364,22 +368,16 @@ filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm,*.svg,*avif},<imag
         \ pqiv -f %f,
         \ sxiv -fa %f %i,
 		" \ echo %f > ~/test,
+
+" wezterm
+fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*avif wezterm imgcat --width %pw --height %ph %c:p %pd
+
 " kitty 
 " fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*avif},<image/*>
 " 	\ kitty +icat --place %pwx%ph@%pxx%py  --silent %c
 " 	\ %pc
 " 	\ kitty icat --clear --silent %pd
-
 	 " \ identify %f
-
-" wezterm
-fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*avif wezterm imgcat --width %pw --height %ph %c:p %pd
-
- " w3m
- " fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
- "          \ imgt %px %py %pw %ph %c
- "          \ %pc
- "          \ imgc %px %py %pw %ph
 
 "ueberzung
 " fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.xpm
@@ -391,22 +389,6 @@ fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*avif wezterm imgcat --width %pw
 " 	\ vifmimg magickpreview %px %py %pw %ph %c
 " 	\ %pc
 " 	\ vifmimg clear
-
-" DEVICONS works in > 8.2 vifm
-" file types
-set classify=' :dir:/, :exe:, :reg:, :link:'
-" various file names
-set classify+=' ::../::, ::*.sh::, ::*.[hc]pp::, ::*.[hc]::, ::/^copying|license$/::, ::.git/,,*.git/::, ::*.epub,,*.fb2,,*.djvu::, ::*.pdf::, ::*.htm,,*.html,,**.[sx]html,,*.xml::'
-" archives
-set classify+=' ::*.7z,,*.ace,,*.arj,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::'
-" images
-set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*avif,,*.ppm,,*.svg,,*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,*.xwd::'
-" audio
-set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
-" media
-set classify+=' ::*.avi,,*.ts,,*.axv,,*.divx,,*.m2v,,*.m4p,,*.m4v,,.mka,,*.mkv,,*.mov,,*.mp4,,*.flv,,*.mp4v,,*.mpeg,,*.mpg,,*.nuv,,*.ogv,,*.pbm,,*.pgm,,*.qt,,*.vob,,*.wmv,,*.xvid::'
-" office files
-set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx]::, ::*.pptx,,*.ppt::'
 
 " BOOKMARKS {{{
  

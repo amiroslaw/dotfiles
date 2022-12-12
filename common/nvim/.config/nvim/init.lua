@@ -218,10 +218,14 @@ nmap('<A-a>', '#')
 nmap('<A-d>', '*')
 
 -- jump paragraphs next line in insert mode
-nmap('<C-j>', '}')
-nmap('<C-k>', '{')
+nmap('<C-j>', 'gj')
+nmap('<C-k>', 'gk')
 imap('<C-j>', '<Esc>gj')
 imap('<C-k>', '<Esc>gk')
+nmap('<C-l>', '{')
+nmap('<C-h>', '}')
+imap('<C-l>', '<Esc>{') -- can't override
+imap('<C-h>', '<Esc>}')
 
 
 -- LSP {{{
