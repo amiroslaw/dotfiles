@@ -92,7 +92,7 @@ end
 function pauseStatus()
 	local workDuration = io.open(STATUS_PATH):read '*a'
 	io.write(workDuration, '  ')
-	changeTWstate(stateEnum.STOP)
+	-- changeTWstate(stateEnum.STOP)
 end
 
 function breakStatus()
@@ -221,6 +221,7 @@ function getHistoryTasks()
 	end
 	return tasks
 end
+
 function getNextActionCount()
 	local ok, nextCounter = run('task stat:pending +next count')
 	if ok then
@@ -228,6 +229,7 @@ function getNextActionCount()
 	end
 	return config['daily_goal']
 end
+
 function dailyInfo()
 	local dailyGoal = config['daily_goal'] -- or getNextActionCount
 	dailyGoal = dailyGoal and dailyGoal or 8
@@ -241,7 +243,6 @@ function dailyInfo()
 			taskCounter = taskCounter + 1
 		end
 	end
-
 	local taskUuid = io.open(CURRENT_PATH):read '*a'
 	local taskDesc = ''
 	local ok, description = run('task _get ' .. taskUuid .. '.description')
@@ -261,7 +262,6 @@ stateEnum = enum { STOP = stopStatus, BREAK = breakStatus, WORK = workStatus, PA
 local function modify()
 	local cmd = [[ timew summary :ids :week | awk '/@/ {out=""; startIndex=1; { if($1 ~/W/){ startIndex=4;} for(i=startIndex;i<=NF;i++)if($i !~/:/) out=out" "$i};  if($(NF-3) ~/:/) {print out" "$(NF-1)} else {print out" "$NF};  o=""}' | tac ]]
 	local ok, tasks, err = run(cmd)
-	printt(tasks)
 	local action = rofiMenu({'lengthen', 'shorten'}, {prompt = 'modify interval'})
 	assert(action ~= '' and ok, "Can not modify")
 	local selectedTask = rofiMenu(tasks, {prompt = 'choose task (empty == last)', width = '94%'})

@@ -224,6 +224,8 @@ imap('<C-j>', '<Esc>gj')
 imap('<C-k>', '<Esc>gk')
 nmap('<C-l>', '{')
 nmap('<C-h>', '}')
+vmap('<C-l>', '{')
+vmap('<C-h>', '}')
 imap('<C-l>', '<Esc>{') -- can't override
 imap('<C-h>', '<Esc>}')
 

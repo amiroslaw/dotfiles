@@ -202,7 +202,7 @@ super + F{1,2,3,4,6,7,8,9,10,11,12}
 super + {shift,ctrl} + u
 	{ pomodoro.lua add -n, pomodoro.lua stop -n}
 super + u ; {u,c,g,f,i,t,r,p,n,a,w}
-	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nm-modify task", \
+	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nW-task sync\nm-modify task", \
 	gcal-add.lua, \
 	java -jar ~/.bin/grywalizacja.jar, \
 	timefx, \
@@ -213,14 +213,16 @@ super + u ; {u,c,g,f,i,t,r,p,n,a,w}
 	gcal-show.sh, \
 	gcalcli --nocolor agenda --config-folder="/home/miro/.config/gcalcli"  | zenity --text-info, \
 	task sync && wezterm start --class 'tw-tui' -- taskwarrior-tui, \
+	
 	}
 
-super + u ; {s,S,e,o,m}
+super + u ; {s,S,e,o,m,W}
 	{ setup.lua add, \
 	setup.lua | zenity --text-info, \
 	wezterm start --class 'setup' -- nvim $SETUP, \
 	wezterm start --class 'portfolio'  -- nvim ~/.config/investing/portfolio.yaml, \
 	pomodoro.lua modify,\
+	/home/miro/.config/task/scripts/sync.sh
 	}
 
 #search
