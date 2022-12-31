@@ -259,11 +259,15 @@ nmap tp :tabprevious <cr>
 " yank current directory path into the clipboard
 nnoremap yd :!echo -n %d | xclip -sel clip %i<cr>
 " yank current file path into the clipboard
-nnoremap yf :!echo -n %c:p | xclip -sel clip %i<cr>
+nnoremap yp :!echo -n %c:p | xclip -sel clip %i<cr>
 " yank current filename without path into the clipboard
 nnoremap yn :!echo -n %c | xclip -sel clip %i<cr>
 " yank root of current file's name into the clipboard
 nnoremap yr :!echo -n %c:r | xclip -sel clip %i<cr>
+" copy and paset 
+nnoremap yf :!xclip-copyfile %f<cr>
+nnoremap yc :!xclip-cutfile %f<cr>
+nnoremap yv :!xclip-pastefile<cr>
 
 nmap md :!typora %f &<cr>
 nmap <C-e> :!goneovim %f &<cr>
@@ -365,7 +369,7 @@ fileviewer {*.md,*.txt,*.adoc,*.lua,*.csv,*.html,*.htm,*.java,*.kt,*.kts,*.sh,*.
 
 " Images
 filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm,*.svg,*avif},<image/*>
-        \ pqiv -f %f,
+        \ setsid -f pqiv -f %f,
         \ sxiv -fa %f %i,
 		" \ echo %f > ~/test,
 

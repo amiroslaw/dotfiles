@@ -62,6 +62,8 @@ alias cfsxhkd='nvim ~/.config/sxhkd/sxhkdrc'
 alias cfkitty='nvim ~/.config/kitty/kitty.conf'
 alias cfbroot='nvim ~/.config/broot/conf.toml'
 alias cfqute='nvim ~/.config/qutebrowser/config.py'
+alias cfnews='nvim ~/.config/newsboat/config'
+alias cfurl='nvim ~/.config/newsboat/urls'
 #}}}
 
 # {{{ RÓŹNE

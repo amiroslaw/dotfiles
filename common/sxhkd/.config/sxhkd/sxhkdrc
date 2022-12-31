@@ -289,6 +289,7 @@ super + e ; {e,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
     url.lua speed 1, url.lua read 1,  \
 	gcal-show.sh, investing-cli -n
 }
+# url.lua maybe change to mpv.lua videoplay cos mpv script uses profile
 
 # clipster and notes; add J nad fix previous-copy primary
 super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}

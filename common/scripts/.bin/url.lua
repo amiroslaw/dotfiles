@@ -12,6 +12,7 @@ List of the actions:
 		tor - create torrent file form a magnetlink
 		kindle - downlad video via gallery-dl 
 		read - convert website to asciidoc and show it in 'reader view' mode
+		speed - convert website to text for rsvp
 		wget - downlad file via wget
 		video - play video in video player (mpv)
 		gallery - downlad images via gallery-dl 
@@ -109,13 +110,14 @@ end
 
 function audio()
 	os.execute('mkdir -p ' .. AUDIO_DIR)
-	local cmd = "| xargs -P 0 -I {} yt-dlp -f bestaudio -x --audio-format mp3 -o '".. AUDIO_DIR .. "%(title)s.%(ext)s' {}"
+	local cmd = "| xargs -P 0 -I {} yt-dlp --embed-metadata -f bestaudio -x --audio-format mp3 -o '".. AUDIO_DIR .. "%(title)s.%(ext)s' {}"
 	return execXargs, cmd
 end
 
 function yt()
 	os.execute('mkdir -p ' .. YT_DIR)
-	local cmd = "| xargs -P 0 -I {} yt-dlp -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
+	local cmd = "| xargs -P 0 -I {} yt-dlp --embed-metadata -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
+	-- local cmd = "| xargs -P 0 -I {} yt-dlp --embed-metadata --restrict-filenames -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
 	return execXargs, cmd
 end
 

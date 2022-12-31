@@ -1,0 +1,96 @@
+# o open with handlr
+bind-key ^O open-all-unread-in-browser
+bind-key j down
+bind-key k up
+bind-key j next articlelist
+bind-key k prev articlelist
+bind-key J next-feed articlelist
+bind-key K prev-feed articlelist
+bind-key G end
+bind-key g home
+bind-key d pagedown
+bind-key u pageup
+bind-key l open
+bind-key h quit
+bind-key a toggle-article-read
+bind-key n next-unread
+bind-key N prev-unread
+bind-key U show-urls
+bind-key D pb-download
+bind-key x pb-delete
+bind-key s sort
+bind-key S rev-sort
+
+#show-read-feeds no
+auto-reload yes
+reload-threads 10
+notify-program "/usr/bin/notify-send"
+
+# Podboat:
+download-path "~/Downloads/podcasts/%n"
+max-downloads 10
+player "mpv --audio-display=no"
+# player "handlr open"
+
+highlight feedlist "---.*---" blue default bold
+highlight feedlist "#.*" green default bold
+highlight feedlist ".*0/0.." default default invis
+highlight article "(^Feed:.*|^Title:.*|^Author:.*)" cyan default bold
+highlight article "(^Link:.*|^Date:.*)" default default
+highlight article "https?://[^ ]+" green default
+highlight article "^(Title):.*$" blue default
+highlight article "\\[[0-9][0-9]*\\]" yellow default bold
+highlight article "\\[image\\ [0-9]+\\]" green default bold
+highlight article "\\[embedded flash: [0-9][0-9]*\\]" green default bold
+highlight article ":.*\\(link\\)$" cyan default
+highlight article ":.*\\(image\\)$" blue default
+highlight article ":.*\\(embedded flash\\)$" magenta default
+
+
+color background          default default
+color listnormal          default default
+color listfocus           black   yellow dim
+color listnormal_unread   default default bold
+color listfocus_unread    black   yellow underline
+color info                default red
+color article             default default
+
+# external-url-viewer "urlscan -dc -r 'linkhandler {}'"
+# macro
+bind-key ; macro-prefix
+browser ~/.config/newsboat/link.sh
+macro ; open-in-browser
+macro c set browser "echo %u | xclip -r -sel c" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro m set browser "~/.config/newsboat/dmenuhandler.sh" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+# download
+macro d set browser "setsid -f url.lua audio" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro y set browser "setsid -f url.lua yt" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro Y set browser "setsid -f url.lua yt" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
+macro k set browser "setsid -f url.lua kindle" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro K set browser "setsid -f url.lua kindle" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
+# read
+macro r set browser "setsid -f url.lua read" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro R set browser "setsid -f url.lua read" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
+macro s set browser "setsid -f url.lua speed" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro i set browser "sxiv" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro I set browser "sxiv" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
+macro l set browser "lynx" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+# play media
+macro ; set browser "setsid -f mpv.lua push" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro p set browser "setsid -f mpv.lua videopopup" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro a set browser "setsid -f mpv.lua audioplay" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro P set browser "setsid -f mpv.lua popuplist" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro A set browser "setsid -f mpv.lua audiolist" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro v set browser "setsid -f mpv.lua videoplay" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+macro V set browser "setsid -f mpv.lua videolist" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+# macro V set browser "setsid -f url.lua video" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
+
+# macro . set browser "mpv.lua videoplay" ; open-in-browser ; set browser ~/.config/newsboat/link.sh duplicate
+# open-all-unread-in-browser
+# macro t set browser "qndl" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+# macro v set browser "setsid -f mpv" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+# macro a set browser "tsp yt-dlp --embed-metadata -xic -f bestaudio/best --restrict-filenames" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+# macro C set browser "youtube-viewer --comments=%u" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+# macro y set browser "mpv %u" ; open-in-browser ; set browser "elinks %u"
+# browser "readable -s ~/.cache/wal/style.css %u 2> /dev/null > /tmp/output.html; qutebrowser /tmp/output.html"
+# macro v set browser "setsid -f mpv" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
