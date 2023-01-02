@@ -263,6 +263,7 @@ config.bind('eF', "hint links spawn firefox {hint-url}")
 config.bind('eo', 'spawn -u qutedmenu tab') # TODO change to rofi
 config.bind('ed', 'spawn -u ~/.config/qutebrowser/userscripts/open_download')
 config.bind('ec', 'download-cancel')
+config.bind('en', 'spawn -u newsboat-yt-url.sh')
 
 config.bind('es', 'spawn -u session.sh save')
 config.bind('el', 'spawn -u session.sh load')
@@ -422,6 +423,7 @@ c.hints.selectors["video"] = [ "ytd-thumbnail a#thumbnail", '.video-grid > div >
 # }}}
 
 # ======================= Test ============= {{{
+config.bind(',r', 'spawn -u readmode.lua')
 # c.downloads.position = "bottom"
 # c.scrolling.bar = "always"
 # c.content.javascript.can_access_clipboard = True

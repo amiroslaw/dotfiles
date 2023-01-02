@@ -112,6 +112,7 @@ alias search='pacman -Ss'
 #}}}
 
 #{{{ Programs alias
+alias nb='newsboat'
 alias pp='xclip-pastefile'
 alias yy='xclip-copyfile'
 alias cc='xclip-cutfile'

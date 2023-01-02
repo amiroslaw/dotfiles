@@ -626,13 +626,13 @@ vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' } -- }}}
 -- yanky {{{
 	-- maybe causes crash
 -- https://github.com/gbprod/yanky.nvim#%EF%B8%8F-special-put
--- nmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
--- nmap('P', "<Plug>(YankyPutAfterLinewise)", { noremap = false })
--- -- nmap('y', "<Plug>(YankyYank)", { noremap = false }) -- preserve_cursor_position
--- nmap('<c-p>', ':YankyRingHistory <cr>') -- can be manage by Telescope
--- xmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
--- nmap("<A-n>", "<Plug>(YankyCycleForward)", { noremap = false })
--- nmap("<A-p>", "<Plug>(YankyCycleBackward)", { noremap = false }) 
+nmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
+nmap('P', "<Plug>(YankyPutAfterLinewise)", { noremap = false })
+-- nmap('y', "<Plug>(YankyYank)", { noremap = false }) -- preserve_cursor_position
+nmap('<c-p>', ':YankyRingHistory <cr>') -- can be manage by Telescope
+xmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
+nmap("<A-n>", "<Plug>(YankyCycleForward)", { noremap = false })
+nmap("<A-p>", "<Plug>(YankyCycleBackward)", { noremap = false }) 
 -- }}} 
 
 -- Status and tab bars {{{

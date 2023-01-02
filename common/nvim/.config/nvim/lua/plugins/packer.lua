@@ -1,7 +1,8 @@
 -- any change requiers :PackerCompile
 -- https://github.com/wbthomason/packer.nvim
 return require('packer').startup(function()
-	use {'uga-rosa/translate.nvim', cmd = {'Translate'}}
+	-- use {'uga-rosa/translate.nvim', cmd = {'Translate'}} -- error
+	use {'uga-rosa/translate.nvim'}
 	use {'rhysd/vim-grammarous', cmd = {'GrammarousCheck'}}
 	use 'ggandor/lightspeed.nvim'
 	use { "anuvyklack/windows.nvim", -- Automatically resizes your windows
@@ -13,12 +14,12 @@ return require('packer').startup(function()
 	use 'chentoast/marks.nvim'
 	use 'mhinz/vim-startify' -- start screen
 	use { 'mbbill/undotree', cmd = { 'UndotreeToggle' } }
-	-- use { maybe will fix crash
-	-- 	'gbprod/yanky.nvim',
-	-- 	config = function()
-	-- 		require('yanky').setup {}
-	-- 	end,
-	-- }
+	use { -- maybe causes crashes
+		'gbprod/yanky.nvim',
+		config = function()
+			require('yanky').setup {}
+		end,
+	}
 	use 'voldikss/vim-browser-search'
 	use 'kyazdani42/nvim-web-devicons'
 	use { 'amiroslaw/fm-nvim', cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit', 'TaskWarriorTUI' } }
