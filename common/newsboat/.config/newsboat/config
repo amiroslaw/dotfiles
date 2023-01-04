@@ -86,10 +86,10 @@ macro ; set browser "setsid -f mpv.lua push" ; open-in-browser-noninteractively 
 macro : set browser "setsid -f mpv.lua push" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 macro p set browser "setsid -f mpv.lua videopopup" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro a set browser "setsid -f mpv.lua audioplay" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro P set browser "setsid -f mpv.lua popuplist" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro A set browser "setsid -f mpv.lua audiolist" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro P set browser "setsid -f mpv.lua popuplist named" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro A set browser "setsid -f mpv.lua audiolist named" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro v set browser "setsid -f mpv.lua videoplay" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro V set browser "setsid -f mpv.lua videolist" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro V set browser "setsid -f mpv.lua videolist named" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 # macro V set browser "setsid -f url.lua video" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 
 # macro . set browser "mpv.lua videoplay" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh duplicate

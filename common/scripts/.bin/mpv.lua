@@ -7,8 +7,11 @@ local dirPlaylists = os.getenv 'HOME' .. '/Templates/mpvlists'
 function help()
 print [[
 Utility script for managing stream with the mpv program. 
-Using: mpv.lua action [url]
-The url argument is optional. It will be pulled from the clipboard using the clipster application or if it is not a url it will take it from the temporary file.
+Using: mpv.lua action [url | playlistName]
+
+The url argument is optional. It will be pulled from the clipboard using the clipster application or if it is not a URL it will take it from the temporary file.
+Actions that run list create a playlist (*.m3u) - after the player is closed script will make a file. Those actions can take `playlistName` argument as a custom name or a string `named` - it will prompt a form.
+
 actions:
 	push - Add an url to the playlist
 	audioplay - Play audio from the url
@@ -17,10 +20,13 @@ actions:
 	videolist - Play video from the playlist
 	videopopup - Play video in lower resolution from the url
 	popuplist - Play video in lower resolution from the playlist
+utils actions:
+	rename - Rename the latest playlist
 	make - Create playlist (m3u) from the directories in current location 
 	help - Show help
 
 In order to change stream format and options it's needed to add the profiles `stream` and `stream-popup` into the mpv.conf file.
+Dependencies: mpv, st, clipster, fd, zenity, rofi, notify-send 
 	]]
 
 end
@@ -50,10 +56,26 @@ function getHost()
 	return pageUrl:match('^%w+://([^/]+)'):gsub('www.', ''):match '([^.]+)'
 end
 
+local function createCustomName(defaultName)
+	local cmdArg = arg[2]
+	if cmdArg == "named" then
+		local ok, out =	run('zenity --entry --text="Playlist name" --entry-text="' .. defaultName .. '"')
+		if ok then
+			defaultName = out[1]
+		end
+	elseif cmdArg ~= nil then
+		defaultName = cmdArg .. '.m3u'
+	end
+	print(defaultName)
+	return defaultName
+end
+
 function savePlaylist(mediaType)
 	assert(os.execute('mkdir -p ' .. dirPlaylists) == 0, 'Did not create playlist dir ' .. dirPlaylists)
-	local listName = '/' .. os.date '%Y-%m-%dT%H%M-' .. mediaType .. '-' .. getHost() .. '.m3u'
-	assert( os.execute('mv ' .. tmpPlaylist .. ' ' .. dirPlaylists .. listName) == 0, 'Did not move playlist to ' .. dirPlaylists)
+	local listName = os.date '%Y-%m-%dT%H%M-' .. mediaType .. '-' .. getHost() .. '.m3u'
+	listName = createCustomName(listName)
+	print('mv ' .. tmpPlaylist .. ' "' .. dirPlaylists .. '/' .. listName .. '"')
+	assert( os.execute('mv ' .. tmpPlaylist .. ' "' .. dirPlaylists .. '/' .. listName .. '"') == 0, 'Did not move playlist to ' .. dirPlaylists)
 	assert(os.execute('rm -f ' .. tmpPlaylist) == 0, 'Did not remove playlist')
 end
 
@@ -98,6 +120,12 @@ function push(url)
 	assert(io.open(tmpPlaylist, 'a'):write(url .. '\n'))
 end
 
+local function renameList()
+	local ok, latestPlaylistPaths = run('ls -1t ' .. dirPlaylists)
+	local customName = createCustomName(latestPlaylistPaths[1])
+	assert( os.execute('mv "' .. dirPlaylists .. '/' .. latestPlaylistPaths[1] .. '" "' .. dirPlaylists .. '/' .. customName .. '"') == 0, 'Error: Could not rename ' .. latestPlaylistPaths[1])
+end
+
 local cases = {
 	['push'] = push,
 	['audioplay'] = audioplay,
@@ -107,6 +135,7 @@ local cases = {
 	['videopopup'] = videopopup,
 	['popuplist'] = popuplist,
 	['make'] = make,
+	['rename'] = renameList,
 	['help'] = help,
 	[false] = help,
 }
