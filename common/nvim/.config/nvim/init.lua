@@ -471,7 +471,7 @@ nmap('<S-F7>', ':Asciidoctor2DOCX<CR>') -- TODO shift, can't be bind
 vim.g.asciidoctor_syntax_conceal = 1
 vim.g.asciidoctor_folding = 2
 vim.g.asciidoctor_folding_level = 6
-vim.g.asciidoctor_fenced_languages = { 'java', 'typescript', 'javascript', 'bash', 'html', 'lua', 'css' } -- 'kotlin' add syntax TODO
+vim.g.asciidoctor_fenced_languages = { 'java', 'typescript', 'javascript', 'bash', 'html', 'xml', 'lua', 'css' } -- 'kotlin' add syntax TODO
 -- vim.g.asciidoctor_syntax_indented = 0
 -- vim.g.asciidoctor_fold_options = 0
 vim.g.asciidoctor_img_paste_command = 'xclip -selection clipboard -t image/png -o > %s%s'

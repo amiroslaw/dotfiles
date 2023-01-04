@@ -25,6 +25,7 @@ bind-key S rev-sort
 auto-reload yes
 reload-threads 10
 notify-program "/usr/bin/notify-send"
+error-log "~/.local/share/newsboat/error.log"
 
 # Podboat:
 download-path "~/Downloads/podcasts/%n"
@@ -49,7 +50,7 @@ highlight article ":.*\\(link\\)$" cyan default
 highlight article ":.*\\(image\\)$" blue default
 highlight article ":.*\\(embedded flash\\)$" magenta default
 
-feedlist-format "%?T?║%4i %n %8u (%T) %t &╠═══════════════════%t?"
+# feedlist-format "%?T?║%4i %n %8u (%T) %t &╠═══════════════════%t?"
 
 color background          default default
 color listnormal          default default

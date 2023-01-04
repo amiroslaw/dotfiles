@@ -17,17 +17,15 @@ super + Home
 	pkill -USR1 -x sxhkd
 	# bspc wm -r ?
 
-# notification
-super + {_,shift} + Escape
-	{dunstctl close-all,dunstctl history-pop}
+super + Return
+	$TERMINAL
+
+super + shift + Return
+	$TERM_LT
 
 # Show manual; keybindings
 super + {ctrl,shift} + F1
 	{$ROFI/bspwm-help, mp rofi}
-
-# In case bspwmrc fails to execute/you wish have plugged in a new monitor
-super + shift + r
-	bspwmrc
 
 # scratchpad
 F12
@@ -35,6 +33,15 @@ F12
 
 super + {_,shift,ctrl} + z
      whid {last, hide, dmenu}
+
+# notification
+super + {_,shift} + Escape
+	{dunstctl close-all,dunstctl history-pop}
+
+# In case bspwmrc fails to execute/you wish have plugged in a new monitor
+super + shift + r
+	bspwmrc
+
 #
 # Window manipulation
 # ______________
@@ -178,22 +185,18 @@ super + a ; b
 # APPLICATIONS
 # ______________    
 #
-super + Return
-	$TERMINAL
 
-super + shift + Return
-	$TERM_LT
-
+# function keys
 super + F{1,2,3,4,6,7,8,9,10,11,12}
 	{ firefox, \
 	/opt/idea-IU-212.5284.40/bin/idea.sh, \
 	$TERMINAL start --class vifm -- vifm, \
 	pcmanfm, \
-	java -jar ~/.bin/grywalizacja.jar, \
+	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
 	wezterm start --class 'portfolio'  -- nvim ~/.config/investing/portfolio.yaml, \
 	todo.lua add, \
-	pamac-manager, \
+	task sync && scratchpad.sh task "wezterm start --class task -- taskwarrior-tui", \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu
 	}
@@ -201,8 +204,8 @@ super + F{1,2,3,4,6,7,8,9,10,11,12}
 # tasks; todo; calendar
 super + {shift,ctrl} + u
 	{ pomodoro.lua add -n, pomodoro.lua stop -n}
-super + u ; {u,c,g,f,i,t,r,p,n,a,w}
-	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nW-task sync\nm-modify task", \
+super + u ; {u,c,g,f,i,t,r,p,n,a,w,b}
+	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nW-task sync\nm-modify task\nn-newsboat", \
 	gcal-add.lua, \
 	java -jar ~/.bin/grywalizacja.jar, \
 	timefx, \
@@ -212,8 +215,8 @@ super + u ; {u,c,g,f,i,t,r,p,n,a,w}
 	pomodoro.lua pause -n, \
 	gcal-show.sh, \
 	gcalcli --nocolor agenda --config-folder="/home/miro/.config/gcalcli"  | zenity --text-info, \
-	task sync && wezterm start --class 'tw-tui' -- taskwarrior-tui, \
-	
+	task sync && scratchpad.sh task "wezterm start --class task -- taskwarrior-tui", \
+	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	}
 
 super + u ; {s,S,e,o,m,W}
