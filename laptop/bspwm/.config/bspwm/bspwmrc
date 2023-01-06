@@ -1,4 +1,4 @@
-#!/bin/env zsh
+#!/bin/sh
 bspc rule -r "*"
 
 gap=1
@@ -72,7 +72,6 @@ bspc rule -a Zathura state=tiled
 bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
 bspc rule -a '(?i)zenity' state=floating
 bspc rule -a yad state=floating
-bspc rule -a reminder state=floating
 bspc rule -a menu state=floating
 bspc rule -a Pqiv state=fullscreen
 
@@ -81,10 +80,14 @@ bspc rule -a '*:rsvp' state=floating sticky=on layer=above rectangle=1100x150+0+
 bspc rule -a '*:cheatsh' state=floating layer=above
 bspc rule -a '*:read' state=floating layer=above
 bspc rule -a '*:dropdown' state=floating center=true rectangle=1300x600+0+0
-bspc rule -a '*:music' state=floating center=true rectangle=1000x1150+0+0
+bspc rule -a '*:music' state=floating center=true rectangle=1000x720+0+0
 bspc rule -a qb state=floating rectangle=700x400+0+0 center=true
 bspc rule -a audio state=floating rectangle=500x150+0+0 center=true
 bspc rule -a '*:videopopup' state=floating sticky=on focus=off layer=above rectangle=380x210+1530+1330
+bspc rule -a 'application.Main' state=floating
+bspc rule -a ovh.miroslaw.timefx.TimeFX state=floating
+bspc rule -a '*:task' state=floating center=true rectangle=1000x720+0+0
+bspc rule -a '*:newsboat' state=floating center=true rectangle=1000x720+0+0
 
 #bspc rule -a firefox desktop=I
 #bspc rule -a nautilus state=pseudo_tiled

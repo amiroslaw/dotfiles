@@ -192,11 +192,11 @@ super + F{1,2,3,4,6,7,8,9,10,11,12}
 	/opt/idea-IU-212.5284.40/bin/idea.sh, \
 	$TERMINAL start --class vifm -- vifm, \
 	pcmanfm, \
-	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
+	scratchpad.sh newsboat "$TERM_LT -c newsboat -n newsboat -e newsboat", \
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
-	wezterm start --class 'portfolio'  -- nvim ~/.config/investing/portfolio.yaml, \
+	scratchpad.sh  "$TERM_LT -c portfolio -n portfolio -e nvim ~/.config/investing/portfolio.yaml", \
 	todo.lua add, \
-	task sync && scratchpad.sh task "wezterm start --class task -- taskwarrior-tui", \
+	scratchpad.sh  "$TERM_LT -c task -n task -e taskwarrior-tui", \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu
 	}
@@ -215,8 +215,8 @@ super + u ; {u,c,g,f,i,t,r,p,n,a,w,b}
 	pomodoro.lua pause -n, \
 	gcal-show.sh, \
 	gcalcli --nocolor agenda --config-folder="/home/miro/.config/gcalcli"  | zenity --text-info, \
-	task sync && scratchpad.sh task "wezterm start --class task -- taskwarrior-tui", \
-	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
+	scratchpad.sh  "$TERM_LT -c task -n task -e taskwarrior-tui", \
+	scratchpad.sh newsboat "$TERM_LT -c newsboat -n newsboat -e newsboat", \
 	}
 
 super + u ; {s,S,e,o,m,W}

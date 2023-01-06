@@ -71,10 +71,10 @@ bspc rule -a megasync state=floating
 bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
 bspc rule -a Zathura state=tiled
 bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
+bspc rule -a '(?i)zenity' state=floating
 bspc rule -a yad state=floating
 bspc rule -a menu state=floating
 bspc rule -a Pqiv state=fullscreen
-bspc rule -a '*:zenity' state=floating
 
 ## Custom classes and names
 bspc rule -a '*:rsvp' state=floating sticky=on layer=above rectangle=1100x150+0+0 center=true
