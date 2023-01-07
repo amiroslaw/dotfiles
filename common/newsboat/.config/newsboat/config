@@ -22,10 +22,10 @@ bind-key s sort
 bind-key S rev-sort
 
 #show-read-feeds no
-auto-reload yes
 reload-threads 10
 notify-program "/usr/bin/notify-send"
 error-log "~/.local/share/newsboat/error.log"
+# auto-reload yes # I use cron
 
 # Podboat:
 download-path "~/Downloads/podcasts/%n"
@@ -81,7 +81,7 @@ macro R set browser "setsid -f url.lua read" ; open-all-unread-in-browser ; set 
 macro s set browser "setsid -f url.lua speed" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro i set browser "sxiv" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro I set browser "sxiv" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
-macro l set browser "lynx" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro l set browser "lynx" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
 # play media
 macro ; set browser "setsid -f mpv.lua push" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro : set browser "setsid -f mpv.lua push" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
@@ -92,6 +92,8 @@ macro A set browser "setsid -f mpv.lua audiolist named" ; open-in-browser-nonint
 macro v set browser "setsid -f mpv.lua videoplay" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro V set browser "setsid -f mpv.lua videolist named" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 # macro V set browser "setsid -f url.lua video" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
+
+# some marcros with open-in-browser-noninteractively like lynx doesn't work
 
 # macro . set browser "mpv.lua videoplay" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh duplicate
 # open-all-unread-in-browser

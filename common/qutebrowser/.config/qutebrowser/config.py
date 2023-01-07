@@ -105,10 +105,8 @@ config.bind('gs', 'view-source') # -p
 config.bind('gS', 'view-source --edit') 
 config.bind('gb', 'back -t')
 # override 
-config.bind('[', 'scroll left')
-config.bind(']', 'scroll right')
-# config.bind('J', 'scroll left')
-# config.bind('K', 'scroll right')
+config.bind('J', 'scroll left')
+config.bind('K', 'scroll right')
 
 config.bind('<Ctrl+T>', 'spawn --userscript translate')
 
@@ -242,6 +240,9 @@ config.bind('cr', 'spawn -u hint_wrapper copyable select.lua --read')
 config.bind('cg', 'spawn -u hint_wrapper copyable select.lua --search')
 config.bind('cl', 'spawn -u hint_wrapper copyable select.lua --search:l')
 config.bind('ct', 'spawn -u hint_wrapper copyable select.lua --search:t')
+# duplicate ';y'
+config.bind('cy', 'hint links yank')
+config.bind('cY', 'hint --rapid links yank')
 
 config.bind('cp', 'print') # create PDF
 
@@ -422,8 +423,14 @@ c.hints.selectors['inputs'] += ['input[type="color"]', 'input[type="file"]', 'in
 c.hints.selectors["video"] = [ "ytd-thumbnail a#thumbnail", '.video-grid > div > a:first-child', 'a.router-link-active.router-link-exact-active' ]
 # }}}
 
+# ======================= Unused bindings ============= {{{
+# config.bind('[', 'scroll left')
+# config.bind(']', 'scroll right')
+# }}}
+
 # ======================= Test ============= {{{
 config.bind(',r', 'spawn -u readmode.lua')
+
 # c.downloads.position = "bottom"
 # c.scrolling.bar = "always"
 # c.content.javascript.can_access_clipboard = True
