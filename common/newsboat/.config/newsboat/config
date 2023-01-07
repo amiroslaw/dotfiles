@@ -37,7 +37,8 @@ player "mpv --audio-display=no"
 highlight feedlist "[║│]" yellow default bold
 highlight feedlist "╠═.*" yellow default bold
 highlight feedlist "---.*---" blue default bold
-highlight feedlist "#.*" green default bold
+highlight feedlist "#-.*" green default bold
+highlight feedlist "@-.*" red default bold
 highlight feedlist ".*0/0.." default default invis
 highlight article "(^Feed:.*|^Title:.*|^Author:.*)" cyan default bold
 highlight article "(^Link:.*|^Date:.*)" default default
