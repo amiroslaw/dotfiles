@@ -196,7 +196,7 @@ super + F{1,2,3,4,6,7,8,9,10,11,12}
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
 	scratchpad.sh  "$TERM_LT -c portfolio -n portfolio -e nvim ~/.config/investing/portfolio.yaml", \
 	todo.lua add, \
-	scratchpad.sh  "$TERM_LT -c task -n task -e taskwarrior-tui", \
+	scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui", \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu
 	}

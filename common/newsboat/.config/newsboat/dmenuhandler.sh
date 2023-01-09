@@ -4,7 +4,7 @@
 # some choice programs to use to open it.
 feed="${1:-$(printf "%s" | dmenu -p 'Paste URL or file path')}"
 
-case "$(printf "videoplay\\npush\\nvideolist\\nvideopopup\\npopuplist\\naudioplay\\naudiolist\\nCopy URL\\nsxiv\\ndlp-audio\\nPDF\\ndlp-video\\nkindle\\nread\\nspeed\\nqueue download" | dmenu -i -p "Open it with?")" in
+case "$(printf "videoplay\\npush\\nvideolist\\nvideopopup\\npopuplist\\naudioplay\\naudiolist\\nCopy URL\\nsxiv\\ndlp-audio\\nPDF\\ndlp-video\\nkindle\\nread\\nspeed\\nqueue download\\nqui browser\\nlynx\\w3m" | dmenu -i -p "Open it with?")" in
 	"Copy URL") echo "$feed" | xclip -r -sel c ;;
 	"queue download") qndl "$feed" 'curl -LO' >/dev/null 2>&1 ;;
 	PDF) curl -sL "$feed" > "/tmp/$(echo "$feed" | sed "s/.*\///;s/%20/ /g")" && zathura "/tmp/$(echo "$feed" | sed "s/.*\///;s/%20/ /g")"  >/dev/null 2>&1 ;;
@@ -12,6 +12,7 @@ case "$(printf "videoplay\\npush\\nvideolist\\nvideopopup\\npopuplist\\naudiopla
 	vim) curl -sL "$feed" > "/tmp/$(echo "$feed" | sed "s/.*\///;s/%20/ /g")" && setsid -f "$TERMINAL" -e "$EDITOR" "/tmp/$(echo "$feed" | sed "s/.*\///;s/%20/ /g")"  >/dev/null 2>&1 ;;
 	browser) setsid -f "$BROWSER" "$feed" >/dev/null 2>&1 ;;
 	lynx) lynx "$feed" >/dev/null 2>&1 ;;
+	w3m) w3m "$feed" >/dev/null 2>&1 ;;
 	dlp-audio) setsid -f url.lua audio "$feed" >/dev/null 2>&1 ;;
 	yt-dlp) setsid -f url.lua yt "$feed" >/dev/null 2>&1 ;;
 	kindle) setsid -f url.lua kindle "$feed" >/dev/null 2>&1 ;;
