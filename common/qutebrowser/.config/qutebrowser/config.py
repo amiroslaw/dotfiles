@@ -186,6 +186,11 @@ config.bind(';s', 'hint links userscript doi.py')
 # bind-type-script: ahk
 urlCmdHint= 'hint links spawn '
 urlCmdRapid = 'hint --rapid links spawn '
+# rdrview
+config.bind('alf', 'spawn -u readermode.lua')
+config.bind('ahf', 'hint links userscript readermode.lua')
+config.bind('aaf', 'hint --rapid links userscript readermode.lua')
+
 config.bind('ahd', urlCmdHint+ 'url.lua audio "{hint-url}"')
 config.bind('aad', urlCmdRapid + 'url.lua audio "{hint-url}"')
 config.bind('ald', 'spawn url.lua audio "{url}"')
@@ -429,7 +434,6 @@ c.hints.selectors["video"] = [ "ytd-thumbnail a#thumbnail", '.video-grid > div >
 # }}}
 
 # ======================= Test ============= {{{
-config.bind(',r', 'spawn -u readmode.lua')
 
 # c.downloads.position = "bottom"
 # c.scrolling.bar = "always"
@@ -448,8 +452,8 @@ config.bind(',r', 'spawn -u readmode.lua')
 
 # config.bind('J', 'move-to-start-of-next-block', 'caret') # [
 # config.bind('K', 'move-to-start-of-prev-block', 'caret')
-# config.bind(',r', 'spawn -u readability-js')
 # config.bind(',R', 'spawn -u readability')
+# rdrview -B qutebrowser - bład
 # config.bind(',F', 'spawn -u openfeeds') - module needed
 # move cursor in command mode
 # bind go set-cmd-text :open {url:pretty} ;; fake-key -g <Home><Ctrl-Right><Shift-End>

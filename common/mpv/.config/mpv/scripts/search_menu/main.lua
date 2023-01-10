@@ -1,4 +1,3 @@
-
 -- https://github.com/stax76/mpv-scripts
 
 ----- string

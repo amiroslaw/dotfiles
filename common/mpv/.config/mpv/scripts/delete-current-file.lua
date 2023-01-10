@@ -52,7 +52,6 @@ end
 
 function delete_file(path)
 
-	   mp.osd_message("test")
     local is_windows = package.config:sub(1,1) == "\\"
 
     if is_protocol(path) or not file_exists(path) then
