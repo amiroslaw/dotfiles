@@ -94,6 +94,8 @@ c.content.blocking.adblock.lists = [
 
 # ======================= BINDINGS general =================== {{{
 config.unbind('ad')
+config.bind('<Ctrl-R>', 'config-cycle content.user_stylesheets "~/.config/qutebrowser/css/solarized-light.css" "~/.config/qutebrowser/css/apprentice.css" "~/.config/qutebrowser/css/darculized.css" "~/.config/qutebrowser/css/gruvbox.css" "~/.config/qutebrowser/css/solarized-dark.css"  ""')
+
 config.bind('<Alt-s>', ':set spellcheck.languages ["en-US"]', 'insert') 
 config.bind('<Shift-Alt-s>', ':set spellcheck.languages ["pl-PL"]', 'insert')
 config.bind('gj', 'spawn -u headers.lua')
