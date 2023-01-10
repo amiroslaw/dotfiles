@@ -214,6 +214,8 @@ nmap <F7> :MkCd <space>
 nmap cd :mkdir %c:r <cr> 
 nmap <F8> :touch <space> 
 nmap cf :touch %c.txt <space> 
+" nmap <F9> :! setsid -f nvim-qt %f <cr>
+nmap <F9> :! nvim-qt %f <cr>
 
 "COMAND VIFM
 " shortcut list
