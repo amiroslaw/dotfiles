@@ -35,8 +35,8 @@ config.set('content.javascript.enabled', True, 'qute://*/*')
 # ======================= Theme ============= {{{
 config.source('themes/base16/default/base16-seti.config.py')
 # config.source('themes/onedark/onedark.py')
-c.url.start_pages = os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/themes/startpage/index.html"
-c.url.default_page = os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/themes/startpage/index.html"
+c.url.start_pages = "~/.config/qutebrowser/themes/startpage/index.html"
+c.url.default_page = "~/.config/qutebrowser/themes/startpage/index.html"
 c.tabs.title.format = "{index}:{audio}{current_title}{private}"
 c.colors.statusbar.private.bg = "#5e0802"
 c.colors.statusbar.command.private.bg= "#5e0802"

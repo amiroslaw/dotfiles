@@ -64,7 +64,7 @@ highlight article ":.*\\(image\\)$" blue default
 highlight article ":.*\\(embedded flash\\)$" magenta default
 # feedlist-format     "%4i %n %11u (%T) %t"
 feedlist-format "%?T?║%4i %n %8u (%T) %t &%4i %n %8u %t?"
-datetime-format "%D"
+datetime-format "%d-%m-%y"
 
 color background          default default
 color listnormal          default default
