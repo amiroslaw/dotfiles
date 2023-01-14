@@ -180,6 +180,8 @@ noremap ct :!echo %f:gs? ?^? | xargs -n1 | xargs -r -I @ -P 0 sh -c 'V="@"; tess
 " noremap ct :!echo %f | xargs -n1 | xargs -r -I @ -P 0  tesseract "@" "@" <cr>
 "dragon dr - drag from and dl drop to
 nmap dr :!dragon-drop %f <cr> 
+" will drag all selected files, cos it doesn't have multiple selection option
+nmap dR :!dragon-drop -a %f <cr> 
 nmap dl :!dragon-pull.sh <cr>
 " ffmpeg
 noremap cm :!for i in %f; do  ffmpeg -i "$i" -f segment -segment_time 900 -c copy "${i%%.*}-%%02d.mp3"; done <cr>
@@ -301,7 +303,7 @@ filextype {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,*.fl[icv
         \ ffplay -fs -autoexit %f,
 
 filextype {*.m3u},<video/*>
-		\ mpv %f,
+		\ setsid -f mpv %f,
         \ smplayer %f %i,
 
 fileviewer {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,*.fl[icv],*.m2v,*.mov,*.webm,*.mts,*.m4v,*.r[am],*.qt,*.divx,*.as[fx]},<video/*>
@@ -402,6 +404,7 @@ fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*avif wezterm imgcat --width %pw
 nmap bb :marks <cr> 
 " :mark mark /full/directory/path [filename]
 mark / /
+mark a /tmp
 mark A /etc/apt
 mark b /home/miro/.bin
 mark c /home/miro/.config

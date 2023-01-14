@@ -1,6 +1,7 @@
 # todo
 # clipster --nul -ocn 2 | xclip -sel clip - nie wiem czy -nul nie dodaje specjalnego znaku 
 # WAŻNE jak podajemy ścieżkę to po = nie dawać spacji
+# kolumna musi być escapowana w awk "{print \$1}"
 #alias =''
 
 #{{{ Dependencies
@@ -103,12 +104,13 @@ alias sysstop='sudo systemctl stop '
 
 alias diskls='lsblk'
 # pacman
+alias pacupdate='paru -Syyu'
+alias pacsearch='pacman -Ss'
+alias pacuninstall='paru -Rns $(paru -Qet | awk "{print \$1}" | fzf)'
+alias pacinfo='paru -Qii $(paru -Qet | awk "{print \$1}" | fzf)'
 # alias yay='paru'
-alias update='sudo pacman -Syyu'
-alias updateyay='paru -Syyu'
-alias remove='sudo pacman -Rns'
-alias removeyay='paru -Rns'
-alias search='pacman -Ss'
+# alias pacupdate='sudo pacman -Syyu'
+# alias pacremove='sudo pacman -Rns'
 #}}}
 
 #{{{ Programs alias

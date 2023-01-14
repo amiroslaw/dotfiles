@@ -127,9 +127,9 @@ config.bind('<Alt-x>', 'navigate prev')
 # }}}
 
 # ======================= TABS AND WINDOWS ============= {{{
+config.bind(',,', 'open -t file://' + os.environ["XDG_CONFIG_HOME"] + '/qutebrowser/themes/startpage/index.html')
 config.bind('l', 'tab-next')
 config.bind('h', 'tab-prev')
-config.bind(',,', 'tab-close')
 config.bind('tm', 'tab-mute')
 config.bind('tg', 'tab-give')
 config.bind('tc', 'tab-clone')

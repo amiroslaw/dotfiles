@@ -405,11 +405,16 @@ end -- >>>
 -- Send notification.
 function notify(msg)
 	print(msg)
-	os.execute("dunstify '" .. msg .. "'")
+	if msg then
+		os.execute("dunstify '" .. msg .. "'")
+	end
 end 
 
 function notifyError(msg)
 	if msg then
+		if type(msg) == 'table' then
+			msg = msg[1]
+		end
 		os.execute("dunstify -u critical Error: '" .. msg .. "'")
 		error(msg) -- does not work?
 	end

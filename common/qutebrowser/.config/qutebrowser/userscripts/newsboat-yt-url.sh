@@ -13,6 +13,6 @@ TAG=$(awk '/^#@/ {print $2}' "${NB_URLS_FILE_PATH}" | rofi -dmenu -p "Tag")
 [ -n "${TAG}" ] && \
 {     
 NB_LINE="https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID} \"~${CHANNEL_NAME}\"  ${TAG} yt";     
-sed -i "/^#@ ${TAG}/a ${NB_LINE}" "${NB_URLS_FILE_PATH}" && notify-send --icon=dialog-information "Successfully added the YT channel!";   
+sed -i "/^#@ ${TAG}$/a ${NB_LINE}" "${NB_URLS_FILE_PATH}" && notify-send --icon=dialog-information "Successfully added the YT channel!";   
 # echo "message-info 'Bookmark added to Buku!'" >> "$QUTE_FIFO"
 } 

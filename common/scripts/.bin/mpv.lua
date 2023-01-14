@@ -1,4 +1,5 @@
 #!/usr/bin/luajit
+local gumbo = require 'gumbo'
 
 local tmpPlaylist = '/tmp/qt_mpvplaylist.m3u'
 local tmpPlay = '/tmp/qt_mpv.m3u'
@@ -51,7 +52,9 @@ function make()
 end
 
 function getHost()
-	local pageUrl = assert(io.open(tmpPlaylist, 'r'):read('*l'), 'Did not read page url')
+	-- local pageUrl = assert(io.open(tmpPlaylist, 'r'):read('*l'), 'Did not read page url') -- reads first line
+	local playlist = readf(tmpPlaylist) 
+	local pageUrl = playlist[#playlist] -- gets last line
 	-- return (pageUrl .. '/'):match '://(.-)/'
 	return pageUrl:match('^%w+://([^/]+)'):gsub('www.', ''):match '([^.]+)'
 end
@@ -117,7 +120,16 @@ function audiolist()
 end
 
 function push(url)
-	assert(io.open(tmpPlaylist, 'a'):write(url .. '\n'))
+	local title = ''
+	if gumbo then
+		local html = io.popen('setsid -f curl -L ' .. url):read("*a")
+		local doc = gumbo.parse(html)
+		if doc then
+			title = doc.title	
+		end
+		title = '#EXTINF:-1,' .. title .. '\n'
+	end
+	assert(io.open(tmpPlaylist, 'a'):write(title .. url .. '\n'))
 end
 
 local function renameList()
