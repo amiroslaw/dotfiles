@@ -258,8 +258,8 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
 # open media or dir with xdg-open
-super + o ; {o,j,d,D,v,c,y,a}
-	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream-video\na-stream-audio", \
+super + o ; {o,j,d,D,v,c,y,a,z,f,F}
+	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream-video\na-stream-audio\ni-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
 		$ROFI/open.sh fasd-dir, \
 		$ROFI/open.sh dir, \
 		$ROFI/open.sh dir-hidden, \
@@ -267,16 +267,14 @@ super + o ; {o,j,d,D,v,c,y,a}
 		$ROFI/open.sh course, \
 		$ROFI/open.sh yt, \
 		$ROFI/open.sh audio, \
-		}
-
-# open tui or file in terminal 
-super + shift + o ; {o,i,p,b,t,z,f,F}
-	$TERM_LT -e { notify-send options: "i-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
-		nmtui,ncmpcpp,bmenu,tg, \
 		$ROFI/open.sh fasd, \
 		$ROFI/open.sh file, \
 		$ROFI/open.sh file-hidden, \
 		}
+
+# open tui or file in terminal 
+super + o ; {i,p,b,t}
+	$TERM_LT -e {nmtui,ncmpcpp,bmenu,tg}
 
 # script in background - url.lua menu will ask for the number of the links
 super + e ; {e,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}

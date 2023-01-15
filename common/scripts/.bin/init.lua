@@ -21,7 +21,7 @@ notify(string)
 notifyError(string)
 rofiNumberInput([prompt])
 rofiInput([rofiOptions]) 
-rofiMenu(optionTab, [rofiOptions]), returns table if selected multiple items or string otherwise
+rofiMenu(entriesTab, [rofiOptions]), returns table if selected multiple items or string otherwise
 Shows a rofi menu. Returns string or table if multiple-select option was enabled.
 params:
 optionTab - Options can be parser form an array (ordered table) or a dictionary.
@@ -411,9 +411,9 @@ function notify(msg)
 end 
 
 function notifyError(msg)
-	if msg then
+	if msg ~= nil then
 		if type(msg) == 'table' then
-			msg = msg[1]
+			msg = msg[1] and msg[1] or 'empty error msg'
 		end
 		os.execute("dunstify -u critical Error: '" .. msg .. "'")
 		error(msg) -- does not work?
@@ -422,11 +422,14 @@ end -- >>>
 
 -- rofi <<<
 local function combineOptions(opt)
-local defaultOpt = {prompt = 'Select', width = '500px', height = 25, multi = ''}
+local defaultOpt = {prompt = 'Select', width = '500px', height = 25, multi = '', keys = ''}
 if opt then
 	for name,val in pairs(opt) do
 		if name == 'multi' and val then
 			defaultOpt[name] = ' -multi-select '
+		elseif name:match('key') then
+			local number = name:match('%d')
+			defaultOpt.keys = ' -kb-custom-' .. number .. ' "' .. val .. '" '
 		else
 			defaultOpt[name] = val
 		end
@@ -464,20 +467,29 @@ end
 --[[
 Shows a rofi menu. Returns string or table if multiple-select option was enabled.
 params:
-optionTab - Options can be parser form an array (ordered table) or a dictionary.
+entriesTab - Options can be parser form an array (ordered table) or a dictionary.
 opt - optional arguments that can be passed via table
 	prompt (string)
 	height (number)-  max lines than rofi can show
 	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
-	multi (boolean)- If true rofi will allow to select multiple rows, and it will return table with selected options
+	multi (boolean)- If true, rofi will allow to select multiple rows, and it will return table with selected options
+	key[number] (string) - Custom keys
 --]]
-function rofiMenu(optionTab, opt)
+-- form 10 to 29 for rofi
+local statusCodes = { [3584] = 14, [3328] = 13, [3072] = 12, [2816] = 11, [6912] = 27, [6400] = 25, [5888] = 23, [5376] = 21, [4864] = 19, [4352] = 17, [7168] = 28, [6656] = 26, [6144] = 24, [5632] = 22, [5120] = 20, [4608] = 18, [7424] = 29, [4096] = 16, [3840] = 15, [2560] = 10,}
+-- local function generateStatsCodes()
+-- 	for i = 10, 29 do
+-- 		local code = os.execute('bash -c "exit ' .. i .. '"')
+-- 		statusCodes[code] = i
+-- 	end
+-- end
+function rofiMenu(entriesTab, opt)
 	local rofiOpt = combineOptions(opt)
 	local options = ''
 	local lines = 0
-	local isArray = isArray(optionTab)
+	local isArray = isArray(entriesTab)
 
-	for key,val in pairs(optionTab) do
+	for key,val in pairs(entriesTab) do
 		if isArray then
 			options = options  .. val	.. '|'
 		else
@@ -489,19 +501,25 @@ function rofiMenu(optionTab, opt)
 	if lines > rofiOpt.height then
 		lines = rofiOpt.height
 	end
-	local ok, selected, err= run('echo "' .. options .. '" | rofi -monitor -4 -i ' .. rofiOpt.multi .. ' -l ' .. lines .. ' -sep "|" -dmenu -p "' .. rofiOpt.prompt .. '" -theme-str "window {width:  ' .. rofiOpt.width .. ';}" ')
-	if not ok or selected == nil then
-		notifyError(ok .. str(selected))
+	local _, selected, err, code= run('echo "' .. options .. '" | rofi -monitor -4 -i ' .. rofiOpt.multi .. ' -l ' .. lines .. ' -sep "|" -dmenu -p "' .. rofiOpt.prompt .. '" -theme-str "window {width:  ' .. rofiOpt.width .. ';}" ' .. rofiOpt.keys)
+	-- rofi returns error code for hooks
+	if #err > 0 then
+		notifyError(err)
 		return ''
+	end
+	local statusCode
+	if statusCodes[code] then
+		statusCode = statusCodes[code] -9
 	end
 	if opt and opt.multi then
 		if selected[#selected] == "" then
 			selected[#selected] = nil
 		end
-		return selected
+		return selected, statusCode
 	else
-		return selected[1]
+		return selected[1], statusCode
 	end
+
 end -- >>>
 
 -- getConfigProperties <<<
