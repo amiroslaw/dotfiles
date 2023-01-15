@@ -21,9 +21,7 @@ notify(string)
 notifyError(string)
 rofiNumberInput([prompt])
 rofiInput([rofiOptions]) 
-rofiMenu(entriesTab, [rofiOptions]), returns table if selected multiple items or string otherwise
-Shows a rofi menu. Returns string or table if multiple-select option was enabled.
-params:
+rofiMenu(entriesTab, [rofiOptions]), returns table if selected multiple items or string otherwise. The second returns argument if custom key number that was pressed
 optionTab - Options can be parser form an array (ordered table) or a dictionary.
 rofiInput - optional arguments that can be passed via table
 	prompt (string)
@@ -427,9 +425,10 @@ if opt then
 	for name,val in pairs(opt) do
 		if name == 'multi' and val then
 			defaultOpt[name] = ' -multi-select '
-		elseif name:match('key') then
-			local number = name:match('%d')
-			defaultOpt.keys = ' -kb-custom-' .. number .. ' "' .. val .. '" '
+		elseif name == 'keys' then
+			for numberKey,shortcut in pairs(opt.keys) do
+				defaultOpt.keys = defaultOpt.keys .. ' -kb-custom-' .. numberKey .. ' "' .. shortcut .. '" '
+			end
 		else
 			defaultOpt[name] = val
 		end
@@ -465,7 +464,7 @@ function rofiNumberInput(prompt)
 end 
 
 --[[
-Shows a rofi menu. Returns string or table if multiple-select option was enabled.
+Shows a rofi menu. Returns string or table if multiple-select option was enabled. The second returns argument if custom key number that was pressed - nil
 params:
 entriesTab - Options can be parser form an array (ordered table) or a dictionary.
 opt - optional arguments that can be passed via table
@@ -473,16 +472,8 @@ opt - optional arguments that can be passed via table
 	height (number)-  max lines than rofi can show
 	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
 	multi (boolean)- If true, rofi will allow to select multiple rows, and it will return table with selected options
-	key[number] (string) - Custom keys
+	keys (table) - Custom keys = {[2] = 'Alt-e', [3] = 'Alt-m' }
 --]]
--- form 10 to 29 for rofi
-local statusCodes = { [3584] = 14, [3328] = 13, [3072] = 12, [2816] = 11, [6912] = 27, [6400] = 25, [5888] = 23, [5376] = 21, [4864] = 19, [4352] = 17, [7168] = 28, [6656] = 26, [6144] = 24, [5632] = 22, [5120] = 20, [4608] = 18, [7424] = 29, [4096] = 16, [3840] = 15, [2560] = 10,}
--- local function generateStatsCodes()
--- 	for i = 10, 29 do
--- 		local code = os.execute('bash -c "exit ' .. i .. '"')
--- 		statusCodes[code] = i
--- 	end
--- end
 function rofiMenu(entriesTab, opt)
 	local rofiOpt = combineOptions(opt)
 	local options = ''
@@ -503,21 +494,20 @@ function rofiMenu(entriesTab, opt)
 	end
 	local _, selected, err, code= run('echo "' .. options .. '" | rofi -monitor -4 -i ' .. rofiOpt.multi .. ' -l ' .. lines .. ' -sep "|" -dmenu -p "' .. rofiOpt.prompt .. '" -theme-str "window {width:  ' .. rofiOpt.width .. ';}" ' .. rofiOpt.keys)
 	-- rofi returns error code for hooks
-	if #err > 0 then
+	if err and  #err > 0 then
 		notifyError(err)
 		return ''
 	end
-	local statusCode
-	if statusCodes[code] then
-		statusCode = statusCodes[code] -9
+	if code > 256 then
+		code = code/256 - 9
 	end
 	if opt and opt.multi then
 		if selected[#selected] == "" then
 			selected[#selected] = nil
 		end
-		return selected, statusCode
+		return selected, code
 	else
-		return selected[1], statusCode
+		return selected[1], code
 	end
 
 end -- >>>
