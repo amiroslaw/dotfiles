@@ -326,7 +326,7 @@ local task = require('taskmaker').setup({
 	sync = true, -- synchronization
 	-- default_context = 'in',
 })
-vmap('<LocalLeader>t', '<cmd>TaskmakerAddTasks <CR>')
+vmap('<LocalLeader>w', '<cmd>TaskmakerAddTasks <CR>')
 nmap('<LocalLeader>x', '<cmd>TaskmakerToggle <CR>') -- }}} 
 
 
