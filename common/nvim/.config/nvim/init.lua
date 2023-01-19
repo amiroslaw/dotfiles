@@ -283,8 +283,10 @@ imap('<A-s>', '<cmd>setlocal spell spelllang=en_us<CR>')
 nmap('<C-e>', 'z=')
 imap('<C-e>', 'z=')
 nmap('<S-e>', '[s')
-nmap('<a-e>', '[s1z=`]') -- auto correction last occurrence
-vmap('<a-e>', '[s1z=`]') -- auto correction last occurrence
+nmap('<a-e>', '[s1z=`]') -- auto correction for the last occurrence
+vmap('<a-e>', '[s1z=`]')
+imap('<a-e>', '<Esc>[s1z=`]a')
+
 --replace from selection/ substitution, produce error but it's workaround for showing command line mode
 vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
 vmap('<S-A-r>', '"hy:%s/<C-r>h/^M/g<left><left><cmd>') -- add special char for enter c-v enter

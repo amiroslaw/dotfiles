@@ -96,6 +96,7 @@ local function addTag()
 	end
 	tags['someday'] = 'wait'
 
+	-- TODO sometimes rofiMenu gives nil; add multiselection option
 	local selection = rofiMenu(tags, {prompt ='Add tag'})
 	if type(selection) == 'string' then
 		modifyTag(selection, tags[selection])

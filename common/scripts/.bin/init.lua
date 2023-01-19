@@ -30,6 +30,25 @@ rofiInput - optional arguments that can be passed via table
 	multi (boolean)- If true rofi will allow to select multiple rows, and it will return table with selected options
 --]]
 
+-- notify <<<
+-- Send notification.
+function notify(msg)
+	print(msg)
+	if msg then
+		os.execute("dunstify '" .. msg .. "'")
+	end
+end 
+
+function notifyError(msg)
+	if msg ~= nil then
+		if type(msg) == 'table' then
+			msg = msg[1] and msg[1] or 'empty error msg'
+		end
+		os.execute("dunstify -u critical Error: '" .. msg .. "'")
+		error(msg) -- does not work?
+	end
+end -- >>>
+
 
 -- printt <<<
 --[[
@@ -274,7 +293,10 @@ function run(cmd)
       Command_s = "( " .. Command_s .. " )" .. " 1> " .. OutFile_s .. " 2> " .. ErrFile_s
 -- maybe change status when is 0 to nil for better assertion
    local Status_code = os.execute(Command_s)
-  Out_t = readf(OutFile_s)
+  Out_t = readf(OutFile_s) -- sometimes is nil
+  if not Out_t then
+	  notifyError('test - run command can not read output')
+  end
   Err_t = readf(ErrFile_s)
   os.remove(OutFile_s)
   os.remove(ErrFile_s)
@@ -398,25 +420,6 @@ function enum(tab)
 end -- >>>
 
 --- util for scripting <<< 
-
--- notify <<<
--- Send notification.
-function notify(msg)
-	print(msg)
-	if msg then
-		os.execute("dunstify '" .. msg .. "'")
-	end
-end 
-
-function notifyError(msg)
-	if msg ~= nil then
-		if type(msg) == 'table' then
-			msg = msg[1] and msg[1] or 'empty error msg'
-		end
-		os.execute("dunstify -u critical Error: '" .. msg .. "'")
-		error(msg) -- does not work?
-	end
-end -- >>>
 
 -- rofi <<<
 local function combineOptions(opt)
