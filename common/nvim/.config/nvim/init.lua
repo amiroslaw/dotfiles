@@ -835,3 +835,5 @@ nmap('<LocalLeader>cf', '<Plug>(grammarous-fixit)', { noremap = false }) --	Fix 
 
 -- }}} 
 -- vim: foldmethod=marker
+-- tests
+-- set complete+=kspell spellcheck complete
