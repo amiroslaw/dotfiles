@@ -1,22 +1,33 @@
 [user]
 	name = amiroslaw
 	email = arek47@gmail.com
-[merge]
-	tool = meld
-[diff]
-	tool = meld
-[interactive]
-    diffFilter = delta --color-only
-
-[difftool]
-	prompt = false
-[difftool "meld"]
-    cmd = meld "$LOCAL" "$REMOTE"
-[mergetool "nvim"]
-    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [core]
     pager = delta --side-by-side
+	; pager = difftool | less
 	autocrlf = input
 	editor = nvim
+[merge]
+	tool = meld
+; https://difftastic.wilfred.me.uk/git.html
+[diff]
+	; tool = meld
+	tool = difftastic
+[interactive]
+    diffFilter = delta --color-only
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"
 [mergetool "meld"]
 	trustExitCode = true
+[mergetool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+	difftool = true
+[difftool]
+	prompt = false
+[alias]
+	showext = show --ext-diff
+# `git dft` is less to type than `git difftool`.
+[alias]
+	dft = difftool

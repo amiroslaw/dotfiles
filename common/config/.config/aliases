@@ -104,6 +104,7 @@ alias sysstop='sudo systemctl stop '
 
 alias diskls='lsblk'
 # pacman
+alias paru='paru --bottomup'
 alias pacupdate='paru -Syyu'
 alias pacsearch='pacman -Ss'
 alias pacuninstall='paru -Rns $(paru -Qet | awk "{print \$1}" | fzf)'

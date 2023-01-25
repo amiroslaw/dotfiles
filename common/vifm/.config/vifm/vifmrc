@@ -42,11 +42,11 @@
 
 " One window view
 " only
-" tests 
-" set syscalls
-" fastrun
 
 set vicmd=nvim
+
+" With this option turned on you can run partially entered commands with unambiguous beginning using :! (e.g. :!Te instead of :!Terminal or :!Te<tab>).
+set fastrun
 
 " This makes vifm perform file operations on its own instead of relying on
 " standard utilities like `cp`.  While using `cp` and alike is a more universal
@@ -148,7 +148,7 @@ command! df df -h %m 2> /dev/null
 command! run !! ./%f
 nmap ,x :run<cr>
 " thumbnail preview
-command! pv sxiv -tr %d
+command! pv sxiv -tr %d %i
 nmap ,p :pv<cr>
 " Open file in the background using its default program
 nmap ,b :file &<cr>l
@@ -315,19 +315,19 @@ filetype {*.wav,*.mp3,*.flac,*.m4a,*.wma,*.ape,*.ac3,*.og[agx],*.spx,*.opus},<au
        \ {Play using ffplay}
        \ ffplay -nodisp -autoexit %c,
        \ {Play using mpv}
-       \ mpv --no-video %c %s,
+       \ mpv --no-video %f,
 fileviewer {*.mp3},<audio/mpeg> mp3info
 fileviewer {*.flac},<audio/flac> soxi
 
 " Video
 filextype {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,*.fl[icv],*.m2v,*.mov,*.webm,*.mts,*.m4v,*.r[am],*.qt,*.divx,*.as[fx]},<video/*>
-		\ setsid -f mpv %c %s,
+		\ mpv %f %i,
         \ smplayer %f %i,
 		\ pqiv  %f %i,
         \ ffplay -fs -autoexit %f,
 
 filextype {*.m3u},<video/*>
-		\ setsid -f mpv %f,
+		\ mpv %f %i,
         \ smplayer %f %i,
 
 fileviewer {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,*.fl[icv],*.m2v,*.mov,*.webm,*.mts,*.m4v,*.r[am],*.qt,*.divx,*.as[fx]},<video/*>
@@ -403,7 +403,7 @@ filextype */
 
 " Images
 filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm,*.svg,*avif},<image/*>
-        \ setsid -f pqiv -f %f,
+        \ pqiv -f %f %i,
         \ sxiv -fa %f %i,
 		" \ echo %f > ~/test,
 

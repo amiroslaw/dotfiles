@@ -69,7 +69,6 @@ local function createCustomName(defaultName)
 	elseif cmdArg ~= nil then
 		defaultName = cmdArg .. '.m3u'
 	end
-	print(defaultName)
 	return defaultName
 end
 

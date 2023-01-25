@@ -144,6 +144,9 @@ function readf(f)
    if (type(f) ~= "string") then
       return nil
    end
+  --  else
+	 --  notifyError('test - readf file is not string?')
+  -- end
 
    local File_t = {}
    local File_h = io.open(f)
@@ -155,6 +158,9 @@ function readf(f)
       File_h:close()
       return File_t
    end
+  --  else
+	 --  notify('test - readf do not open file')
+  -- end
 
    return nil
 end -- >>>
@@ -275,7 +281,6 @@ printt(out)
 printt(err)
 --]]
 function run(cmd)
- 
    if (type(cmd) ~= "string") and (type(cmd) ~= "table") then return nil end
  
    local OutFile_s = "/tmp/init.lua.run.out"
@@ -294,12 +299,13 @@ function run(cmd)
 -- maybe change status when is 0 to nil for better assertion
    local Status_code = os.execute(Command_s)
   Out_t = readf(OutFile_s) -- sometimes is nil
+  Err_t = readf(ErrFile_s)
+
   if not Out_t then
 	  notifyError('test - run command can not read output')
   end
-  Err_t = readf(ErrFile_s)
-  os.remove(OutFile_s)
-  os.remove(ErrFile_s)
+  -- os.remove(OutFile_s)
+  -- os.remove(ErrFile_s)
   local status = Status_code == 0
   return status, Out_t, Err_t, Status_code
 end -- >>>
