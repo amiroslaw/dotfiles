@@ -308,15 +308,17 @@ vim.fn.setreg('k', 'd3joj' )
 -- code
 vim.fn.setreg('m', 'Vf{%y' ) -- copy method with curry bracket 
 -- adoc
-vim.fn.setreg('p', '$a  +j0')
-vim.fn.setreg('l', 'pA[')
+vim.fn.setreg('p', '$a  +j0') -- add `+` new line
+vim.fn.setreg('h', 'pA[') -- link from selection
+-- list l - unordered; o - ordered; z - task
+vim.fn.setreg('l', '0i* ')
+vim.fn.setreg('o', '0i. ')
+vim.fn.setreg('z', '0i* [ ] ')
 -- markdown
 -- dwie spacje na koncu linii s
 vim.fn.setreg('s', '$a  j0')
--- bookmarks should copy word
-vim.fn.setreg('z', 'ggO- (pbi#bi[po')
---links
-vim.fn.setreg('h', 'a]()hp0i[')
+vim.fn.setreg('b', 'ggO- (pbi#bi[po') -- bookmarks should copy word
+vim.fn.setreg('u', 'a]()hp0i[') -- markdown link
 vim.fn.setreg('f', 'f)a kb  ') 
 -- }}} 
 
@@ -423,7 +425,7 @@ end -- }}}
 -- lazyList {{{
 nmap('glt', ":LazyList '.'<CR>") -- title
 vmap('glt', ":LazyList '.'<CR>")
-nmap('gll', ":LazyList '* '<CR>") -- undordered list
+nmap('gll', ":LazyList '* '<CR>") -- unordered list
 vmap('gll', ":LazyList '* '<CR>")
 nmap('gll2', ":LazyList '** '<CR>")
 vmap('gll2', ":LazyList '** '<CR>")
