@@ -277,7 +277,7 @@ super + o ; {i,p,b,t}
 	$TERM_LT -e {nmtui,ncmpcpp,bmenu,tg}
 
 # script in background - url.lua menu will ask for the number of the links
-super + e ; {e,h,k,K,m,M,v,V,a,A,y,Y,g,G,w,W,r,R,c,i}
+super + e ; {e,h,k,K,m,M,v,V,d,D,y,Y,g,G,w,W,r,R,c,i}
 	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr-speed reader\nR-read\nc-calendar\nk(K)-kindle\ni-investing", \
     url.lua menu input, \
     url.lua kindle 1,  url.lua kindle 10, \

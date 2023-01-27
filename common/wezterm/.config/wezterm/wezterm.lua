@@ -19,8 +19,8 @@ local launch_menu = {
 		cwd = wezterm.home_dir .. '/Documents/notebook',
 	},
 	{
-		label = 'tor',
-		args = { 'screen', '-x', 'tor' },
+		label = 'tor', -- unmap keybindings and open rtorrent
+		args = { 'stty', 'stop', 'undef', '&&', 'stty', 'start', 'undef', '&&', 'screen', '-x', 'tor' },
 	},
 }
 return { -- Must be in the end

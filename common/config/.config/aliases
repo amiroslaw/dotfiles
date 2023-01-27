@@ -104,11 +104,12 @@ alias sysstop='sudo systemctl stop '
 
 alias diskls='lsblk'
 # pacman
-alias paru='paru --bottomup'
+alias pacinst='paru --bottomup'
 alias pacupdate='paru -Syyu'
 alias pacsearch='pacman -Ss'
 alias pacuninstall='paru -Rns $(paru -Qet | awk "{print \$1}" | fzf)'
 alias pacinfo='paru -Qii $(paru -Qet | awk "{print \$1}" | fzf)'
+alias paclog='grep -iE "installed|upgraded" /var/log/pacman.log | tac | less'
 # alias yay='paru'
 # alias pacupdate='sudo pacman -Syyu'
 # alias pacremove='sudo pacman -Rns'
@@ -140,7 +141,7 @@ alias tia='timew summary :lastweek && timew procent :lastweek && timew tagsum :l
 alias tip='timew percentage'
 alias tidi='timew dist'
 alias in='$EDITOR "$NOTE"/tasks/inbox.adoc'
-alias tor='screen -x tor'
+alias tor='stty stop undef && stty start undef && screen -x tor'
 alias huliomail='tmpmail -g Huliofff@1secmail.org && tmpmail -r'
 alias ping='prettyping'
 alias vi='nvim'
@@ -414,6 +415,7 @@ wypakuj () {
          echo "'$1' is not a valid file"
      fi
 }
+
 #}}}
 
 #{{{ bindkey
