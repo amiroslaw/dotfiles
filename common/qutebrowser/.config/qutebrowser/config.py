@@ -416,12 +416,10 @@ config.bind('zZ', 'spawn -u selection.sh {clipboard}')
 config.bind('<Ctrl-s>', 'open -t {primary} ')
 config.bind('<Ctrl-l>', 'open -t l {primary} ')
 config.bind('<Ctrl-k>', 'open -t d {primary} ')
-config.bind('<Ctrl-Shift-l>', 'open -t d {primary} ')
 config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh')
 config.bind('<Ctrl-s>', 'open -t {primary} ', 'insert')
 config.bind('<Ctrl-l>', 'open -t l {primary} ', 'insert')
 config.bind('<Ctrl-k>', 'open -t d {primary} ', 'insert')
-config.bind('<Ctrl-Shift-l>', 'open -t d {primary} ', 'insert')
 config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
 # }}}
 # }}}

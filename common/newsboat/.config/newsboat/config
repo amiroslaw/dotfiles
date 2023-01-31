@@ -99,7 +99,9 @@ macro K set browser "setsid -f url.lua kindle" ; open-all-unread-in-browser ; se
 macro r set browser "setsid -f url.lua read" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro R set browser "setsid -f url.lua read" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 macro s set browser "setsid -f url.lua speed" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-# play media
+# media
+# if you want to create playlist, you have to push ulr to it via `;`, or all unread `:`, after that you can run that playlist from A,V,P for audiolist, videolist popuplist
+# the parameter named means that after closing mpv, you can rename the playlist
 macro ; set browser "setsid -f mpv.lua push" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro : set browser "setsid -f mpv.lua push" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 macro p set browser "setsid -f mpv.lua videopopup" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh

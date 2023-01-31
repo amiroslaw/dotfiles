@@ -15,11 +15,16 @@
 " NextTab
 " PreviousTab                                        <M-S-[> <C-Left>
 " NextEditorTab                                      <C-S-Right>
+" mam ale zmienić an coś bardziej dostępnego
+"QuickJavaDoc - Quick Documentation (not only for java, all languages)
+" ShowErrorDescription - Show description of the error under the caret (cursor hovering)
 
 
 " SETS
 " https://github.com/JetBrains/ideavim/wiki/%22set%22-commands
-let mapleader = ";"
+" maybe space 
+let mapleader = ";" 
+" let maplocalleader=" "
 set hlsearch
 set ignorecase
 set smartcase
@@ -99,6 +104,7 @@ nmap <leader>T <Plug>(easymotion-eol-k)
 nmap <leader>. <Plug>(easymotion-repeat)
 
 " VIM MAPS
+nmap <F1> :source ~/.config/ideavim/ideavimrc<cr>
 inoremap <C-a> <C-o>b
 inoremap <C-d> <C-o>w
 nnoremap <Space> <C-d><cr> 
@@ -139,7 +145,7 @@ nnoremap <leader>l :action HighlightUsagesInFile<cr>
 nnoremap <c-n> :action GotoNextElementUnderCaretUsage<cr>
 " nnoremap <leader>n :action NextOccurence<cr>
 " Error F2
-nmap <a-s> :action GotoNextError<cr>
+map <a-s> <Action>(GotoNextError)
 nmap <a-s-s> :action GotoPreviousError<cr>
 
 nnoremap gh :action FileStructurePopup<CR> 

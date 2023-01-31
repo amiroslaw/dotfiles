@@ -35,6 +35,16 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     unset f
 fi
 # if [ $TERM = linux ] || [ -e "/etc/systemd/system/graphical.target.wants/xlogin@$(whoami).service" ] ; then
+# exec dbus-launch --sh-syntax --exit-with-session bspwm
+# exec dbus-run-session -- bspwm - raczej nie
+# exec dbus-launch --exit-with-x11 bspwm
+# - no dbus socket but with export $(dbus-launch) in autostart
 
-exec dbus-launch --sh-syntax --exit-with-session bspwm
-# exec bspwm
+# https://github.com/netblue30/firejail/issues/3769[Firefox DBus user socket was not found · Issue #3769 · netblue30/firejail]
+# exec dbus-launch --exit-with-session bash <<EOF
+# # start dbus and set his envs
+# export $(dbus-launch)
+# exec bspwm 
+# EOF
+
+exec dbus-launch --exit-with-session ~/.config/bspwm/autostart 

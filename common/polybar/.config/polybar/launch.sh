@@ -12,9 +12,9 @@ killall -q polybar
 # for i in $(polybar -m | awk -F: '{print $1}'); do MONITOR=$i polybar main -c ~/.config/polybar/config & done
 
 # FOR MULTIMONITOR
-
-polybar main &
-polybar ext &
+#
+polybar log=error main 2>/tmp/polybar-main.log &
+polybar log=error ext 2>/tmp/polybar-ext.log &
 
 # Wait for the processes to shut down
 # while pgrep -x polybar >/dev/null; do sleep 1; done

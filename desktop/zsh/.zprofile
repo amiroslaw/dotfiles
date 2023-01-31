@@ -1,5 +1,5 @@
 # device specific
-
+# runs each terminal instance
 # paths
 export TOR_WATCH="$HOME/Downloads/.torrenty"
 export TOR_DIR="/media/multi/Downloads"

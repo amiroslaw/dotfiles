@@ -10,6 +10,15 @@ eq compares 2 values for equality
 status,out,err = run(cmd) - status is boolean; out and err are tables; executes external command and optionally capture the output
 str converts any non-string type to string, and strings to quoted strings
 
+-- cliparse
+--cliparse{'-aib','--key','defKey','--opt=2'}
+--filenamesplit( filepathStr ) --> pathStr, nameStr, extStr
+-- jsonish
+-- jsonishout 
+--jsonishout{{a=1},{1,"b"}} == '[{"a":1},[1,"b"]\]'
+-- keysort This function return the list of all the keys of the input inTab table. The keys are alphabetically sorted.
+--keysort( inTab ) --> outArr
+
 switch(cases, pattern)
 log(logMsg, [ level ], [ file ])
 trim(s) - trim string from whitespaces
@@ -578,4 +587,233 @@ function log(input, level, file)
 end -- >>>
 
 -- >>>
+
+-- luaSnip <<<
+-- https://github.com/pocomane/luasnip/blob/master/documentation.adoc#cliparse
+-- IDK what lua version is supported
+-- keysort <<<
+--This function return the list of all the keys of the input inTab table. The keys are alphabetically sorted.
+function keysort( inTab ) --> outArr
+  local outArr = {}
+  local nonstring = {}
+  for k in pairs(inTab) do
+    if type(k) == 'string' then
+      outArr[1+#outArr] = k
+    else
+      local auxkey = tostring(k)
+      nonstring[1+#nonstring] = auxkey
+      nonstring[auxkey] = k
+    end
+  end
+  table.sort(outArr)
+  table.sort(nonstring)
+  for _,v in ipairs(nonstring) do
+    outArr[#outArr+1] = nonstring[v]
+  end
+  return outArr
+end
+-- >>>
+-- jsonish <<<
+--This function parses the json-like string jsonStr to the lua table dataTab. It does not perform any validation. The parser is not fully JSON compliant, however it is very simple and it should work in most the cases.
+local function json_to_table_literal(s)
+
+  s = s:gsub([[\\]],[[\u{5C}]])
+  s = (' '..s):gsub('([^\\])(".-[^\\]")', function( prefix, quoted )
+    -- Matched string: quoted, non empty
+
+    quoted = quoted:gsub('\\"','\\u{22}')
+    quoted = quoted:gsub('\\[uU](%x%x%x%x)', '\\u{%1}')
+    quoted = quoted:gsub('%[','\\u{5B}')
+    quoted = quoted:gsub('%]','\\u{5D}')
+    return prefix .. quoted
+  end)
+
+  s = s:gsub('%[','{')
+  s = s:gsub('%]','}')
+  s = s:gsub('("[^"]-")%s*:','[%1]=')
+
+  return s
+end
+
+function jsonish(s)
+  local loader, e = load('return '..json_to_table_literal(s), 'jsondata', 't', {})
+  if not loader or e then return nil, e end
+  return loader()
+end
+-- >>>
+-- jsonishout <<<
+-- table to json
+--jsonishout{{a=1},{1,"b"}} == '[{"a":1},[1,"b"]]'
+
+local function quote_json_string(str)
+  return '"'
+    .. str:gsub('(["\\%c])',
+      function(c)
+        return string.format('\\x%02X', c:byte())
+      end)
+    .. '"'
+end
+
+local table_to_json
+
+local function table_to_json_rec(result, t)
+
+  if 'number' == type(t) then
+    result[1+#result] = tostring(t)
+    return
+  end
+
+  if 'table' ~= type(t) then
+    result[1+#result] = quote_json_string(tostring(t))
+    return
+  end
+
+  local isarray = false
+  if not getmetatable(t) then
+    local hasindex, haskey = false, false
+    for _ in ipairs(t) do hasindex = true break end
+    for _ in pairs(t) do haskey = true break end
+    isarray = hasindex or not haskey
+  end
+
+  if isarray then
+    result[1+#result] = '['
+    local first = true
+    for _,v in ipairs(t) do
+      if not first then result[1+#result] = ',' end
+      first = false
+      table_to_json_rec(result, v)
+    end
+    result[1+#result] = ']'
+
+  else
+    result[1+#result] = '{'
+    local first = true
+    for k,v in pairs(t) do
+
+      if 'number' ~= type(k) or 0 ~= math.fmod(k) then -- skip integer keys
+        k = tostring(k)
+        if not first then result[1+#result] = ',' end
+        first = false
+
+        -- Key
+        result[1+#result] = quote_json_string(k)
+        result[1+#result] = ':'
+
+        -- Value
+        table_to_json_rec(result, v)
+      end
+    end
+
+    result[1+#result] = '}'
+  end
+end
+
+jsonishout = function(t)
+  local result = {}
+  table_to_json_rec(result, t)
+  return table.concat(result)
+end
+-- >>>
+-- filenamesplit <<<
+--Split a file path string filepathStr into the following strings: the folder path pathStr, filename nameStr and extension extStr.
+--filenamesplit( filepathStr ) --> pathStr, nameStr, extStr
+function filenamesplit( str ) --> pathStr, nameStr, extStr
+  if not str then str = '' end
+
+  local pathStr, rest = str:match('^(.*[/\\])(.-)$')
+  if not pathStr then
+    pathStr = ''
+    rest = str
+  end
+
+  if not rest then return pathStr, '', '' end
+
+  local nameStr, extStr = rest:match('^(.*)(%..-)$')
+  if not nameStr then
+    nameStr = rest
+    extStr = ''
+  end
+
+  return pathStr, nameStr, extStr
+end
+
+-- >>>
+-- cliparse <<<
+--Simple function to parse command line arguments, that must be passed as the array of string arrArg.
+-- without dash are default options
+--local opt = cliparse{'-a','-b','c','-xy','d'} multiple flags
+-- local opt = cliparse{'--aa','--bb','c','--dd','e','f'} -- long name flags
+-- local opt = cliparse{'--aa=x','--bb:y','--cc=p','--cc=q','u'} values
+
+local function addvalue( p, k, value )
+  local prev = p[k]
+  if not prev then prev = {} end
+  if 'table' ~= type(value) then
+    prev[1+#prev] = value
+  else
+    for v = 1, #value do
+      prev[1+#prev] = value[v]
+    end
+  end
+  p[k] = prev
+end
+
+function cliparse( args, default_option )
+
+  if not args then args = {} end
+  if not default_option then default_option = '' end
+  local result = {}
+
+  local append = default_option
+  for _, arg in ipairs(args) do
+    if 'string' == type( arg ) then
+      local done = false
+
+      -- CLI: --key=value, --key:value, -key=value, -key:value
+      if not done then
+        local key, value = arg:match('^%-%-?([^-][^ \t\n\r=:]*)[=:]([^ \t\n\r]*)$')
+        if key and value then
+          done = true
+          addvalue(result, key, value)
+        end
+      end
+
+      -- CLI: --key
+      if not done then
+        local keyonly = arg:match('^%-%-([^-][^ \t\n\r=:]*)$')
+        if keyonly then
+          done = true
+          if not result[keyonly] then
+            addvalue(result, keyonly, {})
+          end
+          append = keyonly
+        end
+      end
+
+      -- CLI: -kKj
+      if not done then
+        local flags = arg:match('^%-([^-][^ \t\n\r=:]*)$')
+        if flags then
+          done = true
+          for i = 1, #flags do
+            local key = flags:sub(i,i)
+            addvalue(result, key, {})
+          end
+        end
+      end
+
+      -- CLI: value
+      if not done then
+        addvalue(result, append, arg)
+        append = default_option
+      end
+    end
+  end
+
+  return result
+end
+-- >>>
+-- >>>
+
 -- vim: fmr=<<<,>>> fdm=marker

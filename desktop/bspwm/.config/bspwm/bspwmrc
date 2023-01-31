@@ -123,15 +123,3 @@ bspc rule -a '*:newsboat' state=floating center=true rectangle=1000x1150+0+0
 #  grep -q 'vsync = "opengl-swc";' ~/.config/compton.conf || echo 'vsync = "opengl-swc";' >> ~/.config/compton.conf
 #fi
 
-#Source autostartfile. Uncomment this if you use bspwm-git
-screenlayout &
-wmname LG3D &
-~/.config/polybar/launch.sh &
-xsetroot -cursor_name left_ptr &
-feh --no-fehbg --bg-scale '/home/miro/Pictures/Wallpapers/nebula/h0910e.jpg' &
-sxhkd -c $HOME/.config/sxhkd/sxhkdrc.ext $HOME/.config/sxhkd/sxhkdrc &
-
-picom --experimental-backends &
-
-$HOME/.config/bspwm/autostart &
-
