@@ -26,6 +26,13 @@ utils actions:
 	make - Create playlist (m3u) from the directories in current location 
 	help - Show help
 
+examples:
+mpv.lua audioplay url 
+mpv.lua push url 
+mpv.lua videolist named
+mpv.lua videolist custom-playlist-name
+mpv.lua rename custom-playlist-name
+
 In order to change stream format and options it's needed to add the profiles `stream` and `stream-popup` into the mpv.conf file.
 Dependencies: mpv, st, clipster, fd, zenity, rofi, notify-send 
 	]]
@@ -59,26 +66,27 @@ function getHost()
 	return pageUrl:match('^%w+://([^/]+)'):gsub('www.', ''):match '([^.]+)'
 end
 
-local function createCustomName(defaultName)
+local function buildName(defaultName)
 	local cmdArg = arg[2]
 	if cmdArg == "named" then
 		local ok, out =	run('zenity --entry --text="Playlist name" --entry-text="' .. defaultName .. '"')
-		if ok then
-			defaultName = out[1]
+		if ok and out ~= '' then
+			return out[1]
 		end
+	-- name form cli param: mpv.lua videolist customname
 	elseif cmdArg ~= nil then
-		defaultName = cmdArg .. '.m3u'
+		return cmdArg .. '.m3u'
 	end
-	return defaultName
 end
 
 function savePlaylist(mediaType)
 	assert(os.execute('mkdir -p ' .. dirPlaylists) == 0, 'Did not create playlist dir ' .. dirPlaylists)
-	local listName = os.date '%Y-%m-%dT%H%M-' .. mediaType .. '-' .. getHost() .. '.m3u'
-	listName = createCustomName(listName)
-	print('mv ' .. tmpPlaylist .. ' "' .. dirPlaylists .. '/' .. listName .. '"')
-	assert( os.execute('mv ' .. tmpPlaylist .. ' "' .. dirPlaylists .. '/' .. listName .. '"') == 0, 'Did not move playlist to ' .. dirPlaylists)
-	assert(os.execute('rm -f ' .. tmpPlaylist) == 0, 'Did not remove playlist')
+	local defaultName = os.date '%Y-%m-%dT%H%M-' .. mediaType .. '-' .. getHost() .. '.m3u'
+	local listName = buildName(defaultName)
+	if listName then
+		assert( os.execute('mv ' .. tmpPlaylist .. ' "' .. dirPlaylists .. '/' .. listName .. '"') == 0, 'Did not move playlist to ' .. dirPlaylists)
+		assert(os.execute('rm -f ' .. tmpPlaylist) == 0, 'Did not remove playlist')
+	end
 end
 
 function writeUrlToFile(filePath, url)
@@ -131,10 +139,13 @@ function push(url)
 	assert(io.open(tmpPlaylist, 'a'):write(title .. url .. '\n'))
 end
 
+-- rename lastest saved playlist
 local function renameList()
 	local ok, latestPlaylistPaths = run('ls -1t ' .. dirPlaylists)
-	local customName = createCustomName(latestPlaylistPaths[1])
-	assert( os.execute('mv "' .. dirPlaylists .. '/' .. latestPlaylistPaths[1] .. '" "' .. dirPlaylists .. '/' .. customName .. '"') == 0, 'Error: Could not rename ' .. latestPlaylistPaths[1])
+	local customName = buildName(latestPlaylistPaths[1])
+	if customName then
+		assert( os.execute('mv "' .. dirPlaylists .. '/' .. latestPlaylistPaths[1] .. '" "' .. dirPlaylists .. '/' .. customName .. '"') == 0, 'Error: Could not rename ' .. latestPlaylistPaths[1])
+	end
 end
 
 local cases = {
