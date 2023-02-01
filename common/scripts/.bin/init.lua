@@ -5,7 +5,7 @@
 printt(table, file) to print tables on screen or to file
 copyt(table) deep copy table
 readf(file) read file, returns table
-writef(string|table, file, [readmode]) write table/string to file
+writef(string|table, file, [readmode]) write table/string to file, can't have nil
 eq compares 2 values for equality
 status,out,err = run(cmd) - status is boolean; out and err are tables; executes external command and optionally capture the output
 str converts any non-string type to string, and strings to quoted strings
@@ -200,6 +200,8 @@ function writef(t, f, n, m)
 	   end
       if (type(t) == "table") then
          for _,l in ipairs(t) do
+			 -- if l then -- allow nil values and exclude them, IDK if it's necessary 
+			 -- end
             File_h:write(l)
             File_h:write(n)
          end
@@ -589,7 +591,7 @@ end -- >>>
 -- >>>
 
 -- luaSnip <<<
--- https://github.com/pocomane/luasnip/blob/master/documentation.adoc#cliparse
+-- https://github.com/pocomane/luasnip/blob/master/documentation.adoc
 -- IDK what lua version is supported
 -- keysort <<<
 --This function return the list of all the keys of the input inTab table. The keys are alphabetically sorted.

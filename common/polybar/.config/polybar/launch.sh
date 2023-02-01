@@ -13,8 +13,8 @@ killall -q polybar
 
 # FOR MULTIMONITOR
 #
-polybar log=error main 2>/tmp/polybar-main.log &
-polybar log=error ext 2>/tmp/polybar-ext.log &
+polybar --log=error main 2>/tmp/polybar-main.log &
+polybar --log=error ext 2>/tmp/polybar-ext.log &
 
 # Wait for the processes to shut down
 # while pgrep -x polybar >/dev/null; do sleep 1; done

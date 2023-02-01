@@ -1,5 +1,4 @@
 #!/usr/bin/luajit
-local gumbo = require 'gumbo'
 
 local tmpPlaylist = '/tmp/qt_mpvplaylist.m3u'
 local tmpPlay = '/tmp/qt_mpv.m3u'
@@ -34,7 +33,7 @@ mpv.lua videolist custom-playlist-name
 mpv.lua rename custom-playlist-name
 
 In order to change stream format and options it's needed to add the profiles `stream` and `stream-popup` into the mpv.conf file.
-Dependencies: mpv, st, clipster, fd, zenity, rofi, notify-send 
+Dependencies: mpv, st, clipster, fd, zenity, rofi, notify-send, yt-dlp
 	]]
 
 end
@@ -90,7 +89,6 @@ function savePlaylist(mediaType)
 end
 
 function writeUrlToFile(filePath, url)
-	print(url)
 	local file = assert(io.open(filePath, 'w'), 'Could not write to file ' .. filePath)
 	file:write(url)
 	file:close()
@@ -127,16 +125,12 @@ function audiolist()
 end
 
 function push(url)
-	local title = ''
-	if gumbo then
-		local html = io.popen('setsid -f curl -L ' .. url):read("*a")
-		local doc = gumbo.parse(html)
-		if doc then
-			title = doc.title	
-		end
-		title = '#EXTINF:-1,' .. title .. '\n'
+	local extinf = ''
+	local ok, out = run('yt-dlp -i --print duration,title ' .. url)
+	if ok then
+		extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
 	end
-	assert(io.open(tmpPlaylist, 'a'):write(title .. url .. '\n'))
+	assert(io.open(tmpPlaylist, 'a'):write(extinf .. url .. '\n'))
 end
 
 -- rename lastest saved playlist
@@ -148,6 +142,25 @@ local function renameList()
 	end
 end
 
+local function makeYtPlaylist()
+	-- IDK why it can't fetch playlist_* data, in bash it works well
+	local ok,out = run('yt-dlp -i --print playlist_title,playlist_count,duration,title,original_url "' .. arg[2] .. '"')
+
+	assert(ok, 'Error: Could not get playlist metadata')
+	local playlistTitle = out[1]
+	local playlist = {'#EXTM3U', '#PLAYLIST: ' .. playlistTitle}
+	for i = 0, out[2] -1 do
+		local videoIndex = i * 5
+		local duration = out[videoIndex + 3] and out[videoIndex + 3] or -1
+		local title = out[videoIndex + 4] and out[videoIndex + 4] or ''
+		table.insert(playlist,'#EXTINF:' .. duration .. ',' .. title)
+		table.insert(playlist, out[videoIndex + 5])
+	end
+	local writeOk = writef(playlist, dirPlaylists .. '/' .. playlistTitle .. '.m3u')
+	assert(writeOk, 'Error: Could not write playlist to a file')
+	notify('created ' .. playlistTitle)
+end
+
 local cases = {
 	['push'] = push,
 	['audioplay'] = audioplay,
@@ -157,6 +170,7 @@ local cases = {
 	['videopopup'] = videopopup,
 	['popuplist'] = popuplist,
 	['make'] = make,
+	['make-yt'] = makeYtPlaylist,
 	['rename'] = renameList,
 	['help'] = help,
 	[false] = help,
