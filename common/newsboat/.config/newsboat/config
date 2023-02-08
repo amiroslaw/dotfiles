@@ -31,9 +31,9 @@ error-log "~/.local/share/newsboat/error.log"
 scrolloff 5
 prepopulate-query-feeds yes
 # filters
-ignore-article "*" "title =~ \"#shorts\""
-ignore-article "*" "content =~ \"#shorts\""
-# ignore-article "*" "content =~ \"#shorts\" and tags # \"yt\""
+ignore-article "*" "title =~ \"#shorts\" and tags # \"yt\""
+ignore-article "*" "description =~ \"#shorts\" and tags # \"yt\""
+ignore-article "*" "content =~ \"#shorts\" and tags # \"yt\""
 define-filter "Unread alerts" "unread_count > 0 and feedlink =~ \"www.google.com/alerts\""
 define-filter "Unread reddit" "unread_count > 0 and feedlink =~ \"https://www.reddit.com/r\""
 define-filter "Unread" "unread_count > 0 and tags !# \"yt\""
@@ -65,6 +65,8 @@ highlight article ":.*\\(embedded flash\\)$" magenta default
 # feedlist-format     "%4i %n %11u (%T) %t"
 feedlist-format "%?T?║%4i %n %8u (%T) %t &%4i %n %8u %t?"
 datetime-format "%d-%m-%y"
+# articlelist-format "%4i %f %D %6L %?T?;%-17T; ?%t"
+# itemview-title-format	"%N %V - Article %T (%u unread, %t total)"	
 
 color background          default default
 color listnormal          default default

@@ -14,7 +14,7 @@ return require('packer').startup(function()
 	use 'chentoast/marks.nvim'
 	use 'mhinz/vim-startify' -- start screen
 	use { 'mbbill/undotree', cmd = { 'UndotreeToggle' } }
-	use { -- maybe causes crashes
+	use { -- maybe causes crashes, no I've tested it
 		'gbprod/yanky.nvim',
 		config = function()
 			require('yanky').setup {}

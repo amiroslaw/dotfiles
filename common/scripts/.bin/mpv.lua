@@ -84,8 +84,8 @@ function savePlaylist(mediaType)
 	local listName = buildName(defaultName)
 	if listName then
 		assert( os.execute('mv ' .. tmpPlaylist .. ' "' .. dirPlaylists .. '/' .. listName .. '"') == 0, 'Did not move playlist to ' .. dirPlaylists)
-		assert(os.execute('rm -f ' .. tmpPlaylist) == 0, 'Did not remove playlist')
 	end
+	assert(os.execute('rm -f ' .. tmpPlaylist) == 0, 'Did not remove playlist')
 end
 
 function writeUrlToFile(filePath, url)
@@ -143,9 +143,10 @@ local function renameList()
 end
 
 local function makeYtPlaylist()
-	-- IDK why it can't fetch playlist_* data, in bash it works well
+	print('yt-dlp -i --print playlist_title,playlist_count,duration,title,original_url "' .. arg[2] .. '"')
 	local ok,out = run('yt-dlp -i --print playlist_title,playlist_count,duration,title,original_url "' .. arg[2] .. '"')
 
+	-- won't create playlist with hidden videos
 	assert(ok, 'Error: Could not get playlist metadata')
 	local playlistTitle = out[1]
 	local playlist = {'#EXTM3U', '#PLAYLIST: ' .. playlistTitle}
