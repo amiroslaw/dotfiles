@@ -30,10 +30,15 @@ notify-program "/usr/bin/notify-send"
 error-log "~/.local/share/newsboat/error.log"
 scrolloff 5
 prepopulate-query-feeds yes
+
+max-browser-tabs 30 # when using the open-all-unread-in-browser or open-all-unread-in-browser-and-mark-read commands.
 # filters
-ignore-article "*" "title =~ \"#shorts\" and tags # \"yt\""
-ignore-article "*" "description =~ \"#shorts\" and tags # \"yt\""
-ignore-article "*" "content =~ \"#shorts\" and tags # \"yt\""
+# ignore-article "*" "title =~ \"#shorts\" and tags # \"yt\""
+# ignore-article "*" "description =~ \"#shorts\" and tags # \"yt\""
+# ignore-article "*" "content =~ \"#shorts\" and tags # \"yt\""
+ignore-article "*" "title =~ \"#shorts\""
+ignore-article "*" "description =~ \"#shorts\""
+ignore-article "*" "content =~ \"#shorts\""
 define-filter "Unread alerts" "unread_count > 0 and feedlink =~ \"www.google.com/alerts\""
 define-filter "Unread reddit" "unread_count > 0 and feedlink =~ \"https://www.reddit.com/r\""
 define-filter "Unread" "unread_count > 0 and tags !# \"yt\""
@@ -77,6 +82,9 @@ color info                default red
 color article             default default
 
 # macro
+#https://newsboat.org/releases/2.30/docs/newsboat.html#_separating_browser_from_newsboat
+#exec open-in-browser-noninteractively
+#set browser "surf %u >/dev/null 2>&1 &"
 bind-key ; macro-prefix
 browser ~/.config/newsboat/link.sh
 macro ; open-in-browser-noninteractively

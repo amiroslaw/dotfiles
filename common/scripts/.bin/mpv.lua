@@ -145,6 +145,7 @@ end
 local function makeYtPlaylist()
 	print('yt-dlp -i --print playlist_title,playlist_count,duration,title,original_url "' .. arg[2] .. '"')
 	local ok,out = run('yt-dlp -i --print playlist_title,playlist_count,duration,title,original_url "' .. arg[2] .. '"')
+	local type = arg[3] and 
 
 	-- won't create playlist with hidden videos
 	assert(ok, 'Error: Could not get playlist metadata')
@@ -157,7 +158,7 @@ local function makeYtPlaylist()
 		table.insert(playlist,'#EXTINF:' .. duration .. ',' .. title)
 		table.insert(playlist, out[videoIndex + 5])
 	end
-	local writeOk = writef(playlist, dirPlaylists .. '/' .. playlistTitle .. '.m3u')
+	local writeOk = writef(playlist, dirPlaylists .. '/' .. playlistTitle .. '-video.m3u')
 	assert(writeOk, 'Error: Could not write playlist to a file')
 	notify('created ' .. playlistTitle)
 end

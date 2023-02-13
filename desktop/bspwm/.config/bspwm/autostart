@@ -29,7 +29,7 @@ trackball.sh &
 nm-applet &
 nvidia-fan.sh -c ~/.config/nfancurve/config &
 sleep 500 && megasync &
-sleep 500 && gcal-show.sh &
+# sleep 500 && gcal-show.sh &
 sleep 500 && screen -AmdS tor rtorrent &
 
 # IDK if it should be after any sleep
