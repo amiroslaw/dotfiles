@@ -187,18 +187,19 @@ super + a ; b
 #
 
 # function keys
-super + F{1,2,3,4,6,7,8,9,10,11,12}
+super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 	{ firefox, \
 	/opt/idea-IU-212.5284.40/bin/idea.sh, \
 	$TERMINAL start --class vifm -- vifm, \
 	pcmanfm, \
-	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
-	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
 	scratchpad.sh  "$TERM_LT -c portfolio -n portfolio -e nvim ~/.config/investing/portfolio.yaml", \
-	todo.lua add, \
+	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
+	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui", \
+	todo.lua add, \
+	setup.lua add, \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
-	rofi -show power-menu -modi power-menu:$ROFI/rofi-power-menu
+	rofi -show power-menu -modi power-menu:$ROFI/power.sh
 	}
 
 # tasks; todo; calendar
@@ -280,7 +281,7 @@ super + o ; {i,p,b,t}
 super + e ; {e,h,k,K,m,M,v,V,d,D,y,Y,g,G,w,W,r,R,c,i}
 	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr-speed reader\nR-read\nc-calendar\nk(K)-kindle\ni-investing", \
     url.lua menu input, \
-    url.lua kindle 1,  url.lua kindle 10, \
+    url.lua kindle-send 1,  url.lua kindle 10, \
     url.lua tor 1,  url.lua tor 10, \
     url.lua video 1,  url.lua video 10, \
     url.lua audio 1,  url.lua audio 10, \

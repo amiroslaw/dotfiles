@@ -58,11 +58,16 @@ return { -- Must be in the end
 	check_for_updates = false,
 	automatically_reload_config = false,
 	key_map_preference = "Mapped",
-	color_scheme = plugins.getColorscheme 'Poimandres Storm'
+	color_scheme = plugins.getColorscheme 'Poimandres Storm',
 	-- 'kanagawabones', 'Dracula (Official)'
 	-- https://wezfurlong.org/wezterm/colorschemes/d/index.html
 	-- disable_default_key_bindings = true,
 	-- window_background_image = plugins.getRandomBg(wezterm.config_dir .. '/bg/'), -- higher RAM usage, don't use big pictures
 	-- window_background_image_hsb = { brightness = 0.14, },
+	-- unix_domains = {
+ --    {
+ --      name = 'top',
+ --    },
+ --  },
 }
 

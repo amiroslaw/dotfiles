@@ -38,11 +38,11 @@ alias gry='java -jar ~/.bin/grywalizacja.jar &'
 
 # {{{ config files
 alias batalias='bat ~/.config/aliases'
+alias cfaliases='nvim ~/.config/aliases'
 alias cfportfolio='nvim ~/.config/investing/portfolio.yaml'
 alias cftask='nvim ~/.config/task/taskrc'
 alias cfidea='nvim ~/.config/ideavim//ideavimrc'
 alias cfpqiv='nvim ~/.config/pqivrc'
-alias cfaliases='nvim ~/.config/aliases'
 alias cfalacritty='nvim ~/.config/alacritty/alacritty.yml'
 alias cfwez='nvim ~/.config/wezterm/wezterm.lua'
 alias cfwezkey='nvim ~/.config/wezterm/key.lua'
@@ -65,6 +65,7 @@ alias cfbroot='nvim ~/.config/broot/conf.toml'
 alias cfqute='nvim ~/.config/qutebrowser/config.py'
 alias cfnews='nvim ~/.config/newsboat/config'
 alias cfurl='nvim ~/.config/newsboat/urls'
+alias cfw3m='nvim ~/.w3m/keymap'
 #}}}
 
 # {{{ RÓŹNE

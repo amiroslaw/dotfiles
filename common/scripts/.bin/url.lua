@@ -30,8 +30,10 @@ YT_DIR = '~/Videos/YouTube/'
 WGET_DIR = '~/Downloads/wget' -- can't have spaces
 AUDIO_DIR = '~/Musics/PODCASTS/' 
 GALLERY_DIR = '~/Pictures/gallery-dl/'
+KINDLE_TMP_DIR = '/tmp/kindle/'
 LINK_REGEX = "^https?://(([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))"
 TOR_REGEX = "xt=urn:btih:([^&/]+)"
+
 local action = arg[1]
 local urlArg = arg[2] and arg[2] or 1
 
@@ -54,24 +56,43 @@ function createTorrent(magnetlinks)
 	return '⬇️ Start downloading torrent'
 end
 
-function sendToKindle(linkTab)
-	local tmpDir = '/tmp/kindle/'
-	local kindleEmail = io.input(os.getenv('PRIVATE') .. '/kindle_email'):read('*l'):gsub('%s', '')
+
+function createEpub(link)
+	local readerCmd =  'rdrview -A "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" "' .. link .. '" '
+	
+	local title = io.popen(readerCmd .. ' -M | head -1 | cut -d ":" -f 2'):read('*a'):gsub("\n", ""):gsub('/', ''):gsub('\"',''):gsub('^%s', '')
+	if #title == 0 then 
+		title = 'untitled-' .. os.date('%Y-%m-%dT%H:%M:%S')
+	end 
+	-- pandoc has error when converting to pdf, html need to have <html> <body> tags and has problem with encoding
+	-- metadata title is required by the kindle server. excerpt can be add
+	local date = os.date('%Y-%m-%d')
+	local epubExe = run(readerCmd .. ' -H -T url,sitename,byline | pandoc --from html --to epub --output "' .. KINDLE_TMP_DIR .. title .. '.epub" --toc --metadata title="' .. title .. '" --metadata date='..date)
+	return epubExe, title
+end
+
+function createEbook(linkTab)
 	local articlesWithErrors = {}
-	os.execute('mkdir -p ' .. tmpDir)
+	os.execute('mkdir -p ' .. KINDLE_TMP_DIR)
 
 	for i, link in ipairs(linkTab) do
-		local readerCmd =  'rdrview -A "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" "' .. link .. '" '
-		
-		local title = io.popen(readerCmd .. ' -M | head -1 | cut -d ":" -f 2'):read('*a'):gsub("\n", ""):gsub('/', ''):gsub('\"',''):gsub('^%s', '')
-		if #title == 0 then 
-			title = 'untitled-' .. os.date('%Y-%m-%dT%H:%M:%S')
-		end 
-		-- pandoc has error when converting to pdf, html need to have <html> <body> tags and has problem with encoding
-		-- metadata title is required by the kindle server
-		local date = os.date('%Y-%m-%d')
-		local epubExe = run(readerCmd .. ' -H -T excerpt,url,sitename,byline | pandoc --from html --to epub --output "' .. tmpDir .. title .. '.epub" --toc --metadata title="' .. title .. '" --metadata date='..date)
-		local sendFile, out, err = run('echo "' .. title .. '\nKindle article from reader" | mailx -v -s "Convert" -a"' .. tmpDir .. title .. '.epub" ' .. kindleEmail)
+		local epubExe = createEpub(link)
+		if not epubExe then
+			table.insert(articlesWithErrors, link)
+		end
+	end
+	assert(#articlesWithErrors == 0, 'Could not create ' .. #articlesWithErrors .. ' articles\n' .. table.concat(articlesWithErrors, '\n'))
+	return 'Created ' .. #linkTab .. ' articles'
+end
+
+function sendToKindle(linkTab)
+	local kindleEmail = io.input(os.getenv('PRIVATE') .. '/kindle_email'):read('*l'):gsub('%s', '')
+	local articlesWithErrors = {}
+	os.execute('mkdir -p ' .. KINDLE_TMP_DIR)
+
+	for i, link in ipairs(linkTab) do
+		local epubExe, title = createEpub(link)
+		local sendFile = run('echo "' .. title .. '\nKindle article from reader" | mailx -v -s "Convert" -a"' .. KINDLE_TMP_DIR .. title .. '.epub" ' .. kindleEmail)
 		if not epubExe or not sendFile then
 			table.insert(articlesWithErrors, link)
 		end
@@ -131,7 +152,8 @@ local options = {
 	["audio"]= audio,
 	["yt"]= yt,
 	["tor"]= function() return createTorrent end,
-	["kindle"]= function() return sendToKindle end,
+	["kindle-send"]= function() return sendToKindle end,
+	["kindle"]= function() return createEbook end,
 	["read"]= function() return readable end,
 	["speed"]= function() return speed end,
 	["wget"]= wget,

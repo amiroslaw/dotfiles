@@ -103,7 +103,7 @@ macro c set browser "echo %u | xclip -r -sel c" ; open-in-browser-noninteractive
 macro d set browser "setsid -f url.lua audio" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro y set browser "setsid -f url.lua yt" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro Y set browser "setsid -f url.lua yt" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
-macro k set browser "setsid -f url.lua kindle" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro k set browser "setsid -f url.lua kindle-send" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro K set browser "setsid -f url.lua kindle" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 # read
 macro r set browser "setsid -f url.lua read" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
