@@ -236,7 +236,7 @@ super + s ; {s,h,g,G,b,B,u,U,y,Y,m,M}
 	search.lua google primary, search.lua google clip, \
 	search.lua brave primary, search.lua brave clip, \
 	search.lua dd primary, search.lua dd clip, \
-	search.lua yt primary, search.lua yt clip, \
+	search.lua video primary, search.lua video clip, \
 	search.lua maps primary, search.lua maps clip}
 
 super + s ; {w,W,c,C,o,O,a,A,z,Z,f,F,x,X,t,T}
@@ -278,20 +278,20 @@ super + o ; {i,p,b,t}
 	$TERM_LT -e {nmtui,ncmpcpp,bmenu,tg}
 
 # script in background - url.lua menu will ask for the number of the links
-super + e ; {e,h,k,K,m,M,v,V,d,D,y,Y,g,G,w,W,r,R,c,i}
+super + e ; {e,h,k,K,m,M,v,V,d,D,y,Y,w,W,r,R,g,G,c,i}
 	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr-speed reader\nR-read\nc-calendar\nk(K)-kindle\ni-investing", \
-    url.lua menu input, \
-    url.lua kindle-send 1,  url.lua kindle 10, \
-    url.lua tor 1,  url.lua tor 10, \
-    url.lua video 1,  url.lua video 10, \
-    url.lua audio 1,  url.lua audio 10, \
-    url.lua yt 1,  url.lua yt 10,  \
-    url.lua gallery 1,  url.lua gallery 10,  \
-    url.lua wget 1, url.lua wget 10,  \
-    url.lua speed 1, url.lua read 1,  \
+    url.lua --menu --input, \
+    url.lua --kindle --email -n 1,  url.lua --kindle -n 10, \
+    url.lua --tor -n 1,  url.lua --tor -n 10, \
+    mpv.lua videoplay,  mpv.lua videolist, \
+    url.lua --audio -n 1,  url.lua --audio -n 10, \
+    url.lua --video -n 1,  url.lua --video -n 10,  \
+    url.lua --wget -n 1, url.lua --wget -n 10,  \
+    url.lua --speed -n 1, url.lua --read -n 1,  \
+    url.lua --gallery -n 1,  url.lua --gallery -n 10,  \
 	gcal-show.sh, investing-cli -n
 }
-# url.lua maybe change to mpv.lua videoplay cos mpv script uses profile
+# last optins doesn't work
 
 # clipster and notes; add J nad fix previous-copy primary
 super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}

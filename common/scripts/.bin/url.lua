@@ -1,29 +1,40 @@
 #!/bin/luajit
--- optimalization 
--- kindle - I execute 2 times, maybe I don't need title of the article, I can useos.tmpfile - but it remove file after end of the script
 
 HELP = [[
-Utils for using URLs from the system clipboard.
-link.lua action [number|url] 
+Utils for URLs.
+url.lua actions [options] url|clipItems
 List of the actions:
-		menu - show rofi with available actions
-		audio - downlad audio via youtube-dl 
-		yt - downlad video via youtube-dl 
-		tor - create torrent file form a magnetlink
-		kindle - downlad video via gallery-dl 
-		read - convert website to asciidoc and show it in 'reader view' mode
-		speed - convert website to text for rsvp
-		wget - downlad file via wget
-		video - play video in video player (mpv)
-		gallery - downlad images via gallery-dl 
+		--menu -m show rofi with available actions
+		--audio -a downlad audio via youtube-dl 
+		--video -v downlad video via youtube-dl 
+		--tor -t create torrent file form a magnetlink
+		--kindle -k downlad video via gallery-dl 
+		--read -r convert website to asciidoc and show it in 'reader view' mode
+		--speed -s convert website to text for rsvp
+		--wget -w downlad file via wget
+		--gallery -g downlad images via gallery-dl 
+		--help -h - show help
 
 List of the options:
-		number - number of line from clipboard-default is 1
-		input - show form input for the number
-		url - link of the website
-		-h help - show help
+		--number -n number of line from clipboard. In default it will grab one item from CLIPBOARD clipboard
+		--primary -p → takes url from the PRIMARY clipboard, instead of the CLIPBOARD clipboard
+		--input -i show form input for the number
+		--email -e → option for kinde, ebook will be send to a kindle device via email. You need to setup mailx and create $PRIVATE/kindle_email file with an email address
+		url - link of a website
 
-dependencies: mpv, youtube-dl or yt-dlp, gallery-dl, clipster, rdrview, mailx, speedread, pandoc
+Examples:
+Convert a website to asciidoc and show it a terminal.
+url.lua --read url
+Search urls from 4 last PRIMARY clipboard items, and download them
+url.lua --wget --primary --number 4
+Prompt clipboard item numbers. Search urls from clipboard, and download videos
+url.lua --video --input 
+Convert a website to epub and send it via email
+url.lua --kindle --email url
+Choose action from menu, and pass url from PRIMARY clipboard
+url.lua --menu --primary
+
+dependencies:  clipster, yt-dlp, gallery-dl, rdrview, mailx, speedread, pandoc
 ]]
 
 YT_DIR = '~/Videos/YouTube/'
@@ -34,20 +45,15 @@ KINDLE_TMP_DIR = '/tmp/kindle/'
 LINK_REGEX = "^https?://(([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))"
 TOR_REGEX = "xt=urn:btih:([^&/]+)"
 
-local action = arg[1]
-local urlArg = arg[2] and arg[2] or 1
+local function help() print(HELP); os.exit() end
 
-function execXargs(args, cmd)
-	args = table.concat(args, '\n')
-	local status = os.execute('echo "' .. args .. '" ' .. cmd)
-	assert(status == 0, "Could not execute command")
-	return "Executed"
-end
+local args = cliparse(arg, 'url')
+local linkTab = args.url
 
-function createTorrent(magnetlinks)
+local function createTorrent()
 	local torDir = os.getenv('TOR_WATCH')
 	os.execute('mkdir -p ' .. torDir)
-	for i, magnetlink in ipairs(magnetlinks) do
+	for _, magnetlink in ipairs(linkTab) do
 		local hash = magnetlink:match(TOR_REGEX)
 		local file = io.open(torDir .. '/meta-' .. hash.. '.torrent', 'w')
 		file:write('d10:magnet-uri' .. #magnetlink .. ':' .. magnetlink .. 'e')
@@ -56,8 +62,7 @@ function createTorrent(magnetlinks)
 	return '⬇️ Start downloading torrent'
 end
 
-
-function createEpub(link)
+local function createEpub(link)
 	local readerCmd =  'rdrview -A "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" "' .. link .. '" '
 	
 	local title = io.popen(readerCmd .. ' -M | head -1 | cut -d ":" -f 2'):read('*a'):gsub("\n", ""):gsub('/', ''):gsub('\"',''):gsub('^%s', '')
@@ -71,39 +76,32 @@ function createEpub(link)
 	return epubExe, title
 end
 
-function createEbook(linkTab)
-	local articlesWithErrors = {}
-	os.execute('mkdir -p ' .. KINDLE_TMP_DIR)
-
-	for i, link in ipairs(linkTab) do
-		local epubExe = createEpub(link)
-		if not epubExe then
-			table.insert(articlesWithErrors, link)
-		end
-	end
-	assert(#articlesWithErrors == 0, 'Could not create ' .. #articlesWithErrors .. ' articles\n' .. table.concat(articlesWithErrors, '\n'))
-	return 'Created ' .. #linkTab .. ' articles'
-end
-
-function sendToKindle(linkTab)
+local function kindle()
+	local msg = 'Created '
 	local kindleEmail = io.input(os.getenv('PRIVATE') .. '/kindle_email'):read('*l'):gsub('%s', '')
 	local articlesWithErrors = {}
 	os.execute('mkdir -p ' .. KINDLE_TMP_DIR)
-
-	for i, link in ipairs(linkTab) do
+	for _, link in ipairs(linkTab) do
 		local epubExe, title = createEpub(link)
-		local sendFile = run('echo "' .. title .. '\nKindle article from reader" | mailx -v -s "Convert" -a"' .. KINDLE_TMP_DIR .. title .. '.epub" ' .. kindleEmail)
+		local sendFile = true
+		-- sometimes can't send
+		if args.email or args.e then
+			msg = 'Sent '
+			sendFile = run('echo "' .. title .. '\nKindle article from reader" | mailx -v -s "Convert" -a"' .. KINDLE_TMP_DIR .. title .. '.epub" ' .. kindleEmail)
+		end
+
 		if not epubExe or not sendFile then
 			table.insert(articlesWithErrors, link)
 		end
 	end
+
 	assert(#articlesWithErrors == 0, 'Could not send ' .. #articlesWithErrors .. ' articles\n' .. table.concat(articlesWithErrors, '\n'))
-	return 'Sent ' .. #linkTab .. ' articles'
+	return msg .. #linkTab .. ' articles'
 end
 
-function readable(linkTab)
+local function readable()
 	local tmpname = os.tmpname()
-	for i, link in ipairs(linkTab) do
+	for _, link in ipairs(linkTab) do
 		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to asciidoc --output ' .. tmpname .. '.adoc')
 		os.execute('st -c read -n read -e nvim ' .. tmpname .. '.adoc')
 		assert(createFile == 0, 'Could not create file')
@@ -111,9 +109,9 @@ function readable(linkTab)
 	return 'Created file ' .. tmpname
 end 
 
-function speed(linkTab)
+local function speed()
 	local tmpname = os.tmpname()
-	for i, link in ipairs(linkTab) do
+	for _, link in ipairs(linkTab) do
 		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to plain --output ' .. tmpname)
 		os.execute('wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. tmpname .. ' | speedread -w 330"') 
 		-- os.execute('st -c rsvp -n rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 330"') 
@@ -122,56 +120,66 @@ function speed(linkTab)
 	return 'RSVP finished ' .. tmpname
 end 
 
-function wget(linkTab)
-	os.execute('mkdir -p ' .. WGET_DIR)
+local function execXargs(cmd, outputDir)
+	if outputDir then
+		os.execute('mkdir -p ' .. outputDir)
+	end
+	local args = table.concat(linkTab, '\n')
+	local status = os.execute('echo "' .. args .. '" ' .. cmd)
+	assert(status == 0, "Could not execute command")
+	return "Executed"
+end
+
+local function wget()
 	local cmd =	 "| xargs -P 0 -I {} wget -P " .. WGET_DIR .. " {}"
  -- -U "Mozilla"
-	return execXargs, cmd
+	return execXargs(cmd, WGET_DIR)
 end
 
 function audio()
-	os.execute('mkdir -p ' .. AUDIO_DIR)
 	local cmd = "| xargs -P 0 -I {} yt-dlp --embed-metadata -f bestaudio -x --audio-format mp3 -o '".. AUDIO_DIR .. "%(title)s.%(ext)s' {}"
-	return execXargs, cmd
+	return execXargs(cmd, AUDIO_DIR)
 end
 
-function yt()
-	os.execute('mkdir -p ' .. YT_DIR)
+function video()
 	local cmd = "| xargs -P 0 -I {} yt-dlp --embed-metadata -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
 	-- local cmd = "| xargs -P 0 -I {} yt-dlp --embed-metadata --restrict-filenames -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
-	return execXargs, cmd
+	return execXargs(cmd, YT_DIR)
 end
 
 function gallery()
-	os.execute('mkdir -p ' .. GALLERY_DIR)
 	local cmd =	 "| xargs -P 0 -I {} gallery-dl -d '" .. GALLERY_DIR .. "' {}"
-	return execXargs, cmd
+	return execXargs(cmd, GALLERY_DIR)
 end
 
 local options = {
 	["audio"]= audio,
-	["yt"]= yt,
-	["tor"]= function() return createTorrent end,
-	["kindle-send"]= function() return sendToKindle end,
-	["kindle"]= function() return createEbook end,
-	["read"]= function() return readable end,
-	["speed"]= function() return speed end,
+	["a"]= audio,
+	["video"]= video,
+	["v"]= video,
+	["tor"]= createTorrent,
+	["t"]= createTorrent,
+	["kindle"]= kindle,
+	["k"]= kindle,
+	["read"]= readable,
+	["r"]= readable,
+	["speed"]= speed,
+	["s"]= speed,
 	["wget"]= wget,
-	["video"]= function() return execXargs, "| xargs -P 0 -I {} mpv {}" end,
+	["w"]= wget,
 	["gallery"]= gallery,
-	["-h"]= function() print(HELP); os.exit() end,
-	["#default"]= audio
+	["g"]= gallery,
+	["h"]= help,
+	["help"]= help,
 }
-local switch = (function(name,args)
-	local sw = options
-	return (sw[name]and{sw[name]}or{sw["#default"]})[1](args)
-end)
-if action == 'menu' then
-	action = rofiMenu(options)
-end
 
-function filtrLinks(clipboardStream, regex)
+local function filterLinks(clipboardStream)
 	local links = {}
+	local regex = LINK_REGEX
+	if args.tor or args.t then
+		regex = TOR_REGEX
+	end
+
 	for line in clipboardStream:lines() do
 		local match = line:match(regex)
 		if match then table.insert(links, line) end
@@ -180,22 +188,43 @@ function filtrLinks(clipboardStream, regex)
 	return links
 end
 
-linkTab = {}
-if urlArg == 'input' then
-	urlArg = rofiInput({prompt = 'No. urls'})	
-end
-if action == '-h' or action == 'help' then 
-	action = '-h'
-elseif tonumber(urlArg) then
-	local clipboard = io.popen("clipster --output --clipboard -n " .. urlArg )
-	local regex = action == 'tor' and TOR_REGEX or LINK_REGEX
-	linkTab = filtrLinks(clipboard, regex)
+local action = help
+local cmd
+
+if args.menu or args.m then
+	local selection = rofiMenu(options)
+	action,cmd = switch(options, selection)
 else
-	table.insert(linkTab, urlArg) 
+	for key,_ in pairs(args) do
+		local selection, cmd = switch(options, key)
+		if selection and args[key] then
+			action = selection
+		end
+	end
 end
 
-local exec, cmd = switch(action)
-local status, val = pcall(exec, linkTab, cmd)
+if args.input or args.i then
+	args.number = {}
+	args.number[1] = rofiInput({prompt = 'No. urls'})	
+end
+local argNumber = args.number or args.n
+if argNumber then
+	local number = 1
+	if argNumber[1] then -- get form param value or rofiInput
+		number = argNumber[1]
+	end
+	if args.url then -- get from the option
+		number = args.url[1]
+	end
+	local clip = ' --clipboard '
+	if args.primary or args.p then
+		clip = ' --primary '
+	end
+	local clipboard = io.popen("clipster --output ".. clip .." -n " .. number)
+	linkTab = filterLinks(clipboard)
+end
+
+local status, val = pcall(action, cmd)
 if status then
 	notify(val)
 else
