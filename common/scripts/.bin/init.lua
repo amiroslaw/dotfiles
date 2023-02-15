@@ -10,8 +10,7 @@ eq compares 2 values for equality
 status,out,err = run(cmd) - status is boolean; out and err are tables; executes external command and optionally capture the output
 str converts any non-string type to string, and strings to quoted strings
 
--- cliparse
---cliparse{'-aib','--key','defKey','--opt=2'}
+-- cliparse cliparse({'-aib','--key','defKey','--opt=2'}, 'defKeyArg')
 --filenamesplit( filepathStr ) --> pathStr, nameStr, extStr
 -- jsonish
 -- jsonishout 
@@ -743,7 +742,7 @@ end
 -- >>>
 -- cliparse <<<
 --Simple function to parse command line arguments, that must be passed as the array of string arrArg.
--- without dash are default options
+-- each flag can have multiple values. Arguments are saved to args[''], but you can provide default key.
 --local opt = cliparse{'-a','-b','c','-xy','d'} multiple flags
 -- local opt = cliparse{'--aa','--bb','c','--dd','e','f'} -- long name flags
 -- local opt = cliparse{'--aa=x','--bb:y','--cc=p','--cc=q','u'} values
@@ -789,7 +788,7 @@ function cliparse( args, default_option )
           if not result[keyonly] then
             addvalue(result, keyonly, {})
           end
-          append = keyonly
+          -- append = keyonly
         end
       end
 
