@@ -38,5 +38,5 @@ fi
 notify-send "🔍 Searching Magnet seeds 🧲" -i "NONE"
 magnet=$(head -n $LINE $cacheDir/magnets | tail -n +$LINE)
 
-url.lua tor "$magnet"
+url.lua --tor "$magnet"
 # # magnet.sh "$magnet"

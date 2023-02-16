@@ -283,7 +283,7 @@ super + e ; {e,h,k,K,m,M,v,V,d,D,y,Y,w,W,r,R,g,G,c,i}
     url.lua --menu --input, \
     url.lua --kindle --email -n 1,  url.lua --kindle -n 10, \
     url.lua --tor -n 1,  url.lua --tor -n 10, \
-    mpv.lua videoplay,  mpv.lua videolist, \
+    mpv.lua --videoplay,  mpv.lua -vsi, \
     url.lua --audio -n 1,  url.lua --audio -n 10, \
     url.lua --video -n 1,  url.lua --video -n 10,  \
     url.lua --wget -n 1, url.lua --wget -n 10,  \

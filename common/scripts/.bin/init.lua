@@ -1,6 +1,6 @@
 -- most functions copied from 
 -- https://github.com/marcotrosi/init.lua
---
+--https://github.com/pocomane/luasnip
 --[[
 printt(table, file) to print tables on screen or to file
 copyt(table) deep copy table
@@ -10,7 +10,7 @@ eq compares 2 values for equality
 status,out,err = run(cmd) - status is boolean; out and err are tables; executes external command and optionally capture the output
 str converts any non-string type to string, and strings to quoted strings
 
--- cliparse cliparse({'-aib','--key','defKey','--opt=2'}, 'defKeyArg')
+-- cliparse cliparse({'-aib','--key','defKey','--opt=2'}, 'defKeyArg'); value option can have space even in a quote
 --filenamesplit( filepathStr ) --> pathStr, nameStr, extStr
 -- jsonish
 -- jsonishout 
@@ -745,7 +745,7 @@ end
 -- each flag can have multiple values. Arguments are saved to args[''], but you can provide default key.
 --local opt = cliparse{'-a','-b','c','-xy','d'} multiple flags
 -- local opt = cliparse{'--aa','--bb','c','--dd','e','f'} -- long name flags
--- local opt = cliparse{'--aa=x','--bb:y','--cc=p','--cc=q','u'} values
+-- local opt = cliparse{'--aa=x','--bb:y','--cc=p','--cc=q','u'} values; value option can have space even in a quote
 
 local function addvalue( p, k, value )
   local prev = p[k]

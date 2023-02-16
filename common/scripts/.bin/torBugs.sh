@@ -69,5 +69,5 @@ fullURL="${baseurl}${url}/"
 curl -s $fullURL > $cachedir/tmp.html
 magnet=$(grep -o -m1 'magnet:.*" ' $cachedir/tmp.html | sed 's/..$//')
 
-url.lua tor "$magnet"
+url.lua --tor "$magnet"
 # magnet.sh "$magnet"
