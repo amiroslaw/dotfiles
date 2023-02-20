@@ -276,6 +276,8 @@ function eq(a,b)
 end -- >>>
 -- run <<<
 --[[
+Warning: can't be execute in parallel, also sometimes have problem with reading output from tmp files. - fix with tmp file name
+
 This is kind of a wrapper function to os.execute and io.popen.
 The problem with os.execute is that it can only return the
 exit status but not the command output. And io.popen can provide
@@ -293,11 +295,16 @@ printt(err)
 function run(cmd)
    if (type(cmd) ~= "string") and (type(cmd) ~= "table") then return nil end
  
-   local OutFile_s = "/tmp/init.lua.run.out"
-   local ErrFile_s = "/tmp/init.lua.run.err"
+   -- local OutFile_s = "/tmp/init.lua.run.out"
+   -- local ErrFile_s = "/tmp/init.lua.run.err"
+   -- local OutFile_s = os.tmpname() .. ".out" - why it persist?
+   -- local ErrFile_s = os.tmpname() .. ".err"
+   local OutFile_s = os.tmpname()
+   local ErrFile_s = os.tmpname()
    local Command_s
    local Out_t
    local Err_t
+   -- os.execute('notify-send "'.. cmd ..'"')
 
    if type(cmd) == "table" then
       Command_s = table.concat(cmd, " ")
@@ -314,8 +321,8 @@ function run(cmd)
   if not Out_t then
 	  notifyError('test - run command can not read output')
   end
-  -- os.remove(OutFile_s)
-  -- os.remove(ErrFile_s)
+  os.remove(OutFile_s)
+  os.remove(ErrFile_s)
   local status = Status_code == 0
   return status, Out_t, Err_t, Status_code
 end -- >>>

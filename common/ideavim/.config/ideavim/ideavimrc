@@ -1,6 +1,8 @@
 " https://github.com/JetBrains/ideavim
 " https://gist.github.com/zchee/9c78f91cc5ad771c1f5d actions
 " sometimes noremap doesn't work
+" advices method of mapping but noremap doesn't work
+" map <leader>d <action>(ShowErrorDescription)
 " :source ~/.ideavimrc
 " DON'T put a comment in the end of the keybinging
 " , for git
@@ -268,15 +270,16 @@ nmap ,H :action LocalHistory.ShowSelectionHistory<cr>
 " nmap <leader>yr :action Git.ResolveConflicts<cr>                          
 
 "  Building, Running and Debugging {{{
-nmap -- :action Run<cr>
-nmap -r :action ChooseRunConfiguration<cr>
+map -- <action>(Run)
+map -r <action>(ChooseRunConfiguration)
 " 2x ctrl
-nmap -a :action RunAnything<cr> 
-nmap -d :action Debug<cr>
-nmap -t :action RerunTests<cr>                                         
-nmap -T :action RerunFailedTests<cr>
-nmap -d :action DebugClass<cr>
-nmap -c :action RunClass<cr>
+map -a <action>(RunAnything)
+" it's c-s-f10 - also for run class
+map -c <action>(RunClass)
+map -t <action>(RerunFailedTests)
+map -T <action>(RerunTests)
+map -d <action>(Debug)
+map -D <action>(DebugClass)
 map <leader>b <Action>(ToggleLineBreakpoint)
 nmap -j :action JShell.Console<cr>
 " nmap ,c :action CompileDirty<cr> " }}} 

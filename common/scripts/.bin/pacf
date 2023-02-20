@@ -1,0 +1,32 @@
+#!/bin/bash
+# r-remove, i-info, u-update 
+
+# cmd
+while getopts 'riu' OPTION; do
+	case "$OPTION" in
+		i)
+			# cmd='paru -Sii' 
+			paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf -e -m --preview 'cat <(paru -Sii {1})' --layout=reverse | xargs -ro -n1 paru -Sii
+			;;
+		r)
+			# cmd='paru -Rsn' 
+			paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf -e -m --preview 'cat <(paru -Sii {1})' --layout=reverse | xargs -ro -n1 paru -Rsn
+			;;
+		u)
+			# cmd='paru -Si' 
+			paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf -e -m --preview 'cat <(paru -Sii {1})' --layout=reverse | xargs -ro -n1 paru -Si
+			;;
+		*)
+			# cmd='paru -S' 
+			paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf -e -m --preview 'cat <(paru -Sii {1})' --layout=reverse | xargs -ro -n1 paru -S
+			;;
+	esac
+done
+
+if [ $OPTIND -eq 1 ]; then 
+	paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf -e -m --preview 'cat <(paru -Sii {1})' --layout=reverse | xargs -ro -n1 paru -S
+fi
+
+# paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf -e -m --preview 'cat <(paru -Sii {1})' --layout=reverse | xargs -ro -n1 "$cmd" 
+
+# paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf -e -m --preview 'cat <(paru -Si {1}) <(paru -Fl {1} | awk "{print \$2}")' --layout=reverse | xargs -ro -n1 sudo paru -S 
