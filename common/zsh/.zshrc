@@ -114,3 +114,5 @@ export SDKMAN_DIR="/home/miro/.local/share/sdkman"
 [[ ! -f ~/.config/p10k.zsh ]] || source ~/.config/p10k.zsh
 
 source /home/miro/.config/broot/launcher/bash/br
+
+eval $(thefuck --alias)

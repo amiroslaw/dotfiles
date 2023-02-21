@@ -10,7 +10,7 @@ case "$1" in
 	file-hidden) fd --hidden --type f | rofi "${ROFI_OPTIONS[@]}" -p "open hidden files:" | xargs -r -P 0 -I {} xdg-open {} ;;
 	dir) fd --type d --follow | rofi "${ROFI_OPTIONS[@]}" -p "dir" | xargs -r -P 0 -I {} xdg-open {} ;;
 	dir-hidden) fd --type d --hidden | rofi "${ROFI_OPTIONS[@]}" -p "open hidden dir:" | xargs -r -P 0 -I {} xdg-open {} ;;
-	video) fd --follow --base-directory="$HOME/Videos" --search-path="$HOME/Videos" --type=f -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg | rofi "${ROFI_OPTIONS[@]}" -p "open video:" | awk '{print "\""$0"\""}' | xargs -r "$VIDEO" ;;
+	video) fd --follow --base-directory="$HOME/Videos" --search-path="$HOME/Videos" --type=f -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg | rofi "${ROFI_OPTIONS[@]}" -p "open video:" | awk '{print "\""$0"\""}' | xargs -r mpv ;;
 	course) fd --type=f -e m3u --base-directory="/media/multimedia/kursy/" --search-path="/media/multimedia/kursy/" | rofi "${ROFI_OPTIONS[@]}" -p "open course:" | awk '{print "\""$0"\""}' | xargs -r mpv ;;
 	yt) cd "$STREAM_PLAYLIST" && mpv --profile=stream "$(ls -t | grep -e "video" | rofi "${ROFI_OPTIONS[@]}")";;
 	audio) cd "$STREAM_PLAYLIST" && st -c audio -e mpv --ytdl --no-video --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --input-ipc-server=/tmp/mpvsocket --playlist="$(ls -t | grep -e "audio" | rofi "${ROFI_OPTIONS[@]}")"
