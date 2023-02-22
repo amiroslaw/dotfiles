@@ -101,6 +101,7 @@ macro I set browser "sxiv" ; open-all-unread-in-browser ; set browser ~/.config/
 macro c set browser "echo %u | xclip -r -sel c" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 # download
 macro d set browser "setsid -f url.lua --audio" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro D set browser "setsid -f url.lua --audio" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 macro y set browser "setsid -f url.lua --video" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro Y set browser "setsid -f url.lua --video" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 macro k set browser "setsid -f url.lua --kindle --email" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh

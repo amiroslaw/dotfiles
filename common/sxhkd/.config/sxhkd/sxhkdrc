@@ -259,19 +259,19 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
 # open media or dir with xdg-open
-super + o ; {o,j,d,D,v,c,y,a,z,f,F}
-	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream-video\na-stream-audio\ni-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
+super + o ; {o,j,d,D,v,c,y,z,f,F}
+	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
 		$ROFI/open.sh fasd-dir, \
 		$ROFI/open.sh dir, \
 		$ROFI/open.sh dir-hidden, \
-		$ROFI/open.sh video, \
-		$ROFI/open.sh course, \
-		$ROFI/open.sh yt, \
-		$ROFI/open.sh audio, \
+		mpv.lua -o ~/Videos , \
+		mpv.lua -oL "$COURSES" , \
+		mpv.lua -o, \
 		$ROFI/open.sh fasd, \
 		$ROFI/open.sh file, \
 		$ROFI/open.sh file-hidden, \
 		}
+	# { notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
 
 # open tui or file in terminal 
 super + o ; {i,p,b,t}
@@ -368,7 +368,7 @@ ctrl + shift + z
 
 # rofi video
 super + {shift,ctrl} + v
-	{ $ROFI/open.sh course, $ROFI/open.sh yt }
+	{ mpv.lua -oL "$COURSES", mpv.lua -o }
 
 # translator 
 super + {_,shift,ctrl} + t

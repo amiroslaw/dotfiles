@@ -295,8 +295,6 @@ printt(err)
 function run(cmd)
    if (type(cmd) ~= "string") and (type(cmd) ~= "table") then return nil end
  
-   -- local OutFile_s = "/tmp/init.lua.run.out"
-   -- local ErrFile_s = "/tmp/init.lua.run.err"
    -- local OutFile_s = os.tmpname() .. ".out" - why it persist?
    -- local ErrFile_s = os.tmpname() .. ".err"
    local OutFile_s = os.tmpname()
@@ -452,7 +450,7 @@ if opt then
 		if name == 'multi' and val then
 			defaultOpt[name] = ' -multi-select '
 		elseif name == 'keys' then
-			for numberKey,shortcut in pairs(opt.keys) do
+			for numberKey,shortcut in ipairs(opt.keys) do
 				defaultOpt.keys = defaultOpt.keys .. ' -kb-custom-' .. numberKey .. ' "' .. shortcut .. '" '
 			end
 		else
@@ -490,7 +488,7 @@ function rofiNumberInput(prompt)
 end 
 
 --[[
-Shows a rofi menu. Returns string or table if multiple-select option was enabled. The second returns argument if custom key number that was pressed - nil
+Shows a rofi menu. Returns string or table if multiple-select option was enabled. If custom keys were provided, it will return a keybind number as a second argument, otherwise nil.
 params:
 entriesTab - Options can be parser form an array (ordered table) or a dictionary.
 opt - optional arguments that can be passed via table
@@ -498,7 +496,7 @@ opt - optional arguments that can be passed via table
 	height (number)-  max lines than rofi can show
 	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
 	multi (boolean)- If true, rofi will allow to select multiple rows, and it will return table with selected options
-	keys (table) - Custom keys = {[2] = 'Alt-e', [3] = 'Alt-m' }
+	keys (table) - Custom keys = {'Alt-e', 'Alt-m' }
 --]]
 function rofiMenu(entriesTab, opt)
 	local rofiOpt = combineOptions(opt)

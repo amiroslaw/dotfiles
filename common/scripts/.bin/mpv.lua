@@ -22,14 +22,16 @@ Actions:
 	--popupplay -p → Play video in lower resolution from the url
 	--popuplist -P → Play video in lower resolution from the playlist
 	--makeLocal -l → Create playlist (m3u) from the directories in current location 
-	--makeOnline -o → Create playlist (m3u) from the url `--push` command
-	--rename -n → Change name of the last playlist
+	--makeOnline -m → Create playlist (m3u) from the url `--push` command
+	--open -o [--list] [dir] → Open and manage videos or playlists
+	--rename -n [dir] → Change name of the last playlist
 	--help - Show help
 Options:
 	--clip -c → read parameter from clipboard
 	--resume -r → read url from `TMP_PLAY`
 	--save=name -s → save playlist, a name can be provide or it will be generated
 	--input -i → prompt for a name of the playlist
+	--list -L → filter only playlists
 
 examples:
 mpv.lua --audioplay url 
@@ -37,11 +39,14 @@ mpv.lua --push url
 mpv.lua --videolist --save=custom-playlist-name
 mpv.lua --videolist --input
 mpv.lua --rename=custom-playlist-name
-mpv.lua --makeOnline --input
+mpv.lua --makeLocal --input ~/Videos
+mpv.lua --makeLocal --save=YouTube ~/Videos/yt
 mpv.lua --audioplay --resume
 
 In order to change stream format and options it's needed to add the profiles `stream` and `stream-popup` into the mpv.conf file.
-Dependencies: mpv, st, clipster, fd, zenity, rofi, notify-send, yt-dlp
+Dependencies: mpv, st, clipster, fd, zenity, rofi, notify-send, yt-dlp, trash-put in optional
+
+TODO: add support for reading from env
 	]]
 
 end
@@ -75,13 +80,13 @@ if args.resume or args.r then
 	end
 end
 
-function errorMsg(msg)
+local function errorMsg(msg)
 	print(msg)
 	log(msg, 'ERROR')
 	notifyError(msg)
 end
 
-function getHost()
+local function getHost()
 	-- local pageUrl = assert(io.open(TMP_PLAYLIST, 'r'):read('*l'), 'Did not read page url') -- reads first line
 	local playlist = readf(TMP_PLAYLIST) 
 	local pageUrl = playlist[#playlist] -- gets last line
@@ -168,17 +173,25 @@ local function push(url)
 	assert(io.open(TMP_PLAYLIST, 'a'):write(extinf .. url .. '\n'))
 end
 
--- rename lastest saved playlist
-local function renameList()
-	local ok, latestPlaylistPaths = run('ls -1t ' .. DIR_PLAYLISTS)
-	local customName = buildName(latestPlaylistPaths[1])
+local function renamePlaylist(playlistName)
+	local customName = buildName(playlistName)
 	if customName then
-		assert( os.execute('mv "' .. DIR_PLAYLISTS .. '/' .. latestPlaylistPaths[1] .. '" "' .. DIR_PLAYLISTS .. '/' .. customName .. '.m3u"') == 0, 'Error: Could not rename ' .. latestPlaylistPaths[1])
+		assert( os.execute('mv "' .. DIR_PLAYLISTS .. '/' .. playlistName .. '" "' .. DIR_PLAYLISTS .. '/' .. customName .. '"') == 0, 'Error: Could not rename ' .. playlistName)
 	end
 end
 
+-- rename lastest saved playlist
+local function renameLastPlaylist()
+	local ok, latestPlaylist = run('ls -1t ' .. DIR_PLAYLISTS)
+	renamePlaylist(latestPlaylist[1])
+end
+
 local function makeLocal()
-	local find = assert(io.popen('fd --type f --follow -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e wmv -e mp3 -e flac -e wav -e aac'):read '*a')
+	if param then
+		param =' --search-path="' .. param .. '"'
+	end
+	param = param and param or ''
+	local find = assert(io.popen('fd --type f --follow -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e wmv -e mp3 -e flac -e wav -e aac ' .. param):read '*a')
 	local pwd = assert(io.popen('pwd'):read '*a')
 	pwd = split(pwd, '/')
 	local playlistName = pwd[#pwd]:gsub('\n', '')
@@ -190,7 +203,6 @@ end
 
 local function makeOnline()
 	local ok,out = run('yt-dlp -i --print playlist_title,playlist_count,duration,title,original_url "' .. param .. '"')
-	-- local type = arg[3] and 
 
 	-- won't create playlist with hidden videos
 	assert(ok, 'Error: Could not get playlist metadata')
@@ -204,9 +216,54 @@ local function makeOnline()
 		table.insert(playlist,'#EXTINF:' .. duration .. ',' .. title)
 		table.insert(playlist, out[videoIndex + 5])
 	end
-	local writeOk = writef(playlist, DIR_PLAYLISTS .. '/' .. playlistName .. '-video.m3u')
+	local writeOk = writef(playlist, DIR_PLAYLISTS .. '/' .. playlistName .. '.m3u')
 	assert(writeOk, 'Error: Could not write playlist to a file')
 	notify('created ' .. playlistName)
+end
+
+local function concatPath(files, dir)
+	local paths = ' '
+	for _,file in ipairs(files) do
+		paths = paths .. '"' .. DIR_PLAYLISTS .. '/' .. file .. '" '
+	end
+	return paths
+end
+
+-- When selected few playlists, they will be nested.
+-- Multiple option opens in playlist but it doesn't hold --x11-name
+-- with too many files, it doesn't work
+local function openPlaylist()
+	DIR_PLAYLISTS = param and param or DIR_PLAYLISTS
+	local filetype = ' -e m3u -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg '
+	if args.list or args.L then
+		filetype = ' -e m3u '
+	end
+	print('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-' )
+	local _, playlists = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-' )
+	local selected, keybind = rofiMenu(playlists, {prompt = 'open (alt-p:popup; alt-a:audio; default:video)\nmanage(alt-n:rename; alt-d:delete) shift-enter:multiple', multi=true, keys= {'Alt-p', 'Alt-a', 'Alt-n', 'Alt-d'}, width = '94%'})
+	
+	if keybind and keybind == 3  then
+		args.input = true
+		for _,playlist in ipairs(selected) do
+			renamePlaylist(playlist)
+		end
+		return
+	end
+	
+	local mpvCmd = 'mpv --profile=stream '
+	if keybind and keybind == 1 then
+		mpvCmd = 'mpv --x11-name=videopopup --profile=stream-popup '
+	elseif  keybind and keybind == 2  then
+		mpvCmd = 'st -c audio -e mpv --x11-name=videopopup --profile=stream-audio '		
+	elseif  keybind and keybind == 4  then
+		if os.execute('command -v trash-put') then
+			mpvCmd = 'trash-put '
+		else
+			mpvCmd = 'rm '
+		end
+	end
+	local ok, _, err = run(mpvCmd .. concatPath(selected))
+	assert(ok, 'Error: Can not play mpv ')
 end
 
 local cases = {
@@ -218,8 +275,9 @@ local cases = {
 	['popupplay'] = popupplay, ['p'] = popupplay,
 	['popuplist'] = popuplist, ['P'] = popuplist,
 	['makeLocal'] = makeLocal, ['l'] = makeLocal,
-	['makeOnline'] = makeOnline, ['o'] = makeOnline,
-	['rename'] = renameList, ['n'] = renameList,
+	['makeOnline'] = makeOnline, ['m'] = makeOnline,
+	['open'] = openPlaylist, ['o'] = openPlaylist,
+	['rename'] = renameLastPlaylist, ['n'] = renameLastPlaylist,
 	['help'] = help, ['h'] = help
 }
 

@@ -38,6 +38,7 @@ show_srch_str 1
 label_topline 0
 nextpage_topline 0
 color 1
+high-intensity 0
 basic_color terminal
 anchor_color blue
 image_color green
@@ -75,13 +76,14 @@ document_root
 personal_document_root 
 cgi_bin 
 index_file 
+tmp_dir 
 mime_types ~/.mime.types, /usr/etc/mime.types
 mailcap ~/.w3m/mailcap, /usr/etc/w3m/mailcap
 urimethodmap ~/.w3m/urimethodmap, /usr/etc/w3m/urimethodmap
 editor /usr/bin/nvim
 mailto_options 1
 mailer /usr/bin/mail
-extbrowser /usr/bin/firefox
+extbrowser /usr/bin/qutebrowser
 extbrowser2 
 extbrowser3 
 extbrowser4 
