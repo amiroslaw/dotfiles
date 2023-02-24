@@ -72,7 +72,7 @@ local function createEpub(link)
 	-- pandoc has error when converting to pdf, html need to have <html> <body> tags and has problem with encoding
 	-- metadata title is required by the kindle server. excerpt can be add
 	local date = os.date('%Y-%m-%d')
-	local epubExe = run(readerCmd .. ' -H -T url,sitename,byline | pandoc --from html --to epub --output "' .. KINDLE_TMP_DIR .. title .. '.epub" --toc --metadata title="' .. title .. '" --metadata date='..date)
+	local epubExe = run(readerCmd .. ' -H -T url,sitename,byline | pandoc --from html --to epub --output "' .. KINDLE_TMP_DIR .. title .. '.epub" --toc --metadata title="' .. title .. '" --metadata date='..date, "Can't create ebook: " .. title)
 	return epubExe, title
 end
 
@@ -87,7 +87,7 @@ local function kindle()
 		-- sometimes can't send
 		if args.email or args.e then
 			msg = 'Sent '
-			sendFile = run('echo "' .. title .. '\nKindle article from reader" | mailx -v -s "Convert" -a"' .. KINDLE_TMP_DIR .. title .. '.epub" ' .. kindleEmail)
+			sendFile = run('echo "' .. title .. '\nKindle article from reader" | mailx -v -s "Convert" -a"' .. KINDLE_TMP_DIR .. title .. '.epub" ' .. kindleEmail, "Can't send book: " .. title)
 		end
 
 		if not epubExe or not sendFile then

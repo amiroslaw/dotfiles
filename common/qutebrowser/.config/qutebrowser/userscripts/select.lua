@@ -46,11 +46,12 @@ end
 function adoc()
 	local html = getHtmlElement().outerHTML
 	assert(writef(html, CONST.clipFileHtml), 'adoc - IO error')
-	local ok, out = run('pandoc --wrap=none --from html --to asciidoc --output ' .. CONST.clipFile .. ' ' .. CONST.clipFileHtml)
+	local ok, out, err = run('pandoc --wrap=none --from html --to asciidoc --output ' .. CONST.clipFile .. ' ' .. CONST.clipFileHtml)
 	
 	if ok then
 		assert(os.execute('xclip -sel clip -i ' .. CONST.clipFile) == 0, 'Did not copy to clipboard -xclip')
 	else
+		log(err, 'ERROR')
 		writef('message-warning "Could not convert to adoc - copied plain text"', CONST.quteFifo, 'a')
 		copy()
 	end

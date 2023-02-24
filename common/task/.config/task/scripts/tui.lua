@@ -1,8 +1,5 @@
 #!/bin/luajit
 local function errorMsg(msg)
-	if type(msg) == 'table' then
-		msg = msg[1]
-	end
 	printt(msg)
 	log(msg, 'ERROR')
 	notifyError(msg)
@@ -47,8 +44,8 @@ local function switchView()
 end
 
 local function modifyTask(modification)
-	local stat, _, err = run(taskConfirmationCmd .. 'modify ' .. modification .. ' ' .. taskIDs)
-	assert(stat, err[1])
+	local stat, _, err = run(taskConfirmationCmd .. 'modify ' .. modification .. ' ' .. taskIDs, "Can't modify")
+	assert(stat, err)
 end
 
 local function setPriority(priority)
@@ -124,21 +121,16 @@ local function removeTag()
 		setContext(contextPrefix.REMOVE, selected)
 	end
 end
+
 local function sync()
-	local stat, _, err = run 'task sync'
-	if not stat then
-		notifyError(err[1])
-	else
-		notify 'Synchronized'
-	end
+	local stat, _, err = run('task sync', "Can't sync")
+	assert(stat, err)
+	notify 'Synchronized'
 end
 
 local function openInBrowser(url)
-	print(url)
 	local stat, _, err = run('xdg-open "' .. url .. '"')
-	if not stat then
-		notifyError(err[1])
-	end
+	assert(stat, err)
 end
 
 local function parseUrls(taskId, annotationId)
@@ -152,18 +144,17 @@ end
 local function openUrl()
 	for i = 2, #arg do
 		local taskId = arg[i]
-		local stat, annoCount = run('task _get ' .. taskId .. '.annotations.count')
-		if stat then
-			for j = 1, annoCount[1] do
-				parseUrls(taskId, j)
-			end
+		local stat, annoCount, err = run('task _get ' .. taskId .. '.annotations.count', "Can't open url from task: " .. taskId)
+		assert(stat, err)
+		for j = 1, annoCount[1] do
+			parseUrls(taskId, j)
 		end
 	end
 end
 
 local function duplicate()
-	local stat, _, err = run(taskConfirmationCmd .. 'duplicate ' .. taskIDs)
-	assert(stat, err[1])
+	local stat, _, err = run(taskConfirmationCmd .. 'duplicate ' .. taskIDs, "Can't duplicate " .. taskIds)
+	assert(stat, err)
 end
 
 local cases = {

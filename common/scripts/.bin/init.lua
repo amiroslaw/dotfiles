@@ -293,14 +293,11 @@ printt(err)
 function run(cmd, errorMsg)
    if (type(cmd) ~= "string") and (type(cmd) ~= "table") then return nil end
  
-   -- local OutFile_s = os.tmpname() .. ".out" - why it persist?
-   -- local ErrFile_s = os.tmpname() .. ".err"
    local OutFile_s = os.tmpname()
    local ErrFile_s = os.tmpname()
    local Command_s
    local Out_t
-   local Err_t
-   -- os.execute('notify-send "'.. cmd ..'"')
+   local Err
 
    if type(cmd) == "table" then
       Command_s = table.concat(cmd, " ")
@@ -309,16 +306,18 @@ function run(cmd, errorMsg)
    end
 
       Command_s = "( " .. Command_s .. " )" .. " 1> " .. OutFile_s .. " 2> " .. ErrFile_s
--- maybe change status when is 0 to nil for better assertion
    local Status_code = os.execute(Command_s)
   Out_t = readf(OutFile_s) -- sometimes is nil
-  Err_t = readf(ErrFile_s)
-	-- local file  = io.open(ErrFile_s, "r")
-	-- local Err_t = errorMsg .. '\n'
-	-- if file then
-	-- 	Err_t = Err_t .. file:read("*all")
-	-- 	file:close()
-	-- end
+	local err_f  = io.open(ErrFile_s, "r")
+	local status = Status_code == 0
+	if not status and err_f then
+		if errorMsg then
+			Err = errorMsg .. '\n' .. err_f:read("*all")
+		else
+			Err = err_f:read("*all")
+		end
+		err_f:close()
+	end
 
 	-- for testing a bug
   if not Out_t then
@@ -327,8 +326,7 @@ function run(cmd, errorMsg)
 
   os.remove(OutFile_s)
   os.remove(ErrFile_s)
-  local status = Status_code == 0
-  return status, Out_t, Err_t, Status_code
+  return status, Out_t, Err, Status_code
 end -- >>>
 -- str <<<
 --[[
@@ -523,8 +521,8 @@ function rofiMenu(entriesTab, opt)
 		lines = rofiOpt.height
 	end
 	local _, selected, err, code= run('echo "' .. options .. '" | rofi -monitor -4 -i ' .. rofiOpt.multi .. ' -l ' .. lines .. ' -sep "|" -dmenu -p "' .. rofiOpt.prompt .. '" -theme-str "window {width:  ' .. rofiOpt.width .. ';}" ' .. rofiOpt.keys)
-	-- rofi returns error code for hooks
-	if err and  #err > 0 then
+	-- rofi returns error code for hooks and returns error code for not selecting
+	if err and err ~= '' then
 		notifyError(err)
 		return ''
 	end

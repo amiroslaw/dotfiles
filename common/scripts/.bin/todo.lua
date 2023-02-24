@@ -14,7 +14,7 @@ todoPath = os.getenv('NOTE') ..  '/tasks/inbox.adoc'
 function show() 
 	local ok, list, err = run('task rc.verbose=nothing minimal | zenity --text-info')
 	if not ok then
-		notifyError(err[1])
+		notifyError(err)
 	end
 	-- local ok, err = run('todo.sh -p ls @t' .. ' | zenity --text-info')
 	-- local todoTxt = io.input(todoPath):read("*a")

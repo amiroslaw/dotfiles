@@ -16,16 +16,13 @@ if arg[1] then
 	entry = entry .. ' ' .. os.date('%Y/%m/%d_%H:%M')
 	selectedAsset = selectedAsset:gsub('/', '\\/')
 	print('sed -i "/^'.. selectedAsset .. '/a '.. entry .. '" ' .. SETUP_PATH)
-	local ok, out, err = run('sed -i "/^'.. selectedAsset .. '/a '.. entry .. '" ' .. SETUP_PATH)
+	local ok, out, err = run('sed -i "/^'.. selectedAsset .. '/a '.. entry .. '" ' .. SETUP_PATH, "Can't write setup")
 	if ok then
 		notify('added: ' .. entry)
 	else
 		notifyError(err)
 	end
 
-	-- file = io.open(SETUP_PATH, 'a+')
-	-- file:write('\n' .. entry)
-	-- file:close()
 else
 	local mutlipleDefault = 3
 	local profit = 0

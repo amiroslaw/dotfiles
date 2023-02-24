@@ -63,14 +63,13 @@ if args.params then
 end
 
 if args.clip or args.c then
-	local status, clipboard = run('clipster -o --clipboard -n 1')
-	if status then
-		local match = clipboard[1]:match(LINK_REGEX)
-		if match then
-			param = match
-		else
-			errorMsg('Can not read url from the clipboard')
-		end
+	local status, clipboard, err = run('clipster -o --clipboard -n 1', "Can't read from cliparser")
+	assert(status, err)
+	local match = clipboard[1]:match(LINK_REGEX)
+	if match then
+		param = match
+	else
+		errorMsg('Can not read url from the clipboard')
 	end
 end
 if args.resume or args.r then
@@ -96,8 +95,9 @@ end
 
 local function buildName(defaultName)
 	if args.input or args.i then
-		local ok, out =	run('zenity --entry --text="Playlist name" --entry-text="' .. defaultName .. '"')
-		if ok and out ~= '' then
+		local ok, out =	run('zenity --entry --text="Playlist name" --entry-text="' .. defaultName .. '"', "Can't run zenity")
+		assert(ok, err)
+		if out then
 			return out[1]
 		end
 	end
@@ -166,10 +166,9 @@ end
 
 local function push(url)
 	local extinf = ''
-	local ok, out = run('yt-dlp -i --print duration,title ' .. url)
-	if ok then
-		extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
-	end
+	local ok, out, err = run('yt-dlp -i --print duration,title ' .. url, "Can't get metadata form: " .. url)
+	assert(ok, err)
+	extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
 	assert(io.open(TMP_PLAYLIST, 'a'):write(extinf .. url .. '\n'))
 end
 
@@ -202,10 +201,10 @@ local function makeLocal()
 end
 
 local function makeOnline()
-	local ok,out = run('yt-dlp -i --print playlist_title,playlist_count,duration,title,original_url "' .. param .. '"')
+	local ok,out, err = run('yt-dlp -i --print playlist_title,playlist_count,duration,title,original_url "' .. param .. '"',  'Error: Could not get playlist metadata: '.. param)
 
 	-- won't create playlist with hidden videos
-	assert(ok, 'Error: Could not get playlist metadata')
+	assert(ok, err)
 	local playlistName = out[1]
 	playlistName = buildName(playlistName)
 	local playlist = {'#EXTM3U', '#PLAYLIST: ' .. playlistName}
@@ -238,7 +237,7 @@ local function openPlaylist()
 	if args.list or args.L then
 		filetype = ' -e m3u '
 	end
-	local _, playlists = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-' )
+	local ok, playlists = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-', "Can't find files" )
 	local selected, keybind = rofiMenu(playlists, {prompt = 'open (alt-p:popup; alt-a:audio; default:video); Found:'.. #playlists 
 	.. '\nmanage(alt-n:rename; alt-d:delete; alt-e:edit); shift-enter:multiple', multi=true, keys= {'Alt-p', 'Alt-a', 'Alt-n', 'Alt-d', 'Alt-e'}, width = '94%'})
 	
@@ -264,7 +263,7 @@ local function openPlaylist()
 	elseif  keybind and keybind == 5  then
 		cmd = os.getenv('VISUAL')
 	end
-	printt(cmd .. concatPath(selected))
+
 	local ok, _, err = run(cmd .. concatPath(selected))
 	assert(ok, 'Error: Can not execute ')
 end
