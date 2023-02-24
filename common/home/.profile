@@ -24,8 +24,8 @@ export ZPLUG_HOME=~/.config/zplug
 
 # Default Apps
 export EDITOR="nvim"
-export VISUAL="nvim"
-export GUI_EDITOR=/usr/bin/nvim-qt
+export VISUAL="/usr/bin/nvim-qt"
+# export GUI_EDITOR=/usr/bin/nvim-qt
 export OPENER="xdg-open"
 export PAGER="less"
 export TERMINAL="wezterm"

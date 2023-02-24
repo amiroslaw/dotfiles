@@ -58,29 +58,16 @@ function delete_file(path)
         return
     end
 
-    if is_windows then
-        local ps_code = [[
-            Add-Type -AssemblyName Microsoft.VisualBasic
-            [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile('__path__', 'OnlyErrorDialogs', 'SendToRecycleBin')
-        ]]
-
-        local escaped_path = string.gsub(path, "'", "''")
-        escaped_path = string.gsub(escaped_path, "’", "’’")
-        escaped_path = string.gsub(escaped_path, "%%", "%%%%")
-        ps_code = string.gsub(ps_code, "__path__", escaped_path)
-
-        mp.command_native({
-            name = "subprocess",
-            playback_only = false,
-            args = { 'powershell', '-NoProfile', '-Command', ps_code },
-        })
-    else
-        mp.command_native({
-            name = "subprocess",
-            playback_only = false,
-            args = { 'trash', path },
-        })
-    end
+	if os.execute('command -v trash-put') then
+		os.execute('trash-put "' .. path .. '"')
+	else
+		mp.command_native({
+			name = "subprocess",
+			playback_only = false,
+			args = { 'trash', path },
+		})
+	end
+	os.execute('notify-send "Deleted: ' .. path .. '"')
 end
 
 function remove_current_file()

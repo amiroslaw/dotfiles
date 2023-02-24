@@ -53,7 +53,8 @@ function notifyError(msg)
 			msg = msg[1] and msg[1] or 'empty error msg'
 		end
 		os.execute("dunstify -u critical Error: '" .. msg .. "'")
-		error(msg) -- does not work?
+		-- print(msg)
+		-- error(msg) -- does not work?
 	end
 end -- >>>
 
@@ -166,9 +167,6 @@ function readf(f)
       File_h:close()
       return File_t
    end
-  --  else
-	 --  notify('test - readf do not open file')
-  -- end
 
    return nil
 end -- >>>
@@ -292,7 +290,7 @@ status,out,err = run("ls -l")
 printt(out)
 printt(err)
 --]]
-function run(cmd)
+function run(cmd, errorMsg)
    if (type(cmd) ~= "string") and (type(cmd) ~= "table") then return nil end
  
    -- local OutFile_s = os.tmpname() .. ".out" - why it persist?
@@ -315,10 +313,18 @@ function run(cmd)
    local Status_code = os.execute(Command_s)
   Out_t = readf(OutFile_s) -- sometimes is nil
   Err_t = readf(ErrFile_s)
+	-- local file  = io.open(ErrFile_s, "r")
+	-- local Err_t = errorMsg .. '\n'
+	-- if file then
+	-- 	Err_t = Err_t .. file:read("*all")
+	-- 	file:close()
+	-- end
 
+	-- for testing a bug
   if not Out_t then
 	  notifyError('test - run command can not read output')
   end
+
   os.remove(OutFile_s)
   os.remove(ErrFile_s)
   local status = Status_code == 0
@@ -577,19 +583,19 @@ function log(input, level, file)
 	end
 	local file = file or '/tmp/lua.log'
 	local level = level or 'INFO'
-	level = '[' .. level .. '] '
 	local date = '[' .. os.date '%Y-%m-%d %H:%M:%S' .. '] '
-	local logPrefix = date .. level
+	local logPrefix = date .. '[' .. level .. '] '
+	local log = ''
 
 	if type(input) == 'table' then
 		for i, l in ipairs(input) do
-			input[i] = logPrefix .. l
+			log = log .. '\n'
 		end
 	else
-		input = logPrefix .. input
+		log = input
 	end
 
-	writef(input, file, '\n', 'a+')
+	writef(logPrefix .. log, file, '\n', 'a+')
 end -- >>>
 
 -- >>>

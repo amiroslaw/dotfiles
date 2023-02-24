@@ -234,13 +234,13 @@ end
 -- with too many files, it doesn't work
 local function openPlaylist()
 	DIR_PLAYLISTS = param and param or DIR_PLAYLISTS
-	local filetype = ' -e m3u -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg '
+	local filetype = ' -e m3u -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg -e part'
 	if args.list or args.L then
 		filetype = ' -e m3u '
 	end
-	print('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-' )
 	local _, playlists = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-' )
-	local selected, keybind = rofiMenu(playlists, {prompt = 'open (alt-p:popup; alt-a:audio; default:video)\nmanage(alt-n:rename; alt-d:delete) shift-enter:multiple', multi=true, keys= {'Alt-p', 'Alt-a', 'Alt-n', 'Alt-d'}, width = '94%'})
+	local selected, keybind = rofiMenu(playlists, {prompt = 'open (alt-p:popup; alt-a:audio; default:video); Found:'.. #playlists 
+	.. '\nmanage(alt-n:rename; alt-d:delete; alt-e:edit); shift-enter:multiple', multi=true, keys= {'Alt-p', 'Alt-a', 'Alt-n', 'Alt-d', 'Alt-e'}, width = '94%'})
 	
 	if keybind and keybind == 3  then
 		args.input = true
@@ -250,20 +250,23 @@ local function openPlaylist()
 		return
 	end
 	
-	local mpvCmd = 'mpv --profile=stream '
+	local cmd = 'mpv --profile=stream '
 	if keybind and keybind == 1 then
-		mpvCmd = 'mpv --x11-name=videopopup --profile=stream-popup '
+		cmd = 'mpv --x11-name=videopopup --profile=stream-popup '
 	elseif  keybind and keybind == 2  then
-		mpvCmd = 'st -c audio -e mpv --x11-name=videopopup --profile=stream-audio '		
+		cmd = 'st -c audio -e mpv --x11-name=videopopup --profile=stream-audio '		
 	elseif  keybind and keybind == 4  then
 		if os.execute('command -v trash-put') then
-			mpvCmd = 'trash-put '
+			cmd = 'trash-put '
 		else
-			mpvCmd = 'rm '
+			cmd = 'rm '
 		end
+	elseif  keybind and keybind == 5  then
+		cmd = os.getenv('VISUAL')
 	end
-	local ok, _, err = run(mpvCmd .. concatPath(selected))
-	assert(ok, 'Error: Can not play mpv ')
+	printt(cmd .. concatPath(selected))
+	local ok, _, err = run(cmd .. concatPath(selected))
+	assert(ok, 'Error: Can not execute ')
 end
 
 local cases = {
