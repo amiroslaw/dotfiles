@@ -93,20 +93,21 @@ set argtextobj
 set easymotion
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_override_acejump = 0
-nmap s <Plug>(easymotion-f)
-nmap S <Plug>(easymotion-F)
-nmap f <Plug>(easymotion-j)
-nmap F <Plug>(easymotion-k)
-nmap <leader>t <Plug>(easymotion-eol-j)
-nmap <leader>T <Plug>(easymotion-eol-k)
+map s <Plug>(easymotion-f)
+map S <Plug>(easymotion-F)
+map f <Plug>(easymotion-j)
+map F <Plug>(easymotion-k)
+map <leader>t <Plug>(easymotion-eol-j)
+map <leader>T <Plug>(easymotion-eol-k)
 " t and s is used?
 " map <leader>T <Plug>(easymotion-b)
 " map <leader>t <Plug>(easymotion-w)
 " map <nowait> s <Plug>(easymotion-j)
-nmap <leader>. <Plug>(easymotion-repeat)
+map <leader>. <Plug>(easymotion-repeat)
 
 " VIM MAPS
-nmap <F1> :source ~/.config/ideavim/ideavimrc<cr>
+" reload config
+nmap <F5> :source ~/.config/ideavim/ideavimrc<cr>
 inoremap <C-a> <C-o>b
 inoremap <C-d> <C-o>w
 nnoremap <Space> <C-d><cr> 
@@ -163,8 +164,9 @@ nnoremap <c-s> :action FindInPath<CR>
 " #                       code navigation
 " # -------------------------------------------------------------------------
 " Moving lines or code block
-nnoremap <c-a-k> :action MoveLineUp<cr>
-nnoremap <c-a-j> :action MoveLineDown<cr>
+" TODO stopped rork
+map <c-a-k> <action>(MoveLineUp)
+map <c-a-j> <action>(MoveLineDown)
 inoremap <c-a-j> <Esc>:m +1<CR>gi
 inoremap <c-a-k> <Esc>:m -2<CR>gi
 
@@ -181,9 +183,9 @@ inoremap <A-j> :action MethodDown<cr>
 " better not to bind to TAB
 " # -------------------------------------------------------------------------
 nnoremap <A-h> :action PrevSplitter<cr>
-inoremap <A-h> :action PrevSplitter<cr>
 nnoremap <A-l> :action NextSplitter<cr>
-inoremap <A-l> :action NextSplitter<cr>
+inoremap <A-h> <Esc>:action PrevSplitter<cr>
+inoremap <A-l> <Esc>:action NextSplitter<cr>
 " nmap ] :action NextTab<cr>
 " nmap [ :action PreviousTab <cr>
 nmap <c-h> :action PreviousTab <cr>
@@ -288,12 +290,15 @@ nmap -j :action JShell.Console<cr>
 " #                       Definitions
 " # -------------------------------------------------------------------------
 " TODO maybe remap
-nmap <leader>dd <action>(QuickImplementations)
-nmap <leader>de <action>(ShowErrorDescription)
-nmap <leader>di <action>(QuickTypeDefinition)
-nmap <leader>dj <action>(QuickJavaDoc)
-noremap <Leader>dp :action ParameterInfo<CR>
-noremap <Leader>da :action QuickActions<CR> 
+map <leader>dd <action>(QuickImplementations)
+map <leader>de <action>(ShowErrorDescription)
+map <leader>di <action>(QuickTypeDefinition)
+map <leader>dj <action>(QuickJavaDoc)
+map <Leader>dp <action>(ParameterInfo)
+map <Leader>da <action>(QuickActions)
+
+map <leader>i <action>(InsertLiveTemplate)
+imap <a-t <action>(InsertLiveTemplate)
 
 "folds
 " zo 	open current fold

@@ -68,7 +68,11 @@ local function addProject()
 end
 
 local function setWait(date)
-	modifyTask('wait:' .. date)
+	if date == 'wait/someday' then
+		modifyTask('wait:' .. '2038-01-18')
+	else
+		modifyTask('wait:' .. date)
+	end
 end
 
 local function modifyTag(tag, alias)
@@ -91,7 +95,7 @@ local function addTag()
 		project = project:gsub('^%a', '#' .. project:match '^%a')
 		tags[project] = 'project'
 	end
-	tags['someday'] = 'wait'
+	tags['wait/someday'] = 'wait'
 
 	-- TODO sometimes rofiMenu gives nil; add multiselection option
 	local selection = rofiMenu(tags, {prompt ='Add tag'})
