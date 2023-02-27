@@ -238,8 +238,8 @@ local function openPlaylist()
 		filetype = ' -e m3u '
 	end
 	local ok, playlists = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-', "Can't find files" )
-	local selected, keybind = rofiMenu(playlists, {prompt = 'open (alt-p:popup; alt-a:audio; default:video); Found:'.. #playlists 
-	.. '\nmanage(alt-n:rename; alt-d:delete; alt-e:edit); shift-enter:multiple', multi=true, keys= {'Alt-p', 'Alt-a', 'Alt-n', 'Alt-d', 'Alt-e'}, width = '94%'})
+	local selected, keybind = rofiMenu(playlists, {prompt = 'alt-p:popup; alt-a:audio; default:video; shift-enter:multi'
+	.. '\nalt-n:rename; alt-d:delete; alt-e:edit; alt-o:folder; Found:'.. #playlists, multi=true, keys= {'Alt-p', 'Alt-a', 'Alt-n', 'Alt-d', 'Alt-e', 'Alt-o'}, width = '94%'})
 	
 	if keybind and keybind == 3  then
 		args.input = true
@@ -262,6 +262,9 @@ local function openPlaylist()
 		end
 	elseif  keybind and keybind == 5  then
 		cmd = os.getenv('VISUAL')
+	elseif  keybind and keybind == 6  then
+		cmd = run('xdg-open "' .. DIR_PLAYLISTS .. '" &')
+		return
 	end
 
 	local ok, _, err = run(cmd .. concatPath(selected))
