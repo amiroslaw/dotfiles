@@ -52,6 +52,10 @@ TODO: add support for reading from env
 end
 
 local LINK_REGEX = "^https?://(([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))"
+-- mpv --profile=stream --playlist=
+local CMD_VIDEO = 'mpv --profile=stream '
+local CMD_POPUP = 'mpv --x11-name=videopopup --profile=stream-popup '
+local CMD_AUDIO = 'st -c audio -e mpv --profile=stream-audio '
 
 local args = cliparse(arg, 'params')
 local param
@@ -128,41 +132,20 @@ local function savePlaylist(mediaType)
 	end
 end
 
-local function writeUrlToFile(filePath, url)
-	local file = assert(io.open(filePath, 'w'), 'Could not write to file ' .. filePath)
+local function play(cmd, action, url)
+	local file = assert(io.open(TMP_PLAY, 'w'), 'Could not write to file ' .. TMP_PLAY)
 	file:write(url)
 	file:close()
+	local ok, _, err = run(cmd .. TMP_PLAY, 'Error: run mpv ' .. action .. ': ' .. url)
+	assert(ok, err)
 end
 
-local function videoplay(url)
-	writeUrlToFile(TMP_PLAY, url)
-	assert(os.execute('mpv --profile=stream --playlist=' .. TMP_PLAY) == 0, 'Error: run mpv')
+local function list(cmd, action)
+	local ok, _, err = run(cmd .. TMP_PLAYLIST, 'Error: run mpv list: ' .. action)
+	assert(ok, err)
+	savePlaylist(action)
 end
 
-local function videolist()
-	assert(os.execute('mpv --profile=stream --playlist=' .. TMP_PLAYLIST) == 0, 'Error: run mpv')
-	savePlaylist 'video'
-end
-
-local function popupplay(url)
-	writeUrlToFile(TMP_PLAY, url)
-	assert(os.execute('mpv --x11-name=videopopup --profile=stream-popup --playlist=' .. TMP_PLAY) == 0, 'Error: run mpv')
-end
-
-local function popuplist()
-	assert(os.execute('mpv --x11-name=videopopup --profile=stream-popup --playlist=' .. TMP_PLAYLIST) == 0, 'Error: run mpv')
-	savePlaylist 'video'
-end
-
-local function audioplay(url)
-	writeUrlToFile(TMP_PLAY, url)
-	assert( os.execute( 'st -c audio -e mpv --ytdl --no-video --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --playlist=' .. TMP_PLAY) == 0, 'Error: run mpv')
-end
-
-local function audiolist()
-	assert( os.execute( 'st -c audio -e mpv --ytdl --no-video --cache=yes --demuxer-max-bytes=500M --demuxer-max-back-bytes=100M --input-ipc-server=/tmp/mpvsocket --playlist=' .. TMP_PLAYLIST) == 0, 'Error: run mpv')
-	savePlaylist 'audio'
-end
 
 local function push(url)
 	local extinf = ''
@@ -249,11 +232,11 @@ local function openPlaylist()
 		return
 	end
 	
-	local cmd = 'mpv --profile=stream '
+	local cmd = CMD_VIDEO
 	if keybind and keybind == 1 then
-		cmd = 'mpv --x11-name=videopopup --profile=stream-popup '
+		cmd = CMD_POPUP
 	elseif  keybind and keybind == 2  then
-		cmd = 'st -c audio -e mpv --x11-name=videopopup --profile=stream-audio '		
+		cmd = CMD_AUDIO
 	elseif  keybind and keybind == 4  then
 		if os.execute('command -v trash-put') then
 			cmd = 'trash-put '
@@ -273,12 +256,12 @@ end
 
 local cases = {
 	['push'] = push, ['u'] = push,
-	['audioplay'] = audioplay, ['a'] = audioplay,
-	['audiolist'] = audiolist, ['A'] = audiolist,
-	['videoplay'] = videoplay, ['v'] = videoplay,
-	['videolist'] = videolist, ['V'] = videolist,
-	['popupplay'] = popupplay, ['p'] = popupplay,
-	['popuplist'] = popuplist, ['P'] = popuplist,
+	['audioplay'] = {play, CMD_AUDIO, 'audio'}, ['a'] = {play, CMD_AUDIO, 'audio'}, 
+	['audiolist'] = {list, CMD_AUDIO, 'audio'}, ['A'] = {list, CMD_AUDIO, 'audio'}, 
+	['videoplay'] = {play, CMD_VIDEO, 'video'}, ['v'] = {play, CMD_VIDEO, 'video'},
+	['videolist'] = {list, CMD_VIDEO, 'video'}, ['V'] = {list, CMD_VIDEO, 'video'},
+	['popupplay'] = {play, CMD_POPUP, 'video'}, ['p'] = {play, CMD_POPUP, 'video'},
+	['popuplist'] = {list, CMD_POPUP, 'video'}, ['P'] = {list, CMD_POPUP, 'video'},
 	['makeLocal'] = makeLocal, ['l'] = makeLocal,
 	['makeOnline'] = makeOnline, ['m'] = makeOnline,
 	['open'] = openPlaylist, ['o'] = openPlaylist,
@@ -287,8 +270,12 @@ local cases = {
 }
 
 for key,_ in pairs(args) do
-	local switchFunction = switch(cases, key)
-	if switchFunction and args[key] then
-		xpcall(switchFunction, errorMsg, param)
+	local switch = switch(cases, key)
+	if switch and args[key] then
+		if type(switch) == 'table' then
+			xpcall(switch[1], errorMsg, switch[2], switch[3], param)
+		else
+			xpcall(switch, errorMsg, param)
+		end
 	end
 end

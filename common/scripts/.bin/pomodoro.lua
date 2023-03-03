@@ -215,7 +215,7 @@ local function add()
 	end
 	-- local selectedId = selected:match '^%d+'
 	local selectedId = selected:match '^%s*%d+'
-	local okUuid, uuid = run('task _uuid ' .. selectedId)
+	local okUuid, uuid = run('task _uuid ' .. selectedId, )
 	assert(okUuid, 'Could not fetch task uuid')
 	setCurrentTask(uuid)
 	io.open(STATUS_PATH, 'w'):write 'work'

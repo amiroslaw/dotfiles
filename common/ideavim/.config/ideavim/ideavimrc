@@ -119,6 +119,7 @@ nnoremap <Space> <C-d><cr>
 " nnoremap s <Nop>
 " Perhaps just use the Idea shortcut Ctrl-Alt-B
 " Alt + N, then m (through the menu bar) also seems to work, but it is non-unique.
+vmap <leader>g <action>($SearchWeb)
 nnoremap gd :action GotoDeclaration<CR>
 " method in interface
 nnoremap gm :action GotoSuperMethod<CR> 
@@ -129,9 +130,13 @@ nnoremap gu :action ShowUsages<CR>
 nnoremap gU :action FindUsages<CR> 
 
 nmap gf :action GotoFile<cr>
+vmap gf :action GotoFile<cr>
 nmap gj :action GotoClass<cr>
+vmap gj :action GotoClass<cr>
 nmap gs :action GotoSymbol<cr>
+vmap gs :action GotoSymbol<cr>
 nmap ga :action GotoAction<cr>
+vmap ga :action GotoAction<cr>
 
 noremap gy        :action GotoTypeDeclaration<CR>
 noremap gt        :action GotoTest<CR>
