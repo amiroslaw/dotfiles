@@ -10,7 +10,8 @@ if arg[1] then
 			table.insert(assets, match)
 		end
 	end
-	local selectedAsset = rofiMenu(assets, {prompt = 'select asset', width = '25ch'})
+	local selectedAsset, code = rofiMenu(assets, {prompt = 'select asset', width = '25ch'})
+	assert(code, 'select asset')
 
 	local entry = rofiInput { prompt = 'Setup', width = '40%' }
 	entry = entry .. ' ' .. os.date('%Y/%m/%d_%H:%M')

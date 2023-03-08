@@ -212,7 +212,7 @@ local function concatPath(files, dir)
 end
 
 -- When selected few playlists, they will be nested.
--- Multiple option opens in playlist but it doesn't hold --x11-name
+-- Multiple option opens videos in playlist but it doesn't hold --x11-name
 -- with too many files, it doesn't work
 local function openPlaylist()
 	DIR_PLAYLISTS = param and param or DIR_PLAYLISTS
@@ -221,10 +221,13 @@ local function openPlaylist()
 		filetype = ' -e m3u '
 	end
 	local ok, playlists = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-', "Can't find files" )
-	local selected, keybind = rofiMenu(playlists, {prompt = 'alt-p:popup; alt-a:audio; default:video; shift-enter:multi'
-	.. '\nalt-n:rename; alt-d:delete; alt-e:edit; alt-o:folder; Found:'.. #playlists, multi=true, keys= {'Alt-p', 'Alt-a', 'Alt-n', 'Alt-d', 'Alt-e', 'Alt-o'}, width = '94%'})
+	local prompt = 'default:open video; shift-enter:multi selection; Found:'.. #playlists
+	local keys= {'Alt-p', 'Alt-a', 'Alt-n', 'Alt-d', 'Alt-e', 'Alt-o'}
+	local desc= {'popup', 'audio', 'rename', 'delete', 'edit', 'open folder'}
+	local selected, keybind = rofiMenu(playlists, {prompt = prompt, keys = keys, msg = desc, multi=true, width = '94%'})
+	if not keybind then return end
 	
-	if keybind and keybind == 3  then
+	if keybind == 3  then
 		args.input = true
 		for _,playlist in ipairs(selected) do
 			renamePlaylist(playlist)
@@ -233,19 +236,19 @@ local function openPlaylist()
 	end
 	
 	local cmd = CMD_VIDEO
-	if keybind and keybind == 1 then
+	if keybind == 1 then
 		cmd = CMD_POPUP
-	elseif  keybind and keybind == 2  then
+	elseif keybind == 2  then
 		cmd = CMD_AUDIO
-	elseif  keybind and keybind == 4  then
+	elseif keybind == 4  then
 		if os.execute('command -v trash-put') then
 			cmd = 'trash-put '
 		else
 			cmd = 'rm '
 		end
-	elseif  keybind and keybind == 5  then
+	elseif keybind == 5  then
 		cmd = os.getenv('VISUAL')
-	elseif  keybind and keybind == 6  then
+	elseif keybind == 6  then
 		cmd = run('xdg-open "' .. DIR_PLAYLISTS .. '" &')
 		return
 	end

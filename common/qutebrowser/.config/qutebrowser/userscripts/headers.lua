@@ -18,9 +18,9 @@ for h, header in ipairs(headerTags) do
 end
 -- or search href=#...
 
-local selectedAnchor = rofiMenu(anchors, {prompt = 'Jump to header'})
+local selectedAnchor, code = rofiMenu(anchors, {prompt = 'Jump to header'})
 
-if selectedAnchor ~= '' then
+if code then
 	local anchor = anchors[selectedAnchor]
 	if not anchor then
 		anchor = selectedAnchor

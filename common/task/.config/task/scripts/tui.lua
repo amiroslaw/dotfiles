@@ -32,8 +32,8 @@ local function switchView()
 	views['pro'] = 'report'
 	views['waiting'] = 'report'
 	views['completed'] = 'report'
-	local selected = rofiMenu(views, {prompt = 'Switch view', width = '25ch'})
-
+	local selected, code = rofiMenu(views, {prompt = 'Switch view', width = '25ch'})
+	selected = code and selected or 'none'
 	local stat
 	if views[selected] == 'report' then
 		stat = os.execute('taskwarrior-tui --report=' .. selected)
@@ -76,7 +76,7 @@ local function setWait(date)
 end
 
 local function modifyTag(tag, alias)
-	if not alias or alias == 'project' then
+	if alias == 'project' then
 		setProject(tag:gsub('^#', ''))
 	elseif alias == 'wait' then
 		setWait(tag)
@@ -86,7 +86,6 @@ local function modifyTag(tag, alias)
 end
 
 -- projects have `#` prefix
--- empty string will remove project
 -- new item is a new project
 local function addTag()
 	local tags = copyt(contextAliases)
@@ -97,14 +96,10 @@ local function addTag()
 	end
 	tags['wait/someday'] = 'wait'
 
-	-- TODO sometimes rofiMenu gives nil; add multiselection option
-	local selection = rofiMenu(tags, {prompt ='Add tag'})
-	if type(selection) == 'string' then
-		modifyTag(selection, tags[selection])
-	else
-		for _, sel in ipairs(selection) do
-			modifyTag(sel, tags[sel])
-		end
+	local selection, code = rofiMenu(tags, {prompt ='Add tag', multi = true})
+	if not code then return end
+	for _, sel in ipairs(selection) do
+		modifyTag(sel, tags[sel])
 	end
 end
 
@@ -113,7 +108,8 @@ local function removeTag()
 	tags['remove project'] = 'project'
 	tags['all contexts'] = 'allContexts'
 	tags['wait/someday'] = 'wait'
-	local selected = rofiMenu(tags, {prompt = 'Remove tag', width = '25ch'})
+	local selected, code = rofiMenu(tags, {prompt = 'Remove tag', width = '25ch'})
+	if not code then return end
 
 	if tags[selected] == 'project' then
 		setProject ''

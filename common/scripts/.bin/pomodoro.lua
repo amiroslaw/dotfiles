@@ -16,6 +16,7 @@ List of the options:
 	status - print status message 
 	info - shows daily spent time 
 	history - display pomodoro history
+	menu - list of the options
 	-h help - show help
 
 flags (short options) in a format: -ca
@@ -78,12 +79,12 @@ local function changeTWstate(state)
 	local taskUuid = io.open(CURRENT_PATH):read '*a'
 	local ok, _, err
 	if state == stateEnum.STOP then
-		ok, _, err = run('task stop ' .. taskUuid)
-		assert(ok, 'Can not stop task ' .. str(err))
+		ok, _, err = run('task stop ' .. taskUuid, 'Can not stop task: ' .. taskUuid)
+		assert(ok, err) 
 		alert 'Work stopped'
 	else
-		ok, _, err = run('task start ' .. taskUuid)
-		assert(ok, 'Can not start task ' .. str(err))
+		ok, _, err = run('task start ' .. taskUuid, 'Can not stop task: ' .. taskUuid)
+		assert(ok, err) 
 		alert 'Work started'
 	end
 end
@@ -153,7 +154,8 @@ end
 local function stopStatus()
 	local state = getState()
 	if state == stateEnum.STOP then
-		ok, count = run('task +ACTIVE count')
+		ok, count, err = run('task +ACTIVE count', 'Can not get active task information')
+		assert(ok, err) 
 		io.write(count[1])
 	else
 		os.execute('rm ' .. STATUS_PATH)
@@ -200,12 +202,18 @@ end
 local function add()
 	local STOP = '#stop'
 	local PAUSE = '#pause'
-	local okContext, _, err = run 'task context none'
-	local _, tasks, err = run 'task rc.verbose=nothing minimal'
+	local okContext, _, err = run('task context none',  'Could not switch context')
+	-- assert(okContext, err) -- return error code 2 if it did not have context
+	--task rc.verbose=nothing minimal - wrap lines 
+	local ok, tasks, err = run('task rc.verbose=nothing minimal',  'Could not get task list')
+	assert(ok, 'err')
+
 	table.insert(tasks, STOP)
 	table.insert(tasks, PAUSE)
-	local selected = rofiMenu(tasks, {prompt = 'Start pomodoro task', width = '94%'})
-	assert(selected ~= '', 'Select task')
+	local selected, code = rofiMenu(tasks, {prompt = 'Start pomodoro task', width = '94%'})
+	if not code then
+		return true
+	end
 	if selected == STOP then
 		stopStatus()
 		return
@@ -215,8 +223,8 @@ local function add()
 	end
 	-- local selectedId = selected:match '^%d+'
 	local selectedId = selected:match '^%s*%d+'
-	local okUuid, uuid = run('task _uuid ' .. selectedId, )
-	assert(okUuid, 'Could not fetch task uuid')
+	local okUuid, uuid, err = run('task _uuid ' .. selectedId, 'Could not fetch task uuid')
+	assert(okUuid, err)
 	setCurrentTask(uuid)
 	io.open(STATUS_PATH, 'w'):write 'work'
 	changeTWstate(stateEnum.WORK)
@@ -269,14 +277,16 @@ stateEnum = enum { STOP = stopStatus, BREAK = breakStatus, WORK = workStatus, PA
 
 local function modify()
 	local cmd = [[ timew summary :ids :week | awk '/@/ {out=""; startIndex=1; { if($1 ~/W/){ startIndex=4;} for(i=startIndex;i<=NF;i++)if($i !~/:/) out=out" "$i};  if($(NF-3) ~/:/) {print out" "$(NF-1)} else {print out" "$NF};  o=""}' | tac ]]
-	local ok, tasks, err = run(cmd)
-	local action = rofiMenu({'lengthen', 'shorten'}, {prompt = 'modify interval'})
-	assert(action ~= '' and ok, "Can not modify")
-	local selectedTask = rofiMenu(tasks, {prompt = 'choose task (empty == last)', width = '94%'})
-	selectedTask = selectedTask ~= '' and selectedTask or ' @1'
+	local ok, tasks, err = run(cmd, 'Error: modification')
+	assert(ok, err) 
+	local action, code = rofiMenu({'lengthen', 'shorten'}, {prompt = 'modify interval'})
+	assert(code, "Can not modify")
+	local selectedTask, code = rofiMenu(tasks, {prompt = 'choose task (empty == last)', width = '94%'})
+	selectedTask = code and selectedTask or ' @1'
 	local taskId = selectedTask:match '^%s@%d+'
 	local minutes = rofiNumberInput('Minutes')
-	run('timew ' .. action .. taskId .. ' ' .. minutes .. 'min')
+	local ok, _, err = run('timew ' .. action .. taskId .. ' ' .. minutes .. 'min', 'Could not modify task: ' .. taskId)
+	assert(ok, err) 
 end
 
 local defaultOption = 'status'
@@ -301,10 +311,10 @@ if action == 'menu' then
 	action = rofiMenu(options, {prompt = 'Pomodoro menu'})
 end
 local exec, param = switch(action)
-local ok, val = pcall(exec, param)
+local ok, err = pcall(exec, param)
 
 if flags['d'] and not ok then
-	print(val)
+	print(err)
 end
 if flags['c'] then
 	local ratio = dailyInfo()

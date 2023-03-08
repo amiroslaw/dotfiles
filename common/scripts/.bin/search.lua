@@ -46,7 +46,8 @@ function cheat()
 	}
 
 	local tmpname = os.tmpname()
-	local topic = rofiMenu(topics, {prompt = 'cheatsh', width = '25ch'})
+	local topic, code = rofiMenu(topics, {prompt = 'cheatsh', width = '25ch'})
+	if not code then return end
 	local query = phraseArg:gsub('%s', '+')
 	local status = 1
 	if topics[topic] == 'lang' then
