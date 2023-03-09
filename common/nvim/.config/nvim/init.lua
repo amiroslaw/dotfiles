@@ -360,6 +360,7 @@ nmap('<leader>N', ':Ranger<CR>')
 
 --""""""""""""""""""
 -- surround
+-- visual mode  + S"
 nmap('<leader>s', 'ysiW', { noremap = false }) -- surround a word
 require("nvim-surround").setup({
     surrounds = {

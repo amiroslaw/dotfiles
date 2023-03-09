@@ -29,7 +29,7 @@ notify(string)
 notifyError(string)
 rofiNumberInput([prompt])
 rofiInput([rofiOptions]) 
-rofiMenu(entriesTab, [rofiOptions]), returns table if selected multiple items or string otherwise. For the second argument returns key code, if custom key number that was pressed.
+rofiMenu(entriesTab, [rofiOptions]), returns table if selected multiple items or string otherwise. For the second argument returns keybinding, if custom keys were provided.
 optionTab - Options can be parser form an array (ordered table) or a dictionary.
 rofiInput - optional arguments that can be passed via table
 	prompt (string)
@@ -394,6 +394,12 @@ end --- >>>
 
 --- switch <<<
 -- the argument cases is a key-value table. Values can be either variables or functions.
+--[[ keys = {
+	['Alt-m'] = 'modify',
+	[false] = 'default',
+} 
+local action = switch(keys, 'Alt-o')
+--]]
 function switch(cases, pattern)
 	for k, v in pairs(cases) do
 		if k == pattern then
@@ -448,36 +454,32 @@ end -- >>>
 
 -- rofi <<<
 local function combineOptions(opt)
+local ACCENT_COLOR = 'purple'
 local defaultOpt = {prompt = 'Select', width = '500px', height = 24, multi = '', keys = '', msg = ''}
+local keys = {}
 if opt then
-	local msgForKeys = ''
+	local keybindingCmd = ''
+	local keyMsgCmd = ''
 	for name,val in pairs(opt) do
 		if name == 'multi' and val then
 			defaultOpt[name] = ' -multi-select '
 		elseif name == 'keys' then
-			for numberKey, shortcut in ipairs(opt.keys) do
-				defaultOpt.keys = defaultOpt.keys .. ' -kb-custom-' .. numberKey .. ' "' .. shortcut .. '" '
-				if #opt.msg > #opt.keys then
-					msgForKeys = opt.msg[#opt.msg]
-				end
-				if opt.msg then
-					msgForKeys = msgForKeys .. " <span color='purple'>" .. shortcut .. "</span>:" .. opt.msg[numberKey] .. ";"
-				end
+			local numberKey = 1
+			for keybinding, description in pairs(opt.keys) do
+				keybindingCmd = keybindingCmd .. ' -kb-custom-' .. numberKey .. ' "' .. keybinding .. '" '
+				keyMsgCmd = keyMsgCmd .. " <span color='" .. ACCENT_COLOR .. "'>" .. keybinding .. "</span>:" .. description .. ";"
+				keys[numberKey] = keybinding
+				numberKey = numberKey +1
 			end
 		else
 			defaultOpt[name] = val
 		end
 	end
-	if opt.msg then
-		defaultOpt.msg = ' -markup -mesg "'
-		if type(opt.msg) == 'table' then
-			defaultOpt.msg = defaultOpt.msg .. msgForKeys .. '" '
-		else 
-			defaultOpt.msg = defaultOpt.msg .. opt.msg .. '" '
-		end
+	if opt.msg or opt.keys then
+		defaultOpt.msg = ' -markup -mesg "' .. defaultOpt.msg .. keyMsgCmd  .. '" ' .. keybindingCmd
 	end
 end
-return defaultOpt
+return defaultOpt, keys
 end
 --[[
 Shows a rofi string input 
@@ -487,9 +489,9 @@ opt - optional arguments that can be passed via table
 	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
 	msg (string) - Message information, accepts pango markup(html like).
 --]]
-function rofiInput(opt) 
-	local rofiOpt = combineOptions(opt)
-	return io.popen('rofi -monitor -4 -theme-str "window {width:  ' .. rofiOpt.width .. ';}" -l 0 -dmenu -p "'.. rofiOpt.prompt .. '"' .. rofiOpt.msg):read('*a'):gsub('\n', '')
+function rofiInput(options) 
+	local opt = combineOptions(options)
+	return io.popen('rofi -monitor -4 -theme-str "window {width:  ' .. opt.width .. ';}" -l 0 -dmenu -p "'.. opt.prompt .. '"' .. opt.msg):read('*a'):gsub('\n', '')
 end 
 
 --[[
@@ -508,7 +510,7 @@ function rofiNumberInput(prompt)
 end 
 
 --[[
-Shows a rofi menu. Returns string or table if multiple-select option was enabled. If custom keys were provided, it will return a keybind number as a second argument, otherwise 0. Returns empty string and false for output and exit code if nothing was selected.
+Shows a rofi menu. Returns string or table if multiple-select option was enabled. If custom keys were provided, it will return a keybind a second argument, otherwise 0. If nothing was selected it returns empty string and false for output and exit code.
 params:
 entriesTab - Options can be parser form an array (ordered table) or a dictionary.
 opt - optional arguments that can be passed via table
@@ -516,44 +518,45 @@ opt - optional arguments that can be passed via table
 	height (number)-  max lines than rofi can show; default: 24
 	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
 	multi (boolean)- If true, rofi will allow to select multiple rows, and it will return table with selected options
-	keys (table) - Custom keys = {'Alt-e', 'Alt-m' }
-	msg (table|string) - message information, accepts pango markup(html like). Table as argumet can have description for custom keys - the last element will be render as a general message, eg. msg = {'edit', 'modify', 'Description for custom keys' }
+	keys (table) - Custom keys. Keys in table are keybindings, and values are descriptions for them. Example: keys = { ['Alt-p'] = 'popup', ['Alt-a'] = 'audio',}
+	msg (string) - Message information, accepts pango markup(html like). Msg should fit in one line otherwise it will show less entries, use width to adjust.
 --]]
--- TODO default option for not existence and exit? mseg with html - keys
-function rofiMenu(entriesTab, opt)
-	local rofiOpt = combineOptions(opt)
-	local options = ''
+-- TODO default option for not existence and exit??
+function rofiMenu(entriesTab, options)
+	local opt, keys = combineOptions(options)
+	local entries = ''
 	local lines = 0
 	local isArray = isArray(entriesTab)
 
 	for key,val in pairs(entriesTab) do
 		if isArray then
-			options = options  .. val	.. '|'
+			entries = entries  .. val	.. '|'
 		else
-			options = options  .. key	.. '|'
+			entries = entries  .. key	.. '|'
 		end
 		lines = lines + 1
 	end
-	options = options:sub(1, #options -1)
-	if lines > rofiOpt.height then
-		lines = rofiOpt.height
+	entries = entries:sub(1, #entries -1)
+	if lines > opt.height then
+		lines = opt.height
 	end
 
-	local _, selected, err, code= run('echo "' .. options .. '" | rofi -monitor -4 -i ' .. rofiOpt.multi .. ' -l ' .. lines .. ' -sep "|" -dmenu -p "' .. rofiOpt.prompt .. '" -theme-str "window {width:  ' .. rofiOpt.width .. ';}" ' .. rofiOpt.keys .. rofiOpt.msg)
+	local _, selected, err, code= run('echo "' .. entries .. '" | rofi -monitor -4 -i ' .. opt.multi .. ' -l ' .. lines .. ' -sep "|" -dmenu -p "' .. opt.prompt .. '" -theme-str "window {width:  ' .. opt.width .. ';}" ' .. opt.keys .. opt.msg)
 
 	-- rofi returns error code for hooks and returns error code for not selecting - it would be a rofi error
 	if err and err ~= '' then
 		notifyError(err)
 		return '', false
 	end
+	-- only luajit returns different status code
 	if code == 256 then
-		code = code/256 - 9
 		return '', false
 	end
-	if code > 256 then
+	if next(keys) and code > 256 then
 		code = code/256 - 9
+		code = keys[code] 
 	end
-	if opt and opt.multi then
+	if options and options.multi then
 		if selected[#selected] == "" then
 			selected[#selected] = nil
 		end

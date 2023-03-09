@@ -204,7 +204,7 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 
 # tasks; todo; calendar
 super + {shift,ctrl} + u
-	{ pomodoro.lua add -n, pomodoro.lua stop -n}
+	{ pomodoro.lua add -n, pomodoro.lua menu -n}
 super + u ; {u,c,g,f,i,t,r,p,n,a}
 	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nW-task sync\nm-modify task\nn-newsboat", \
 	gcal-add.lua, \

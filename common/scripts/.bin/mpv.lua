@@ -3,6 +3,7 @@
 local TMP_PLAYLIST = '/tmp/qb_mpvplaylist.m3u'
 local TMP_PLAY = '/tmp/qb_mpv.m3u'
 local DIR_PLAYLISTS = os.getenv 'HOME' .. '/Templates/mpvlists'
+-- local GUI_EDITOR = 'nvim-qt'
 
 function help()
 print [[
@@ -44,6 +45,7 @@ mpv.lua --makeLocal --save=YouTube ~/Videos/yt
 mpv.lua --audioplay --resume
 
 In order to change stream format and options it's needed to add the profiles `stream` and `stream-popup` into the mpv.conf file.
+For editing - set system env: GUI_EDITOR
 Dependencies: mpv, st, clipster, fd, zenity, rofi, notify-send, yt-dlp, trash-put in optional
 
 TODO: add support for reading from env
@@ -220,14 +222,21 @@ local function openPlaylist()
 	if args.list or args.L then
 		filetype = ' -e m3u '
 	end
-	local ok, playlists = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-', "Can't find files" )
+	local ok, playlists, err = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-', "Can't find files" )
+	assert(ok, err)
 	local prompt = 'default:open video; shift-enter:multi selection; Found:'.. #playlists
-	local keys= {'Alt-p', 'Alt-a', 'Alt-n', 'Alt-d', 'Alt-e', 'Alt-o'}
-	local desc= {'popup', 'audio', 'rename', 'delete', 'edit', 'open folder'}
-	local selected, keybind = rofiMenu(playlists, {prompt = prompt, keys = keys, msg = desc, multi=true, width = '94%'})
+	local keys = {
+		['Alt-p'] = 'popup',
+		['Alt-a'] = 'audio',
+		['Alt-n'] = 'rename',
+		['Alt-d'] = 'delete',
+		['Alt-e'] = 'edit',
+		['Alt-o'] = 'open folder',
+	}
+	local selected, keybind = rofiMenu(playlists, {prompt = prompt, keys = keys, multi=true, width = '95%'})
 	if not keybind then return end
 	
-	if keybind == 3  then
+	if keybind == 'Alt-n'  then
 		args.input = true
 		for _,playlist in ipairs(selected) do
 			renamePlaylist(playlist)
@@ -236,19 +245,19 @@ local function openPlaylist()
 	end
 	
 	local cmd = CMD_VIDEO
-	if keybind == 1 then
+	if keybind == 'Alt-p' then
 		cmd = CMD_POPUP
-	elseif keybind == 2  then
+	elseif keybind == 'Alt-a'  then
 		cmd = CMD_AUDIO
-	elseif keybind == 4  then
+	elseif keybind == 'Alt-d'  then
 		if os.execute('command -v trash-put') then
 			cmd = 'trash-put '
 		else
 			cmd = 'rm '
 		end
-	elseif keybind == 5  then
-		cmd = os.getenv('VISUAL')
-	elseif keybind == 6  then
+	elseif keybind == 'Alt-e'  then
+		cmd = os.getenv('GUI_EDITOR')
+	elseif keybind == 'Alt-o'  then
 		cmd = run('xdg-open "' .. DIR_PLAYLISTS .. '" &')
 		return
 	end
