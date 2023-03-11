@@ -7,7 +7,7 @@ copyt(table) deep copy table
 readf(file) read file, returns table
 writef(string|table, file, [readmode]) write table/string to file, can't have nil
 eq compares 2 values for equality
-status,out,err = run(cmd) - status is boolean; out and err are tables; executes external command and optionally capture the output
+status,out,err = run(cmd, msgErr) - status is boolean; out is a table; executes external command and optionally capture the output
 str converts any non-string type to string, and strings to quoted strings
 
 -- cliparse cliparse({'-aib','--key','defKey','--opt=2'}, 'defKeyArg'); value option can have space even in a quote
@@ -39,11 +39,45 @@ rofiInput - optional arguments that can be passed via table
 --]]
 
 -- notify <<<
--- Send notification.
-function notify(msg)
-	print(msg)
-	if msg then
-		os.execute("dunstify '" .. msg .. "'")
+--[[
+Send notification.
+usage - type of the quotation marsks are important
+style = { [' red '] = 'red', 'default', }
+notify("title", 'first pattern is red and the second has a default color', style)
+TODO add time option??
+--]]
+local function applyStyle(text, style)
+	local defaultColor = '#08D9D6'
+	for key,val in pairs(style) do
+		local pattern
+		local color = defaultColor
+		if tonumber(key) then
+			pattern = val
+		else
+			pattern = key
+			color = val
+			-- if text:match(pattern) ~= key then
+				-- print(text:match(pattern))
+			-- end
+		end
+		text = text:gsub(pattern, "<span color='" .. color .. "'>" .. pattern .. "</span>")
+	end
+	return text
+end
+function notify(msg, body, style)
+	if type(body) == 'table' then
+		body = table.concat(body, '\n')
+	end
+	msg = msg:gsub('"', '\\"')
+	body = body:gsub('"', '\\"')
+	printt(style)
+	if style then
+		body = applyStyle(body, style)
+	end
+	if body and  msg then
+		os.execute('notify-send "' .. msg .. '" "' .. body .. '"')
+	elseif msg then
+		os.execute('notify-send "' .. msg .. '"')
 	end
 end 
 
@@ -52,7 +86,7 @@ function notifyError(msg)
 		if type(msg) == 'table' then
 			msg = msg[1] and msg[1] or 'empty error msg'
 		end
-		os.execute("dunstify -u critical Error: '" .. msg .. "'")
+		os.execute("notify-send -u critical Error: '" .. msg .. "'")
 		print(msg)
 		-- error(msg) -- does not work?
 	end
@@ -280,15 +314,15 @@ This is kind of a wrapper function to os.execute and io.popen.
 The problem with os.execute is that it can only return the
 exit status but not the command output. And io.popen can provide
 the command output but not an exit status. This function can do both.
-It will return the same return valus as os.execute plus two additional tables.
-These tables contain the command output, 1 line per numeric index.
+It will return the same return valus as os.execute plus table for output and error message.
+The output table contain the command output, 1 line per numeric index.
 Line feed and carriage return are removed from each line.
-The first table contains the stdout stream, the second the stderr stream.
+The error output is a join of our error msg and the stderr stream.
 
 cmd     = command to execute, can be string or table
-status,out,err = run("ls -l")
+status,out,err = run("ls -l", "error msg")
 printt(out)
-printt(err)
+print(err)
 --]]
 function run(cmd, errorMsg)
    if (type(cmd) ~= "string") and (type(cmd) ~= "table") then return nil end
@@ -414,7 +448,7 @@ function trim(s)
    return s:match'^()%s*$' and '' or s:match'^%s*(.*%S)'
 end -- >>>
 -- isArray <<<
--- if a table is a dictionary it will return false
+-- if a table is a dictionary it will return false. Mixed table will return true 😦
 --]]
 function isArray(table)
   if type(table) == 'table' and #table > 0 then

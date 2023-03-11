@@ -94,7 +94,7 @@ end
 -- }}} 
 
 -- SETTINGS {{{
-vim.o.ch = 0 -- hide command, from v8
+-- vim.o.ch = 0 -- hide command, from v8
 vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
 vim.o.termguicolors = true
 vim.b.buftype = '' -- fix Cannot write buftype option is set
