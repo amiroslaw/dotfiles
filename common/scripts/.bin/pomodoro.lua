@@ -289,6 +289,16 @@ local function modify()
 	assert(ok, err) 
 end
 
+local function synchronise()
+	local ok, _, err = run('~/.config/task/scripts/sync.sh', 'Did not synchronise taskwarrior')
+	if ok then
+		msg = {['Synchronised'] = 'green'}
+		notify('Taskwarrior', next(msg), msg)
+	else
+		notifyError(err)
+	end
+end
+
 local defaultOption = 'status'
 local options = {
 	['add'] = add,
@@ -296,6 +306,7 @@ local options = {
 	['stop'] = stopStatus,
 	['repeat'] = duplicateTask,
 	['status'] = getState,
+	['sync'] = synchronise,
 	['notify'] = annotate,
 	['modify'] = modify,
 	['info'] = function() print(dailyInfo()) end,
