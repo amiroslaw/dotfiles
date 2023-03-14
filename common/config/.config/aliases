@@ -225,6 +225,7 @@ alias gdiff='git diff'
 alias gpull='git pull origin'
 alias gpush='git push origin'
 alias gst='git status'  # 'status' is protected name so using 'stat' instead
+alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'"
 # }}}
 
 # gcalcli {{{

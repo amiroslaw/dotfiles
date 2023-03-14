@@ -64,19 +64,21 @@ local function applyStyle(text, style)
 	end
 	return text
 end
+
 function notify(msg, body, style)
 	if type(body) == 'table' then
 		body = table.concat(body, '\n')
 	end
-	msg = msg:gsub('"', '\\"')
-	body = body:gsub('"', '\\"')
-	printt(style)
-	if style then
-		body = applyStyle(body, style)
-	end
 	if body and  msg then
+		msg = msg:gsub('"', '\\"')
+		body = body:gsub('"', '\\"')
+		printt(style)
+		if style then
+			body = applyStyle(body, style)
+		end
 		os.execute('notify-send "' .. msg .. '" "' .. body .. '"')
 	elseif msg then
+		msg = msg:gsub('"', '\\"')
 		os.execute('notify-send "' .. msg .. '"')
 	end
 end 
@@ -86,7 +88,9 @@ function notifyError(msg)
 		if type(msg) == 'table' then
 			msg = msg[1] and msg[1] or 'empty error msg'
 		end
-		os.execute("notify-send -u critical Error: '" .. msg .. "'")
+		msg = msg:gsub('"', '\\"')
+		os.execute('notify-send -u critical Error: "' .. msg .. '"')
+		-- os.execute("notify-send -u critical Error: '" .. msg .. "'")
 		print(msg)
 		-- error(msg) -- does not work?
 	end

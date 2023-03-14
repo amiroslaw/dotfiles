@@ -105,12 +105,19 @@ map <leader>T <Plug>(easymotion-eol-k)
 " map <nowait> s <Plug>(easymotion-j)
 map <leader>. <Plug>(easymotion-repeat)
 
-" VIM MAPS
+" # -------------------------------------------------------------------------
+" #                      VIM MAPS
+" # -------------------------------------------------------------------------
 " reload config
 nmap <F5> :source ~/.config/ideavim/ideavimrc<cr>
 inoremap <C-a> <C-o>b
 inoremap <C-d> <C-o>w
 nnoremap <Space> <C-d><cr> 
+
+" # -------------------------------------------------------------------------
+" #                       IDEAVIM SETTINGS
+" # -------------------------------------------------------------------------
+map <Leader>j <action>(FixDocComment)
 
 " # -------------------------------------------------------------------------
 " #                       GOTO and JUMP
@@ -153,8 +160,10 @@ nnoremap <leader>l :action HighlightUsagesInFile<cr>
 nnoremap <c-n> :action GotoNextElementUnderCaretUsage<cr>
 " nnoremap <leader>n :action NextOccurence<cr>
 " Error F2
-map <a-s> <Action>(GotoNextError)
+nmap <a-s> <Action>(GotoNextError)
+imap <a-s> <Action>(GotoNextError)
 nmap <a-s-s> :action GotoPreviousError<cr>
+imap <a-s-s> :action GotoPreviousError<cr>
 
 nnoremap gh :action FileStructurePopup<CR> 
 map <C-h> :action TypeHierarchy<CR>
