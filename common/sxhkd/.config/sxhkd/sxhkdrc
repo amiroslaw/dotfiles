@@ -259,8 +259,8 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
 # open media or dir with xdg-open
-super + o ; {o,j,d,D,v,c,y,z,f,F}
-	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
+super + o ; {o,j,d,D,v,c,y,z,f,F,b,i,p}
+	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nz-fasd\nf(F)-files(hidden)", \
 		$ROFI/open.sh fasd-dir, \
 		$ROFI/open.sh dir, \
 		$ROFI/open.sh dir-hidden, \
@@ -270,13 +270,16 @@ super + o ; {o,j,d,D,v,c,y,z,f,F}
 		$ROFI/open.sh fasd, \
 		$ROFI/open.sh file, \
 		$ROFI/open.sh file-hidden, \
+		$TERM_LT -e bmenu, \
+		$TERM_LT -e nmtui, \
+		$TERM_LT -e ncmpcpp
 		}
 	# { notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
 
 # open tui or file in terminal 
-super + o ; {i,p,b,t}
-	$TERM_LT -e {nmtui,ncmpcpp,bmenu,tg}
-
+# super + o ; {i,p,b}
+	# $TERM_LT -e {nmtui,ncmpcpp,bmenu}
+Suicide among Polish Adolescents—A 20 Year Analysis
 # script in background - url.lua menu will ask for the number of the links
 super + e ; {e,h,k,K,m,M,v,V,d,D,y,Y,w,W,r,R,g,G,c,i}
 	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr-speed reader\nR-read\nc-calendar\nk(K)-kindle\ni-investing", \
