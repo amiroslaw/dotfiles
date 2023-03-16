@@ -30,6 +30,8 @@ notifyError(string)
 rofiNumberInput([prompt])
 rofiInput([rofiOptions]) 
 rofiMenu(entriesTab, [rofiOptions]), returns table if selected multiple items or string otherwise. For the second argument returns keybinding, if custom keys were provided.
+editor(path|text, [editorName]) Opens file or text in editor. 
+dialog(msg, [style]) - show rofi's dialog
 optionTab - Options can be parser form an array (ordered table) or a dictionary.
 rofiInput - optional arguments that can be passed via table
 	prompt (string)
@@ -491,6 +493,31 @@ end -- >>>
 --- util for scripting <<< 
 
 -- rofi <<<
+--[[
+Opens file or text in editor. If provides only text - it will open in temporary file with asciidoc extension.
+--]]
+function editor(text, editorName)
+	local editorName = editorName and editorName or  os.getenv('GUI_EDITOR')
+	if os.execute( "test -f " .. text ) == 0 then
+		local ok = os.execute(editorName .. ' ' .. text )
+		assert(ok == 0, 'Could not open ' .. text)
+		return 0
+	end
+
+	if type(text) == 'table' then
+		text = table.concat(text, '\n')
+	end
+
+	if text and editorName then
+		local fileName = os.tmpname() .. '.adoc'
+		io.open(fileName, 'w'):write(text)
+		local ok = os.execute(editorName .. ' ' .. fileName )
+		assert(ok == 0, 'Could not open ' .. fileName)
+	end
+end 
+--- >>>
+
+-- rofi <<<
 local function combineOptions(opt)
 local ACCENT_COLOR = 'purple'
 local defaultOpt = {prompt = 'Select', width = '500px', height = 24, multi = '', keys = '', msg = ''}
@@ -519,6 +546,25 @@ if opt then
 end
 return defaultOpt, keys
 end
+
+--[[
+Shows a rofi dialog.
+	msg (string) - Message information, accepts pango markup(html like).
+style = { [' red '] = 'red', 'default', }
+--]]
+function dialog(msg, style)
+	if type(msg) == 'table' then
+		msg = table.concat(msg, '\n')
+	end
+	if  msg then
+		msg = msg:gsub('"', '\\"')
+		if style then
+			msg = applyStyle(msg, style)
+		end
+		os.execute('rofi -e "' .. msg .. '"')
+	end
+end 
+
 --[[
 Shows a rofi string input 
 Returns provided string.
@@ -790,6 +836,7 @@ jsonishout = function(t)
   return table.concat(result)
 end
 -- >>>
+
 -- filenamesplit <<<
 --Split a file path string filepathStr into the following strings: the folder path pathStr, filename nameStr and extension extStr.
 --filenamesplit( filepathStr ) --> pathStr, nameStr, extStr

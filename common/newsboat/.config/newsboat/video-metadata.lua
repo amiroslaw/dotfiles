@@ -3,8 +3,11 @@ local toBoolean = { ['True'] = true, ['False'] = false }
 
 local ok, metadata, err = run('yt-dlp -i --print title,duration_string,like_count,view_count,is_live,live_status "' .. arg[1] .. '"')
 
-if not ok and err:match 'This live event will begin in' then
-	notify(split(err, ':')[3])
+if not ok and err:match ' in %d+' then
+	local due = err:match '%d+%s%w+'
+	local msg = split(err, ':')[3]
+	notify('Due:', msg, {due})
+	-- notify(split(err, ':')[3])
 elseif ok then
 	local msg = ''
 	local isLive = toBoolean[metadata[5]]

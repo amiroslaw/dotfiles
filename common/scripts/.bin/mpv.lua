@@ -26,6 +26,7 @@ Actions:
 	--makeOnline -m → Create playlist (m3u) from the url `--push` command
 	--open -o [--list] [dir] → Open and manage videos or playlists
 	--rename -n [dir] → Change name of the last playlist
+	--metadata -M → Retrieves metadata form the video
 	--help - Show help
 Options:
 	--clip -c → read parameter from clipboard
@@ -266,6 +267,17 @@ local function openPlaylist()
 	assert(ok, 'Error: Can not execute ')
 end
 
+-- Gets metadata form YouTube's video
+local function metadata()
+	local ok, metadata, err = run('ffprobe -print_format json -show_format "' .. param .. '"', 'Can not retrieve metadata')
+	assert(ok, err)
+	local json = jsonish(table.concat(metadata, '\n'))
+	json = json.format.tags
+	local out = { json.COMMENT, json.DATE, json.ARTIST, json.title, json.DESCRIPTION, }
+	print(table.concat(out,'\n'))
+	-- editor(table.concat(out,'\n'))
+end
+
 local cases = {
 	['push'] = push, ['u'] = push,
 	['audioplay'] = {play, CMD_AUDIO, 'audio'}, ['a'] = {play, CMD_AUDIO, 'audio'}, 
@@ -276,6 +288,7 @@ local cases = {
 	['popuplist'] = {list, CMD_POPUP, 'video'}, ['P'] = {list, CMD_POPUP, 'video'},
 	['makeLocal'] = makeLocal, ['l'] = makeLocal,
 	['makeOnline'] = makeOnline, ['m'] = makeOnline,
+	['metadata'] = metadata, ['M'] = metadata,
 	['open'] = openPlaylist, ['o'] = openPlaylist,
 	['rename'] = renameLastPlaylist, ['n'] = renameLastPlaylist,
 	['help'] = help, ['h'] = help

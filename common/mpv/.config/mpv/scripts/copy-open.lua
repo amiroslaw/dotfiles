@@ -47,8 +47,34 @@ local function copyMetadata()
 	copyX(metadata)
 end
 
+local function showMetadata()
+	local properties = { 'title', 'comment', 'artist', 'date', 'description'}
+	local metadata = {}
+	for _,prop in ipairs(properties) do
+		table.insert(metadata, '\n== ' .. prop)
+		local val =	mp.get_property_osd("metadata/" .. prop)
+		table.insert(metadata,	val)
+	end
+	local text = table.concat(metadata, '\n')
+
+	local editor = os.getenv('GUI_EDITOR')
+	local fileName = os.tmpname() .. '.adoc'
+	local file = io.open(fileName, 'w')
+	file:write(text)
+	file:close()
+	local ok = os.execute(editor .. ' ' .. fileName )
+
+	-- local zenity = io.popen('zenity --text-info --width 730 --height 530', 'w')
+	-- zenity:write(text)
+	-- zenity:close()
+end
+
 function openUrl()
-	os.execute('xdg-open ' .. mp.get_property("path"))
+	local url = mp.get_property_osd("metadata/comment")
+	url = url ~= '' and url ~= '' or mp.get_property("path")
+	print(url)
+	os.execute('xdg-open ' .. url)
+	-- os.execute('xdg-open ' .. mp.get_property("path"))
 end
 
 function openFolder()
@@ -63,4 +89,5 @@ end
 mp.add_key_binding("ctrl+alt+b", "open-folder", openFolder)
 mp.add_key_binding("ctrl+b", "open-url", openUrl)
 mp.add_key_binding("ctrl+c", "copy-path", copyPath)
+mp.add_key_binding("ctrl+m", "show-metadata", showMetadata)
 
