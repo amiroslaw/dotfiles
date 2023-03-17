@@ -1,5 +1,6 @@
 require 'plugins'
 -- S-k - jump to help page
+-- free keybinding leader-b/B
 -- VARIABLES
 local HOME = os.getenv 'HOME'
 
@@ -572,7 +573,9 @@ if telescope then
 	nmap('to', '<cmd>Telescope oldfiles<cr>')
 	nmap('tl', '<cmd>Telescope current_buffer_fuzzy_find skip_empty_lines=true<cr>') -- lines in file
 	nmap('tj', '<cmd>Telescope jumplist<cr> ') -- I changed source code for showing only current file
-	nmap('tb', '<cmd>Telescope buffers show_all_buffers=false<cr>') -- closed files
+	nmap('ta', '<cmd>Telescope buffers show_all_buffers=false<cr>') -- closed files
+	nmap('tq', '<cmd>Telescope quickfix<cr> ') -- quickfixhistory
+	nmap('tn', '<cmd>Telescope loclist<cr> ')
 	nmap('tc', '<cmd>Telescope commands <cr> ')
 	nmap('th', '<cmd>Telescope help_tags<cr> ') -- nivm api
 	nmap('tH', '<cmd>Telescope command_history<cr> ')
@@ -586,7 +589,6 @@ if telescope then
 	nmap('tC', '<cmd>Telescope colorscheme<cr>')
 	nmap('tm', '<cmd>Telescope marks<cr>') -- list of the pickers
 	nmap('ti', '<cmd>Telescope<cr>') -- list of the pickers
-	-- nmap('tl', '<cmd>Telescope loclist<cr> ')
 
 	-- nmap('tt', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope current_buffer_tags<CR>')
 	nmap('T', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope tags<CR>')
@@ -639,20 +641,11 @@ xmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
 nmap("<A-n>", "<Plug>(YankyCycleForward)", { noremap = false })
 nmap("<A-p>", "<Plug>(YankyCycleBackward)", { noremap = false }) 
 -- }}} 
-
+--
 -- Status and tab bars {{{
-nmap('<leader><Tab>', ':BufferLineCycleNext <cr>')
-nmap('<leader>b', ':BufferLinePick <cr>') -- jumping to tab, like hop
-nmap('<leader>B', ':BufferLineSortByDirectory <cr>')
-require('bufferline').setup {
-	options = {
-		show_close_icon = false,
-		sort_by = 'relative_directory',
-		show_buffer_close_icons = false,
-		always_show_bufferline = false,
-	},
-}
-require('lualine').setup { options = { theme = 'dracula', component_separators = '|', globalstatus = true } } -- }}} 
+require('lualine').setup { options = { theme = 'dracula', component_separators = '|', globalstatus = true }, 
+-- sections = {lualine_a = {'buffers'}} - takes too much space
+} -- }}} 
 
 -- nvim-cmp {{{
 -- https://github.com/hrsh7th/nvim-cmp
@@ -838,5 +831,4 @@ nmap('<LocalLeader>cf', '<Plug>(grammarous-fixit)', { noremap = false }) --	Fix 
 
 -- }}} 
 -- vim: foldmethod=marker
--- tests
 -- set complete+=kspell spellcheck complete

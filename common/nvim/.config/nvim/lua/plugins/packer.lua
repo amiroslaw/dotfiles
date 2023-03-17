@@ -24,8 +24,9 @@ return require('packer').startup(function()
 	use 'kyazdani42/nvim-web-devicons'
 	use { 'amiroslaw/fm-nvim', cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit', 'TaskWarriorTUI' } }
 	use { 'folke/zen-mode.nvim', branch = 'main', cmd = { 'ZenMode' } }
+	use { 'alvarosevilla95/luatab.nvim', requires='kyazdani42/nvim-web-devicons', 
+		config = function() require('luatab').setup{} end, }
 	use 'nvim-lualine/lualine.nvim'
-	use { 'akinsho/bufferline.nvim', branch = 'main' }
 	use {
 		'Pocco81/auto-save.nvim',
 		branch = 'main',
