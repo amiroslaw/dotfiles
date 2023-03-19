@@ -8,6 +8,9 @@
 " , for git
 " - for run
 "   TODO
+"   refactoring methods
+"   convert to instance method - przeniesienie do klasy
+"   IntroduceParameterObject
 
 " Diff.NextChange                                    <M-S-]> <C-Right>
 " Diff.PrevChange                                    <M-S-[> <C-Left>

@@ -214,7 +214,7 @@ imap('<C-v>', '<Esc>pa ')
 --" insert mode
 -- move to the nexst/previous word
 imap('<C-a>', '<C-o>b')
-imap('<C-d>', '<C-o>e')
+imap('<C-d>', '<C-o>w')
 -- move to the nexst/previous occurrence
 nmap('<A-a>', '#')
 nmap('<A-d>', '*')
@@ -567,9 +567,9 @@ if telescope then
 		},
 	}
 
-	nmap('<c-f>', '<cmd>Telescope find_files<cr>')
 	nmap('<c-s>', '<cmd>Telescope live_grep<cr>')
-	nmap('tp', '<cmd>Telescope find_files find_command=rg,--hidden,--files<cr>') -- with hidden files
+	nmap('<tp>', '<cmd>Telescope find_files<cr>')
+	-- nmap('tp', '<cmd>Telescope find_files find_command=rg,--hidden,--files<cr>') -- with hidden files
 	nmap('to', '<cmd>Telescope oldfiles<cr>')
 	nmap('tl', '<cmd>Telescope current_buffer_fuzzy_find skip_empty_lines=true<cr>') -- lines in file
 	nmap('tj', '<cmd>Telescope jumplist<cr> ') -- I changed source code for showing only current file
@@ -598,6 +598,8 @@ if telescope then
 	nmap('tu', '<cmd>Telescope changes <cr>')
 	telescope.load_extension 'ultisnips'
 	nmap('tU', '<cmd>Telescope ultisnips <cr>')
+	telescope.load_extension('smart_open')
+	nmap('<c-f>', '<cmd>Telescope smart_open <cr>')
 	-- telescope.load_extension("yank_history")
 	-- nmap('ty', '<cmd>Telescope yank_history <cr>')
 end -- }}} 
@@ -808,12 +810,12 @@ require("translate").setup({
 		    },
     },
 })
-xmap('<LocalLeader>e', '<Cmd>Translate EN -source=PL<CR>')
-nmap('<LocalLeader>e', '<Cmd>Translate EN -source=PL<CR>')
+xmap('<LocalLeader>ee', '<Cmd>Translate EN -source=PL<CR>')
+nmap('<LocalLeader>ee', '<Cmd>Translate EN -source=PL<CR>')
 nmap('<LocalLeader>er', 'viw:Translate EN -source=PL -output=replace<CR>') 
 xmap('<LocalLeader>er', 'viw:Translate EN -source=PL -output=replace<CR>') 
-nmap('<LocalLeader>p', '<Cmd>Translate PL -source=EN<CR>')
-xmap('<LocalLeader>p', '<Cmd>Translate PL -source=EN<CR>')
+nmap('<LocalLeader>pp', '<Cmd>Translate PL -source=EN<CR>')
+xmap('<LocalLeader>pp', '<Cmd>Translate PL -source=EN<CR>')
 nmap('<LocalLeader>pr', 'viw:Translate PL -source=EN -output=replace<CR>') 
 xmap('<LocalLeader>pr', 'viw:Translate PL -source=EN -output=replace<CR>') 
 -- }}} 
@@ -821,7 +823,7 @@ xmap('<LocalLeader>pr', 'viw:Translate PL -source=EN -output=replace<CR>')
 -- grammarous {{{
 vim.g['grammarous#use_vim_spelllang'] = 1
 -- vim.g['grammarous#enable_spell_check'] = 1
-nmap('<LocalLeader>c', '<cmd>GrammarousCheck --lang=en<CR>')
+nmap('<LocalLeader>cc', '<cmd>GrammarousCheck --lang=en<CR>')
 nmap('<LocalLeader>cp', '<cmd>GrammarousCheck --lang=pl <CR>')
 nmap('<LocalLeader>ch', '<Plug>(grammarous-move-to-previous-error)', { noremap = false }) -- Move cursor to the previous error
 nmap('<LocalLeader>cl', '<Plug>(grammarous-move-to-next-error)', { noremap = false }) -- Move cursor to the next error

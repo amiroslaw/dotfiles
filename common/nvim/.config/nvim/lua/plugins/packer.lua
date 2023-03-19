@@ -53,6 +53,7 @@ return require('packer').startup(function()
 			-- { 'gbprod/yanky.nvim'},
 		},
 	}
+	use { "danielfalk/smart-open.nvim", branch = "0.1.x", requires = {"kkharji/sqlite.lua"} }
 	use {
 		'hrsh7th/nvim-cmp',
 		requires = { -- https://github.com/topics/nvim-cmp list of the sources
