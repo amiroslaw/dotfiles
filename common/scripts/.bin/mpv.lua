@@ -187,10 +187,11 @@ local function makeLocal()
 end
 
 local function makeOnline()
-	local ok,out, err = run('yt-dlp -i --print playlist_title,playlist_count,duration,title,original_url "' .. param .. '"',  'Error: Could not get playlist metadata: '.. param)
-
-	-- won't create playlist with hidden videos
-	assert(ok, err)
+	local ok,out, err = run('yt-dlp -i --print playlist_title,playlist_count,duration,title,original_url "' .. param .. '"')
+	-- assert(ok, err) -- has an error with hidden or private videos
+	if not ok then
+		notify('Warning', split(err, '\n'), {['YouTube said'] = 'red'})
+	end
 	local playlistName = out[1]
 	playlistName = buildName(playlistName)
 	local playlist = {'#EXTM3U', '#PLAYLIST: ' .. playlistName}
