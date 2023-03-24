@@ -153,16 +153,25 @@ nmap ,p :pv<cr>
 " Open file in the background using its default program
 nmap ,b :file &<cr>l
 
-" fzf finder
+" finder
+command! FZFlocate : set noquickview
+                  \| let $FZF_PICK = term('locate $HOME | fzf --height 10 2>/dev/tty')
+                  \| if $FZF_PICK != ''
+                  \|     execute 'goto' fnameescape($FZF_PICK)
+                  \| endif
+" nmap <A-l> :FZFlocate <cr> 
 " sometimes doesn't work with I param
-"command! fzf :execute '!fzf 2>&0 %%U' | normal! gf
-nmap <C-f> :fzf <cr> 
-command! fzf :execute '!fzf 2>&0 %%IU' | normal! gf
+" command! fzf :execute '!fzf 2>&0 %%IU' | normal! gf
+                " \| let $FZF_PICK = term('fd | fzf --preview-window 40% --preview "bat --style=numbers --color=always --line-range :500 {}" 2>/dev/tty')
+command! FZFfind : set noquickview
+                \| let $FZF_PICK = term('fd | fzf --preview "bat --style=numbers --color=always --line-range :500 {}" 2>/dev/tty')
+                \| if $FZF_PICK != ''
+                \|     execute 'goto' fnameescape($FZF_PICK)
+                \| endif
 command! fzfcdh :execute 'cd' fnameescape(term('fd --hidden --type d | fzf 2> /dev/tty'))
+nmap <C-f> :FZFfind <cr> 
 nmap <A-f> :fzfcdh <cr>
 " fzf finder hidden files doesn't work
-" command! fzfd :execute '!fd -t d --color=never %p %s | fzf 2>&0 %%IU' | normal! gf
-" command! fzfd :execute '!cd "$(fd -a --hidden --type d %p %s | fzf)"'
 
 " nmap <C-f> :sk <cr> 
 " command! sk :execute '!sk 2>&0 %%IU' | normal! gf
@@ -174,7 +183,7 @@ noremap il :!for f in %f; do  "$f"; done<A-B><A-B><Left>
 
 "archive
 "atool don't work with rar?
-nmap rr	:!atool -x %f <cr>
+nmap rr	:!atool -x %f &>/dev/null &<cr>
 nmap RR	:!atool --extract-to=%D %f <cr>
 nmap rl	:!atool -l %f %m <cr> 
 nmap rc :Pack 7z <cr>
@@ -211,6 +220,7 @@ noremap cm :!for i in %f; do  ffmpeg -i "$i" -f segment -segment_time 900 -c cop
 nmap ,d :!meld %c %C %i<cr> 
 command! diff nvim -d %f %F
 nmap ,D :diff<cr>
+nmap ,c :compare listall<cr>
 
 " copy text into other file
 nmap cc :!cat %c >> %C <cr> 
@@ -352,12 +362,10 @@ filetype {*.[1-8]},<text/troff> man ./%c
 fileviewer {*.[1-8]},<text/troff> man ./%c | col -b
 
 filetype {*.7z,*.zip,*.zip,*.jar,*.war,*.ear,*.oxt,*.apkg,*.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz},
-			\ xarchiver %f
-fileviewer *.zip,*.jar,*.war,*.ear,*.oxt zip -sf %c
-fileviewer *.tgz,*.tar.gz tar -tzf %c
-fileviewer *.tar.bz2,*.tbz2 tar -tjf %c
-fileviewer *.tar.txz,*.txz xz --list %c
-fileviewer {*.tar},<application/x-tar> tar -tf %c
+			\ file-roller %f &>/dev/null &
+fileviewer *.7z,*.bz2,*.cab,*.cpio,*.deb,*.gz,
+        \*.msi,*.pkg,*.rar,*.tar,*.tgz,*.xz,*.zip
+        \ als %f | less
 
 " Office files
 filextype {*.odt,*.ods,*.doc,*.docx,*.xls,*.xlsx,*.csv,*.odp,*.pptx,*.ppt},
