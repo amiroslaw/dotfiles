@@ -1,11 +1,10 @@
 " vim: filetype=vim :
 " DEPENDENCY
-" rust - rip, fd, rg, 
-" patool lub atool, feh or sxiv, meld, trash-cli, tree, du, pdfunite, udevil
-" meld dragon-drop tesseract
+" fd, rg, fzf, patool or atool, xclip, dua, trash-cli, exa, pdfunite, udevil
+"sxiv,tree, meld dragon-drop tesseract
 "
-" set grepprg="grep\ -n\ -H\ -I\ -r\ -i\ %i\ %a %s"
-" set findprg="find %s %a -print -prune"
+" TODO
+" change separete command from keybinding `command!`, it will be posiible to see it in command list `:com`, or just execute it form command mode
 
 " :com[mand] command_name action
 " Use %% if you need to put a percent sign in your command.
@@ -40,9 +39,6 @@
 " The command macros %f, %F, %d, %F may be used in the commands.
 " The %a macro is ignored.  To use a % you must put %%.
 
-" One window view
-" only
-
 set vicmd=nvim
 
 " With this option turned on you can run partially entered commands with unambiguous beginning using :! (e.g. :!Te instead of :!Terminal or :!Te<tab>).
@@ -55,32 +51,23 @@ set fastrun
 set syscalls
 
 " Trash Directory
-" The default is to move files that are deleted with dd or :d to
-" the trash directory.  If you change this you will not be able to move
-" files by deleting them and then using p to put the file in the new location.
+" The default is to move files that are deleted with dd or :d to the trash directory.  If you change this you will not be able to move files by deleting them and then using p to put the file in the new location.
 " I recommend not changing this until you are familiar with vifm.
 " This probably shouldn't be an option.
 " set trashdir
 set trash
-
 " This is how many directories to store in the directory history.
 set history=100
-
+" Maximum number of changes that can be undone.
+set undolevels=100
 " Follow links on l or Enter.
 set followlinks
-
 " With this option turned on you can run partially entered commands with
 " unambiguous beginning using :! (e.g. :!Te instead of :!Terminal or :!Te<tab>).
 set nofastrun
-
 " Natural sort of (version) numbers within text.
 set nosortnumbers
-
-" Maximum number of changes that can be undone.
-set undolevels=100
-
-" If you would like to run an executable file when you
-" press return on the file name set this.
+" If you would like to run an executable file when you press return on the file name set this.
 set norunexec
 
 " Use KiB, MiB, ... instead of K, M, ...
@@ -132,14 +119,54 @@ set suggestoptions=normal,visual,view,otherpane,keys,marks,registers
 set confirm-=delete
 " Total size of selected files To get the total size of selected files change %s to %E, %T-alias
 set statusline="  %T%= %A %10u:%-7g %15E %20d  "
+
+autocmd DirEnter * !fasd -A %d %i
+
 " Use ripgrep instead of grep wiht smart case
 set grepprg=rg\ --color=never\ -SHn\ %i\ %a\ %s
 " Use fd instead of find
 set findprg=fd\ --color=never\ %p\ %s
+" set grepprg="grep\ -n\ -H\ -I\ -r\ -i\ %i\ %a %s"
+" set findprg="find %s %a -print -prune"
+
 nmap <C-A-f> :find <space> 
 nmap <C-s> :grep <space>
+" finder
+" sometimes doesn't work with I param
+" command! fzf :execute '!fzf 2>&0 %%IU' | normal! gf
+                " \| let $FZF_PICK = term('fd | fzf --preview-window 40% --preview "bat --style=numbers --color=always --line-range :500 {}" 2>/dev/tty')
+command! fzfFind : set noquickview
+                \| let $FZF_PICK = term('fd | fzf --preview "bat --style=numbers --color=always --line-range :500 {}" 2>/dev/tty')
+                \| if $FZF_PICK != ''
+                \|     execute 'goto' fnameescape($FZF_PICK)
+                \| endif
+command! fzfCdh :execute 'cd' fnameescape(term('fd --hidden --type d | fzf 2> /dev/tty'))
+nmap <C-f> :fzfFind <cr> 
+nmap <A-f> :fzfCdh <cr>
+" grep -v cache - remove cache dir
+command! fzfFasd : set noquickview
+                \| let $PICK = term('fasd -Rld | fzf 2>/dev/tty')
+                \| if $PICK != ''
+                \|     execute 'cd ' fnameescape($PICK)
+                \| endif
+nmap <C-j> :fzfFasd <cr> 
 
-" custom commands
+" read bookmarks from custom list 
+" command! fzfBookmarks :exe "normal! :bmarks\r:write ~/.local/share/vifm/fzf-read/bookmarks\rq"
+                   " \ | execute 'cd "'.system('cat ~/.local/share/vifm/fzf-read/bookmarks | sed "s/:.*//" |  fzf 2>/dev/tty').'"'
+" nmap ,b :fzfBookmarks <cr> 
+
+" I don't have locate
+" command! fzfLocate : set noquickview
+"                   \| let $FZF_PICK = term('locate $HOME | fzf --height 10 2>/dev/tty')
+"                   \| if $FZF_PICK != ''
+"                   \|     execute 'goto' fnameescape($FZF_PICK)
+"                   \| endif
+" nmap <A-l> :FZFlocate <cr> 
+" multiselection 
+" command! fzfMulti :execute fd --hidden --type f | fzf -1 -m 2> /dev/tty | xargs -o nvim -p
+" nmap <a-j> :fzfMulti <cr> 
+
 " nmap , <nop> " help disappears quickly 
 nmap ,c :write | edit ~/.config/vifm/vifmrc | restart<cr>
 command! reload :write | restart
@@ -147,36 +174,11 @@ nmap ,r :reload<cr>
 command! df df -h %m 2> /dev/null
 command! run !! ./%f
 nmap ,x :run<cr>
-" thumbnail preview
-command! pv sxiv -tr %d %i
-nmap ,p :pv<cr>
+" thumbnail preview. Each piced (`m`) files will be selected in vifm. IDK how to change it for pqiv - maybe by keybinding
+command! thumbnail :select! !sxiv -oqt %d %i
+nmap ti :thumbnail<cr>
 " Open file in the background using its default program
 nmap ,b :file &<cr>l
-
-" finder
-command! FZFlocate : set noquickview
-                  \| let $FZF_PICK = term('locate $HOME | fzf --height 10 2>/dev/tty')
-                  \| if $FZF_PICK != ''
-                  \|     execute 'goto' fnameescape($FZF_PICK)
-                  \| endif
-" nmap <A-l> :FZFlocate <cr> 
-" sometimes doesn't work with I param
-" command! fzf :execute '!fzf 2>&0 %%IU' | normal! gf
-                " \| let $FZF_PICK = term('fd | fzf --preview-window 40% --preview "bat --style=numbers --color=always --line-range :500 {}" 2>/dev/tty')
-command! FZFfind : set noquickview
-                \| let $FZF_PICK = term('fd | fzf --preview "bat --style=numbers --color=always --line-range :500 {}" 2>/dev/tty')
-                \| if $FZF_PICK != ''
-                \|     execute 'goto' fnameescape($FZF_PICK)
-                \| endif
-command! fzfcdh :execute 'cd' fnameescape(term('fd --hidden --type d | fzf 2> /dev/tty'))
-nmap <C-f> :FZFfind <cr> 
-nmap <A-f> :fzfcdh <cr>
-" fzf finder hidden files doesn't work
-
-" nmap <C-f> :sk <cr> 
-" command! sk :execute '!sk 2>&0 %%IU' | normal! gf
-" nmap <A-f> :skd <cr>
-" command! skd :execute '!fd -t d --color=never | sk 2>&0 %%IU' | normal! gf
 
 " custom loop- finish command and push enter
 noremap il :!for f in %f; do  "$f"; done<A-B><A-B><Left>
@@ -229,15 +231,17 @@ nmap <C-c> :!cat %c | xclip -sel clip<cr>
 " append text from clipboard into file
 nmap <C-v> :!xclip -o -selection clipboard >> %c <cr>
 "rozmiary katalogów
-nmap du :!du -schL * %m<cr>
+nmap du :!dua i<cr>
 "change name without extension
+nmap <F1> :command <cr>
 nmap <F2> cW
 " trash-cli or rm-improved
 nmap <delete> :!trash-put %f<cr>
 nmap DD :!rm -rf %f<cr>
 "open in file manager
-" nmap <F3> :! kitty -d %d %i & <cr>
-nmap <F3> :! wezterm start --cwd %d %i & <cr>
+nmap <F3> :! wezterm start --cwd %d %i & <cr> 
+" opens in different terminal- has different pane list
+" nmap <F3> :! wezterm cli spawn --pane-id $WEZTERM_PANE --cwd %d %i & <cr>
 " open shell
 nmap X :shell <cr>
 "open in file manager
@@ -260,7 +264,7 @@ nmap md :!typora %f &<cr>
 " shortcut list
 nmap <C-l> :nmap <cr>
 nmap ; :
-nmap <space>	t
+nmap <silent> <space> tj
 "select all
 nmap aa ggvG<cr>
 "unselect all
@@ -285,8 +289,11 @@ nmap <C-h> :history search <cr>
 
 " VIEWS
 " one panel
-nmap <C-o> :only<cr>
+nmap to :only<cr>
+nmap ts :vs<cr>
 nmap tr :tree! <cr>
+" ranger like
+nnoremap <silent> tm :set millerview!<cr>
 "tree directory under cursor with size
 nmap T :!tree -h %c %m<cr>
 "tabs
@@ -401,10 +408,6 @@ filextype {*.djvu},<image/vnd.djvu>
         \ pqiv %f %i,
         \ zathura %f %i,
 
-" bat viewer
-fileviewer {*.md,*.txt,*.adoc,*.lua,*.csv,*.html,*.htm,*.java,*.kt,*.kts,*.sh,*.js,*.ts,*.css,*.scss,*.json,*.yml,*.yaml,*.toml} 
-	\ bat --color always --plain %c
-
 " Directories
 filextype */
         \ nemo %f &,
@@ -435,6 +438,13 @@ fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*avif wezterm imgcat --width %pw
 " 	\ vifmimg magickpreview %px %py %pw %ph %c
 " 	\ %pc
 " 	\ vifmimg clear
+
+" enable tree colors in folder preview
+fileviewer */,.*/ exa --color=always --tree --level=5 %c/
+
+" bat viewer HAVE to be on the bottom
+" fileviewer {*.md,*.txt,*.adoc,*.lua,*.csv,*.html,*.htm,*.java,*.kt,*.kts,*.sh,*.js,*.ts,*.css,*.scss,*.json,*.yml,*.yaml,*.toml} bat --color always --plain %c
+fileviewer *[^/],.*[^/] bat --color always --plain %c
 
 " BOOKMARKS {{{
  

@@ -50,6 +50,7 @@ For editing - set system env: GUI_EDITOR
 Dependencies: mpv, st, clipster, fd, zenity, rofi, notify-send, yt-dlp, trash-put in optional
 
 TODO: add support for reading from env
+doesn't clear playlist after abort prompt
 	]]
 
 end

@@ -387,6 +387,8 @@ alias -g X0='| xargs -0'
 alias -g D='$(fd --file=d | fzf)'
 alias -g F='| fzf '
 alias -g H='$(fd --hidden | fzf) '
+# env, przy uruchomieniu terminalu od razu wywołuje 
+# alias -g E=" ${(P)$(env | awk -F '=' '{print $1}' | fzf)}"
 #}}}
 
 #{{{ FUNCTIONS

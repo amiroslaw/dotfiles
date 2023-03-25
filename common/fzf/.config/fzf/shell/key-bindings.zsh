@@ -136,7 +136,7 @@ fzf-cd-widget() {
 zle     -N    fzf-cd-widget
 bindkey '\ed' fzf-cd-widget
 
-# ALT-Shift-D - cd into the selected directory
+# ALT-Shift-D - cd into the selected directory with hidden dirs
 fzf-cd-hidden-widget() {
   local cmd="${FZF_HIDDEN_DIR_COMMAND:-"command find -L . -mindepth 1 \\( -path '*/\\.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune \
     -o -type d -print 2> /dev/null | cut -b3-"}"

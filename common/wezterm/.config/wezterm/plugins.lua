@@ -22,7 +22,7 @@ return {
 		f:flush()
 		f:close()
 		window:perform_action(
-			wezterm.action { SpawnCommandInNewWindow = {
+			wezterm.action { SpawnCommandInNewTab = {
 				args = { 'nvim', name },
 			} },
 			pane
