@@ -219,16 +219,17 @@ local function concatPath(files, dir)
 end
 
 local function buildCmd(cmd)
-	local c = cmd
 	return function(selectedElements)
-		return c .. concatPath(selectedElements)
+		return cmd .. concatPath(selectedElements)
 	end
 end
-local function delete(selected) 
-	if os.execute('command -v trash-put') then
-		return 'trash-put ' .. concatPath(selected)
-	else
-		return 'rm ' .. concatPath(selected)
+local function delete() 
+	return function(selected)
+		if os.execute('command -v trash-put') then
+			return 'trash-put ' .. concatPath(selected)
+		else
+			return 'rm ' .. concatPath(selected)
+		end
 	end
 end
 
@@ -263,12 +264,12 @@ local function openPlaylist()
 		['Alt-a'] = {'audio', buildCmd(CMD_AUDIO) },
 		['Alt-n'] = {'rename', rename },
 		['Alt-o'] = {'open folder', function() return 'xdg-open "' .. DIR_PLAYLISTS .. '" &' end },
-		['Alt-d'] = {'delete', delete },
+		['Alt-d'] = {'delete', delete() },
 		['Alt-e'] = {'edit', buildCmd(os.getenv('GUI_EDITOR')) },
 		['Alt-h'] = {'archive', archive },
 	}
 
-	local selected, keybind = rofiMenu(playlists, {prompt = prompt, keys = copyt(keysFun), multi=true, width = '95%'})
+	local selected, keybind = rofiMenu(playlists, {prompt = prompt, keys = keysFun, multi=true, width = '95%'})
 	if not keybind then return end -- cancel
 	if not keysFun[keybind] then -- default
 		local ok, _, err = run(CMD_VIDEO .. concatPath(selected))

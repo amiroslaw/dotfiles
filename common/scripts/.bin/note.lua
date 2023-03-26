@@ -20,28 +20,31 @@ if not action then
 	notifyError('Provide argument')
 end
 
-function clipster(clipType) 
-	local delimiter = '~#~'
-	local clipboardAmount = 1
-	if not arg[2] then clipboardAmount = rofiNumberInput('Number of clips') 
-	else
-		clipboardAmount = arg[2]
-	end
+function clipster(clipboard) 
+	local clipType = clipboard
+	return function()
+		local delimiter = '~#~'
+		local clipboardAmount = 1
+		if not arg[2] then clipboardAmount = rofiNumberInput('Number of clips') 
+		else
+			clipboardAmount = arg[2]
+		end
 
-	-- local clipElements = io.popen("clipster --output --" .. clipType .. " -n " .. clipboardAmount):read('*a') -- for LIFO order
-	local clipElements = {}
-	local clipsterOutput = io.popen("clipster --output --delim " .. delimiter .. " --" .. clipType .. " -n " .. clipboardAmount + 1):read('*a')
-	assert(#clipsterOutput ~= 0, "Can not get clipboard history")
+		-- local clipElements = io.popen("clipster --output --" .. clipType .. " -n " .. clipboardAmount):read('*a') -- for LIFO order
+		local clipElements = {}
+		local clipsterOutput = io.popen("clipster --output --delim " .. delimiter .. " --" .. clipType .. " -n " .. clipboardAmount + 1):read('*a')
+		assert(#clipsterOutput ~= 0, "Can not get clipboard history")
 
-	for token in clipsterOutput:gmatch("(.-)" .. delimiter) do
-		table.insert(clipElements, token)
+		for token in clipsterOutput:gmatch("(.-)" .. delimiter) do
+			table.insert(clipElements, token)
+		end
+		
+		local revertedClip = ''
+		for i=1, #clipElements do
+			revertedClip = revertedClip .. clipElements[#clipElements + 1 - i] .. '\n'
+		end
+		return revertedClip
 	end
-	
-	revertedClip = ''
-	for i=1, #clipElements do
-		revertedClip = revertedClip .. clipElements[#clipElements + 1 - i] .. '\n'
-	end
-	return revertedClip
 end
 
 function writeNote() 
@@ -55,21 +58,21 @@ function writeToFile(text)
 	return 'Copied to ' .. FILE_PATH
 end
 
-local switch = (function(name,args)
+local switch = (function(name)
 	local sw = {
-		["clip"]= function() return clipster, 'clipboard' end,
-		["clipboard"]= function() return clipster, 'clipboard' end,
-		["sel"]= function() return clipster, 'primary' end,
-		["selection"]= function() return clipster, 'primary' end,
-		["write"] = function() return writeNote end,
+		["clip"]= clipster('clipboard'),
+		["clipboard"]= clipster('clipboard'),
+		["sel"]= clipster('primary'),
+		["selection"]= clipster('primary'),
+		["write"] = writeNote,
 		["-h"]= function() print(HELP); os.exit() end,
-		["#default"]= function() return clipster, 'primary' end
+		["#default"]= clipster('primary'),
 	}
-	return (sw[name]and{sw[name]}or{sw["#default"]})[1](args)
+	return (sw[name]and{sw[name]}or{sw["#default"]})[1]
 end)
 
-local exec, param = switch(action)
-local ok, val = pcall(exec, param)
+local exec = switch(action)
+local ok, val = pcall(exec)
 
 if not ok then 
 	log(val, 'ERROR')

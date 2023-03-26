@@ -614,7 +614,7 @@ opt - optional arguments that can be passed via table
 --]]
 -- TODO default option for not existence and exit??
 function rofiMenu(entriesTab, options)
-	local opt, keys = combineOptions(options)
+	local opt, keys = combineOptions(copyt(options))
 	local entries = ''
 	local lines = 0
 	local isArray = isArray(entriesTab)

@@ -28,6 +28,7 @@ if phraseArg == 'primary' or phraseArg == 'clip' then
 end
 
 function cheat()
+	return function(phraseArg)
 	local topics = {
 		lua = "lang",
 		java = 'lang',
@@ -52,7 +53,6 @@ function cheat()
 	local status = 1
 	if topics[topic] == 'lang' then
 		if query == '' then query = ':list' elseif query == 'l' then query = ':learn' end -- :learn; def=:list
-		print('curl cht.sh/' .. topic .. '/' .. query .. ' > ' .. tmpname .. '?T')
 		status = os.execute('curl cht.sh/' .. topic .. '/' .. query .. '?T' .. ' > ' .. tmpname) -- ?T without ascii
 	else
 		status = os.execute('curl cht.sh/' .. topic .. '~' .. query .. '?T' .. ' > ' .. tmpname)
@@ -62,57 +62,62 @@ function cheat()
 	-- os.execute("wezterm start --class cheatsh -- less -R " .. tmpname)
 	os.execute('st -c cheatsh -n cheatsh -e nvim ' .. tmpname)
 end
-
-function browser(url)
-	local status = os.execute('xdg-open ' .. url)
-	assert(status, 'Could not browse')
 end
 
-function transShell(dictionary)
-	local translation = io.popen('trans -b -sp ' .. dictionary .. ' "' .. phraseArg ..'"'):read('*a')
-	if #translation == 0 then 
-		error("Can not translate") 
-	else
-		notify(translation)
-		-- todo
-		-- path = os.getenv('CONFIG') ..  '/logs/
-		-- echo "$selection ; $pl" >> ~/.config/rofi/scripts/tran/enpl-dictionary.txt ]]
+local function transShell(dictionary)
+	return function(phraseArg)
+		local translation = io.popen('trans -b -sp ' .. dictionary .. ' "' .. phraseArg ..'"'):read('*a')
+		if #translation == 0 then 
+			error("Can not translate") 
+		else
+			notify(translation)
+			-- TODO
+			-- path = os.getenv('CONFIG') ..  '/logs/
+			-- echo "$selection ; $pl" >> ~/.config/rofi/scripts/tran/enpl-dictionary.txt ]]
+		end
 	end
 end
 
-function tuxi() --show error but work fine
+local function tuxi() --show error but work fine
 	local output = io.popen('tuxi -ra "' .. phraseArg ..'"'):read('*a')
 	assert(#output ~= 0, "Can not search")
 	os.execute("st -c read -n read -e sh -c 'echo \"" .. output .. "\" | nvim -'") -- can take terminal form env and save file into tmp
 end
 
+local function browser(url)
+	  return function(phrase)
+		local status = os.execute('xdg-open "' .. url .. phrase .. '"')
+		assert(status == 0, 'Could not browse: ' .. phrase)
+	  end
+end
+
 local options = {
-	["google"] = function(phrase) return browser, 'https://google.com/search?q="' .. phrase .. '"' end,
-	["brave"] = function(phrase) return browser, 'https://search.brave.com/search?q="' .. phrase .. '"' end,
-	["dd"] = function(phrase) return browser, 'https://duckduckgo.com/html?q="' .. phrase .. '"' end,
-	["yt"] = function(phrase) return browser, 'https://www.youtube.com/results?search_query="' .. phrase .. '"' end,
-	["maps"] = function(phrase) return browser, 'https://www.google.com/maps?q="' .. phrase .. '"' end,
-	["wiki"] = function(phrase) return browser, 'https://en.wikipedia.org/wiki/"' .. phrase .. '"' end,
-	["ceneo"] = function(phrase) return browser, 'https://www.ceneo.pl/szukaj-"' .. phrase .. '"' end,
-	["cenowarka"] = function(phrase) return browser, 'https://cenowarka.pl/?fs="' .. phrase .. '"' end,
-	["allegro"] = function(phrase) return browser, 'https://allegro.pl/listing?string="' .. phrase .. '"' end,
-	["amazon"] = function(phrase) return browser, 'https://www.amazon.pl/s/?field-keywords="' .. phrase .. '"' end,
-	["so"] = function(phrase) return browser, 'https://stackoverflow.com/search?q="' .. phrase .. '"' end,
-	["filmweb"] = function(phrase) return browser, 'https://www.filmweb.pl/search?q="' .. phrase .. '"' end,
-	["diki"] = function(phrase) return browser, 'https://www.diki.pl/slownik-angielskiego?q="' .. phrase .. '"' end,
-	["deepl"] = function(phrase) return browser, 'https://www.deepl.com/translator#en/pl/"' .. phrase .. '"' end,
-	["translator"] = function(phrase) return browser, 'https://translate.google.com/#auto/en/"' .. phrase .. '"' end,
-	["plen"]= function(phrase) return transShell, 'pl:en' end,
-	["enpl"]= function(phrase) return transShell, 'en:pl' end,
-	["tuxi"]= function(phrase) return tuxi  end,
-	["cheat"]= function(phrase) return cheat end,
+	["google"] = browser('https://google.com/search?q='),
+	["brave"] = browser('https://search.brave.com/search?q='),
+	["dd"] = browser('https://duckduckgo.com/html?q='),
+	["yt"] = browser('https://www.youtube.com/results?search_query='),
+	["maps"] = browser('https://www.google.com/maps?q='),
+	["wiki"] = browser('https://en.wikipedia.org/wiki/'),
+	["ceneo"] = browser('https://www.ceneo.pl/szukaj-'),
+	["cenowarka"] = browser('https://cenowarka.pl/?fs='),
+	["allegro"] = browser('https://allegro.pl/listing?string='),
+	["amazon"] = browser('https://www.amazon.pl/s/?field-keywords='),
+	["so"] = browser('https://stackoverflow.com/search?q='),
+	["filmweb"] = browser('https://www.filmweb.pl/search?q='),
+	["diki"] = browser('https://www.diki.pl/slownik-angielskiego?q='),
+	["deepl"] = browser('https://www.deepl.com/translator#en/pl/'),
+	["translator"] = browser('https://translate.google.com/#auto/en/'),
+	["plen"]= transShell('pl:en'),
+	["enpl"]= transShell('en:pl'),
 	["tor"]= function(phrase) return  os.execute('tor.sh "' .. phrase .. '"') end,
+	["tuxi"]= function() return tuxi() end,
+	["cheat"]= cheat(),
 	["-h"]= function() print(HELP); os.exit() end,
-	["#default"] = function(phrase) return browser, 'http://google.com/search?q="' .. phrase .. '"' end
+	["#default"] = browser('https://google.com/search?q='),
 }
 local switch = (function(name,args)
 	local sw = options	
-	return (sw[name]and{sw[name]}or{sw["#default"]})[1](args)
+	return (sw[name]and{sw[name]}or{sw["#default"]})[1]
 end)
 
 if action == 'menu' then
@@ -120,7 +125,8 @@ if action == 'menu' then
 end
 
 local exec, param = switch(action, phraseArg)
-local ok, val = pcall(exec, param)
+print(exec, param)
+local ok, val = pcall(exec, phraseArg)
 
 if not ok then 
 	log(val, 'ERROR')
