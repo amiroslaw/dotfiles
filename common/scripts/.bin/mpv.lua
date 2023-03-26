@@ -3,6 +3,7 @@
 local TMP_PLAYLIST = '/tmp/qb_mpvplaylist.m3u'
 local TMP_PLAY = '/tmp/qb_mpv.m3u'
 local DIR_PLAYLISTS = os.getenv 'HOME' .. '/Templates/mpvlists'
+local DIR_ARCHIVE = os.getenv 'HOME' .. '/Templates/mpvlists-archive'
 -- local GUI_EDITOR = 'nvim-qt'
 
 function help()
@@ -132,8 +133,8 @@ local function savePlaylist(mediaType)
 			print('mv ' .. TMP_PLAYLIST .. ' "' .. DIR_PLAYLISTS .. '/' .. listName .. '.m3u"')
 			assert( os.execute('mv ' .. TMP_PLAYLIST .. ' "' .. DIR_PLAYLISTS .. '/' .. listName .. '.m3u"') == 0, 'Did not move playlist to ' .. DIR_PLAYLISTS)
 		end
-		assert(os.execute('rm -f ' .. TMP_PLAYLIST) == 0, 'Did not remove playlist')
 	end
+	assert(os.execute('rm -f ' .. TMP_PLAYLIST) == 0, 'Did not remove playlist')
 end
 
 local function play(cmd, action, url)
@@ -235,6 +236,7 @@ local function openPlaylist()
 		['Alt-d'] = 'delete',
 		['Alt-e'] = 'edit',
 		['Alt-o'] = 'open folder',
+		['Alt-h'] = 'archive',
 	}
 	local selected, keybind = rofiMenu(playlists, {prompt = prompt, keys = keys, multi=true, width = '95%'})
 	if not keybind then return end
@@ -261,10 +263,15 @@ local function openPlaylist()
 	elseif keybind == 'Alt-e'  then
 		cmd = os.getenv('GUI_EDITOR')
 	elseif keybind == 'Alt-o'  then
-		cmd = run('xdg-open "' .. DIR_PLAYLISTS .. '" &')
+		run('xdg-open "' .. DIR_PLAYLISTS .. '" &')
 		return
-	end
-
+	elseif keybind == 'Alt-h'  then
+		assert(os.execute('mkdir -p ' .. DIR_ARCHIVE) == 0, 'Did not create playlist dir ' .. DIR_ARCHIVE)
+		print('mv ' .. concatPath(selected) .. ' "' .. DIR_ARCHIVE .. '"')
+		run('mv ' .. concatPath(selected) .. ' "' .. DIR_ARCHIVE .. '"')
+		return    
+	end   
+ 
 	local ok, _, err = run(cmd .. concatPath(selected))
 	assert(ok, 'Error: Can not execute ')
 end
