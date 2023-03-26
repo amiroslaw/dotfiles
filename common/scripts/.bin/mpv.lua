@@ -104,11 +104,8 @@ end
 
 local function buildName(defaultName)
 	if args.input or args.i then
-		local ok, out =	run('zenity --entry --text="Playlist name" --entry-text="' .. defaultName .. '"', "Can't run zenity")
-		assert(ok, err)
-		if out then
-			return out[1]
-		end
+		local ok, out, err =	run('zenity --entry --text="Playlist name" --entry-text="' .. defaultName .. '"', "Can't run zenity")
+		return out[1]
 	end
 	local save = args.save or args.s
 	if save then
@@ -130,7 +127,6 @@ local function savePlaylist(mediaType)
 		local defaultName = os.date '%Y-%m-%dT%H%M-' .. mediaType .. '-' .. getHost()
 		local listName = buildName(defaultName)
 		if listName then
-			print('mv ' .. TMP_PLAYLIST .. ' "' .. DIR_PLAYLISTS .. '/' .. listName .. '.m3u"')
 			assert( os.execute('mv ' .. TMP_PLAYLIST .. ' "' .. DIR_PLAYLISTS .. '/' .. listName .. '.m3u"') == 0, 'Did not move playlist to ' .. DIR_PLAYLISTS)
 		end
 	end
@@ -183,9 +179,11 @@ local function makeLocal()
 	pwd = split(pwd, '/')
 	local playlistName = pwd[#pwd]:gsub('\n', '')
 	playlistName = buildName(playlistName)
-	local playlist = assert(io.open(playlistName .. '.m3u', 'w'))
-	playlist:write(find)
-	playlist:close()
+	if playlistName then
+		local playlist = assert(io.open(playlistName .. '.m3u', 'w'))
+		playlist:write(find)
+		playlist:close()
+	end
 end
 
 local function makeOnline()
@@ -196,6 +194,9 @@ local function makeOnline()
 	end
 	local playlistName = out[1]
 	playlistName = buildName(playlistName)
+	if not playlistName then
+		return
+	end
 	local playlist = {'#EXTM3U', '#PLAYLIST: ' .. playlistName}
 	for i = 0, out[2] -1 do
 		local videoIndex = i * 5
@@ -217,6 +218,33 @@ local function concatPath(files, dir)
 	return paths
 end
 
+local function buildCmd(cmd)
+	local c = cmd
+	return function(selectedElements)
+		return c .. concatPath(selectedElements)
+	end
+end
+local function delete(selected) 
+	if os.execute('command -v trash-put') then
+		return 'trash-put ' .. concatPath(selected)
+	else
+		return 'rm ' .. concatPath(selected)
+	end
+end
+
+local function rename(selected) 
+	args.input = true;
+	for _,playlist in ipairs(selected) do
+		renamePlaylist(playlist)
+	end
+	return 'notify-send "Renamed"' 
+end
+
+local function archive(selected) 
+	assert(os.execute('mkdir -p ' .. DIR_ARCHIVE) == 0, 'Did not create playlist dir ' .. DIR_ARCHIVE)
+	return 'mv ' .. concatPath(selected) .. ' "' .. DIR_ARCHIVE .. '"'
+end
+
 -- When selected few playlists, they will be nested.
 -- Multiple option opens videos in playlist but it doesn't hold --x11-name
 -- with too many files, it doesn't work
@@ -226,54 +254,30 @@ local function openPlaylist()
 	if args.list or args.L then
 		filetype = ' -e m3u '
 	end
+
 	local ok, playlists, err = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-', "Can't find files" )
 	assert(ok, err)
 	local prompt = 'default:open video; shift-enter:multi selection; Found:'.. #playlists
-	local keys = {
-		['Alt-p'] = 'popup',
-		['Alt-a'] = 'audio',
-		['Alt-n'] = 'rename',
-		['Alt-d'] = 'delete',
-		['Alt-e'] = 'edit',
-		['Alt-o'] = 'open folder',
-		['Alt-h'] = 'archive',
+	local keysFun = {
+		['Alt-p'] = {'popup', buildCmd(CMD_POPUP) },
+		['Alt-a'] = {'audio', buildCmd(CMD_AUDIO) },
+		['Alt-n'] = {'rename', rename },
+		['Alt-o'] = {'open folder', function() return 'xdg-open "' .. DIR_PLAYLISTS .. '" &' end },
+		['Alt-d'] = {'delete', delete },
+		['Alt-e'] = {'edit', buildCmd(os.getenv('GUI_EDITOR')) },
+		['Alt-h'] = {'archive', archive },
 	}
-	local selected, keybind = rofiMenu(playlists, {prompt = prompt, keys = keys, multi=true, width = '95%'})
-	if not keybind then return end
-	
-	if keybind == 'Alt-n'  then
-		args.input = true
-		for _,playlist in ipairs(selected) do
-			renamePlaylist(playlist)
-		end
-		return
+
+	local selected, keybind = rofiMenu(playlists, {prompt = prompt, keys = copyt(keysFun), multi=true, width = '95%'})
+	if not keybind then return end -- cancel
+	if not keysFun[keybind] then -- default
+		local ok, _, err = run(CMD_VIDEO .. concatPath(selected))
+		assert(ok, 'Error: Can not play vlideo ')
+	else
+		local cmd = keysFun[keybind][2](selected)
+		local ok, _, err = run(cmd)
+		assert(ok, 'Error: Can not execute ')
 	end
-	
-	local cmd = CMD_VIDEO
-	if keybind == 'Alt-p' then
-		cmd = CMD_POPUP
-	elseif keybind == 'Alt-a'  then
-		cmd = CMD_AUDIO
-	elseif keybind == 'Alt-d'  then
-		if os.execute('command -v trash-put') then
-			cmd = 'trash-put '
-		else
-			cmd = 'rm '
-		end
-	elseif keybind == 'Alt-e'  then
-		cmd = os.getenv('GUI_EDITOR')
-	elseif keybind == 'Alt-o'  then
-		run('xdg-open "' .. DIR_PLAYLISTS .. '" &')
-		return
-	elseif keybind == 'Alt-h'  then
-		assert(os.execute('mkdir -p ' .. DIR_ARCHIVE) == 0, 'Did not create playlist dir ' .. DIR_ARCHIVE)
-		print('mv ' .. concatPath(selected) .. ' "' .. DIR_ARCHIVE .. '"')
-		run('mv ' .. concatPath(selected) .. ' "' .. DIR_ARCHIVE .. '"')
-		return    
-	end   
- 
-	local ok, _, err = run(cmd .. concatPath(selected))
-	assert(ok, 'Error: Can not execute ')
 end
 
 -- Gets metadata form YouTube's video

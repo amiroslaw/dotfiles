@@ -530,7 +530,14 @@ if opt then
 			defaultOpt[name] = ' -multi-select '
 		elseif name == 'keys' then
 			local numberKey = 1
-			for keybinding, description in pairs(opt.keys) do
+			local keysOpt = opt.keys
+			local _, keyVal = next(keysOpt)
+			if type(keyVal) == 'table' then
+				for k,tab in pairs(opt.keys) do
+					keysOpt[k] = tab[1]
+				end
+			end
+			for keybinding, description in pairs(keysOpt) do
 				keybindingCmd = keybindingCmd .. ' -kb-custom-' .. numberKey .. ' "' .. keybinding .. '" '
 				keyMsgCmd = keyMsgCmd .. " <span color='" .. ACCENT_COLOR .. "'>" .. keybinding .. "</span>:" .. description .. ";"
 				keys[numberKey] = keybinding
@@ -602,7 +609,7 @@ opt - optional arguments that can be passed via table
 	height (number)-  max lines than rofi can show; default: 24
 	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
 	multi (boolean)- If true, rofi will allow to select multiple rows, and it will return table with selected options
-	keys (table) - Custom keys. Keys in table are keybindings, and values are descriptions for them. Example: keys = { ['Alt-p'] = 'popup', ['Alt-a'] = 'audio',}
+	keys (table) - Custom keys. Keys in table are keybindings, and values are descriptions for them. Example: keys = { ['Alt-p'] = 'popup', ['Alt-a'] = 'audio',}. If value is a table with function, it will extract description (it has to be in the first index) {['Alt-p'] = {'popup', function() return ..end },}
 	msg (string) - Message information, accepts pango markup(html like). Msg should fit in one line otherwise it will show less entries, use width to adjust.
 --]]
 -- TODO default option for not existence and exit??
