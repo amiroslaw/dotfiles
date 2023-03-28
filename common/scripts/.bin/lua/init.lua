@@ -1,7 +1,10 @@
 -- most functions copied from 
 -- https://github.com/marcotrosi/init.lua
 --https://github.com/pocomane/luasnip
+-- https://github.com/Yonaba/Moses/tree/master
+
 --[[
+UTILS
 printt(table, file) to print tables on screen or to file
 copyt(table) deep copy table
 readf(file) read file, returns table
@@ -10,18 +13,18 @@ eq compares 2 values for equality
 status,out,err = run(cmd, msgErr) - status is boolean; out is a table; executes external command and optionally capture the output
 str converts any non-string type to string, and strings to quoted strings
 
--- cliparse cliparse({'-aib','--key','defKey','--opt=2'}, 'defKeyArg'); value option can have space even in a quote
---filenamesplit( filepathStr ) --> pathStr, nameStr, extStr
--- jsonish
--- jsonishout 
---jsonishout{{a=1},{1,"b"}} == '[{"a":1},[1,"b"]\]'
--- keysort This function return the list of all the keys of the input inTab table. The keys are alphabetically sorted.
---keysort( inTab ) --> outArr
+filenamesplit( filepathStr ) --> pathStr, nameStr, extStr
+jsonish
+jsonishout 
+jsonishout{{a=1},{1,"b"}} == '[{"a":1},[1,"b"]\]'
+keysort This function return the list of all the keys of the input inTab table. The keys are alphabetically sorted.
+keysort( inTab ) --> outArr
+cliparse cliparse({'-aib','--key','defKey','--opt=2'}, 'defKeyArg'); value option can have space even in a quote
 
+SCRIPTING
 switch(cases, pattern)
 log(logMsg, [ level ], [ file ])
 trim(s) - trim string from whitespaces
-isArray
 enum({ a =1 , b =1 }) returns table; problems with deep copy or loops
 split(string, separator) returns table;
 splitFlags(string)
@@ -39,6 +42,21 @@ rofiInput - optional arguments that can be passed via table
 	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
 	multi (boolean)- If true rofi will allow to select multiple rows, and it will return table with selected options
 --]]
+
+--- FUNCTIONAL <<<
+package.path = os.getenv('SCRIPTS') .. '/lua/' .. package.path
+M = require "moses"
+
+--- operator <<<
+-- extends by than; usefull if you need pass a param filter
+-- example of grater than: filter(seq, operator.gtt(4))
+M.operator.gtt  = function(n) return function(m) return m > n end end;
+M.operator.ltt  = function(n) return function(m) return m < n end end;
+M.operator.eqt  = function(n) return function(m) return m == n end end;
+M.operator.net  = function(n) return function(m) return m > n end end;
+-- >>>
+
+-- >>>
 
 -- notify <<<
 --[[
@@ -431,7 +449,6 @@ function exist(file)
    return ok, err
 end --- >>> 
 
-
 --- switch <<<
 -- the argument cases is a key-value table. Values can be either variables or functions.
 --[[ keys = {
@@ -453,15 +470,31 @@ end -- >>>
 function trim(s)
    return s:match'^()%s*$' and '' or s:match'^%s*(.*%S)'
 end -- >>>
--- isArray <<<
--- if a table is a dictionary it will return false. Mixed table will return true 😦
---]]
-function isArray(table)
-  if type(table) == 'table' and #table > 0 then
-    return true
-  end
-  return false
-end -- >>>
+
+--- keys <<<
+--- Returns the keys of the object properties.
+-- @name keys
+-- @param obj an object
+-- @return an array
+-- keys({x = 0, y = 1}) -- => "{'y','x'}"
+function keys(obj)
+  local keys = {}
+  for key in pairs(obj) do keys[#keys+1] = key end
+  return keys
+end
+-- >>>
+
+--- values <<<
+--- Returns the values of the object properties.
+-- @name values
+-- @param obj an object
+-- @return an array of values
+function values(obj)
+  local values = {}
+  for key, value in pairs(obj) do values[#values+1] = value end
+  return values
+end
+-- >>>
 
 -- split <<<
 function split(str, delimiter)
@@ -617,7 +650,7 @@ function rofiMenu(entriesTab, options)
 	local opt, keys = combineOptions(copyt(options))
 	local entries = ''
 	local lines = 0
-	local isArray = isArray(entriesTab)
+	local isArray = M.isArray(entriesTab)
 
 	for key,val in pairs(entriesTab) do
 		if isArray then

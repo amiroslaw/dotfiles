@@ -19,7 +19,8 @@ export NIK_HOME=~/.local/share/sdkman/candidates/java/22.3.r17.ea-nik
 # paths
 export ROFI="$HOME/.config/rofi/scripts"
 export GRAVEYARD="$HOME/.local/share/Trash"
-export LUA_INIT="@$HOME/Documents/dotfiles/common/scripts/.bin/init.lua"
+export SCRIPTS="$HOME/Documents/dotfiles/common/scripts/.bin"
+export LUA_INIT="@$HOME/Documents/dotfiles/common/scripts/.bin/lua/init.lua"
 export ZPLUG_HOME=~/.config/zplug
 
 # Default Apps

@@ -638,12 +638,12 @@ vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' } -- }}}
 nmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
 nmap('P', "<Plug>(YankyPutAfterLinewise)", { noremap = false })
 -- nmap('y', "<Plug>(YankyYank)", { noremap = false }) -- preserve_cursor_position
-nmap('<c-p>', ':YankyRingHistory <cr>') -- can be manage by Telescope
+nmap('<c-p>', ':YankyRingHistory <cr>') -- list; can be manage by Telescope
 xmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
 nmap("<A-n>", "<Plug>(YankyCycleForward)", { noremap = false })
 nmap("<A-p>", "<Plug>(YankyCycleBackward)", { noremap = false }) 
 -- }}} 
---
+
 -- Status and tab bars {{{
 require('lualine').setup { options = { theme = 'dracula', component_separators = '|', globalstatus = true }, 
 -- sections = {lualine_a = {'buffers'}} - takes too much space

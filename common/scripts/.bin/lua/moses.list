@@ -1,0 +1,274 @@
+  -- Table functions aliases
+  M.forEach       = M.each
+  M.forEachi      = M.eachi
+  M.update        = M.adjust
+  M.alleq         = M.allEqual
+  M.loop          = M.cycle
+  M.collect       = M.map
+  M.inject        = M.reduce
+  M.foldl         = M.reduce
+  M.injectr       = M.reduceRight
+  M.foldr         = M.reduceRight
+  M.mapr          = M.mapReduce
+  M.maprr         = M.mapReduceRight
+  M.any           = M.include
+  M.some          = M.include
+  M.contains      = M.include
+  M.filter        = M.select
+  M.discard       = M.reject
+  M.every         = M.all
+  
+  -- Array functions aliases
+  M.takeWhile     = M.selectWhile
+  M.rejectWhile   = M.dropWhile
+  M.pop           = M.shift
+  M.remove        = M.pull
+  M.rmRange       = M.removeRange
+  M.chop          = M.removeRange
+  M.sub           = M.slice
+  M.head          = M.first
+  M.take          = M.first
+  M.tail          = M.rest
+  M.without       = M.difference
+  M.diff          = M.difference
+  M.symdiff       = M.symmetricDifference
+  M.xor           = M.symmetricDifference
+  M.uniq          = M.unique
+  M.isuniq        = M.isunique
+	M.transpose     = M.zip
+  M.part          = M.partition
+  M.perm          = M.permutation
+  M.transposeWith = M.zipWith
+  M.intersperse   = M.interpose
+  M.sliding       = M.aperture
+  M.mirror        = M.invert
+  M.join          = M.concat
+  M.average       = M.mean
+  
+  -- Utility functions aliases
+  M.always        = M.constant
+  M.cache         = M.memoize
+  M.juxt          = M.juxtapose
+  M.uid           = M.uniqueId
+  M.iter          = M.iterator
+  M.nAry          = M.ary
+  
+  -- Object functions aliases
+  M.methods       = M.functions
+  M.choose        = M.pick
+  M.drop          = M.omit
+  M.defaults      = M.template
+  M.compare       = M.isEqual
+  M.matches       = M.isEqual
+
+operator.add (a, b)	Returns a + b.
+operator.concat (a, b)	Returns concatenation of a and b.
+operator.div (a, b)	Returns a / b.
+operator.eq (a, b)	Checks if a equals b.
+operator.exp (a, b)	Returns a ^ b.
+operator.floordiv (a, b)	Performs floor division (//) between a and b.
+operator.ge (a, b)	Returns logical a and b.
+operator.ge (a, b)	Checks if a is greater or equal to b.
+operator.gt (a, b)	Checks if a is strictly greater than b.
+operator.intdiv (a, b)	Performs integer division between a and b.
+operator.le (a, b)	Checks if a is less or equal to b.
+operator.length (a)	Returns the length of a.
+operator.lnot (a)	Returns logical not a.
+operator.lor (a, b)	Returns logical a or b.
+operator.lt (a, b)	Checks if a is strictly less than b.
+operator.mod (a, b)	Returns a % b.
+operator.mul (a, b)	Returns a * b.
+operator.neq (a, b)	Checks if a not equals b.
+operator.sub (a, b)	Returns a - b.
+operator.unm (a)	Returns -a.
+
+Table functions
+adjust (t, key, f)	Adjusts the value at a given key using a function or a value.
+all (t, f)	Checks if all values in a table are passing an iterator test.
+allEqual (t[, comp])	Checks if all values in a collection are equal.
+at (t, ...)	Collects values at given keys and return them wrapped in an array.
+best (t, f)	Returns the best value passing a selector function.
+clear (t)	Clears a table.
+containsKeys (t, other)	Checks if all the keys of other table exists in table t.
+count (t[, val])	Counts occurrences of a given value in a table.
+countBy (t, iter)	Groups values in a collection and counts them.
+countf (t, f)	Counts the number of values passing a predicate test.
+cycle (t[, n])	Loops n times through a table.
+detect (t, value)	Performs a linear search for a value in a table.
+each (t, f)	Iterates on key-value pairs, calling f (v, k) at every step.
+eachi (t, f)	Iterates on integer key-value pairs, calling f(v, k) every step.
+findWhere (t, props)	Returns the first value having specified keys props.
+groupBy (t, iter)	Splits a table into subsets groups.
+include (t, value)	Performs a linear search for a value in a table.
+invoke (t, method)	Invokes a method on each value in a table.
+map (t, f)	Maps f (v, k) on value-key pairs, collects and returns the results.
+mapReduce (t, f[, state])	Reduces a table while saving intermediate states.
+mapReduceRight (t, f[, state])	Reduces a table while saving intermediate states.
+max (t[, transform])	Returns the max value in a collection.
+min (t[, transform])	Returns the min value in a collection.
+pluck (t, key)	Extracts values in a table having a given key.
+reduce (t, f[, state])	Reduces a table, left-to-right.
+reduceBy (t, f, pred[, state[, ...]])	Reduces values in a table passing a given predicate.
+reduceRight (t, f[, state])	Reduces a table, right-to-left.
+reject (t, f)	Clones a table while dropping values passing an iterator test.
+same (a, b)	Checks if two tables are the same.
+sameKeys (tA, tB)	Checks if both given tables have the same keys.
+select (t, f)	Selects and returns values passing an iterator test.
+size ([...])	Counts the number of values in a collection.
+sort (t[, comp])	Sorts a table, in-place.
+sortBy (t[, transform[, comp]])	Sorts a table in-place using a transform.
+sortedk (t[, comp])	Iterates on values with respect to key order.
+sortedv (t[, comp])	Iterates on values with respect to values order.
+where (t, props)	Returns all values having specified keys props.
+Array functions
+addTop (array, ...)	Adds all passed-in values at the top of an array.
+aperture (array[, n])	Iterator returning sliding partitions of an array.
+append (array, other)	Clones array and appends values from another array.
+chunk (array, f)	Chunks together consecutive values.
+compact (array)	Returns all truthy values (removes falses and nils).
+concat (array[, sep[, i[, j]]])	Concatenates values in a given array.
+difference (array, another)	Returns values from an array not present in all passed-in args.
+disjoint (...)	Checks if all passed in arrays are disjunct.
+dropWhile (array, f)	Collects values from a given array.
+duplicates (array)	Returns an array list of all duplicates in array.
+fill (array, value[, i[, j]])	Replaces elements in a given array with a given value.
+find (array, value[, from])	Looks for the first occurrence of a given value in an array.
+findIndex (array, pred)	Returns the first index at which a predicate returns true.
+findLastIndex (array, pred)	Returns the last index at which a predicate returns true.
+first (array[, n])	Returns the first N values in an array.
+flatten (array[, shallow])	Flattens a nested array.
+indexOf (array, value)	Returns the index of the first occurrence of value in an array.
+initial (array[, n])	Returns all values in an array excluding the last N values.
+interleave (...)	Interleaves arrays.
+interpose (array, value)	Interposes value in-between consecutive pair of values in array.
+intersection (...)	Returns the intersection of all passed-in arrays.
+isunique (array)	Checks if a given array contains distinct values.
+last (array[, n])	Returns the last N values in an array.
+lastIndexOf (array, value)	Returns the index of the last occurrence of value in an array.
+mean (array)	Returns the mean of an array of numbers.
+median (array)	Returns the median of an array of numbers.
+nsorted (array[, n[, comp]])	Returns the n-top values satisfying a predicate.
+nth (array, index)	Returns the value at a given index.
+ones (n)	Returns an array of n 1's.
+overlapping (array[, n[, pads]])	Iterator returning overlapping partitions of an array.
+pack (...)	Converts a list of arguments to an array.
+pairwise (array)	Iterator returning sliding pairs of an array.
+partition (array[, n[, pads]])	Iterator returning partitions of an array.
+permutation (array)	Iterator returning the permutations of an array.
+powerset (array)	Returns the powerset of array values.
+prepend (array, ...)	Adds all passed-in values at the top of an array.
+product (array)	Returns the product of array values.
+pull (array, ...)	Removes all provided values in a given array.
+push (array, ...)	Pushes all passed-in values at the end of an array.
+range ([from[, to[, step]]])	Produces a flexible list of numbers.
+removeRange (array[, start[, finish]])	Removes values at an index within the range [start, finish].
+rep (value, n)	Creates an array list of n values, repeated.
+rest (array[, index])	Returns all values after index.
+reverse (array)	Returns an array where values are in reverse order.
+sample (array[, n[, seed]])	Samples n random values from an array.
+sampleProb (array, prob[, seed])	Return elements from a sequence with a given probability.
+selectWhile (array, f)	Collects values from a given array.
+shift (array[, n])	Removes and returns the values at the top of a given array.
+shuffle (array[, seed])	Returns a shuffled copy of a given array.
+slice (array[, start[, finish]])	Slices values indexed within [start, finish] range.
+sortedIndex (array, the[, comp[, sort]])	Returns the index at which a value should be inserted.
+sum (array)	Returns the sum of array values.
+symmetricDifference (array, array2)	Performs a symmetric difference.
+union (...)	Returns the duplicate-free union of all passed in arrays.
+unique (array)	Produces a duplicate-free version of a given array.
+unshift (array[, n])	Removes and returns the values at the end of a given array.
+vector (value, n)	Returns an array of n times a given value.
+xpairs (valua, array)	Creates pairs from value and array.
+xpairsRight (valua, array)	Creates pairs from value and array.
+xprod (array, array2)	Returns all possible pairs built from given arrays.
+zeros (n)	Returns an array of n zeros.
+zip (...)	Merges values of each of the passed-in arrays in subsets.
+zipWith (f, ...)	Merges values using a given function.
+Utility functions
+after (f, count)	Returns a version of f that runs on the count-th call.
+applySpec (specs)	Returns a function which applies specs on args.
+ary (f[, n])	Returns a function which accepts up to n args.
+before (f, count)	Returns a version of f that will run no more than count times.
+bind (f, v)	Binds v to be the first argument to f.
+bind2 (f, v)	Binds v to be the second argument to f.
+bindall (obj, ...)	Binds methods to object.
+bindn (f, ...)	Binds ... to be the N-first arguments to function f.
+both (...)	Returns a validation function.
+call (f[, ...])	Calls f with the supplied arguments.
+castArray (value)	Casts value as an array if it is not one.
+complement (f)	Returns the logical complement of a given function.
+compose (...)	Composes functions.
+cond (conds)	Returns a function which iterate over a set of conditions.
+constant (value)	Creates a constant function which returns the same output on every call.
+converge (f, g, h)	Converges two functions into one.
+curry (f[, n_args])	Curries a function.
+dispatch (...)	Returns a dispatching function.
+either (...)	Returns a validation function.
+flip (f)	Creates a function of f with arguments flipped in reverse order.
+identity (value)	Returns the passed-in value.
+iterator (f, value[, n])	Produces an iterator which repeatedly apply a function f onto an input.
+iterlen (...)	Returns the length of an iterator.
+juxtapose (value, ...)	Calls a sequence of passed-in functions with the same argument.
+memoize (f)	Memoizes a given function by caching the computed result.
+neither (...)	Returns a validation function.
+noarg (f)	Returns a function with an arity of 0.
+noop ()	The no operation function.
+nthArg (n)	Returns a function that gets the nth argument.
+once (f)	Returns a version of f that runs only once.
+over (...)	Creates a function that runs transforms on all arguments it receives.
+overArgs (f, ...)	Creates a function that invokes f with its arguments transformed.
+overEvery (...)	Creates a validation function.
+overSome (...)	Creates a validation function.
+partial (f, ...)	Partially apply a function by filling in any number of its arguments.
+partialRight (f, ...)	Similar to partial, but from the right.
+pipe (value, ...)	Pipes a value through a series of functions.
+rearg (f, indexes)	Returns a function which runs with arguments rearranged.
+skip (iter[, n])	Consumes the first n values of a iterator then returns it.
+tabulate (...)	Iterates over an iterator and returns its values in an array.
+thread (value, ...)	Threads value through a series of functions.
+threadRight (value, ...)	Threads value through a series of functions.
+time (f[, ...])	Returns the execution time of f (...) and its returned values.
+times (iter[, n])	Runs iter function n times.
+unary (f)	Returns a function which accepts up to one arg.
+unfold (f, seed)	Builds a list from a seed value.
+uniqueId ([template])	Generates an unique ID for the current session.
+wrap (f, wrapper)	Wraps f inside of the wrapper function.
+Object functions
+chain (value)	Returns a wrapped object.
+clone (obj[, shallow])	Clones a given object properties.
+extend (destObj, ...)	Extends an object properties.
+flattenPath (obj, ...)	Flattens object under property path onto provided object.
+functions ([obj])	Returns a sorted list of all methods names found in an object.
+has (obj, key)	Checks if a given object implements a property.
+import ([context[, noConflict]])	Imports all library functions into a context.
+invert (obj)	Swaps keys with values.
+isArray (obj)	Checks if the given argument is an array.
+isBoolean (obj)	Checks if the given argument is a boolean.
+isCallable (obj)	Checks if the given argument is callable.
+isEmpty ([obj])	Checks if the given pbject is empty.
+isEqual (objA, objB[, useMt])	Performs a deep comparison test between two objects.
+isFinite (obj)	Checks if the given argument is a finite number.
+isFunction (obj)	Checks if the given argument is a function.
+isInteger (obj)	Checks if the given argument is an integer.
+isIterable (obj)	Checks if the given object is iterable with pairs (or ipairs).
+isNaN (obj)	Checks if the given argument is NaN (see Not-A-Number).
+isNil (obj)	Checks if the given argument is nil.
+isNumber (obj)	Checks if the given argument is a number.
+isString (obj)	Checks if the given argument is a string.
+isTable (t)	Checks if the given arg is a table.
+keys (obj)	Returns the keys of the object properties.
+kvpairs (obj)	Converts key-value pairs to an array-list of [k, v] pairs.
+obj:value ()	Extracts the value of a wrapped object.
+omit (obj, ...)	Returns an object copy without black-listed properties.
+path (obj, ...)	Returns the value at a given path in an object.
+pick (obj, ...)	Returns an object copy having white-listed properties.
+property (key)	Returns a function that will return the key property of any passed-in object.
+propertyOf (obj)	Returns a function which will return the value of an object property.
+result (obj, method)	Invokes an object method.
+spreadPath (obj, ...)	Spreads object under property path onto provided object.
+tap (obj, f)	Invokes interceptor with the object, and then returns object.
+template (obj[, template])	Applies a template to an object, preserving non-nil properties.
+toBoolean (value)	Converts any given value to a boolean
+toObj (kvpairs)	Converts an array list of [k,v] pairs to an object.
+type (obj)	Extends Lua's type function.
+values (obj)	Returns the values of the object properties.

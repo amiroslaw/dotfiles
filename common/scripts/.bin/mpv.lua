@@ -223,6 +223,16 @@ local function buildCmd(cmd)
 		return cmd .. concatPath(selectedElements)
 	end
 end
+
+-- use moses IDK why evaluetes
+-- local b = M.bind2(buildCmd2, CMD_POPUP)
+-- b({'a'})
+-- local function buildCmd2(selectedElements, cmd)
+-- 	print(selectedElements, cmd)
+-- 	print('buildCmd')
+-- 	return cmd .. concatPath(selectedElements)
+-- end
+
 local function delete() 
 	return function(selected)
 		if os.execute('command -v trash-put') then
