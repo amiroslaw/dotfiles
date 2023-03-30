@@ -27,7 +27,7 @@ local taskIDs = table.concat(arg, ' ')
 
 -- show context or report
 local function switchView()
-	local views = copyt(contextAliases)
+	local views = M.clone(contextAliases)
 	views['none'] = 'none'
 	views['pro'] = 'report'
 	views['waiting'] = 'report'
@@ -88,7 +88,7 @@ end
 -- projects have `#` prefix
 -- new item is a new project
 local function addTag()
-	local tags = copyt(contextAliases)
+	local tags = M.clone(contextAliases)
 	local _, projects = run 'task _projects'
 	for _, project in ipairs(projects) do
 		project = project:gsub('^%a', '#' .. project:match '^%a')
@@ -104,7 +104,7 @@ local function addTag()
 end
 
 local function removeTag()
-	local tags = copyt(contextAliases)
+	local tags = M.clone(contextAliases)
 	tags['remove project'] = 'project'
 	tags['all contexts'] = 'allContexts'
 	tags['wait/someday'] = 'wait'

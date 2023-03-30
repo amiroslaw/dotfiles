@@ -5,29 +5,27 @@
 
 --[[
 UTILS
+-- marcotrosi
 printt(table, file) to print tables on screen or to file
-copyt(table) deep copy table
 readf(file) read file, returns table
 writef(string|table, file, [readmode]) write table/string to file, can't have nil
-eq compares 2 values for equality
 status,out,err = run(cmd, msgErr) - status is boolean; out is a table; executes external command and optionally capture the output
-str converts any non-string type to string, and strings to quoted strings
-
+--luasnip
 filenamesplit( filepathStr ) --> pathStr, nameStr, extStr
-jsonish
-jsonishout 
+jsonish(string) → tab - This function parses the json-like string jsonStr to the lua table dataTab.
+jsonishout - table to json
 jsonishout{{a=1},{1,"b"}} == '[{"a":1},[1,"b"]\]'
-keysort This function return the list of all the keys of the input inTab table. The keys are alphabetically sorted.
-keysort( inTab ) --> outArr
-cliparse cliparse({'-aib','--key','defKey','--opt=2'}, 'defKeyArg'); value option can have space even in a quote
-
-SCRIPTING
-switch(cases, pattern)
+-- my
+exist(file) → boolean, err -- Check if file or directory exist
 log(logMsg, [ level ], [ file ])
 trim(s) - trim string from whitespaces
 enum({ a =1 , b =1 }) returns table; problems with deep copy or loops
-split(string, separator) returns table;
-splitFlags(string)
+split(string, separator) → returns table; split string
+
+SCRIPTING
+cliparse cliparse(arg); cliparse({'-aib','--key','defKey','--opt=2'}, 'defKeyArg'); value option can have space even in a quote
+getConfigProperties(path) - - Read configuration file with key=value format. Function returns table(map).
+switch(cases, pattern)
 notify(string)
 notifyError(string)
 rofiNumberInput([prompt])
@@ -116,7 +114,6 @@ function notifyError(msg)
 	end
 end -- >>>
 
-
 -- printt <<<
 --[[
 A simple function to print tables or to write tables into files.
@@ -176,44 +173,20 @@ function printt(t, f)
       io.output(io.stdout)
    end
 end -- >>>
--- copyt <<<
---[[
-This is a simple copy table function. It uses recursion so you may get trouble
-with cycles and too big tables. But in most cases this function is absolutely enough.
 
-t = table to copy
---]]
-function copyt(t)
-
-   if type(t) ~= "table" then return nil end
-
-   local Copy_t = {}
- 
-   for k,v in pairs(t) do
-      if type(v) == "table" then
-         Copy_t[k] = copyt(v)
-      else
-         Copy_t[k] = v
-      end
-   end
- 
-   return Copy_t
-end -- >>>
 -- readf <<<
 --[[
 readf reads a file and returns the content as a table with one line per index.
 if the file was not readable readf returns nil.
 
 f = filename
+M(M.tabulate(io.lines(path)))
 --]]
 function readf(f)
 
    if (type(f) ~= "string") then
       return nil
    end
-  --  else
-	 --  notifyError('test - readf file is not string?')
-  -- end
 
    local File_t = {}
    local File_h = io.open(f)
@@ -228,6 +201,7 @@ function readf(f)
 
    return nil
 end -- >>>
+
 -- writef <<<
 --[[
 writef takes a table or string and writes it to a file and returns true if writing was successful, otherwise nil.
@@ -267,69 +241,9 @@ function writef(t, f, n, m)
       return true
    end
    return nil
-end -- >>>
+end 
+-- >>>
 
--- eq <<<
---[[
-This function takes 2 values as input and returns true if they are equal and false if not.
-
-a and b can numbers, strings, booleans, tables and nil.
---]]
-function eq(a,b)
-
-   local function isEqualTable(t1,t2) -- <<<
-
-      if t1 == t2 then
-         return true
-      end
-
-      for k,v in pairs(t1) do
-
-         if type(t1[k]) ~= type(t2[k]) then
-            return false
-         end
-
-         if type(t1[k]) == "table" then
-            if not isEqualTable(t1[k], t2[k]) then
-               return false
-            end
-         else
-            if t1[k] ~= t2[k] then
-               return false
-            end
-         end
-      end
-
-      for k,v in pairs(t2) do
-
-         if type(t2[k]) ~= type(t1[k]) then
-            return false
-         end
-
-         if type(t2[k]) == "table" then
-            if not isEqualTable(t2[k], t1[k]) then
-               return false
-            end
-         else
-            if t2[k] ~= t1[k] then
-               return false
-            end
-         end
-      end
-
-      return true
-   end -- >>>
-
-   if type(a) ~= type(b) then
-      return false
-   end
-
-   if type(a) == "table" then
-      return isEqualTable(a,b)
-   else
-      return (a == b)
-   end
-end -- >>>
 -- run <<<
 --[[
 Warning: can't be execute in parallel, also sometimes have problem with reading output from tmp files. - fix with tmp file name
@@ -386,55 +300,6 @@ function run(cmd, errorMsg)
   os.remove(ErrFile_s)
   return status, Out_t, Err, Status_code
 end -- >>>
--- str <<<
---[[
-This function converts tables, functions, ... to strings.
-If the input is a string then a quoted string is returned.
-
-x = input to convert to string
---]]
-function str(x)
-   if type(x) == "table" then
-      local ret_t = {}
-      local function convertTableToString(obj, cnt) -- <<<
-         local cnt=cnt or 0
-         if type(obj) == "table" then
-            table.insert(ret_t, "\n" .. string.rep("\t",cnt) .. "{\n")
-            cnt = cnt+1
-            for k,v in pairs(obj) do
-               if type(k) == "string" then
-                  table.insert(ret_t, string.rep("\t",cnt) .. '["' .. k .. '"] = ')
-               end
-               if type(k) == "number" then
-                  table.insert(ret_t, string.rep("\t",cnt) .. "[" .. k.. "] = ")
-               end
-               convertTableToString(v, cnt)
-               table.insert(ret_t, ",\n")
-            end
-            cnt = cnt-1
-            table.insert(ret_t, string.rep("\t",cnt) .. "}")
-         elseif type(obj) == "string" then
-            table.insert(ret_t, string.format("%q",obj))
-         else
-            table.insert(ret_t, tostring(obj))
-         end 
-      end -- >>>
-      convertTableToString(x)
-      return table.concat(ret_t)
-   elseif type(x) == "function" then
-      local status, result = pcall(string.dump, x, true)
-      if status then
-         return result
-      else
-         return "not dumpable function"
-      end
-   elseif type(x) == "string" then
-      return string.format("%q", x)
-   else
-      return tostring(x)
-  end
-	 
-end -- >>>
 
 --- exist <<<
 -- Check if file or directory exist
@@ -471,31 +336,6 @@ function trim(s)
    return s:match'^()%s*$' and '' or s:match'^%s*(.*%S)'
 end -- >>>
 
---- keys <<<
---- Returns the keys of the object properties.
--- @name keys
--- @param obj an object
--- @return an array
--- keys({x = 0, y = 1}) -- => "{'y','x'}"
-function keys(obj)
-  local keys = {}
-  for key in pairs(obj) do keys[#keys+1] = key end
-  return keys
-end
--- >>>
-
---- values <<<
---- Returns the values of the object properties.
--- @name values
--- @param obj an object
--- @return an array of values
-function values(obj)
-  local values = {}
-  for key, value in pairs(obj) do values[#values+1] = value end
-  return values
-end
--- >>>
-
 -- split <<<
 function split(str, delimiter)
     local result = {}
@@ -525,7 +365,7 @@ end -- >>>
 
 --- util for scripting <<< 
 
--- rofi <<<
+-- editor <<<
 --[[
 Opens file or text in editor. If provides only text - it will open in temporary file with asciidoc extension.
 --]]
@@ -647,7 +487,7 @@ opt - optional arguments that can be passed via table
 --]]
 -- TODO default option for not existence and exit??
 function rofiMenu(entriesTab, options)
-	local opt, keys = combineOptions(copyt(options))
+	local opt, keys = combineOptions(M.clone(options))
 	local entries = ''
 	local lines = 0
 	local isArray = M.isArray(entriesTab)
@@ -695,26 +535,21 @@ end -- >>>
 -- Read configuration file with key=value format. Function returns table(map).
 function getConfigProperties(path)
 	assert(os.execute( "test -f " .. path ) == 0, 'Config file does not exist: ' .. path)
-	local properties = {}
-	for line in io.lines(path) do
-		local property = split(line, '=')
-		properties[property[1]:gsub('%s', '')] = property[2]:gsub('%s', '')
-	end
-	return properties
-end -- >>>
+	return M(M.tabulate(io.lines(path)))
+		:map(function(s) return s:gsub('%s', '') end)
+		:keys()
+		:map(M.bind2(split,'='))
+		:toObj()
+		:value()
+	-- local properties = {}
+	-- for line in io.lines(path) do
+	-- 	local property = split(line, '=')
+	-- 	properties[property[1]:gsub('%s', '')] = property[2]:gsub('%s', '')
+	-- end
+	-- return properties
+end 
+-- >>>
 
--- splitFlags <<<
--- Splits arguments from the script flags. Example:  -a or -abcd.
-function splitFlags(optionsTxt)
-	local flags = {}
-	if not optionsTxt or optionsTxt == '' then return flags end
-	optionsTxt:gsub(".", function(char) 
-		if char ~= '-' then 
-			flags[char] = char 
-		end
-	end)
-	return flags
-end -- >>>
 
 -- log <<<
 --[[
@@ -752,30 +587,9 @@ end -- >>>
 -- luaSnip <<<
 -- https://github.com/pocomane/luasnip/blob/master/documentation.adoc
 -- IDK what lua version is supported
--- keysort <<<
---This function return the list of all the keys of the input inTab table. The keys are alphabetically sorted.
-function keysort( inTab ) --> outArr
-  local outArr = {}
-  local nonstring = {}
-  for k in pairs(inTab) do
-    if type(k) == 'string' then
-      outArr[1+#outArr] = k
-    else
-      local auxkey = tostring(k)
-      nonstring[1+#nonstring] = auxkey
-      nonstring[auxkey] = k
-    end
-  end
-  table.sort(outArr)
-  table.sort(nonstring)
-  for _,v in ipairs(nonstring) do
-    outArr[#outArr+1] = nonstring[v]
-  end
-  return outArr
-end
--- >>>
+
 -- jsonish <<<
---This function parses the json-like string jsonStr to the lua table dataTab. It does not perform any validation. The parser is not fully JSON compliant, however it is very simple and it should work in most the cases.
+-- This function parses the json-like string jsonStr to the lua table dataTab. It does not perform any validation. The parser is not fully JSON compliant, however it is very simple and it should work in most the cases.
 local function json_to_table_literal(s)
 
   s = s:gsub([[\\]],[[\u{5C}]])
@@ -802,10 +616,10 @@ function jsonish(s)
   return loader()
 end
 -- >>>
+
 -- jsonishout <<<
 -- table to json
 --jsonishout{{a=1},{1,"b"}} == '[{"a":1},[1,"b"]]'
-
 local function quote_json_string(str)
   return '"'
     .. str:gsub('(["\\%c])',

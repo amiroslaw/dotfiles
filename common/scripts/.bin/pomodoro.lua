@@ -24,7 +24,7 @@ flags (short options) in a format: -ca
 	c - adds daily pomodoro counter in the status
 	a - sound alert
 	n - notification
-	j - display pomodoro history in JSON format
+	j - display pomodoro history in JSON format  - not implemented
 	s - show secunds in the status - not implemented
 
 Examples:
@@ -49,7 +49,7 @@ local STATUS_PATH = '/tmp/pomodoro'
 local DELIMITER = '|'
 
 local config = getConfigProperties(CONFIG_PATH)
-local flags = splitFlags(arg[2])
+local flags = cliparse(arg)
 
 function alert(msg)
 	if flags['n'] then

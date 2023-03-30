@@ -1,11 +1,5 @@
 #!/usr/bin/luajit
 
-local TMP_PLAYLIST = '/tmp/qb_mpvplaylist.m3u'
-local TMP_PLAY = '/tmp/qb_mpv.m3u'
-local DIR_PLAYLISTS = os.getenv 'HOME' .. '/Templates/mpvlists'
-local DIR_ARCHIVE = os.getenv 'HOME' .. '/Templates/mpvlists-archive'
--- local GUI_EDITOR = 'nvim-qt'
-
 function help()
 print [[
 Utility script for managing stream with the mpv program. 
@@ -56,11 +50,24 @@ doesn't clear playlist after abort prompt
 
 end
 
-local LINK_REGEX = "^https?://(([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))"
+local TMP_PLAYLIST = '/tmp/qb_mpvplaylist.m3u'
+local TMP_PLAY = '/tmp/qb_mpv.m3u'
+local DIR_PLAYLISTS = os.getenv 'HOME' .. '/Templates/mpvlists'
+local DIR_ARCHIVE = os.getenv 'HOME' .. '/Templates/mpvlists-archive'
+-- local GUI_EDITOR = 'nvim-qt'
+
+local LINK_REGEX = "(https?://([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))"
+
 -- mpv --profile=stream --playlist=
 local CMD_VIDEO = 'mpv --profile=stream '
 local CMD_POPUP = 'mpv --x11-name=videopopup --profile=stream-popup '
 local CMD_AUDIO = 'st -c audio -e mpv --profile=stream-audio '
+
+local function errorMsg(msg)
+	print(msg)
+	log(msg, 'ERROR')
+	notifyError(msg)
+end
 
 local args = cliparse(arg, 'params')
 local param
@@ -86,12 +93,6 @@ if args.resume or args.r then
 	if tmpPlayUrl then
 		param = tmpPlayUrl[1]	
 	end
-end
-
-local function errorMsg(msg)
-	print(msg)
-	log(msg, 'ERROR')
-	notifyError(msg)
 end
 
 local function getHost()
@@ -137,6 +138,7 @@ local function play(cmd, action, url)
 	local file = assert(io.open(TMP_PLAY, 'w'), 'Could not write to file ' .. TMP_PLAY)
 	file:write(url)
 	file:close()
+
 	local ok, _, err = run(cmd .. TMP_PLAY, 'Error: run mpv ' .. action .. ': ' .. url)
 	assert(ok, err)
 end
@@ -151,7 +153,9 @@ end
 local function push(url)
 	local extinf = ''
 	local ok, out, err = run('yt-dlp -i --print duration,title ' .. url, "Can't get metadata form: " .. url)
-	assert(ok, err)
+	if not ok then
+		log(err, 'WARNING')	
+	end
 	extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
 	assert(io.open(TMP_PLAYLIST, 'a'):write(extinf .. url .. '\n'))
 end
@@ -218,28 +222,15 @@ local function concatPath(files, dir)
 	return paths
 end
 
-local function buildCmd(cmd)
-	return function(selectedElements)
-		return cmd .. concatPath(selectedElements)
-	end
+local function buildCmd(selectedElements, cmd)
+	return cmd .. concatPath(selectedElements)
 end
 
--- use moses IDK why evaluetes
--- local b = M.bind2(buildCmd2, CMD_POPUP)
--- b({'a'})
--- local function buildCmd2(selectedElements, cmd)
--- 	print(selectedElements, cmd)
--- 	print('buildCmd')
--- 	return cmd .. concatPath(selectedElements)
--- end
-
-local function delete() 
-	return function(selected)
-		if os.execute('command -v trash-put') then
-			return 'trash-put ' .. concatPath(selected)
-		else
-			return 'rm ' .. concatPath(selected)
-		end
+local function delete(selected) 
+	if os.execute('command -v trash-put') then
+		return 'trash-put ' .. concatPath(selected)
+	else
+		return 'rm ' .. concatPath(selected)
 	end
 end
 
@@ -270,12 +261,12 @@ local function openPlaylist()
 	assert(ok, err)
 	local prompt = 'default:open video; shift-enter:multi selection; Found:'.. #playlists
 	local keysFun = {
-		['Alt-p'] = {'popup', buildCmd(CMD_POPUP) },
-		['Alt-a'] = {'audio', buildCmd(CMD_AUDIO) },
+		['Alt-p'] = {'popup', M.bind2(buildCmd,CMD_POPUP) },
+		['Alt-a'] = {'audio', M.bind2(buildCmd, CMD_AUDIO) },
 		['Alt-n'] = {'rename', rename },
 		['Alt-o'] = {'open folder', function() return 'xdg-open "' .. DIR_PLAYLISTS .. '" &' end },
-		['Alt-d'] = {'delete', delete() },
-		['Alt-e'] = {'edit', buildCmd(os.getenv('GUI_EDITOR')) },
+		['Alt-d'] = {'delete', delete },
+		['Alt-e'] = {'edit', M.bind2(buildCmd, os.getenv('GUI_EDITOR')) },
 		['Alt-h'] = {'archive', archive },
 	}
 
@@ -285,8 +276,8 @@ local function openPlaylist()
 		local ok, _, err = run(CMD_VIDEO .. concatPath(selected))
 		assert(ok, 'Error: Can not play vlideo ')
 	else
-		local cmd = keysFun[keybind][2](selected)
-		local ok, _, err = run(cmd)
+		local cmd = keysFun[keybind][2]
+		local ok, _, err = run(cmd(selected))
 		assert(ok, 'Error: Can not execute ')
 	end
 end
@@ -304,12 +295,12 @@ end
 
 local cases = {
 	['push'] = push, ['u'] = push,
-	['audioplay'] = {play, CMD_AUDIO, 'audio'}, ['a'] = {play, CMD_AUDIO, 'audio'}, 
-	['audiolist'] = {list, CMD_AUDIO, 'audio'}, ['A'] = {list, CMD_AUDIO, 'audio'}, 
-	['videoplay'] = {play, CMD_VIDEO, 'video'}, ['v'] = {play, CMD_VIDEO, 'video'},
-	['videolist'] = {list, CMD_VIDEO, 'video'}, ['V'] = {list, CMD_VIDEO, 'video'},
-	['popupplay'] = {play, CMD_POPUP, 'video'}, ['p'] = {play, CMD_POPUP, 'video'},
-	['popuplist'] = {list, CMD_POPUP, 'video'}, ['P'] = {list, CMD_POPUP, 'video'},
+	['audioplay'] = M.bindn(play, CMD_AUDIO, 'audio'), ['a'] = M.bindn(play, CMD_AUDIO, 'audio'),
+	['audiolist'] = M.bindn(list, CMD_AUDIO, 'audio'), ['A'] = M.bindn(list, CMD_AUDIO, 'audio'),
+	['videoplay'] = M.bindn(play, CMD_VIDEO, 'video'), ['v'] = M.bindn(play, CMD_VIDEO, 'video'),
+	['videolist'] = M.bindn(list, CMD_VIDEO, 'video'), ['V'] = M.bindn(list, CMD_VIDEO, 'video'),
+	['popupplay'] = M.bindn(play, CMD_POPUP, 'video'), ['p'] = M.bindn(play, CMD_POPUP, 'video'),
+	['popuplist'] = M.bindn(list, CMD_POPUP, 'video'), ['P'] = M.bindn(list, CMD_POPUP, 'video'),
 	['makeLocal'] = makeLocal, ['l'] = makeLocal,
 	['makeOnline'] = makeOnline, ['m'] = makeOnline,
 	['metadata'] = metadata, ['M'] = metadata,
@@ -321,10 +312,6 @@ local cases = {
 for key,_ in pairs(args) do
 	local switch = switch(cases, key)
 	if switch and args[key] then
-		if type(switch) == 'table' then
-			xpcall(switch[1], errorMsg, switch[2], switch[3], param)
-		else
-			xpcall(switch, errorMsg, param)
-		end
+		xpcall(switch, errorMsg, param)
 	end
 end
