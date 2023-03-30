@@ -45,13 +45,20 @@ rofiInput - optional arguments that can be passed via table
 package.path = os.getenv('SCRIPTS') .. '/lua/' .. package.path
 M = require "moses"
 
---- operator <<<
--- extends by than; usefull if you need pass a param filter
--- example of grater than: filter(seq, operator.gtt(4))
-M.operator.gtt  = function(n) return function(m) return m > n end end;
-M.operator.ltt  = function(n) return function(m) return m < n end end;
-M.operator.eqt  = function(n) return function(m) return m == n end end;
-M.operator.net  = function(n) return function(m) return m > n end end;
+--- functions <<<
+-- like operators but can take arguments
+-- extends by than; usefull if you need pass a param filter, or map
+M.fun = {}
+-- example of grater than: filter(seq, fun.gt(4))
+M.fun.gt  = function(n) return function(m) return m > n end end;
+M.fun.lt  = function(n) return function(m) return m < n end end;
+M.fun.eq  = function(n) return function(m) return m == n end end;
+-- returns boolean if contains :filter(M.fun.contains('a')))
+M.fun.contains  = function(n) return function(m) local f = m:find(n) return M.isNumber(f) end end;
+-- returns match :map(M.fun.match('%w+', 'c'))
+M.fun.match  = function(n) return function(m) return m:match(n) end end;
+-- returns replacement :map(M.fun.gsub('pattern', 'replace'))
+M.fun.gsub  = function(p,r) return function(s) local o =  s:gsub(p,r); return o end end;
 -- >>>
 
 -- >>>
@@ -347,6 +354,8 @@ end -- >>>
 
 -- enum <<<
 -- Enum table. Takes "map" as a parameter. When accessing or modifying an entry of existing or notexisting value, the error will be thrown.
+-- e = enum({ ONE =1 , TWO =2 })
+-- printt(e.ONE)
 function enum(tab)
 	local meta_table = {
 		__index = function(self, key)
@@ -536,17 +545,10 @@ end -- >>>
 function getConfigProperties(path)
 	assert(os.execute( "test -f " .. path ) == 0, 'Config file does not exist: ' .. path)
 	return M(M.tabulate(io.lines(path)))
-		:map(function(s) return s:gsub('%s', '') end)
-		:keys()
+		:map(M.fun.gsub('%s', ''))
 		:map(M.bind2(split,'='))
 		:toObj()
 		:value()
-	-- local properties = {}
-	-- for line in io.lines(path) do
-	-- 	local property = split(line, '=')
-	-- 	properties[property[1]:gsub('%s', '')] = property[2]:gsub('%s', '')
-	-- end
-	-- return properties
 end 
 -- >>>
 
