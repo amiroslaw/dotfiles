@@ -259,7 +259,7 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
 # open media or dir with xdg-open
-super + o ; {o,j,d,D,v,c,y,z,f,F,b,i,p}
+super + o ; {o,j,d,D,v,c,y,z,f,F,b,i,p,s}
 	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nz-fasd\nf(F)-files(hidden)", \
 		$ROFI/open.sh fasd-dir, \
 		$ROFI/open.sh dir, \
@@ -272,7 +272,8 @@ super + o ; {o,j,d,D,v,c,y,z,f,F,b,i,p}
 		$ROFI/open.sh file-hidden, \
 		$TERM_LT -e bmenu, \
 		$TERM_LT -e nmtui, \
-		$TERM_LT -e ncmpcpp
+		$TERM_LT -e ncmpcpp, \
+		mpv.lua -y, \
 		}
 	# { notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
 

@@ -1,6 +1,10 @@
-p + p {
-	font-size: 1.05em;
+ p {
+	font-size: 1.2em;
   text-indent: 2em;
+}
+h5 {
+	font-size: 1.3em;
+
 }
 img {
   display: block;

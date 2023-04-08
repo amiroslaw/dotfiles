@@ -214,7 +214,7 @@ local function makeOnline()
 	notify('created ' .. playlistName)
 end
 
-local function concatPath(files, dir)
+local function concatPath(files)
 	local paths = ' '
 	for _,file in ipairs(files) do
 		paths = paths .. '"' .. DIR_PLAYLISTS .. '/' .. file .. '" '
@@ -274,12 +274,56 @@ local function openPlaylist()
 	if not keybind then return end -- cancel
 	if not keysFun[keybind] then -- default
 		local ok, _, err = run(CMD_VIDEO .. concatPath(selected))
-		assert(ok, 'Error: Can not play vlideo ')
+		assert(ok, 'Error: Can not play video ')
 	else
 		local cmd = keysFun[keybind][2]
 		local ok, _, err = run(cmd(selected))
 		assert(ok, 'Error: Can not execute ')
 	end
+end
+
+local function toMetaVideo(data)
+	return { url = data[1] , title = data[2], duration = data[3], channel = data[4], }
+end
+local function buildPlaylist(selected, vid)
+	return M(selected):map(M.fun.match('^%d+'))
+			:map(function(index) 
+				local i = tonumber(index)
+				return '#EXTINF:' .. vid[i].duration .. ',' .. vid[i].title .. '\n' .. vid[i].url
+				end)
+			:concat('\n'):value()
+end
+
+-- alternative: https://github.com/pystardust/ytfzf 
+local function ytsearch()
+	local query = param and param or rofiInput()
+	local ok, results, err = run('yt-dlp --print original_url,title,duration,channel "ytsearch15:' .. query .. '"', 'Search error: ')
+	assert(ok, err)
+
+	local videos = M(M.tabulate(M.partition(results,4)))
+				:map(toMetaVideo):value()
+
+	local prompt = 'default:open video; shift-enter:multi selection'
+	local keysFun = {
+		['Alt-p'] = {'popup', M.bindn(play,CMD_POPUP, 'video') },
+		['Alt-a'] = {'audio', M.bindn(play,CMD_AUDIO, 'audio') },
+	}
+
+	local descriptions = {}
+	for i,video in ipairs(videos) do
+		table.insert(descriptions, string.format('%d-%.95s @%.1f #%s', i, video.title, video.duration/60, video.channel))
+	end
+
+	local selected, keybind = rofiMenu(descriptions, {prompt = prompt, keys = keysFun, multi=true, width = '95%'})
+
+	if not keybind then return end -- cancel
+	local playlist = buildPlaylist(selected, videos)
+	if not keysFun[keybind] then -- default
+		play(CMD_VIDEO, 'video', playlist)
+	else
+		keysFun[keybind][2](playlist)
+	end
+
 end
 
 -- Gets metadata form YouTube's video
@@ -301,6 +345,7 @@ local cases = {
 	['videolist'] = M.bindn(list, CMD_VIDEO, 'video'), ['V'] = M.bindn(list, CMD_VIDEO, 'video'),
 	['popupplay'] = M.bindn(play, CMD_POPUP, 'video'), ['p'] = M.bindn(play, CMD_POPUP, 'video'),
 	['popuplist'] = M.bindn(list, CMD_POPUP, 'video'), ['P'] = M.bindn(list, CMD_POPUP, 'video'),
+	['ytsearch'] = ytsearch, ['y'] = ytsearch,
 	['makeLocal'] = makeLocal, ['l'] = makeLocal,
 	['makeOnline'] = makeOnline, ['m'] = makeOnline,
 	['metadata'] = metadata, ['M'] = metadata,
