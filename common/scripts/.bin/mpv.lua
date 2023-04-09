@@ -22,6 +22,7 @@ Actions:
 	--open -o [--list] [dir] → Open and manage videos or playlists
 	--rename -n [dir] → Change name of the last playlist
 	--metadata -M → Retrieves metadata form the video
+	--ytsearch -y → Search YT for videos
 	--help - Show help
 Options:
 	--clip -c → read parameter from clipboard
@@ -58,7 +59,6 @@ local DIR_ARCHIVE = os.getenv 'HOME' .. '/Templates/mpvlists-archive'
 
 local LINK_REGEX = "(https?://([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))"
 
--- mpv --profile=stream --playlist=
 local CMD_VIDEO = 'mpv --profile=stream '
 local CMD_POPUP = 'mpv --x11-name=videopopup --profile=stream-popup '
 local CMD_AUDIO = 'st -c audio -e mpv --profile=stream-audio '
@@ -122,10 +122,10 @@ local function buildName(defaultName)
 	return defaultName
 end
 
-local function savePlaylist(mediaType)
+local function savePlaylist()
 	if args.save or args.s or args.input or args.i then
 		assert(os.execute('mkdir -p ' .. DIR_PLAYLISTS) == 0, 'Did not create playlist dir ' .. DIR_PLAYLISTS)
-		local defaultName = os.date '%Y-%m-%dT%H%M-' .. mediaType .. '-' .. getHost()
+		local defaultName = os.date '%Y-%m-%dT%H%M-' .. getHost()
 		local listName = buildName(defaultName)
 		if listName then
 			assert( os.execute('mv ' .. TMP_PLAYLIST .. ' "' .. DIR_PLAYLISTS .. '/' .. listName .. '.m3u"') == 0, 'Did not move playlist to ' .. DIR_PLAYLISTS)
@@ -134,19 +134,19 @@ local function savePlaylist(mediaType)
 	assert(os.execute('rm -f ' .. TMP_PLAYLIST) == 0, 'Did not remove playlist')
 end
 
-local function play(cmd, action, url)
+local function play(url, cmd)
 	local file = assert(io.open(TMP_PLAY, 'w'), 'Could not write to file ' .. TMP_PLAY)
 	file:write(url)
 	file:close()
 
-	local ok, _, err = run(cmd .. TMP_PLAY, 'Error: run mpv ' .. action .. ': ' .. url)
+	local ok, _, err = run(cmd .. TMP_PLAY, 'Error: run mpv: ' .. url)
 	assert(ok, err)
 end
 
-local function list(cmd, action)
-	local ok, _, err = run(cmd .. TMP_PLAYLIST, 'Error: run mpv list: ' .. action)
+local function list(cmd)
+	local ok, _, err = run(cmd .. TMP_PLAYLIST, 'Error: run mpv list' )
 	assert(ok, err)
-	savePlaylist(action)
+	savePlaylist()
 end
 
 
@@ -202,6 +202,7 @@ local function makeOnline()
 		return
 	end
 	local playlist = {'#EXTM3U', '#PLAYLIST: ' .. playlistName}
+	-- TODO change to local videos = M(M.tabulate(M.partition(results,4))) :map(toMetaVideo):value()
 	for i = 0, out[2] -1 do
 		local videoIndex = i * 5
 		local duration = out[videoIndex + 3] and out[videoIndex + 3] or -1
@@ -296,7 +297,7 @@ end
 
 -- alternative: https://github.com/pystardust/ytfzf 
 local function ytsearch()
-	local query = param and param or rofiInput()
+	local query = param and param or rofiInput({prompt = 'Search YT'})
 	local ok, results, err = run('yt-dlp --print original_url,title,duration,channel "ytsearch15:' .. query .. '"', 'Search error: ')
 	assert(ok, err)
 
@@ -305,8 +306,8 @@ local function ytsearch()
 
 	local prompt = 'default:open video; shift-enter:multi selection'
 	local keysFun = {
-		['Alt-p'] = {'popup', M.bindn(play,CMD_POPUP, 'video') },
-		['Alt-a'] = {'audio', M.bindn(play,CMD_AUDIO, 'audio') },
+		['Alt-p'] = {'popup', M.bind2(play,CMD_POPUP) },
+		['Alt-a'] = {'audio', M.bind2(play,CMD_AUDIO) },
 	}
 
 	local descriptions = {}
@@ -339,12 +340,12 @@ end
 
 local cases = {
 	['push'] = push, ['u'] = push,
-	['audioplay'] = M.bindn(play, CMD_AUDIO, 'audio'), ['a'] = M.bindn(play, CMD_AUDIO, 'audio'),
-	['audiolist'] = M.bindn(list, CMD_AUDIO, 'audio'), ['A'] = M.bindn(list, CMD_AUDIO, 'audio'),
-	['videoplay'] = M.bindn(play, CMD_VIDEO, 'video'), ['v'] = M.bindn(play, CMD_VIDEO, 'video'),
-	['videolist'] = M.bindn(list, CMD_VIDEO, 'video'), ['V'] = M.bindn(list, CMD_VIDEO, 'video'),
-	['popupplay'] = M.bindn(play, CMD_POPUP, 'video'), ['p'] = M.bindn(play, CMD_POPUP, 'video'),
-	['popuplist'] = M.bindn(list, CMD_POPUP, 'video'), ['P'] = M.bindn(list, CMD_POPUP, 'video'),
+	['audioplay'] = M.bind2(play, CMD_AUDIO), ['a'] = M.bind2(play, CMD_AUDIO),
+	['audiolist'] = M.bind(list, CMD_AUDIO), ['A'] = M.bind(list, CMD_AUDIO),
+	['videoplay'] = M.bind2(play, CMD_VIDEO), ['v'] = M.bind2(play, CMD_VIDEO),
+	['videolist'] = M.bind(list, CMD_VIDEO), ['V'] = M.bind(list, CMD_VIDEO),
+	['popupplay'] = M.bind2(play, CMD_POPUP), ['p'] = M.bind2(play, CMD_POPUP),
+	['popuplist'] = M.bind(list, CMD_POPUP), ['P'] = M.bind(list, CMD_POPUP),
 	['ytsearch'] = ytsearch, ['y'] = ytsearch,
 	['makeLocal'] = makeLocal, ['l'] = makeLocal,
 	['makeOnline'] = makeOnline, ['m'] = makeOnline,

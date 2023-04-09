@@ -500,12 +500,13 @@ function rofiMenu(entriesTab, options)
 	local entries = ''
 	local lines = 0
 	local isArray = M.isArray(entriesTab)
+	local SEP = '\n'
 
 	for key,val in pairs(entriesTab) do
 		if isArray then
-			entries = entries  .. val	.. '|'
+			entries = entries  .. val	.. SEP
 		else
-			entries = entries  .. key	.. '|'
+			entries = entries  .. key	.. SEP
 		end
 		lines = lines + 1
 	end
@@ -514,7 +515,8 @@ function rofiMenu(entriesTab, options)
 		lines = opt.height
 	end
 
-	local _, selected, err, code= run('echo "' .. entries .. '" | rofi -monitor -4 -i ' .. opt.multi .. ' -l ' .. lines .. ' -sep "|" -dmenu -p "' .. opt.prompt .. '" -theme-str "window {width:  ' .. opt.width .. ';}" ' .. opt.keys .. opt.msg)
+	local _, selected, err, code= run('echo "' .. entries .. '" | rofi -monitor -4 -i ' .. opt.multi .. ' -l ' .. lines .. ' -dmenu -p "' .. opt.prompt .. '" -theme-str "window {width:  ' .. opt.width .. ';}" ' .. opt.keys .. opt.msg)
+	-- local _, selected, err, code= run('echo "' .. entries .. '" | rofi -monitor -4 -i ' .. opt.multi .. ' -l ' .. lines .. ' -sep "' .. SEP .. '" -dmenu -p "' .. opt.prompt .. '" -theme-str "window {width:  ' .. opt.width .. ';}" ' .. opt.keys .. opt.msg)
 
 	-- rofi returns error code for hooks and returns error code for not selecting - it would be a rofi error
 	if err and err ~= '' then
