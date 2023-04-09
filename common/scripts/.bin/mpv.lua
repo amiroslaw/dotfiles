@@ -149,7 +149,6 @@ local function list(cmd)
 	savePlaylist()
 end
 
-
 local function push(url)
 	local extinf = ''
 	local ok, out, err = run('yt-dlp -i --print duration,title ' .. url, "Can't get metadata form: " .. url)
@@ -190,26 +189,32 @@ local function makeLocal()
 	end
 end
 
+local function toMetaVideo(data)
+	return { url = data[1] , title = data[2], duration = data[3], channel = data[4], }
+end
+
 local function makeOnline()
-	local ok,out, err = run('yt-dlp -i --print playlist_title,playlist_count,duration,title,original_url "' .. param .. '"')
+	local ok,out, err = run('yt-dlp -i --print original_url,title,duration,playlist_title "' .. param .. '"')
 	-- assert(ok, err) -- has an error with hidden or private videos
 	if not ok then
 		notify('Warning', split(err, '\n'), {['YouTube said'] = 'red'})
 	end
-	local playlistName = out[1]
+	local playlistName = out[4]
 	playlistName = buildName(playlistName)
 	if not playlistName then
 		return
 	end
-	local playlist = {'#EXTM3U', '#PLAYLIST: ' .. playlistName}
-	-- TODO change to local videos = M(M.tabulate(M.partition(results,4))) :map(toMetaVideo):value()
-	for i = 0, out[2] -1 do
-		local videoIndex = i * 5
-		local duration = out[videoIndex + 3] and out[videoIndex + 3] or -1
-		local title = out[videoIndex + 4] and out[videoIndex + 4] or ''
-		table.insert(playlist,'#EXTINF:' .. duration .. ',' .. title)
-		table.insert(playlist, out[videoIndex + 5])
-	end
+	local playlistInit = {}
+
+	local playlist = M(M.tabulate(M.partition(out,4)))
+						:map(toMetaVideo)
+						:map(function(v) 
+							local duration = v.duration and v.duration or -1
+							local title = v.title and v.title or ''
+							return '#EXTINF:' .. duration .. ',' .. title .. '\n' .. v.url end)
+						:prepend('#EXTM3U', '#PLAYLIST: ' .. playlistName)
+						:value()
+
 	local writeOk = writef(playlist, DIR_PLAYLISTS .. '/' .. playlistName .. '.m3u')
 	assert(writeOk, 'Error: Could not write playlist to a file')
 	notify('created ' .. playlistName)
@@ -283,9 +288,6 @@ local function openPlaylist()
 	end
 end
 
-local function toMetaVideo(data)
-	return { url = data[1] , title = data[2], duration = data[3], channel = data[4], }
-end
 local function buildPlaylist(selected, vid)
 	return M(selected):map(M.fun.match('^%d+'))
 			:map(function(index) 
