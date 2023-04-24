@@ -314,6 +314,8 @@ config.bind("<Ctrl-u>", "fake-key <Shift-Home><Delete>", "insert")
 config.bind("<Ctrl-Shift-d>", "fake-key <Shift-End><Delete>", "insert")
 config.bind('<Ctrl-y>', 'insert-text {primary}', 'insert') # doesn't work
 config.bind("<Ctrl-i>", "edit-text", "insert")
+config.bind("<Ctrl-i>", "edit-text")
+# :bind gI hint inputs --first ;; mode-enter insert ;; later 50 edit-text
 config.bind('ei', "mode-enter insert ;; fake-key <Enter> ;; mode-enter normal" )
 config.bind('<Ctrl-j>', 'fake-key <Down>', 'insert')
 config.bind('<Ctrl-k>', 'fake-key <Up>', 'insert')

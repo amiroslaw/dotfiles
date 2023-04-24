@@ -143,6 +143,7 @@ end
 
 function video()
 	local cmd = "| xargs -P 0 -I {} yt-dlp --embed-metadata -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
+	-- local cmd = "| xargs -P 0 -I {} yt-dlp -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
 	-- local cmd = "| xargs -P 0 -I {} yt-dlp --embed-metadata --restrict-filenames -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
 	return execXargs(cmd, YT_DIR)
 end

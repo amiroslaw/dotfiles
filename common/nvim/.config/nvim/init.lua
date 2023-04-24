@@ -713,17 +713,22 @@ cmp.setup.cmdline(':', {
 })
 local dirEn = HOME .. '/.config/rofi/scripts/expander/en-popular'
 local dirPl = HOME .. '/.config/rofi/scripts/expander/pl-popular'
-require('cmp_dictionary').setup {
-	dic = { -- ["*"] = { dirEn, dirPl}
-		['asciidoctor'] = { dirEn, dirPl },
-		['markdown'] = { dirEn, dirPl },
-		['text'] = { dirEn, dirPl },
-	},
+
+local dict = require("cmp_dictionary")
+
+dict.switcher({
+  filetype = {
+	asciidoc = {dirEn, dirPl },
+	markdown = {dirEn, dirPl },
+	text = {dirEn, dirPl },
+  },
+ --  filepath = { ["%.tmux.*%.conf"] = { "/path/to/js.dict", "/path/to/js2.dict" }, },
+  -- spelllang = { en = "/path/to/english.dict", },
+})
+dict.setup {
 	exact = 4, -- -1 only exact the same prefix; should be gratter than keyword_length
-	async = true,
 	capacity = 5,
 	debug = false,
-	-- debug = true,
 } 
 -- }}} 
 

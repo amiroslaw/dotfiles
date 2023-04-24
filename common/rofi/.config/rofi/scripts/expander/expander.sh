@@ -9,7 +9,10 @@ fi
 
 DICTIONARY=$(cat "$ROFI/expander/new" $ROFI/expander/en-popular $ROFI/expander/pl-popular) 
 # Echo clipboard items to Rofi and save the selection made by user
-SELECTION="$(echo -n "$DICTIONARY" | rofi -dmenu -monitor -4 -threads 0 -matching prefix -i -lines 20 -width 80 -p 'Select or add: ')"
+# better for founding correct word
+SELECTION="$(echo -n "$DICTIONARY" | rofi -dmenu -monitor -4 -threads 0 -matching fuzzy -i -lines 20 -width 80 -p 'Select or add: ')"
+# faster
+# SELECTION="$(echo -n "$DICTIONARY" | rofi -dmenu -monitor -4 -threads 0 -matching prefix -i -lines 20 -width 80 -p 'Select or add: ')"
 if [ -n "$SELECTION" ]; then
 
   # Echo the selection back to primary/selection and clipboard, because not all programs support shift insert in the sam way
