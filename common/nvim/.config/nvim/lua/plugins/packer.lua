@@ -1,8 +1,9 @@
 -- any change requiers :PackerCompile
 -- https://github.com/wbthomason/packer.nvim
 return require('packer').startup(function()
-	-- use {'uga-rosa/translate.nvim', cmd = {'Translate'}} -- error
+	use {'liangxianzhe/nap.nvim'}
 	use {'uga-rosa/translate.nvim'}
+	-- use {'uga-rosa/translate.nvim', cmd = {'Translate'}} -- error
 	use {'rhysd/vim-grammarous', cmd = {'GrammarousCheck'}}
 	use 'ggandor/lightspeed.nvim'
 	use { "anuvyklack/windows.nvim", -- Automatically resizes your windows
