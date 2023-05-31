@@ -373,7 +373,7 @@ ctrl + shift + z
 
 # rofi video
 super + {shift,ctrl} + v
-	{ mpv.lua -oL "$COURSES", mpv.lua -o }
+	{mpv.lua -o,  mpv.lua -oL "$COURSES"}
 
 # translator 
 super + {_,shift,ctrl} + t

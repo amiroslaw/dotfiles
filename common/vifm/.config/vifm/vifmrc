@@ -283,7 +283,7 @@ nmap al :alink<cr>
 "history dir
 nmap o :history <cr>
 " show command  history
-nmap H :history cmd <cr>
+nmap <A-h> :history cmd <cr>
 " history search 
 nmap <C-h> :history search <cr>
 
@@ -311,8 +311,8 @@ nnoremap yn :!echo -n %c | xclip -sel clip %i<cr>
 " yank root of current file's name into the clipboard
 nnoremap yr :!echo -n %c:r | xclip -sel clip %i<cr>
 " copy and paset 
-nnoremap yf :!xclip-copyfile %f<cr>
-nnoremap yc :!xclip-cutfile %f<cr>
+nnoremap yc :!xclip-copyfile %f<cr>
+nnoremap yx :!xclip-cutfile %f<cr>
 nnoremap yv :!xclip-pastefile<cr>
 
 " OPENING FILES
