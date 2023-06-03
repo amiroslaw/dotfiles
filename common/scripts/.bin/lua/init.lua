@@ -1,6 +1,6 @@
 -- most functions copied from 
 -- https://github.com/marcotrosi/init.lua
---https://github.com/pocomane/luasnip
+-- https://github.com/pocomane/luasnip
 -- https://github.com/Yonaba/Moses/tree/master
 
 --[[

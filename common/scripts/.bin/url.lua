@@ -190,14 +190,13 @@ local function filterLinks(clipboardStream)
 end
 
 local action = help
-local cmd
 
 if args.menu or args.m then
 	local selection = rofiMenu(options)
-	action,cmd = switch(options, selection)
+	action = switch(options, selection)
 else
 	for key,_ in pairs(args) do
-		local selection, cmd = switch(options, key)
+		local selection = switch(options, key)
 		if selection and args[key] then
 			action = selection
 		end
@@ -225,7 +224,7 @@ if argNumber then
 	linkTab = filterLinks(clipboard)
 end
 
-local status, val = pcall(action, cmd)
+local status, val = pcall(action)
 if status then
 	notify(val)
 else

@@ -232,30 +232,30 @@ super + u ; {s,S,e,o,m,w,W,b}
 #search
 super + s ; {s,h,g,G,b,B,u,U,y,Y,m,M}
 	{ dunstify options: " (capital-clipboard):\nh-help menu\ng-google\nb-brave\nu-duckduck\ny-yt\nm-maps\nw-wiki\nc-ceneo\no-cenowarka\na-allegro\nz-amazon\ns-so\nf-filmweb\nd-diki\nl-deepL\nr-translator\np-pl-en trans\ne-en-pl trans\nx-tuxi\nt-tor\ni-info from cheatsh", \
-	search.lua menu input, \
-	search.lua google primary, search.lua google clip, \
-	search.lua brave primary, search.lua brave clip, \
-	search.lua dd primary, search.lua dd clip, \
-	search.lua video primary, search.lua video clip, \
-	search.lua maps primary, search.lua maps clip}
+	search.lua --menu -input, \
+	search.lua --google -p, search.lua --google -c, \
+	search.lua --brave -p, search.lua --brave -c, \
+	search.lua --dd -p, search.lua --dd -c, \
+	search.lua --video -p, search.lua --video -c, \
+	search.lua --maps -p, search.lua --maps -c}
 
 super + s ; {w,W,c,C,o,O,a,A,z,Z,f,F,x,X,t,T}
-	{ search.lua wiki primary, search.lua wiki clip, \
-	search.lua ceneo primary, search.lua ceneo clip, \
-	search.lua cenowarka primary, search.lua cenowarka clip, \
-	search.lua allegro primary, search.lua allegro clip, \
-	search.lua amazon primary, search.lua amazon clip, \
-	search.lua filmweb primary, search.lua filmweb clip, \
-	search.lua tuxi input, search.lua tuxi clip, \
-	search.lua tor primary, search.lua tor clip }
+	{ search.lua --wiki -p, search.lua --wiki -c, \
+	search.lua --ceneo -p, search.lua --ceneo -c, \
+	search.lua --cenowarka -p, search.lua --cenowarka -c, \
+	search.lua --allegro -p, search.lua --allegro -c, \
+	search.lua --amazon -p, search.lua --amazon -c, \
+	search.lua --filmweb -p, search.lua --filmweb -c, \
+	search.lua --tuxi --input, search.lua --tuxi -c, \
+	search.lua --tor -p, search.lua --tor -c }
 
 super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
-	{ search.lua diki primary, search.lua diki clip, \
-	search.lua deepl primary, search.lua deepl clip, \
-	search.lua translator primary, search.lua translator clip, \
-	search.lua plen primary, search.lua plen clip, \
-	search.lua enpl primary, search.lua enpl clip, \
-	search.lua cheat input, search.lua cheat primary }
+	{ search.lua --diki -p, search.lua --diki -c, \
+	search.lua --deepl -p, search.lua --deepl -c, \
+	search.lua --translator -p, search.lua --translator -c, \
+	search.lua --plen -p, search.lua --plen -c, \
+	search.lua --enpl -p, search.lua --enpl -c, \
+	search.lua --cheat --input, search.lua --cheat -p }
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
 # open media or dir with xdg-open
@@ -305,8 +305,8 @@ super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}
 	$ROFI/clipster/roficlip-primary, \
 	clipster -po, \
 	clipster -cr, clipster -r, \
-	clipster.lua join clipboard, clipster.lua join primary, \
-	clipster.lua next clipboard, clipster.lua next primary, \
+	clipster.lua --join --clipboard, clipster.lua --join --primary, \
+	clipster.lua --next --clipboard, clipster.lua --next --primary, \
 	note.lua clip 1, note.lua clip, \
 	note.lua sel 1, note.lua sel, \
 	note.lua write
@@ -343,7 +343,7 @@ super + {_,shift,ctrl} + BackSpace
 
 # search
 super + {_, shift,ctrl} + g
-	{search.lua google clip, search.lua google primary, search.lua brave clip}
+	{search.lua --google -c, search.lua --google -p, search.lua --brave -c}
 
 #
 # ROFI 
@@ -377,9 +377,9 @@ super + {shift,ctrl} + v
 
 # translator 
 super + {_,shift,ctrl} + t
-	{	search.lua enpl primary, \
+	{	search.lua --enpl -c, \
 		$ROFI/tran/trans-launcher.sh, \
-		search.lua plen primary
+		search.lua --enpl -p
 	}
 #
 # MEDIA KEYS

@@ -3,28 +3,38 @@
 
 HELP = [[
 Utils for searching.
-search.lua action [clipboard | phrase | input]
-List of the options:
-
-	actions: plen|cenowarka|tor|so|filmweb|enpl|amazon|ceneo|diki|tuxi|brave|maps|translator|dd|deepl|wiki|yt|google|cheat
-	menu - show rofi with available actions
-	clipboard - type of the clipboard: clip or primary (default)
+search.lua action [option | phrase]
 	phrase - search phrase
-	input - show form input for the phrase
+	actions: plen|cenowarka|tor|so|filmweb|enpl|amazon|ceneo|diki|tuxi|brave|maps|translator|dd|deepl|wiki|yt|google|cheat
+List of the options:
+	--menu -m show rofi with available actions
+	--clipboard -c → search from secondary clipboard 
+	--primary -p → search from primary clipboard (selection)
+	--input -i → show form input for the phrase
 	-h help - show help
+
+Examples:
+Translate text to Polish
+search.lua --enpl "cat"
+Search from a selected text
+search.lua --google -p
+Multi search
+search.lua --google --dd "search phrase"
 
 -- dependency: rofi, xclip, translate shell, tuxi
 ]]
 
-action = arg[1]
+local args = cliparse(arg, 'phrase')
+local phraseArg = 'empty'
 
-phraseArg = arg[2] and arg[2] or 'primary'
-
-if not phraseArg or phraseArg == 'input' then
+if args.clipboard or args.c then
+	phraseArg = io.popen('xclip -out -selection clipboard'):read('*a')
+elseif args.primary or args.p then
+	phraseArg = io.popen('xclip -out -selection primary'):read('*a')
+elseif args.input or args.i then
 	phraseArg =	rofiInput({prompt = 'Search'})	
-end 
-if phraseArg == 'primary' or phraseArg == 'clip' then
-	phraseArg = io.popen('xclip -out -selection ' .. phraseArg):read('*a')
+elseif args.phrase then
+	phraseArg = args.phrase[1]	
 end
 
 function cheat()
@@ -65,16 +75,14 @@ end
 end
 
 local function transShell(dictionary)
-	return function(phraseArg)
-		local translation = io.popen('trans -b -sp ' .. dictionary .. ' "' .. phraseArg ..'"'):read('*a')
-		if #translation == 0 then 
-			error("Can not translate") 
-		else
-			notify(translation)
-			-- TODO
-			-- path = os.getenv('CONFIG') ..  '/logs/
-			-- echo "$selection ; $pl" >> ~/.config/rofi/scripts/tran/enpl-dictionary.txt ]]
-		end
+	local translation = io.popen('trans -b -sp ' .. dictionary .. ' "' .. phraseArg ..'"'):read('*a')
+	if #translation == 0 then 
+		error("Can not translate") 
+	else
+		notify(translation)
+		-- TODO
+		-- path = os.getenv('CONFIG') ..  '/logs/
+		-- echo "$selection ; $pl" >> ~/.config/rofi/scripts/tran/enpl-dictionary.txt ]]
 	end
 end
 
@@ -85,50 +93,51 @@ local function tuxi() --show error but work fine
 end
 
 local function browser(url)
-	  return function(phrase)
-		local status = os.execute('xdg-open "' .. url .. phrase .. '"')
-		assert(status == 0, 'Could not browse: ' .. phrase)
-	  end
+	local status = os.execute('xdg-open "' .. url .. phraseArg .. '"')
+	assert(status == 0, 'Could not browse: ' .. phraseArg)
 end
 
+local function help() print(HELP); os.exit() end
+
 local options = {
-	["google"] = browser('https://google.com/search?q='),
-	["brave"] = browser('https://search.brave.com/search?q='),
-	["dd"] = browser('https://duckduckgo.com/html?q='),
-	["yt"] = browser('https://www.youtube.com/results?search_query='),
-	["maps"] = browser('https://www.google.com/maps?q='),
-	["wiki"] = browser('https://en.wikipedia.org/wiki/'),
-	["ceneo"] = browser('https://www.ceneo.pl/szukaj-'),
-	["cenowarka"] = browser('https://cenowarka.pl/?fs='),
-	["allegro"] = browser('https://allegro.pl/listing?string='),
-	["amazon"] = browser('https://www.amazon.pl/s/?field-keywords='),
-	["so"] = browser('https://stackoverflow.com/search?q='),
-	["filmweb"] = browser('https://www.filmweb.pl/search?q='),
-	["diki"] = browser('https://www.diki.pl/slownik-angielskiego?q='),
-	["deepl"] = browser('https://www.deepl.com/translator#en/pl/'),
-	["translator"] = browser('https://translate.google.com/#auto/en/'),
-	["plen"]= transShell('pl:en'),
-	["enpl"]= transShell('en:pl'),
+	["h"]= help,
+	["google"] = M.bind(browser, 'https://google.com/search?q='),
+	["brave"] = M.bind(browser, 'https://search.brave.com/search?q='),
+	["dd"] = M.bind(browser, 'https://duckduckgo.com/html?q='),
+	["yt"] = M.bind(browser, 'https://www.youtube.com/results?search_query='),
+	["maps"] = M.bind(browser, 'https://www.google.com/maps?q='),
+	["wiki"] = M.bind(browser, 'https://en.wikipedia.org/wiki/'),
+	["ceneo"] = M.bind(browser, 'https://www.ceneo.pl/szukaj-'),
+	["cenowarka"] = M.bind(browser, 'https://cenowarka.pl/?fs='),
+	["allegro"] = M.bind(browser, 'https://allegro.pl/listing?string='),
+	["amazon"] = M.bind(browser, 'https://www.amazon.pl/s/?field-keywords='),
+	["so"] = M.bind(browser, 'https://stackoverflow.com/search?q='),
+	["filmweb"] = M.bind(browser, 'https://www.filmweb.pl/search?q='),
+	["diki"] = M.bind(browser, 'https://www.diki.pl/slownik-angielskiego?q='),
+	["deepl"] = M.bind(browser, 'https://www.deepl.com/translator#en/pl/'),
+	["translator"] = M.bind(browser, 'https://translate.google.com/#auto/en/'),
+	["plen"]= M.bind(transShell,'pl:en'),
+	["enpl"]= M.bind(transShell,'en:pl'),
 	["tor"]= function(phrase) return  os.execute('tor.sh "' .. phrase .. '"') end,
 	["tuxi"]= function() return tuxi() end,
 	["cheat"]= cheat(),
-	["-h"]= function() print(HELP); os.exit() end,
-	["#default"] = browser('https://google.com/search?q='),
 }
-local switch = (function(name,args)
-	local sw = options	
-	return (sw[name]and{sw[name]}or{sw["#default"]})[1]
-end)
 
-if action == 'menu' then
-	action = rofiMenu(options, {prompt = 'Search', width = '25ch'})
+local function errorMsg(msg)
+	print(msg)
+	log(msg, 'ERROR')
+	notifyError(msg)
 end
 
-local exec, param = switch(action, phraseArg)
-print(exec, param)
-local ok, val = pcall(exec, phraseArg)
-
-if not ok then 
-	log(val, 'ERROR')
-	notifyError(val)
+if args.menu or args.m then
+	local action = switch(options, rofiMenu(options, {prompt = 'Search', width = '25ch'}))
+	xpcall(action, errorMsg, phraseArg)
 end
+
+for key,_ in pairs(args) do
+	local selection = switch(options, key)
+	if selection and args[key] then
+		xpcall(selection, errorMsg, phraseArg)
+	end
+end
+
