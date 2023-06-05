@@ -143,6 +143,8 @@ local function unpack(info)
         cmd = string.format('unzip -d %q %q', outdir, current)
     elseif ext == 'rar' then
         cmd = string.format('cd %q && unrar x %q', outdir, current)
+    elseif ext == '7z' then
+        cmd = string.format('cd %q && 7z x %q', outdir, current)
     end
     local job = vifm.startjob { cmd = cmd }
 

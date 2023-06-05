@@ -44,17 +44,11 @@ set vicmd=nvim
 " With this option turned on you can run partially entered commands with unambiguous beginning using :! (e.g. :!Te instead of :!Terminal or :!Te<tab>).
 set fastrun
 
-" This makes vifm perform file operations on its own instead of relying on
-" standard utilities like `cp`.  While using `cp` and alike is a more universal
-" solution, it's also much slower when processing large amounts of files and
-" doesn't support progress measuring.
+" This makes vifm perform file operations on its own instead of relying on standard utilities like `cp`.  While using `cp` and alike is a more universal solution, it's also much slower when processing large amounts of files and doesn't support progress measuring.
 set syscalls
 
 " Trash Directory
-" The default is to move files that are deleted with dd or :d to the trash directory.  If you change this you will not be able to move files by deleting them and then using p to put the file in the new location.
-" I recommend not changing this until you are familiar with vifm.
-" This probably shouldn't be an option.
-" set trashdir
+" The default is to move files that are deleted with dd or :d to the trash directory.  If you change this you will not be able to move files by deleting them and then using p to put the file in the new location. I recommend not changing this until you are familiar with vifm. This probably shouldn't be an option. set trashdir
 set trash
 " This is how many directories to store in the directory history.
 set history=100
@@ -62,8 +56,7 @@ set history=100
 set undolevels=100
 " Follow links on l or Enter.
 set followlinks
-" With this option turned on you can run partially entered commands with
-" unambiguous beginning using :! (e.g. :!Te instead of :!Terminal or :!Te<tab>).
+" With this option turned on you can run partially entered commands with unambiguous beginning using :! (e.g. :!Te instead of :!Terminal or :!Te<tab>).
 set nofastrun
 " Natural sort of (version) numbers within text.
 set nosortnumbers
@@ -77,9 +70,7 @@ set noiec
 colorscheme near-default
 " colorscheme gruvebox
 
-" The FUSE_HOME directory will be used as a root dir for all FUSE mounts.
-" Unless it exists with write/exec permissions set, vifm will attempt to
-" create it.
+" The FUSE_HOME directory will be used as a root dir for all FUSE mounts. Unless it exists with write/exec permissions set, vifm will attempt to create it.
 set fusehome=/tmp/vifm_FUSE
 
 " Format for displaying time in file list. For example:
@@ -88,10 +79,8 @@ set fusehome=/tmp/vifm_FUSE
 set timefmt=\ %Y/%m/%d\ %H:%M
 
 
-" What should be saved automatically between vifm runs
-" Like in previous versions of vifm
+" What should be saved automatically between vifm runs Like in vi
 " set vifminfo=options,filetypes,commands,bookmarks,tui,state,cs,chistory,shistory,dirstack,registers,phistory
-" Like in vi
 set vifminfo=bookmarks,chistory,shistory,phistory,savedirs,dhistory
 
 """""""""" my config
@@ -99,6 +88,7 @@ set vifminfo=bookmarks,chistory,shistory,phistory,savedirs,dhistory
 " viewcolumn - lua plugin - brakes modification column for sorting by e.g. modification
 " set viewcolumns=-{NameLink},8.7{LsSize}
 set relativenumber
+set mouse=a
 "don't create shortcut with d,y,p key
 " , can be use for commands/scripts
 set ignorecase
@@ -135,21 +125,21 @@ nmap <C-s> :grep <space>
 " sometimes doesn't work with I param
 " command! fzf :execute '!fzf 2>&0 %%IU' | normal! gf
                 " \| let $FZF_PICK = term('fd | fzf --preview-window 40% --preview "bat --style=numbers --color=always --line-range :500 {}" 2>/dev/tty')
+nmap <C-f> :fzfFind <cr> 
 command! fzfFind : set noquickview
                 \| let $FZF_PICK = term('fd | fzf --preview "bat --style=numbers --color=always --line-range :500 {}" 2>/dev/tty')
                 \| if $FZF_PICK != ''
                 \|     execute 'goto' fnameescape($FZF_PICK)
                 \| endif
-command! fzfCdh :execute 'cd' fnameescape(term('fd --hidden --type d | fzf 2> /dev/tty'))
-nmap <C-f> :fzfFind <cr> 
 nmap <A-f> :fzfCdh <cr>
+command! fzfCdh :execute 'cd' fnameescape(term('fd --hidden --type d | fzf 2> /dev/tty'))
 " grep -v cache - remove cache dir
+nmap <C-j> :fzfFasd <cr> 
 command! fzfFasd : set noquickview
                 \| let $PICK = term('fasd -Rld | fzf 2>/dev/tty')
                 \| if $PICK != ''
                 \|     execute 'cd ' fnameescape($PICK)
                 \| endif
-nmap <C-j> :fzfFasd <cr> 
 
 " read bookmarks from custom list 
 " command! fzfBookmarks :exe "normal! :bmarks\r:write ~/.local/share/vifm/fzf-read/bookmarks\rq"
@@ -169,14 +159,13 @@ nmap <C-j> :fzfFasd <cr>
 
 " nmap , <nop> " help disappears quickly 
 nmap ,c :write | edit ~/.config/vifm/vifmrc | restart<cr>
-command! reload :write | restart
 nmap ,r :reload<cr>
-command! df df -h %m 2> /dev/null
-command! run !! ./%f
+command! reload :write | restart
 nmap ,x :run<cr>
+command! run !! ./%f
 " thumbnail preview. Each piced (`m`) files will be selected in vifm. IDK how to change it for pqiv - maybe by keybinding
-command! thumbnail :select! !sxiv -oqt %d %i
 nmap ti :thumbnail<cr>
+command! thumbnail :select! !sxiv -oqt %d %i
 " Open file in the background using its default program
 nmap ,b :file &<cr>l
 
@@ -185,9 +174,11 @@ noremap il :!for f in %f; do  "$f"; done<A-B><A-B><Left>
 
 "archive
 "atool don't work with rar?
-nmap rr	:!atool -x %f &>/dev/null &<cr>
+nmap rr	:unpack<cr>
+command! unpack atool -x %f &>/dev/null &
 nmap RR	:!atool --extract-to=%D %f <cr>
-nmap rl	:!atool -l %f %m <cr> 
+nmap rl	:packList <cr> 
+command! packList atool -l %f %m
 nmap rc :Pack 7z <cr>
 " nmap rc	:!atool -a %d:t.7z %f <cr> 
 " nmap rr	:!patool extract %f <cr>
@@ -200,15 +191,16 @@ nmap ii	:!identify %f %S <cr>
 
 nmap cx	:chmod+x<cr>
 
-"pdf combine
-nmap cp	:!pdfunite %f %d:t.pdf <cr>
-"pdftotext
-nmap cP	:!pdftotext %c %c:r <cr>
+nmap cp	:pdfCombine<cr>
+command! pdfCombine pdfunite %f %d:t.pdf 
+nmap cP	:pdfToText <cr>
+command! pdfToText pdftotext %c %c:r
 " remove spaces from filename
-noremap c- :!echo %f:gs? ?^? | xargs -n1 | xargs -r -I@ -P 0  sh -c 'V="@"; mv "${V//^/ }" "${V//^/-}"' <cr>
-"Tesseract OCR
+noremap c- :removeSpaces <cr>
+command! removeSpaces echo %f:gs? ?^? | xargs -n1 | xargs -r -I@ -P 0  sh -c 'V="@"; mv "${V//^/ }" "${V//^/-}"'
+noremap ct :ocr <cr>
+command! ocr echo %f:gs? ?^? | xargs -n1 | xargs -r -I @ -P 0 sh -c 'V="@"; tesseract "${V//^/ }" "${V//^/ }"'
 noremap cT :!for i in %f; do tesseract "$i"  "${i%%.png}"; done <cr>
-noremap ct :!echo %f:gs? ?^? | xargs -n1 | xargs -r -I @ -P 0 sh -c 'V="@"; tesseract "${V//^/ }" "${V//^/ }"' <cr>
 " noremap ct :!echo %f | xargs -n1 | xargs -r -I @ -P 0  tesseract "@" "@" <cr>
 "dragon dr - drag from and dl drop to
 nmap dr :!dragon-drop %f <cr> 
@@ -216,22 +208,22 @@ nmap dr :!dragon-drop %f <cr>
 nmap dR :!dragon-drop -a %f <cr> 
 nmap dl :!dragon-pull.sh <cr>
 " ffmpeg
-noremap cm :!for i in %f; do  ffmpeg -i "$i" -f segment -segment_time 900 -c copy "${i%%.*}-%%02d.mp3"; done <cr>
+command! ffmpegSegment !for i in %f; do  ffmpeg -i "$i" -f segment -segment_time 900 -c copy "${i%%.*}-%%02d.mp3"; done 
+noremap cm :ffmpegSegment <cr>
 
 " diff
-nmap ,d :!meld %c %C %i<cr> 
-command! diff nvim -d %f %F
-nmap ,D :diff<cr>
+nmap ,d :diffMeld<cr>
+command! diffMeld meld %c %C %i
+nmap ,D :diffVim<cr>
+command! diffVim nvim -d %f %F
 nmap ,c :compare listall<cr>
 
-" copy text into other file
-nmap cc :!cat %c >> %C <cr> 
-" copy text from file
-nmap <C-c> :!cat %c | xclip -sel clip<cr> 
-" append text from clipboard into file
-nmap <C-v> :!xclip -o -selection clipboard >> %c <cr>
-"rozmiary katalogów
-nmap du :!dua i<cr>
+nmap cc :copyTxtToFile <cr> 
+command! copyTxtToFile cat %c >> %C
+nmap <C-c> :copyTxtToClip <cr> 
+command! copyTxtToClip cat %c | xclip -sel clip
+nmap <C-v> :appendTextFromClip <cr>
+command! appendTextFromClip xclip -o -selection clipboard >> %c
 "change name without extension
 nmap <F1> :command <cr>
 nmap <F2> cW
@@ -262,7 +254,7 @@ nmap md :!typora %f &<cr>
 
 "COMAND VIFM
 " shortcut list
-nmap <C-l> :nmap <cr>
+nmap <C-F1> :nmap <cr>
 nmap ; :
 nmap <silent> <space> tj
 "select all
@@ -273,7 +265,7 @@ nmap I :invert s <cr>
 nmap S	:sync <cr>
 nmap s	:sort <cr>
 nmap U	:undolist <cr>
-"podglad w panelu
+"podglad w panelu, maybe change to tw
 nmap w	:view <cr>
 " mount device mount by m
 nmap <A-m> :media <cr>
@@ -288,14 +280,17 @@ nmap <A-h> :history cmd <cr>
 nmap <C-h> :history search <cr>
 
 " VIEWS
-" one panel
-nmap to :only<cr>
-nmap ts :vs<cr>
+" toggle one panel
+nmap to :vs!<cr>
+" nmap to :only<cr>
 nmap tr :tree! <cr>
 " ranger like
 nnoremap <silent> tm :set millerview!<cr>
-"tree directory under cursor with size
+"dirs size
+nmap td :diskSpace<cr>
+command! diskSpace dua i
 nmap T :!tree -h %c %m<cr>
+nmap tD :!df df -h %m 2> /dev/null <cr>
 "tabs
 nmap tt :tabnew <cr>
 nmap <C-n> :tabnext <cr>
@@ -303,17 +298,25 @@ nmap <C-p> :tabprevious <cr>
 
 " CLIPBOARD COPY
 " yank current directory path into the clipboard
-nnoremap yd :!echo -n %d | xclip -sel clip %i<cr>
+" nnoremap yd :!echo -n %d | xclip -sel clip %i<cr>
+nnoremap yd :yankPathRoot <cr>
+command! yankPathRoot echo -n %d | xclip -sel clip %i
 " yank current file path into the clipboard
-nnoremap yp :!echo -n %c:p | xclip -sel clip %i<cr>
+nnoremap yp :yankPath <cr>
+command! yankPath echo -n %c:p | xclip -sel clip %i
 " yank current filename without path into the clipboard
-nnoremap yn :!echo -n %c | xclip -sel clip %i<cr>
-" yank root of current file's name into the clipboard
-nnoremap yr :!echo -n %c:r | xclip -sel clip %i<cr>
-" copy and paset 
-nnoremap yc :!xclip-copyfile %f<cr>
-nnoremap yx :!xclip-cutfile %f<cr>
-nnoremap yv :!xclip-pastefile<cr>
+nnoremap yp :yankName <cr>
+command! yankNam echo -n %c | xclip -sel clip %i
+" yank root of current file's name (without extension) into the clipboard
+nnoremap yp :yankRootName <cr>
+command! yankPathRoot echo -n %c:r | xclip -sel clip %i
+" copy and paste - xclip tool
+nnoremap yc :copyFile <cr>
+command! copyFile xclip-copyfile %f
+nnoremap yx :cutFile <cr>
+command! cutFile xclip-cutfile %f
+nnoremap yv :pasteFile <cr>
+command! pasteFile xclip-pastefile
 
 " OPENING FILES
 ":filetype, but this command is ignored if not running in X. In X :filextype is equal to :filetype. 
