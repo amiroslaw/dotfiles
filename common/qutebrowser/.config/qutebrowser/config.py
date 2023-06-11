@@ -246,8 +246,9 @@ config.bind('ch', 'spawn -u hint_wrapper copyable select.lua --split') #hunk -mu
 config.bind('cs', 'spawn -u hint_wrapper copyable select.lua --speed')
 config.bind('cr', 'spawn -u hint_wrapper copyable select.lua --read')
 config.bind('cg', 'spawn -u hint_wrapper copyable select.lua --search')
-config.bind('cl', 'spawn -u hint_wrapper copyable select.lua --search:l')
+config.bind('cl', 'spawn -u hint_wrapper copyable select.lua --search:l') # search with deepl
 config.bind('ct', 'spawn -u hint_wrapper copyable select.lua --search:t')
+config.bind('cm', 'spawn -u hint_wrapper copyable select.lua --search:m')
 # duplicate ';y'
 config.bind('cy', 'hint links yank')
 config.bind('cY', 'hint --rapid links yank')

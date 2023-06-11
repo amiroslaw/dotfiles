@@ -322,7 +322,7 @@ fo() {
 # im and select a file will open in sxiv
 alias n='f -e nvim' 
 alias i='f -e sxiv'  
-alias m='f -e smplayer'  
+alias m='f -e mpv'  
 alias p='f -e zathura'  
 alias lo='f -e libreoffice'  
 
@@ -340,9 +340,9 @@ alias lo='f -e libreoffice'
 
 #ZSH
 # {{{ ZSH extensions , open in a app
-alias -s {tex,txt,md,adoc,java}=nvim
+alias -s {tex,txt,md,adoc,java,html}=nvim
 alias -s html=w3m
-alias -s {avi,mp4,webm,m3u,mkv}='devour smplayer'
+alias -s {avi,mp4,webm,m3u,mkv}='devour mpv'
 alias -s pdf='devour zathura'
 alias -s {mp3,flac,og}='ffplay -nodisp -autoexit'
 alias -s {jpg,JPG,jpeg,png,PNG,gif}='devour pqiv'  

@@ -151,11 +151,14 @@ end
 
 local function push(url)
 	local extinf = ''
-	local ok, out, err = run('yt-dlp -i --print duration,title ' .. url, "Can't get metadata form: " .. url)
+	local ok, out, err = run('yt-dlp -i --print duration,title "' .. url .. '"', "Can't get metadata form: " .. url)
+	print('yt-dlp -i --print duration,title ' .. url, "Can't get metadata form: " .. url)
 	if not ok then
 		log(err, 'WARNING')	
 	end
-	extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
+	if #out == 2 then
+		extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
+	end
 	assert(io.open(TMP_PLAYLIST, 'a'):write(extinf .. url .. '\n'))
 end
 

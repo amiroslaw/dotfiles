@@ -57,7 +57,7 @@ function adoc()
 	end
 end
 
-function colpyWithUrl()
+function copyWithUrl()
 	local document = gumbo.parse(CONST.selectedHtml)
 	local urls = '' -- urls will have relative path
 	for _, element in ipairs(document.links) do
@@ -66,7 +66,7 @@ function colpyWithUrl()
 	copy(CONST.selectedTxt .. urls)
 end
 
-function colpyAdocUrl()
+function copyAdocUrl()
 	copy(CONST.quteUrl .. '[' .. trim(CONST.selectedTxt) .. ']')
 end
 
@@ -95,8 +95,8 @@ end
 
 local cases = {
 	['--adoc'] = adoc,
-	['--adoc-url'] = colpyAdocUrl,
-	['--url'] = colpyWithUrl,
+	['--adoc-url'] = copyAdocUrl,
+	['--url'] = copyWithUrl,
 	['--speed'] = speed,
 	['--read'] = read,
 	['--split'] = splitSentences,
