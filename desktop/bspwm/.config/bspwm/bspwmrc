@@ -90,6 +90,7 @@ bspc rule -a ovh.miroslaw.timefx.TimeFX state=floating
 bspc rule -a '*:task' state=floating center=true rectangle=1000x1150+0+0
 bspc rule -a '*:newsboat' state=floating center=true rectangle=1000x1150+0+0
 bspc rule -a '*:ytfzf' state=floating center=true rectangle=1000x900+0+0
+bspc rule -a '*:chat' state=floating center=true rectangle=1000x800+0+0
 
 #bspc rule -a firefox desktop=I
 #bspc rule -a nautilus state=pseudo_tiled

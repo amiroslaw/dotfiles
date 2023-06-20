@@ -24,7 +24,12 @@ return require('packer').startup(function()
 	use 'voldikss/vim-browser-search'
 	use 'kyazdani42/nvim-web-devicons'
 	use { 'amiroslaw/fm-nvim', cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit', 'TaskWarriorTUI' } }
-	use { 'folke/zen-mode.nvim', branch = 'main', cmd = { 'ZenMode' } }
+	use { 'folke/zen-mode.nvim', branch = 'main', cmd = { 'ZenMode' }, 
+		opts = { -- doesn't work
+		  window = { width = .80 },
+			  plugins = { wezterm = { enabled = true, font = "+5", }, },
+			} 
+		}
 	use { 'alvarosevilla95/luatab.nvim', requires='kyazdani42/nvim-web-devicons', 
 		config = function() require('luatab').setup{} end, }
 	use 'nvim-lualine/lualine.nvim'

@@ -388,6 +388,7 @@ fileviewer {*.docx},<application/vnd.openxmlformats-officedocument.wordprocessin
 "e-book
 filextype {*.cbr,*cbz} pqiv %f,
 filextype {*.mobi,*.epub,*azw3,*azw,*pobi} 
+		\ foliate %f %i,
 		\ FBReader %f %i,
 		\ ebook-viewer %f %i, 
 		\ xreader %f %i,

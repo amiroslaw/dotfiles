@@ -192,8 +192,8 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 	/opt/idea-IU-212.5284.40/bin/idea.sh, \
 	$TERMINAL start --class vifm -- vifm, \
 	pcmanfm, \
-	scratchpad.sh  "$TERM_LT -c portfolio -n portfolio -e nvim ~/.config/investing/portfolio.yaml", \
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
+	scratchpad.sh chat "wezterm start --class chat -- nchat", \
 	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui", \
 	todo.lua add, \
@@ -201,6 +201,7 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/power.sh
 	}
+	# scratchpad.sh  "$TERM_LT -c portfolio -n portfolio -e nvim ~/.config/investing/portfolio.yaml", \
 
 # tasks; todo; calendar
 super + {shift,ctrl} + u
@@ -236,7 +237,7 @@ super + s ; {s,h,g,G,b,B,u,U,y,Y,m,M}
 	search.lua --google -p, search.lua --google -c, \
 	search.lua --brave -p, search.lua --brave -c, \
 	search.lua --dd -p, search.lua --dd -c, \
-	search.lua --video -p, search.lua --video -c, \
+	search.lua --yt -p, search.lua --yt -c, \
 	search.lua --maps -p, search.lua --maps -c}
 
 super + s ; {w,W,c,C,o,O,a,A,z,Z,f,F,x,X,t,T}

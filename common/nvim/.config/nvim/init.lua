@@ -3,10 +3,11 @@ require 'plugins'
 -- free keybinding leader-b/B
 -- VARIABLES
 local HOME = os.getenv 'HOME'
+vim.cmd 'source ~/Documents/Ustawienia/stow-private/calendar.vim'
 
 -- COLORSCHEMES {{{
 local function getBackground(hour)
-		local hour = hour and hour or 18
+		local hour = hour and hour or 20
 		local currentHour = tonumber(os.date '%H')
 		if currentHour > 5 and currentHour < hour then
 			return 'light'
@@ -286,6 +287,8 @@ nmap('<S-A-s>', ':setlocal spell spelllang=pl<cr>')
 imap('<S-A-s>', '<cmd>setlocal spell spelllang=pl<cr>')
 nmap('<A-s>', ':setlocal spell spelllang=en_us<CR>')
 imap('<A-s>', '<cmd>setlocal spell spelllang=en_us<CR>')
+nmap('<LocalLeader>t', ':.!trans -shell pl:en -show-original n  -show-prompt-message n -show-languages n -no-ansi ')
+nmap('<LocalLeader>T', ':.!trans -shell en:pl -show-original n  -show-prompt-message n -show-languages n -no-ansi ')
 nmap('<C-e>', 'z=')
 imap('<C-e>', 'z=')
 nmap('<S-e>', '[s')
@@ -343,9 +346,6 @@ nmap('<LocalLeader>x', '<cmd>TaskmakerToggle <CR>') -- }}}
 -- Windows {{{
 nmap('<leader>M', '<Cmd>WindowsToggleAutowidth<CR>')
 nmap('<leader>m', '<Cmd>WindowsMaximize<CR>') -- }}} 
-
--- ZenMode more readable text
-nmap('<F6>', ':ZenMode <CR>')
 
 -- nmap('<leader>f', '<cmd> !stylua --config-path ~/.config/stylua/stylua.toml % <cr>')
 nmap('<leader>f', '<cmd> lua vim.lsp.buf.format() <cr>')
@@ -855,6 +855,23 @@ require("nap").setup({
     }, },
 })
 	--<Plug>(grammarous-move-to-previous-error)
+-- }}} 
+
+-- ZenMode {{{
+-- https://github.com/folke/zen-mode.nvim
+nmap('<F6>', ':ZenMode <CR>')
+-- require("zen-mode").toggle({
+--   window = {
+--     width = .85
+--   },
+--   plugins = {
+--     wezterm = {
+--       enabled = true,
+--       font = "+4", -- (10% increase per step)
+--     },
+--   },
+-- })
+
 -- }}} 
  
 -- }}} 

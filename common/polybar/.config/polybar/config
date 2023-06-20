@@ -518,8 +518,9 @@ bar-empty = -
 [module/net]
 type = custom/script
 exec = echo " "
-click-left = firefox &
-click-right = notify-send firefox &
+click-left = qutebrowser ~/.config/qutebrowser/themes/startpage/index.html &
+; click-left = firefox &
+click-right = notify-send qutebrowser &
 [module/pcmanfm]
 type = custom/script
 exec = echo " "
@@ -530,11 +531,22 @@ type = custom/script
 exec = echo " "
 click-left = pavucontrol &
 click-right = notify-send pavucontrol &
+[module/grywalizacja]
+type = custom/script
+exec = echo " "
+click-left = "java -jar ~/.bin/grywalizacja.jar & " 
+click-right = notify-send gamification &
 [module/screenshot]
 type = custom/script
 exec = echo " "
 click-left = screenshot.sh monitor1
 click-right = screenshot.sh monitor2
+[module/mpc]
+type = custom/script
+exec = echo " "
+click-left = mpc toggle
+click-middle = mpc random && notify-send shuffle
+click-right = mpc next
 
 [module/idea]
 type = custom/script
@@ -556,11 +568,6 @@ type = custom/script
 exec = echo " "
 click-left = skypeforlinux &
 click-right = notify-send skype &
-[module/grywalizacja]
-type = custom/script
-exec = echo " "
-click-left = "~/.sdkman/candidates/java/current/bin/java -jar ~/Documents/Ustawienia/sync/grywalizacja/Grywalizacja.jar &" 
-click-right = notify-send gamification &
 [module/calendar]
 type = custom/script
 exec = echo " "
