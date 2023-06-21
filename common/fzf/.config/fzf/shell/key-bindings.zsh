@@ -20,6 +20,7 @@
 # ALT-q - Kill process
 # ALT-w - Run application
 # ALT-v - Edit line in vim with ctrl-e: oh-my-zsh do it by esc; v
+# ALT-a - aliases
 
 # bindkey '\ef' → alt '^F' ctr
 # global
@@ -263,6 +264,25 @@ fzf_fasd_cd() {
 zle     -N   fzf_fasd_cd;
 bindkey '\ej' fzf_fasd_cd
 
+FZF_ALIAS_OPTS=${FZF_ALIAS_OPTS:-"--preview-window up:3:hidden:wrap"}
+
+function fzf_alias() {
+    local selection
+    # use sed with column to work around MacOS/BSD column not having a -l option
+    if selection=$(alias |
+                       sed 's/=/\t/' |
+                       column -s '	' -t |
+                       FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $FZF_ALIAS_OPTS" fzf --preview "echo {2..}" --query="$BUFFER" |
+                       awk '{ print $1 }'); then
+        BUFFER=$selection
+    fi
+    zle redisplay
+}
+
+zle -N fzf_alias
+bindkey -M emacs '\ea' fzf_alias
+bindkey -M vicmd '\ea' fzf_alias
+bindkey -M viins '\ea' fzf_alias
 
 } always {
   eval $__fzf_key_bindings_options

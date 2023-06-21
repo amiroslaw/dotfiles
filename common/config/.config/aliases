@@ -342,9 +342,9 @@ alias lo='f -e libreoffice'
 # {{{ ZSH extensions , open in a app
 alias -s {tex,txt,md,adoc,java,html}=nvim
 alias -s html=w3m
-alias -s {avi,mp4,webm,m3u,mkv}='devour mpv'
+alias -s {avi,mp4,webm,m3u,mkv}='devour mpv --profile stream '
 alias -s pdf='devour zathura'
-alias -s {mp3,flac,og}='ffplay -nodisp -autoexit'
+alias -s {mp3,flac,og}='mpv --no-video'
 alias -s {jpg,JPG,jpeg,png,PNG,gif}='devour pqiv'  
 alias -s {ods,ODS,odt,ODT,odp,ODP,doc,DOC,docx,DOCX,xls,XLS,xlsx,XLSX,xlsm,XLSM,ppt,PPT,pptx,PPTX,csv,CSV}='devour libreoffice'
 alias -s {zip,ZIP,war,WAR,gz,tgz}="atool -l"
