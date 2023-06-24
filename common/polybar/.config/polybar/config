@@ -520,22 +520,17 @@ type = custom/script
 exec = echo " "
 click-left = qutebrowser ~/.config/qutebrowser/themes/startpage/index.html &
 ; click-left = firefox &
-click-right = notify-send qutebrowser &
+click-middle = notify-send qutebrowser &
 [module/pcmanfm]
 type = custom/script
 exec = echo " "
 click-left = pcmanfm &
-click-right = notify-send pcmanfm &
+click-middle = notify-send pcmanfm &
 [module/music]
 type = custom/script
 exec = echo " "
 click-left = pavucontrol &
-click-right = notify-send pavucontrol &
-[module/grywalizacja]
-type = custom/script
-exec = echo " "
-click-left = "java -jar ~/.bin/grywalizacja.jar & " 
-click-right = notify-send gamification &
+click-middle = notify-send pavucontrol &
 [module/screenshot]
 type = custom/script
 exec = echo " "
@@ -545,8 +540,14 @@ click-right = screenshot.sh monitor2
 type = custom/script
 exec = echo " "
 click-left = mpc toggle
-click-middle = mpc random && notify-send shuffle
 click-right = mpc next
+click-middle = mpc random && notify-send shuffle
+[module/grywalizacja]
+type = custom/script
+exec = echo " "
+click-left = "java -jar ~/.bin/grywalizacja.jar & " 
+click-right = notify-send $(timew summary :ids :yesterday | tail --lines 2 | head --lines 1 | awk '{$1=$1}1')
+click-middle = notify-send gamification &
 
 [module/idea]
 type = custom/script

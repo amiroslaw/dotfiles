@@ -324,10 +324,11 @@ super + {x,v}
 	xdotool click --clearmodifiers {1,2}
 
 super + {_,shift,ctrl} + i
-	{ rofi-buku, \
+	{ pomodoro.lua add -n, \
 	~/.config/qutebrowser/userscripts/session.sh, \
 	~/.config/qutebrowser/userscripts/session.sh webapp
 	}
+	# { rofi-buku, \ - bug
 
 super + {shift, ctrl} + x
 	{ gksu net-restart.sh, \
