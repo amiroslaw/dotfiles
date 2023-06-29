@@ -217,6 +217,18 @@ command! diffMeld meld %c %C %i
 nmap ,D :diffVim<cr>
 command! diffVim nvim -d %f %F
 nmap ,c :compare listall<cr>
+" git log preview for a file
+nnoremap ,l :if &previewprg == '' | set previewprg='git log --color -- %c 2>&1' | view! | else | set previewprg='' | view | endif<cr>
+
+" finding the "N" most recently committed/modified or largest files e.g. :xc 4
+command! xc :set viewcolumns=*{name}..,24{mtime}| zzzInternalXC %a
+command! xm :set viewcolumns=*{name}..,24{mtime}| zzzInternalXM %a
+command! xs :set viewcolumns=*{name}..,8{size}|   zzzInternalXS %a
+command! zzzInternalXC git log --name-only --format=%%n -- %d | CDUP=`git rev-parse --show-cdup` perl -lne 'print if /./ and s(^)($ENV{CDUP}) and -f and not $seen{$_}++' | head -%a %U
+command! zzzInternalXM find -type f -print0 | xargs -0 ls -tr | tail -%a | tac %U
+command! zzzInternalXS find -type f -print0 | xargs -0 ls -Sr | tail -%a | tac %U
+" the 'zzz' is so they will show up last when I hit ':<Tab>'
+" also, notice the %% in the format paramater in zzzInternalXC
 
 nmap cc :copyTxtToFile <cr> 
 command! copyTxtToFile cat %c >> %C
@@ -224,9 +236,10 @@ nmap <C-c> :copyTxtToClip <cr>
 command! copyTxtToClip cat %c | xclip -sel clip
 nmap <C-v> :appendTextFromClip <cr>
 command! appendTextFromClip xclip -o -selection clipboard >> %c
-"change name without extension
 nmap <F1> :command <cr>
+"change name without extension
 nmap <F2> cW
+nmap <S-F2> cW<c-a>
 " trash-cli or rm-improved
 nmap <delete> :!trash-put %f<cr>
 nmap DD :!rm -rf %f<cr>
@@ -257,6 +270,9 @@ nmap md :!typora %f &<cr>
 nmap <C-F1> :nmap <cr>
 nmap ; :
 nmap <silent> <space> tj
+" move the cursor in the other window 
+nnoremap <silent> J <space>j<space> 
+nnoremap <silent> K <space>k<space>
 "select all
 nmap aa ggvG<cr>
 "unselect all
@@ -296,6 +312,10 @@ nmap tt :tabnew <cr>
 nmap <C-n> :tabnext <cr>
 nmap <C-p> :tabprevious <cr>
 
+" grow/shrink window by 4 columns at a time 
+nnoremap > 4<c-w>< 
+nnoremap < 4<c-w>>
+
 " CLIPBOARD COPY
 " yank current directory path into the clipboard
 " nnoremap yd :!echo -n %d | xclip -sel clip %i<cr>
@@ -305,10 +325,10 @@ command! yankPathRoot echo -n %d | xclip -sel clip %i
 nnoremap yp :yankPath <cr>
 command! yankPath echo -n %c:p | xclip -sel clip %i
 " yank current filename without path into the clipboard
-nnoremap yp :yankName <cr>
-command! yankNam echo -n %c | xclip -sel clip %i
+nnoremap yn :yankName <cr>
+command! yankName echo -n %c | xclip -sel clip %i
 " yank root of current file's name (without extension) into the clipboard
-nnoremap yp :yankRootName <cr>
+nnoremap yr :yankRootName <cr>
 command! yankPathRoot echo -n %c:r | xclip -sel clip %i
 " copy and paste - xclip tool
 nnoremap yc :copyFile <cr>
@@ -382,8 +402,10 @@ filextype {*.odt,*.ods,*.doc,*.docx,*.xls,*.xlsx,*.csv,*.odp,*.pptx,*.ppt},
          \<application/vnd.openxmlformats-officedocument.*,application/msword,application/vnd.ms-excel>
         \ libreoffice %f &
 fileviewer {*.doc},<application/msword> catdoc %c
-fileviewer {*.docx},<application/vnd.openxmlformats-officedocument.wordprocessingml.document>
-         \ docx2txt.pl %f -
+fileviewer {*.docx},<application/vnd.openxmlformats-officedocument.wordprocessingml.document> docx2txt.pl %f -
+"or with unoconv
+" fileviewer *.odt,*.doc,*.docx unoconv -f text --stdout %c 
+" fileviewer *.ods,*.xls,*.xlsx unoconv -f csv --stdout %c
 
 "e-book
 filextype {*.cbr,*cbz} pqiv %f,
