@@ -48,14 +48,17 @@ R { toggle_shuffle_mode(0); }
 ; IDK but if you dont put $1 it will add that in the end of the command
 ; probably dont't put quotes "' and escape )
 ; instead of $() use xargs
+<F1> { command(echo -n $1 | xargs -I{} notify-send {} "o:select\\n r: rename\\n d: trash\\n X:xclip-cutfile\\n W:set wallpaper\\n e/E:OCR\\n r:rename\\n [alt]1-5:move to dir 1-5\\n c[npi]:copy name/path/image"); }
 d { command(echo -n $1 | xargs -I {} trash-put {}); }
 D { command(-cat | xargs -I {} trash-put {}); }
+X { command(xclip-cutfile $1); }
 ; copy name
 cn { command(echo -n $1 | xclip -selection clipboard); }
 ; copy path
 cp { command(pwd echo -n $1 | xclip -selection clipboard); }
 ; copy image
 ci { command(|xclip -selection clipboard -target image/png); }
+;ci { command(|xclip-copyfile); }
 ; set wallpaper
 W { command(feh --no-fehbg --bg-fill $); }
 ;ocr image
@@ -74,6 +77,7 @@ r { command(zenity --entry | xargs -I {} mv $1 {}.png); }
 <Alt>3 { command(-mkdir 3; cat | xargs -I {} mv {} 3); }
 <Alt>4 { command(-mkdir 4; cat | xargs -I {} mv {} 4); }
 <Alt>5 { command(-mkdir 5; cat | xargs -I {} mv {} 5); }
+;<Alt>x { command(- | xargs -I {} xclip-cutfile {}); }
  
 @MONTAGE {
 	l { montage_mode_shift_x(1); } 

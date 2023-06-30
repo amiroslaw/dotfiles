@@ -295,6 +295,10 @@ nmap('<S-e>', '[s')
 nmap('<a-e>', '[s1z=`]') -- auto correction for the last occurrence
 vmap('<a-e>', '[s1z=`]')
 imap('<a-e>', '<Esc>[s1z=`]a')
+-- capitalize the first word in the sentence and the last word
+nmap('<LocalLeader>U', '<c-(>~A')
+nmap('<LocalLeader>u', 'b~A')
+-- imap('<LocalLeader>u', '<Esc><c-(>~A') -- find shortcut
 
 --replace from selection/ substitution, produce error but it's workaround for showing command line mode
 vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
