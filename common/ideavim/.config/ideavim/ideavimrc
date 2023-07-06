@@ -241,6 +241,7 @@ nmap tu :action MembersPullUp<cr>
 noremap tl :action Inline<CR>
 noremap to :action Move<CR>
 nmap <leader>r :action Replace<cr>
+vmap <leader>r :action Replace<cr>
 noremap tA :action AnalyzeMenu<CR>
 nmap ta :action InspectCode<cr>
 nnoremap <leader>c :action RearrangeCode<cr>

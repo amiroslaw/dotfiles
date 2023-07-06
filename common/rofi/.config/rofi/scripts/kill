@@ -9,7 +9,7 @@
 
 # Running ps to get running processes and display in dmenu.
 selected="$(ps --user "$(id -u)" -F | \
-            rofi -dmenu -i -l 20 -width 100 -p "Search for process to kill:" | \
+            rofi -dmenu -i -l 20 -theme-str 'window {width:  99%;}' -p "Search for process to kill:" | \
             awk '{print $2" "$11}')";
 
             # dmenu -i -l 20 -p "Search for process to kill:" | \

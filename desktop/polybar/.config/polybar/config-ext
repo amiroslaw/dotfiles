@@ -48,7 +48,7 @@ override-redirect = false
 
 [bar/ext]
 modules-left = bspwm polywins
-modules-center = net pcmanfm music grywalizacja screenshot mpc
+modules-center = net grywalizacja screenshot mpd
 modules-right = temp-amd fan-amd temp-nvidia fan-nvidia date pulseaudio powermenu
 ; modules-center = net idea pcmanfm music gpodder gnucash pidgin grywalizacja calendar screenshot
 ; windows-monitor = ~/.config/polybar/taskbar.sh --monitor DVI-I-0

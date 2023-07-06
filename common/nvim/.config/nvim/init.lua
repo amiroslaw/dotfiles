@@ -1,6 +1,8 @@
 require 'plugins'
 -- S-k - jump to help page
 -- free keybinding leader-b/B
+-- TODO
+-- add shortcuts like in shell imap('<C-e>', 'normal A')
 -- VARIABLES
 local HOME = os.getenv 'HOME'
 vim.cmd 'source ~/Documents/Ustawienia/stow-private/calendar.vim'

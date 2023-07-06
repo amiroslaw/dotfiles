@@ -111,6 +111,7 @@ type = internal/fs
 interval = 125
 
 mount-0 = /home
+mount-1 = /
 
 format-mounted-prefix = " " 
 format-mounted-underline = ${colors.base12}
@@ -158,6 +159,8 @@ ramp-used-7 = █
 [module/date]
 type = internal/date
 interval = 60
+# doesn't work
+click-right = notify-send -t 9000 "$(cal)"
 
 label = %date% %time%
 date = ""
@@ -168,7 +171,6 @@ time-alt = %H:%M
 format-prefix = 
 ; format-prefix-foreground = ${colors.foreground-alt}
 format-underline = ${colors.base13}
-click-right = notify-send "$(cal)"
 
 [module/pulseaudio]
 type = internal/pulseaudio
@@ -178,6 +180,8 @@ format-volume = <label-volume>
 ; pactl list short sources | awk '{ print $2 }'
 sink = alsa_output.pci-0000_00_1b.0.analog-stereo
 use-ui-max = true
+click-right = audio.sh toggle
+click-middle = pavucontrol
 
 format-volume-prefix = " "
 label-volume = %percentage%%
@@ -239,6 +243,9 @@ bar-volume-empty-foreground = ${colors.foreground-alt}
 [module/mpd]
 ; https://github.com/jaagr/polybar/wiki/Module:-mpd
 type = internal/mpd
+host = 127.0.0.1
+port = 6666
+
 format-online =<toggle> <label-song> <icon-next> <label-time> <icon-random> 
 ; format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
 icon-prev = 
@@ -250,6 +257,9 @@ icon-random = 
 icon-consume = ✀
 icon-repeat = 🔁
 icon-single = 🔂
+
+toggle-on-foreground = #ff
+toggle-off-foreground = #55
 
 label-song-maxlen = 40
 label-song-ellipsis = true
@@ -318,7 +328,6 @@ tail = true
 format-foreground = #d0d060
 exec = ~/.config/polybar/bsplayout.sh
 
-
 [module/pomodoro]
 type = custom/script
 exec = pomodoro.lua status -anc
@@ -329,7 +338,7 @@ interval = 60
 
 [module/investing]
 type = custom/script
-exec = investing-cli --no-errors -l -o ttwo,cdr,sbsw,btc,eth -k $(cat $PRIVATE/yahoo) && investing-cli -an -k $(cat $PRIVATE/yahoo)
+exec = investing-cli --no-errors -l -o sbsw,btc -k $(cat $PRIVATE/yahoo) && investing-cli -an -k $(cat $PRIVATE/yahoo)
 click-left = investing-cli -ln -k $(cat $PRIVATE/yahoo)
 click-right = investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)
 interval = 1800
@@ -338,7 +347,6 @@ interval = 1800
 type = custom/script
 exec = ~/.config/polybar/currency.sh
 interval = 3600
-
 
 [module/weather]
 type = custom/script
@@ -521,27 +529,16 @@ exec = echo " "
 click-left = qutebrowser ~/.config/qutebrowser/themes/startpage/index.html &
 ; click-left = firefox &
 click-middle = notify-send qutebrowser &
-[module/pcmanfm]
+[module/idea]
 type = custom/script
-exec = echo " "
-click-left = pcmanfm &
-click-middle = notify-send pcmanfm &
-[module/music]
-type = custom/script
-exec = echo " "
-click-left = pavucontrol &
-click-middle = notify-send pavucontrol &
+exec = echo " " 
+click-left = /opt/idea-IU-*/bin/idea.sh &
+click-right = notify-send idea &
 [module/screenshot]
 type = custom/script
 exec = echo " "
 click-left = screenshot.sh monitor1
 click-right = screenshot.sh monitor2
-[module/mpc]
-type = custom/script
-exec = echo " "
-click-left = mpc toggle
-click-right = mpc next
-click-middle = mpc random && notify-send shuffle
 [module/grywalizacja]
 type = custom/script
 exec = echo " "
@@ -549,11 +546,23 @@ click-left = "java -jar ~/.bin/grywalizacja.jar & "
 click-right = notify-send $(timew summary :ids :yesterday | tail --lines 2 | head --lines 1 | awk '{$1=$1}1')
 click-middle = notify-send gamification &
 
-[module/idea]
+## unused
+[module/mpc]
 type = custom/script
-exec = echo " " 
-click-left = /opt/idea-IU-*/bin/idea.sh &
-click-right = notify-send idea &
+exec = echo " "
+click-left = mpc toggle
+click-right = mpc next
+click-middle = mpc random && notify-send shuffle
+[module/music]
+type = custom/script
+exec = echo " "
+click-left = pavucontrol &
+click-middle = notify-send pavucontrol &
+[module/pcmanfm]
+type = custom/script
+exec = echo " "
+click-left = pcmanfm &
+click-middle = notify-send pcmanfm &
 [module/gnucash]
 type = custom/script
 exec = echo " "
