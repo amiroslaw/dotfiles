@@ -19,8 +19,8 @@ local launch_menu = {
 		cwd = wezterm.home_dir .. '/Documents/notebook',
 	},
 	{
-		label = 'tor', -- unmap keybindings and open rtorrent
-		args = { 'stty', 'stop', 'undef', '&&', 'stty', 'start', 'undef', '&&', 'screen', '-x', 'tor' },
+		label = 'tor',
+		args = { 'screen', '-x', 'tor' },
 	},
 }
 return { -- Must be in the end
@@ -28,8 +28,7 @@ return { -- Must be in the end
 	font_size = 11,
 	font = wezterm.font_with_fallback(
 		{ 'Iosevka Term Slab', 'SauceCodePro Nerd Font Mono', 'FiraCode Nerd Font Mono' },
-		-- { weight = 'Medium' }
-		{ weight = 'Regular' }
+		{ weight = 'Regular' } -- { weight = 'Medium' }
 	),
 	hide_tab_bar_if_only_one_tab = true,
 	scrollback_lines = 10000,
@@ -59,6 +58,7 @@ return { -- Must be in the end
 	automatically_reload_config = false,
 	key_map_preference = "Mapped",
 	color_scheme = plugins.getColorscheme 'Poimandres Storm',
+	-- key_tables = bindings.key_tables,
 	-- 'kanagawabones', 'Dracula (Official)'
 	-- https://wezfurlong.org/wezterm/colorschemes/d/index.html
 	-- disable_default_key_bindings = true,

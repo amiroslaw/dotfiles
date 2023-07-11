@@ -64,6 +64,30 @@ map('F12', 'ShowDebugOverlay', 'ALT')
 --disable key
 map('Enter', 'DisableDefaultAssignment', 'ALT')
 
+local checkout = wezterm.action_callback(function(window, pane)
+      local branches = {}
+	  local path = plugins.getPath(pane:get_current_working_dir())
+	for line in io.popen('git -C ' .. path .. ' branch'):lines() do
+		table.insert(branches, { label = line })
+	end 
+      window:perform_action(
+        act.InputSelector {
+          action = wezterm.action_callback(function(window, pane, id, label)
+            if not id and not label then
+              wezterm.log_info 'cancelled'
+            else
+			os.execute('git -C ' .. path .. ' checkout ' .. label)
+              wezterm.log_info('you selected ', id, label)
+            end
+          end),
+          title = 'Git checkout',
+          choices = branches,
+        },
+        pane
+      )
+    end)
+mapCS('g', checkout)
+
 local mouse_bindings = {
 	{ -- Alt-Middle click pastes from the clipboard selection
 		-- NOTE: Must be last to overwrite the existing Alt-Middle binding done by permute_any_or_no_mods.
@@ -72,55 +96,41 @@ local mouse_bindings = {
 		action = wezterm.action { PasteFrom = 'Clipboard' },
 	},
 }
--- Show which key table is active in the status area
-wezterm.on('update-right-status', function(window, pane)
-	local name = window:active_key_table()
-	if name then
-		name = 'TABLE: ' .. name
-	end
-	window:set_right_status(name or '')
-end)
-
 -- key table don't work
 map('m', act{ ActivateKeyTable={ name="activate_pane", timeout_milliseconds=1000, replace_current=true, one_shot=true} }, "LEADER")
 map('r', act.ActivateKeyTable { name = 'resize_pane', one_shot = false }, 'LEADER')
-activate_pane = {
-	{ key = 'LeftArrow', action = wezterm.action { ActivatePaneDirection = 'Left' } },
-	{ key = 'h', action = wezterm.action { ActivatePaneDirection = 'Left' } },
-
-	{ key = 'RightArrow', action = wezterm.action { ActivatePaneDirection = 'Right' } },
-	{ key = 'l', action = wezterm.action { ActivatePaneDirection = 'Right' } },
-
-	{ key = 'UpArrow', action = wezterm.action { ActivatePaneDirection = 'Up' } },
-	{ key = 'k', action = wezterm.action { ActivatePaneDirection = 'Up' } },
-
-	{ key = 'DownArrow', action = wezterm.action { ActivatePaneDirection = 'Down' } },
-	{ key = 'j', action = wezterm.action { ActivatePaneDirection = 'Down' } },
+-- local defaultKeysTable = wezterm.gui.default_key_tables()
+local key_tables = {
+	activate_pane = {
+		{ key = 'LeftArrow', action = wezterm.action { ActivatePaneDirection = 'Left' } },
+		{ key = 'h', action = wezterm.action { ActivatePaneDirection = 'Left' } },
+		{ key = 'RightArrow', action = wezterm.action { ActivatePaneDirection = 'Right' } },
+		{ key = 'l', action = wezterm.action { ActivatePaneDirection = 'Right' } },
+		{ key = 'UpArrow', action = wezterm.action { ActivatePaneDirection = 'Up' } },
+		{ key = 'k', action = wezterm.action { ActivatePaneDirection = 'Up' } },
+		{ key = 'DownArrow', action = wezterm.action { ActivatePaneDirection = 'Down' } },
+		{ key = 'j', action = wezterm.action { ActivatePaneDirection = 'Down' } },
+	},
+	resize_pane = {
+		{ key = 'LeftArrow', action = act.AdjustPaneSize { 'Left', 1 } },
+		{ key = 'h', action = act.AdjustPaneSize { 'Left', 1 } },
+		{ key = 'RightArrow', action = act.AdjustPaneSize { 'Right', 1 } },
+		{ key = 'l', action = act.AdjustPaneSize { 'Right', 1 } },
+		{ key = 'UpArrow', action = act.AdjustPaneSize { 'Up', 1 } },
+		{ key = 'k', action = act.AdjustPaneSize { 'Up', 1 } },
+		{ key = 'DownArrow', action = act.AdjustPaneSize { 'Down', 1 } },
+		{ key = 'j', action = act.AdjustPaneSize { 'Down', 1 } },
+		-- Cancel the mode by pressing escape
+		{ key = 'Escape', action = 'PopKeyTable' },
+	}
 }
-resize_pane = {
-	{ key = 'LeftArrow', action = act.AdjustPaneSize { 'Left', 1 } },
-	{ key = 'h', action = act.AdjustPaneSize { 'Left', 1 } },
-
-	{ key = 'RightArrow', action = act.AdjustPaneSize { 'Right', 1 } },
-	{ key = 'l', action = act.AdjustPaneSize { 'Right', 1 } },
-
-	{ key = 'UpArrow', action = act.AdjustPaneSize { 'Up', 1 } },
-	{ key = 'k', action = act.AdjustPaneSize { 'Up', 1 } },
-
-	{ key = 'DownArrow', action = act.AdjustPaneSize { 'Down', 1 } },
-	{ key = 'j', action = act.AdjustPaneSize { 'Down', 1 } },
-
-	-- Cancel the mode by pressing escape
-	{ key = 'Escape', action = 'PopKeyTable' },
-}
-
-local defaultKeysTable = wezterm.gui.default_key_tables()
-table.insert(defaultKeysTable, activate_pane)
-table.insert(defaultKeysTable, resize_pane)
 
 return {
-	  -- leader = { key = 'Space', mods = 'CTRL|SHIFT' },
 	keys = keys,
 	mouse_bindings = mouse_bindings,
-	key_tables = defaultKeysTable,
+	key_tables = key_tables,
+	-- leader = { key = 'k', mods = 'CTRL', timeout = 333 },
+	-- leader = { key = "w", mods = "CTRL", timeout_milliseconds = math.maxinteger, },
+	-- leader = { key = 'Space', mods = 'CTRL|SHIFT' },
+	-- leader = { key = "phys:CapsLock", timeout = 350 },
 }

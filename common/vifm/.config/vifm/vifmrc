@@ -217,6 +217,9 @@ command! diffMeld meld %c %C %i
 nmap ,D :diffVim<cr>
 command! diffVim nvim -d %f %F
 nmap ,c :compare listall<cr>
+command! checkout ~/.bin/checkout.lua %d
+nnoremap ,b :checkout <cr>
+" nnoremap ,c :!~/.bin/checkout.lua %d <cr>
 " git log preview for a file
 nnoremap ,l :if &previewprg == '' | set previewprg='git log --color -- %c 2>&1' | view! | else | set previewprg='' | view | endif<cr>
 

@@ -1,5 +1,6 @@
 local wezterm = require 'wezterm'
 
+-- return list of files
 function scandir(directory)
 	local t = {}
 	local success, filename = wezterm.run_child_process { 'ls', '-1', directory }
@@ -10,6 +11,15 @@ function scandir(directory)
 end
 
 return {
+	-- status in table bar
+	wezterm.on('update-right-status', function(window, pane)
+		 local date = wezterm.strftime '%Y-%m-%d %H:%M:%S'
+		  window:set_right_status(wezterm.format {
+			{ Attribute = { Italic = true } },
+			{ Text = date },
+		  })
+	end),
+
 	wezterm.on('trigger-vim-with-scrollback', function(window, pane)
 		-- pane:get_logical_lines_as_text([nlines])
 		-- scrollback_rows the total number of lines in the scrollback and viewport - all text (set in scrollback_lines)
@@ -115,4 +125,11 @@ return {
 			end),
 		},
 	},
+
+	-- return path from wezterm's working directory
+	getPath = function(dir)
+		local hostname = io.popen('hostname'):read('*a'):gsub('\n', '')
+		local _, endIndex = dir:find(hostname)
+		return dir:sub(endIndex + 1,#dir)
+	end,
 }

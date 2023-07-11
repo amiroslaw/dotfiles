@@ -14,7 +14,6 @@ export BACKUP_LOG="$HOME/Documents/Ustawienia/logs/borg-pc"
 export BACKUP="/media/winD/backup-borg/daily"
 export COURSES="/media/multimedia/kursy"
 # Default Apps
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-# export MANPAGER="nvim -c 'set ft=man' -"
+# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # source $HOME/.profile
 

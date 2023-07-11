@@ -9,7 +9,6 @@
 # aviailable
 # super + ctrl + f 
 # unused 
-# y
 # b - balance
  
 # make sxhkd reload its configuration files:
@@ -172,7 +171,6 @@ super + button{4,5}
 	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+,-} 2 ))
 
 ###### PRESELECTION
-
 # Receptacle 
 super + semicolon ; {h,j,k,l,BackSpace}
 	bspc node --presel-dir {west,south,north,east,cancel}
@@ -181,11 +179,9 @@ super + semicolon ; {h,j,k,l,BackSpace}
 super + a ; b
 	bspc node newest.marked.local -n newest.!automatic.local
 
-#
-# APPLICATIONS
-# ______________    
-#
-
+# -------------------------------------------------------------------------
+#                       APPLICATIONS
+# -------------------------------------------------------------------------
 # function keys
 super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 	{ firefox, \
@@ -197,15 +193,42 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui", \
 	todo.lua add, \
+	keecli.sh, \
 	setup.lua add, \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/power.sh
 	}
 	# scratchpad.sh  "$TERM_LT -c portfolio -n portfolio -e nvim ~/.config/investing/portfolio.yaml", \
 
+# nchat, left click - stopped work like with `u`
+super + {shift,ctrl} + c
+	{ scratchpad.sh chat "wezterm start --class chat -- nchat", \ 
+		xdotool click --clearmodifiers 1 }
+
+# youtube
+super + {_,shift,ctrl} + y
+	{ wezterm -e --class ytfzf -- ytfzf -u vid.sh,  mpv.lua -o,  mpv.lua -o ~/Videos}
+
+# internet
+super + {_,shift,ctrl} + i
+	{ rofi-buku, \ 
+	~/.config/qutebrowser/userscripts/session.sh, \
+	~/.config/qutebrowser/userscripts/session.sh webapp
+	}
+
+super + {shift,ctrl,_} + Delete 
+	{ rmmpv-playing.sh, \
+	rmmpd-playing.sh, \
+	echo 0 | trash-restore "$(trash-list | sort -r | cut -d" " -f3- | rofi -dmenu -threads 0 -monitor -4 -i -l 25 -p "restore" -theme-str 'window \{width:  90%;\}')"
+	}
+
+# linux process
+super + {_,shift,ctrl} + BackSpace
+	{$TERM_LT -t top -c top -e btop,$ROFI/kill,xkill}
+
 # tasks; todo; calendar
-super + {shift,ctrl} + u
-	{ pomodoro.lua add -n, pomodoro.lua menu -n }
+super + {_,shift, ctrl} + x
+	{ pomodoro.lua add -n, pomodoro.lua menu -n, pomodoro.lua pause -n }
 super + u ; {u,c,g,f,i,t,r,p,n,a}
 	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nW-task sync\nm-modify task\nn-newsboat", \
 	gcal-add.lua, \
@@ -230,7 +253,54 @@ super + u ; {s,S,e,o,m,w,W,b}
 	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	}
 
-#search
+# open media or dir with xdg-open; tui apps 
+super + {shift,ctrl} + o
+	{ $ROFI/open.sh fasd, $ROFI/open.sh file }
+
+super + o ; {o,j,d,D,v,c,y,z,f,F,b,i,p,u,s}
+	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nz-fasd\nf(F)-files(hidden)\ns/S/u-ytsearch", \
+		$ROFI/open.sh fasd-dir, \
+		$ROFI/open.sh dir, \
+		$ROFI/open.sh dir-hidden, \
+		mpv.lua -o ~/Videos , \
+		mpv.lua -oL "$COURSES" , \
+		mpv.lua -o, \
+		$ROFI/open.sh fasd, \
+		$ROFI/open.sh file, \
+		$ROFI/open.sh file-hidden, \
+		$TERM_LT -e bmenu, \
+		$TERM_LT -e nmtui, \
+		$TERM_LT -e ncmpcpp, \
+		wezterm -e --class ytfzf -- ytfzf -u popup.sh, \
+		mpv.lua -y, \
+		}
+	# { notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
+
+# -------------------------------------------------------------------------
+#                       SCRIPTS script in background 
+# -------------------------------------------------------------------------
+# url.lua menu will ask for the number of the links
+super + e ; {e,h,k,K,m,M,v,V,d,D,y,Y,w,W,r,R,g,G,c,i}
+	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr-speed reader\nR-read\nc-calendar\nk(K)-kindle\ni-investing", \
+    url.lua --menu --input, \
+    url.lua --kindle --email -n 1,  url.lua --kindle -n 10, \
+    url.lua --tor -n 1,  url.lua --tor -n 10, \
+    mpv.lua --videoplay --clip,  mpv.lua -vsi, \
+    url.lua --audio -n 1,  url.lua --audio -n 10, \
+    url.lua --video -n 1,  url.lua --video -n 10,  \
+    url.lua --wget -n 1, url.lua --wget -n 10,  \
+    url.lua --speed -n 1, url.lua --read -n 1,  \
+    url.lua --gallery -n 1,  url.lua --gallery -n 10,  \
+	gcal-show.sh, investing-cli -n
+}
+# last optins doesn't work
+
+# -------------------------------------------------------------------------
+#                       SEARCH
+# -------------------------------------------------------------------------
+super + {_, shift,ctrl} + g
+	{search.lua --google -c, search.lua --google -p, search.lua --brave -c}
+
 super + s ; {s,h,g,G,b,B,u,U,y,Y,m,M}
 	{ dunstify options: " (capital-clipboard):\nh-help menu\ng-google\nb-brave\nu-duckduck\ny-yt\nm-maps\nw-wiki\nc-ceneo\no-cenowarka\na-allegro\nz-amazon\ns-so\nf-filmweb\nd-diki\nl-deepL\nr-translator\np-pl-en trans\ne-en-pl trans\nx-tuxi\nt-tor\ni-info from cheatsh", \
 	search.lua --menu -input, \
@@ -259,46 +329,10 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 	search.lua --cheat --input, search.lua --cheat -p }
 	# search.lua so primary, search.lua so clip, \ anti bot checker
 
-# open media or dir with xdg-open
-super + o ; {o,j,d,D,v,c,y,z,f,F,b,i,p,u,s}
-	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nz-fasd\nf(F)-files(hidden)\ns/S/u-ytsearch", \
-		$ROFI/open.sh fasd-dir, \
-		$ROFI/open.sh dir, \
-		$ROFI/open.sh dir-hidden, \
-		mpv.lua -o ~/Videos , \
-		mpv.lua -oL "$COURSES" , \
-		mpv.lua -o, \
-		$ROFI/open.sh fasd, \
-		$ROFI/open.sh file, \
-		$ROFI/open.sh file-hidden, \
-		$TERM_LT -e bmenu, \
-		$TERM_LT -e nmtui, \
-		$TERM_LT -e ncmpcpp, \
-		wezterm -e --class ytfzf -- ytfzf -u popup.sh, \
-		mpv.lua -y, \
-		}
-	# { notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
 
-# open tui or file in terminal 
-# super + o ; {i,p,b}
-	# $TERM_LT -e {nmtui,ncmpcpp,bmenu}
-Suicide among Polish Adolescents—A 20 Year Analysis
-# script in background - url.lua menu will ask for the number of the links
-super + e ; {e,h,k,K,m,M,v,V,d,D,y,Y,w,W,r,R,g,G,c,i}
-	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr-speed reader\nR-read\nc-calendar\nk(K)-kindle\ni-investing", \
-    url.lua --menu --input, \
-    url.lua --kindle --email -n 1,  url.lua --kindle -n 10, \
-    url.lua --tor -n 1,  url.lua --tor -n 10, \
-    mpv.lua --videoplay --clip,  mpv.lua -vsi, \
-    url.lua --audio -n 1,  url.lua --audio -n 10, \
-    url.lua --video -n 1,  url.lua --video -n 10,  \
-    url.lua --wget -n 1, url.lua --wget -n 10,  \
-    url.lua --speed -n 1, url.lua --read -n 1,  \
-    url.lua --gallery -n 1,  url.lua --gallery -n 10,  \
-	gcal-show.sh, investing-cli -n
-}
-# last optins doesn't work
-
+# -------------------------------------------------------------------------
+#                       CLIPBOARD, NOTES 
+# -------------------------------------------------------------------------
 # clipster and notes; add J nad fix previous-copy primary
 super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}
 	{dunstify options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from clip\nl(L)-note from sel\nw -write note", \
@@ -312,40 +346,9 @@ super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}
 	note.lua sel 1, note.lua sel, \
 	note.lua write
 	}
-super + shift + c 
-	clipster.lua next clipboard 
-
-#keepassxc
-super + {_,shift,ctrl} + y
-	{ wezterm -e --class ytfzf -- ytfzf -u vid.sh, keecli.sh, mpv.lua -y }
-
-# left/middle click emulation
-super + {x,v} 
-	xdotool click --clearmodifiers {1,2}
-
-super + {_,shift,ctrl} + i
-	{ pomodoro.lua add -n, \
-	~/.config/qutebrowser/userscripts/session.sh, \
-	~/.config/qutebrowser/userscripts/session.sh webapp
-	}
-	# { rofi-buku, \ - bug
-
-super + {shift, ctrl} + x
-	{ gksu net-restart.sh, \
-	nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
-super + {shift,ctrl,_} + Delete 
-	{ rmmpv-playing.sh, \
-	rmmpd-playing.sh, \
-	echo 0 | trash-restore "$(trash-list | sort -r | cut -d" " -f3- | rofi -dmenu -threads 0 -monitor -4 -i -l 25 -p "restore" -theme-str 'window \{width:  90%;\}')"
-	}
-
-# linux process
-super + {_,shift,ctrl} + BackSpace
-	{$TERM_LT -t top -c top -e btop,$ROFI/kill,xkill}
-
-# search
-super + {_, shift,ctrl} + g
-	{search.lua --google -c, search.lua --google -p, search.lua --brave -c}
+# clipboard, paste second from the clipboard or first from selection
+super + {_,shift,ctrl} + v
+	{$ROFI/clipster/roficlip, clipster.lua --next --clipboard, xdotool click --clearmodifiers 2}
 
 #
 # ROFI 
@@ -369,13 +372,6 @@ super + ctrl + d
 
 alt + space
 	 $ROFI/expander/expander.sh
-
-ctrl + shift + z
-	$ROFI/clipster/roficlip
-
-# rofi video
-super + {shift,ctrl} + v
-	{mpv.lua -o,  mpv.lua -oL "$COURSES"}
 
 # translator 
 super + {_,shift,ctrl} + t
@@ -435,3 +431,11 @@ super + shift + {comma,period}
 # KP_Begin
 	# xdotool click --clearmodifiers 1
 	# xdotool key space
+
+# -------------------------------------------------------------------------
+#                       OLD
+# -------------------------------------------------------------------------
+	# { gksu net-restart.sh, \
+	# nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
+# doesn't work
+# super + {shift,ctrl} + u
