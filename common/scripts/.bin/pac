@@ -1,0 +1,32 @@
+#!/bin/bash
+# *-info for all packages, q- info for local packages,r-remove,  i-install
+# -Q' can be Restrict or filter output to explicitly installed packages - Qe
+# cmd
+while getopts 'riq' OPTION; do
+	case "$OPTION" in
+		i)
+			# cmd='paru -S' 
+			paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf  --header-first --header="Install"  -e -m --preview 'cat <(paru -Sii {1})' --layout=reverse | xargs -ro -n1 paru -S
+			;;
+		r)
+			# cmd='paru -Rsn' 
+			paru -Q | fzf  --header-first --header="Remove"  -e -m --preview 'cat <(paru -Qii {1})' --layout=reverse | xargs -ro -n1 paru -Rsn
+			;;
+		q)
+			# cmd='paru -Sii' 
+			paru -Q | fzf  --header-first --header="Info for all packages"  -e -m --preview 'cat <(paru -Qii {1})' --layout=reverse | xargs -ro -n1 paru -Qii
+			;;
+		*)
+			# cmd='paru -Sii'
+			paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf  --header-first --header="Info from all packages"  -e -m --preview 'cat <(paru -Sii {1})' --layout=reverse | xargs -ro -n1 paru -Sii
+			;;
+	esac
+done
+
+if [ $OPTIND -eq 1 ]; then 
+	paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf  --header-first --header="Info from all packages"  -e -m --preview 'cat <(paru -Sii {1})' --layout=reverse | xargs -ro -n1 paru -Sii
+fi
+
+# paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf -e -m --preview 'cat <(paru -Sii {1})' --layout=reverse | xargs -ro -n1 "$cmd" 
+
+# paru -Sl | awk '{print $2($4=="" ? "" : " *")}'| fzf -e -m --preview 'cat <(paru -Si {1}) <(paru -Fl {1} | awk "{print \$2}")' --layout=reverse | xargs -ro -n1 sudo paru -S 

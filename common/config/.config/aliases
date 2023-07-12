@@ -105,9 +105,9 @@ alias sysstop='sudo systemctl stop '
 
 alias diskls='lsblk'
 # pacman
-alias pacr='~/.bin/pacf -r'
-alias paci='~/.bin/pacf -i'
-alias pacu='~/.bin/pacf -u'
+alias pacr='~/.bin/pac -r'
+alias paci='~/.bin/pac -i'
+alias pacq='~/.bin/pac -q'
 alias pacupdate='paru -Syyu'
 alias paclog='grep -iE "installed|upgraded" /var/log/pacman.log | tac | less'
 # alias pacinst='paru --bottomup'

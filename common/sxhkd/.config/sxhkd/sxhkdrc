@@ -1,4 +1,6 @@
-﻿# doesn't work env vars form zsh - only form .profile
+﻿# NEVER allow to have commented line started with space before your keybinding
+# add comments - they will be visible in bspwm-help, and prevent bugs
+# doesn't work env vars form zsh - only form .profile
 # kitty ma flagi --title i --name a st -c -t/T i -n; wezterm --class; class to nazwa na statusbar
 # sudo -A or gksu - popup with password
 # pattern for 3 actions
@@ -80,11 +82,11 @@ super + shift + a
 ## Workspaces
 super + {1-9,0}
 	bspc desktop -f ^{1-9,10}
-	# bspc desktop -f "$(bspc query -D | sed -n "{1-9,10} p")"
+# bspc desktop -f "$(bspc query -D | sed -n "{1-9,10} p")"
 # move node to workspace and follow
 super + shift + {1-9,0}
     bspc node -d '^{1-9,10}' --follow
-    # id=$(bspc query -N -n); bspc node -d ^{1-9,10}; bspc node -f ${id}
+# id=$(bspc query -N -n); bspc node -d ^{1-9,10}; bspc node -f ${id}
 	
 # Select previous / next active desktop
 super + {p,n}
@@ -110,7 +112,7 @@ super + {_,shift} + Tab
 
 super + {h,j,k,l}
     focusmover {west,south,north,east}
-	# bspc node -f {west,south,north,east}
+# bspc node -f {west,south,north,east}
 
 super + {Left,Down,Up,Right}
     focusmover {west,south,north,east}
@@ -118,7 +120,7 @@ super + {Left,Down,Up,Right}
 # moves floating windows instead of changing 
 super + shift + {h,j,k,l}
 	euclid_mover {west,south,north,east}
-	# windowgrabber {west,south,north,east}
+# windowgrabber {west,south,north,east}
 	
 # breaks in floating windows
 super + shift + {Left,Down,Up,Right}
@@ -188,22 +190,16 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 	/opt/idea-IU-212.5284.40/bin/idea.sh, \
 	$TERMINAL start --class vifm -- vifm, \
 	pcmanfm, \
+	keecli.sh, \
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
-	scratchpad.sh chat "wezterm start --class chat -- nchat", \
 	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui", \
 	todo.lua add, \
-	keecli.sh, \
 	setup.lua add, \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/power.sh
 	}
-	# scratchpad.sh  "$TERM_LT -c portfolio -n portfolio -e nvim ~/.config/investing/portfolio.yaml", \
-
-# nchat, left click - stopped work like with `u`
-super + {shift,ctrl} + c
-	{ scratchpad.sh chat "wezterm start --class chat -- nchat", \ 
-		xdotool click --clearmodifiers 1 }
+# scratchpad.sh  "$TERM_LT -c portfolio -n portfolio -e nvim ~/.config/investing/portfolio.yaml", \
 
 # youtube
 super + {_,shift,ctrl} + y
@@ -227,8 +223,6 @@ super + {_,shift,ctrl} + BackSpace
 	{$TERM_LT -t top -c top -e btop,$ROFI/kill,xkill}
 
 # tasks; todo; calendar
-super + {_,shift, ctrl} + x
-	{ pomodoro.lua add -n, pomodoro.lua menu -n, pomodoro.lua pause -n }
 super + u ; {u,c,g,f,i,t,r,p,n,a}
 	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nW-task sync\nm-modify task\nn-newsboat", \
 	gcal-add.lua, \
@@ -253,10 +247,14 @@ super + u ; {s,S,e,o,m,w,W,b}
 	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	}
 
-# open media or dir with xdg-open; tui apps 
-super + {shift,ctrl} + o
-	{ $ROFI/open.sh fasd, $ROFI/open.sh file }
+super + {shift,ctrl} + u
+	{ scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
+		task sync && scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui" }
+# pomodoro
+super + {_,shift, ctrl} + x
+	{ pomodoro.lua add -n, pomodoro.lua stop -n, pomodoro.lua menu -n }
 
+# open media or dir with xdg-open; tui apps 
 super + o ; {o,j,d,D,v,c,y,z,f,F,b,i,p,u,s}
 	{ notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nz-fasd\nf(F)-files(hidden)\ns/S/u-ytsearch", \
 		$ROFI/open.sh fasd-dir, \
@@ -274,7 +272,11 @@ super + o ; {o,j,d,D,v,c,y,z,f,F,b,i,p,u,s}
 		wezterm -e --class ytfzf -- ytfzf -u popup.sh, \
 		mpv.lua -y, \
 		}
-	# { notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
+
+super + {shift,ctrl} + o
+	{ $ROFI/open.sh fasd, $ROFI/open.sh file }
+
+# { notify-send options: "\nj-fasd-dir\nnd(D)-dir(hidden)\nv-videos\nc-course\ny-stream\ni-nmtui\np-ncmcpp\nb-bmenu\nt-telegram\nz-fasd\nf(F)-files(hidden)", \
 
 # -------------------------------------------------------------------------
 #                       SCRIPTS script in background 
@@ -327,7 +329,7 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 	search.lua --plen -p, search.lua --plen -c, \
 	search.lua --enpl -p, search.lua --enpl -c, \
 	search.lua --cheat --input, search.lua --cheat -p }
-	# search.lua so primary, search.lua so clip, \ anti bot checker
+# search.lua so primary, search.lua so clip, \ anti bot checker
 
 
 # -------------------------------------------------------------------------
@@ -350,6 +352,11 @@ super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}
 super + {_,shift,ctrl} + v
 	{$ROFI/clipster/roficlip, clipster.lua --next --clipboard, xdotool click --clearmodifiers 2}
 
+# nchat, left click - stopped work like with `u`
+super + {shift,ctrl} + c
+	{ scratchpad.sh chat "wezterm start --class chat -- nchat", \ 
+		xdotool click --clearmodifiers 1 }
+
 #
 # ROFI 
 # ______________    
@@ -365,11 +372,6 @@ super + shift + d
 super + ctrl + d
 	$ROFI/mount-launcher.sh
 
-# rofi scripts TODO path or delete
-# super + ctrl + d
-	 # $ROFI/mbmain
-# bindsym $mod+shift+d exec --no-startup-id "rofi -modi window,top,drun -show window -show-icons -sidebar-mode -terminal st"
-
 alt + space
 	 $ROFI/expander/expander.sh
 
@@ -379,6 +381,12 @@ super + {_,shift,ctrl} + t
 		$ROFI/tran/trans-launcher.sh, \
 		search.lua --enpl -p
 	}
+
+# rofi scripts TODO path or delete
+# super + ctrl + d
+	 # $ROFI/mbmain
+# bindsym $mod+shift+d exec --no-startup-id "rofi -modi window,top,drun -show window -show-icons -sidebar-mode -terminal st"
+
 #
 # MEDIA KEYS
 # ______________    
@@ -420,7 +428,6 @@ super + shift + {comma,period}
 	# mpc seek -{10,120}
 # Increase volume, chyba cudzysłowy nie działają 
 
-
 #
 # KEYPAD
 # ______________    
@@ -437,5 +444,3 @@ super + shift + {comma,period}
 # -------------------------------------------------------------------------
 	# { gksu net-restart.sh, \
 	# nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
-# doesn't work
-# super + {shift,ctrl} + u
