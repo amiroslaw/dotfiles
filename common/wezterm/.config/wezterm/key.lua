@@ -38,7 +38,7 @@ mapCS('u', act { ScrollByPage = -1 })
 mapCS('?', act { SplitVertical = { domain = 'CurrentPaneDomain' } })
 mapCS(':', act { SplitHorizontal = { domain = 'CurrentPaneDomain' } })
 mapCS('w', act { CloseCurrentPane = { confirm = false } })
-mapCS('m', 'TogglePaneZoomState') -- maximalize
+mapCS('m', 'TogglePaneZoomState') -- maximalize, the default is c-s-z
 mapCS('n', act { ActivatePaneDirection = 'Next' })
 mapCS('p', act { ActivatePaneDirection = 'Prev' })
 -- mapCS('N', act { ActivatePaneDirection = 'Down' })
@@ -60,6 +60,7 @@ map('F2', act { EmitEvent = 'toggle-opacity' }, 'ALT')
 map('F3', act { EmitEvent = 'open-file-manager' }, 'ALT')
 map('F4', act { EmitEvent = 'toggle-ligatures' }, 'ALT') -- don't work
 map('F7', act { Search = { Regex = 'ERROR' } }, 'ALT')
+map('F5', 'ReloadConfiguration', 'ALT')
 map('F12', 'ShowDebugOverlay', 'ALT')
 --disable key
 map('Enter', 'DisableDefaultAssignment', 'ALT')
@@ -96,21 +97,16 @@ local mouse_bindings = {
 		action = wezterm.action { PasteFrom = 'Clipboard' },
 	},
 }
--- key table don't work
-map('m', act{ ActivateKeyTable={ name="activate_pane", timeout_milliseconds=1000, replace_current=true, one_shot=true} }, "LEADER")
+map('t', act.ShowTabNavigator, 'LEADER')
+map('f', 'ToggleFullScreen', 'LEADER') -- meh, can be handle by a TWM
+map('h', act { ActivatePaneDirection = 'Left' }, 'LEADER')
+map('l', act { ActivatePaneDirection = 'Right' }, 'LEADER')
+map('k', act { ActivatePaneDirection = 'Up' }, 'LEADER')
+map('j', act { ActivatePaneDirection = 'Down' }, 'LEADER')
+-- KeyTable Escape to cancel
 map('r', act.ActivateKeyTable { name = 'resize_pane', one_shot = false }, 'LEADER')
--- local defaultKeysTable = wezterm.gui.default_key_tables()
+map('m', act.ActivateKeyTable { name = 'move', one_shot = false }, 'LEADER')
 local key_tables = {
-	activate_pane = {
-		{ key = 'LeftArrow', action = wezterm.action { ActivatePaneDirection = 'Left' } },
-		{ key = 'h', action = wezterm.action { ActivatePaneDirection = 'Left' } },
-		{ key = 'RightArrow', action = wezterm.action { ActivatePaneDirection = 'Right' } },
-		{ key = 'l', action = wezterm.action { ActivatePaneDirection = 'Right' } },
-		{ key = 'UpArrow', action = wezterm.action { ActivatePaneDirection = 'Up' } },
-		{ key = 'k', action = wezterm.action { ActivatePaneDirection = 'Up' } },
-		{ key = 'DownArrow', action = wezterm.action { ActivatePaneDirection = 'Down' } },
-		{ key = 'j', action = wezterm.action { ActivatePaneDirection = 'Down' } },
-	},
 	resize_pane = {
 		{ key = 'LeftArrow', action = act.AdjustPaneSize { 'Left', 1 } },
 		{ key = 'h', action = act.AdjustPaneSize { 'Left', 1 } },
@@ -120,7 +116,15 @@ local key_tables = {
 		{ key = 'k', action = act.AdjustPaneSize { 'Up', 1 } },
 		{ key = 'DownArrow', action = act.AdjustPaneSize { 'Down', 1 } },
 		{ key = 'j', action = act.AdjustPaneSize { 'Down', 1 } },
-		-- Cancel the mode by pressing escape
+		{ key = 'Escape', action = 'PopKeyTable' },
+	}, 
+	move = {
+		{ key = 'j', action = act { ScrollByLine = 1 } },
+		{ key = 'k', action = act { ScrollByLine = -1 } },
+		{ key = "u",      action = act { ScrollByLine = -15 } },
+		{ key = "d",      action = act { ScrollByLine = 15 } },
+		{ key = "g",      action = "ScrollToTop" },
+		{ key = "g",      mods = "SHIFT", action = "ScrollToBottom" },
 		{ key = 'Escape', action = 'PopKeyTable' },
 	}
 }
@@ -129,8 +133,5 @@ return {
 	keys = keys,
 	mouse_bindings = mouse_bindings,
 	key_tables = key_tables,
-	-- leader = { key = 'k', mods = 'CTRL', timeout = 333 },
-	-- leader = { key = "w", mods = "CTRL", timeout_milliseconds = math.maxinteger, },
-	-- leader = { key = 'Space', mods = 'CTRL|SHIFT' },
-	-- leader = { key = "phys:CapsLock", timeout = 350 },
+	leader = { key = "phys:CapsLock", timeout_milliseconds = math.maxinteger, },
 }

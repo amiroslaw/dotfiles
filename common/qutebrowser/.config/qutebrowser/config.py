@@ -95,6 +95,7 @@ c.content.blocking.adblock.lists = [
 # ======================= BINDINGS general =================== {{{
 config.unbind('ad')
 config.bind('<Ctrl-R>', 'config-cycle content.user_stylesheets "~/.config/qutebrowser/css/solarized-light.css" "~/.config/qutebrowser/css/apprentice.css" "~/.config/qutebrowser/css/darculized.css" "~/.config/qutebrowser/css/gruvbox.css" "~/.config/qutebrowser/css/solarized-dark.css"  ""')
+config.bind(',,', 'tab-close')
 
 config.bind('<Alt-s>', ':set spellcheck.languages ["en-US"]', 'insert') 
 config.bind('<Shift-Alt-s>', ':set spellcheck.languages ["pl-PL"]', 'insert')
@@ -127,7 +128,7 @@ config.bind('<Alt-x>', 'navigate prev')
 # }}}
 
 # ======================= TABS AND WINDOWS ============= {{{
-config.bind(',,', 'open -t file://' + os.environ["XDG_CONFIG_HOME"] + '/qutebrowser/themes/startpage/index.html')
+config.bind(',t', 'open -t file://' + os.environ["XDG_CONFIG_HOME"] + '/qutebrowser/themes/startpage/index.html')
 config.bind('l', 'tab-next')
 config.bind('h', 'tab-prev')
 config.bind('tm', 'tab-mute')

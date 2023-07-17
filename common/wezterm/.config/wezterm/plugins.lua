@@ -13,10 +13,14 @@ end
 return {
 	-- status in table bar
 	wezterm.on('update-right-status', function(window, pane)
-		 local date = wezterm.strftime '%Y-%m-%d %H:%M:%S'
+		 local status = '😀 '
+		 if window:leader_is_active() then
+			 status = ' ❗ '
+		 end
+		 local status = status .. wezterm.strftime '%Y-%m-%d %H:%M:%S'
 		  window:set_right_status(wezterm.format {
 			{ Attribute = { Italic = true } },
-			{ Text = date },
+			{ Text = status },
 		  })
 	end),
 
