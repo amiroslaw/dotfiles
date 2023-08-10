@@ -37,7 +37,7 @@ click-middle = pomodoro.lua notify
 click-right = pomodoro.lua stop -n
 click-left = pomodoro.lua pause -n
 interval = 60
--- dependency: taskwarrior, rofi, ffmpeg, dunstify
+-- dependency: taskwarrior, rofi, ffmpeg
 ]]
 
 local POMODORO_DIR = os.getenv 'XDG_CONFIG_HOME' .. '/pomodoro'
@@ -53,7 +53,7 @@ local flags = cliparse(arg)
 
 function alert(msg)
 	if flags['n'] then
-		os.execute("dunstify Pomodoro '" .. msg .. "'")
+		os.execute("notify-send Pomodoro '" .. msg .. "'")
 	end
 	if flags['a'] then
 		os.execute('ffplay -nodisp -autoexit -loglevel -8 -volume 10 ' .. ALERT_PATH)

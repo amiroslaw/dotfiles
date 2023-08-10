@@ -30,7 +30,7 @@ function add()
 	file:write("* [ ] " .. task)
 	file:close()
 
-	os.execute('dunstify "Task added"')
+	os.execute('notify-send "Task added"')
 end
 local switch = (function(name,args)
 	local sw = {

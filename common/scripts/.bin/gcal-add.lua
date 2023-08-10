@@ -50,4 +50,4 @@ form = zenity()
 local status, val = pcall(createGcalCmd, form)
 print(status, val)
 
-os.execute("dunstify '" .. val .. "'")
+os.execute("notify-send '" .. val .. "'")
