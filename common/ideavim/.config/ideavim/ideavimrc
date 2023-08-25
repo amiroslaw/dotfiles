@@ -8,6 +8,9 @@
 " , for git
 " - for run
 "   TODO
+" Y
+" maybe map f <Plug>(easymotion-j) occupate vim actions like df[char], but dt works
+"
 "   refactoring methods
 "   convert to instance method - przeniesienie do klasy
 "   IntroduceParameterObject
@@ -116,6 +119,7 @@ nmap <F5> :source ~/.config/ideavim/ideavimrc<cr>
 inoremap <C-a> <C-o>b
 inoremap <C-d> <C-o>w
 nnoremap <Space> <C-d><cr> 
+nnoremap Y y$
 
 " # -------------------------------------------------------------------------
 " #                       IDEAVIM SETTINGS

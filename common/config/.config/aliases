@@ -3,6 +3,7 @@
 # WAŻNE jak podajemy ścieżkę to po = nie dawać spacji
 # kolumna musi być escapowana w awk "{print \$1}"
 #alias =''
+# https://github.com/Bash-it/bash-it/blob/master/aliases/available/docker.aliases.bash
 
 #{{{ Dependencies
 # devour
@@ -126,25 +127,6 @@ alias yy='xclip-copyfile'
 alias cc='xclip-cutfile'
 alias vl='nvim $(ls -tp | grep -v /$ | head -1)'
 alias jj='java -jar'
-alias t='task'
-alias ta='task add +in'
-alias td='task done '
-alias tm='task modify '
-alias tbd='task burndown.daily'
-alias tbw='task burndown.weekly'
-alias tc='task calendar'
-alias tsu='task summary'
-alias tal='task add dep:"$(task +LATEST uuids)"'
-alias tu='~/.config/task/scripts/sync.sh && taskwarrior-tui'
-alias ts='~/.config/task/scripts/sync.sh'
-alias ti='timew'
-alias tit='timew summary :ids'
-alias tiy='timew summary :ids :yesterday'
-alias tiw='timew summary :week :ids'
-alias tia='timew summary :lastweek && timew procent :lastweek && timew tagsum :lastweek'
-alias tip='timew percentage'
-alias tidi='timew dist'
-alias in='$EDITOR "$NOTE"/tasks/inbox.adoc'
 alias tor='stty stop undef && stty start undef && screen -x tor'
 alias huliomail='tmpmail -g Huliofff@1secmail.org && tmpmail -r'
 alias ping='prettyping'
@@ -173,6 +155,28 @@ alias drag-pull='dragon-pull.sh'
 alias open='xdg-open '
 alias op='xdg-open '
 alias di='dua interactive'
+#}}}
+
+#{{{ Organization
+alias t='task'
+alias ta='task add +in'
+alias td='task done '
+alias tm='task modify '
+alias tbd='task burndown.daily'
+alias tbw='task burndown.weekly'
+alias tc='task calendar'
+alias tsu='task summary'
+alias tal='task add dep:"$(task +LATEST uuids)"'
+alias tu='~/.config/task/scripts/sync.sh && taskwarrior-tui'
+alias ts='~/.config/task/scripts/sync.sh'
+alias ti='timew'
+alias tit='timew summary :ids'
+alias tiy='timew summary :ids :yesterday'
+alias tiw='timew summary :week :ids'
+alias tia='timew summary :lastweek && timew procent :lastweek && timew tagsum :lastweek'
+alias tip='timew percentage'
+alias tidi='timew dist'
+alias in='$EDITOR "$NOTE"/tasks/inbox.adoc'
 #}}}
 
 #{{{ Programy coś wykonują
@@ -213,7 +217,30 @@ alias irr='cat $path_note/home/angielski/irregular.adoc | grep'
 alias backup_note='cp -r $path_note ~/Templates/backup/note/notebook-$(date -u +"%Y-%m-%d")'
 #}}}
 
+# gcalcli {{{
+alias kal='gcalcli quick --config-folder="/home/miro/.config/gcalcli"'
+alias kalw='gcalcli calw --config-folder="/home/miro/.config/gcalcli"'
+alias kalm='gcalcli calm --config-folder="/home/miro/.config/gcalcli"'
+alias kala='gcalcli agenda --config-folder="/home/miro/.config/gcalcli"'
+alias kals='gcalcli search'
+# #}}}
+
+#{{{ Dev
+# maven 
+alias mi='mvn install'
+alias mci='mvn clean install'
+alias mp='mvn package'
+alias mcp='mvn clean package'
+alias mcis='mci -Dmaven.test.skip=true'
+alias mps='mcp -Dmaven.test.skip=true'
+alias mpsa='mcp -DskipTests'
+alias mdep='mvn dependency:tree'
+alias mpom='mvn help:effective-pom'
+
+#}}}
+
 # {{{ GIT
+# https://github.com/Bash-it/bash-it/blob/master/aliases/available/git.aliases.bash
 alias lg='lazygit'
 alias addup='git add -u'
 alias addall='git add .'
@@ -229,15 +256,10 @@ alias gst='git status'  # 'status' is protected name so using 'stat' instead
 alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'"
 # }}}
 
-# gcalcli {{{
-alias kal='gcalcli quick --config-folder="/home/miro/.config/gcalcli"'
-alias kalw='gcalcli calw --config-folder="/home/miro/.config/gcalcli"'
-alias kalm='gcalcli calm --config-folder="/home/miro/.config/gcalcli"'
-alias kala='gcalcli agenda --config-folder="/home/miro/.config/gcalcli"'
-alias kals='gcalcli search'
-#}}}
-
 #{{{ go to 
+# z fasd_cd
+# c broot
+# ch back
 alias cdt='cd ~/.local/share/Trash'
 alias cdhtdoc='cd /opt/lampp/htdocs/'
 alias cdn='cd ~/Documents/notebook && nvim'
@@ -253,6 +275,8 @@ alias cdh='cd ~'
 alias cdc='cd ~/.config'
 alias cdq='cd ~/.config/qutebrowser'
 alias cds='cd ~/Code/SourceCode'
+# back to previous directory
+alias ch='cd -'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -444,8 +468,6 @@ bindkey -M isearch " " magic-space    # normal space during searches
 #}}}
 
 #{{{ old
-# alias sr='sr -browser=firefox'
-# alias surfraw='surfraw -browser=w3m'
 ## job
 # alias vpn='cd /home/miro/eversis/amiroslaw/eversis-pfs-node1-UDP4-1195-amiroslaw && sudo openvpn --config eversis-pfs-node1-UDP4-1195-amiroslaw.ovpn --auth-user-pass pass.txt'
 
@@ -460,8 +482,6 @@ bindkey -M isearch " " magic-space    # normal space during searches
 # alias kee='kpcli --kdb ~/Documents/Ustawienia/personal/KeePass2.kdbx'
 # alias pom='~/Documents/Ustawienia/sync/pomodoro/pomodoro'
 # alias pomres='~/Documents/Ustawienia/sync/pomodoro/pomodoro-resume &'
-
-# alias trelloCLI='trello card list -l 57b70b98b3285968d89b110e'
 
 #backup
 # alias backdaily='$path_script/borg/daily.sh'
@@ -479,10 +499,7 @@ bindkey -M isearch " " magic-space    # normal space during searches
 # alias remove='sudo aptitude remove'
 # alias clean='sudo apt-get clean && sudo apt-get autoclean && sudo apt-get autoremove'
 
-# alias review='java -jar ~/Documents/Ustawienia/sync/Task\ Coach/review.jar'
 # alias scrot='scrot "%m-%d_$p_sc.png"'
-# alias cl='groovy ~/Documents/Ustawienia/skrypty/moje/Clip.groovy'
-# alias zadAdd='$path_script/taskadd.sh'
 #
 # alias copygreenclip='greenclip print | head | xclip -sel clip'
 # alias magnetcreate='cd ~/Downloads/.torrenty && magnet_to_torrent $(xclip -o -selection clipboard)'
@@ -504,8 +521,6 @@ bindkey -M isearch " " magic-space    # normal space during searches
 # ls only directory
 # alias lsf='ls -Gl | grep ^d'
 # alias lsd='ls -Gal | grep ^d'
-# alias i3helper='~/.i3/helpi3'
-#
 #
 # alias mp='mocp -p'
 # alias ms='mocp -s'
@@ -519,19 +534,6 @@ bindkey -M isearch " " magic-space    # normal space during searches
 # alias td='todo.sh done '
 #}}}
 
-#{{{ TMUX 
-#alias tn='tmux next-window'
-#alias tp='tmux previous-window'
-#alias tkw='tmux kill-window'
-#alias tkp='tmux kill-pane'
-#alias tt='tmux new-sesion -s'
-#alias t='tmux'
-#alias ta='tmux attach -t'
-#alias moc='tmux attach -t moc'
-#alias tor='tmux attach -t tor'
-#alias g='tmux attach -t g'
-#alias gg='tmux attach -t gg'
-#}}}
 
 
 # vim: foldmethod=marker

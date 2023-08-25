@@ -328,6 +328,16 @@ tail = true
 format-foreground = #d0d060
 exec = ~/.config/polybar/bsplayout.sh
 
+[module/cal]
+type = custom/script
+; label doesn't show if output is empty
+exec = echo " " && java -jar ~/.bin/google-cal.jar remind -a
+label =  %output:0:150:%
+click-middle = java -jar ~/.bin/google-cal.jar remind
+click-right = gcal-add.lua
+click-left = notify-send "$(java -jar ~/.bin/google-cal.jar agenda -v list)"
+interval = 1800
+
 [module/pomodoro]
 type = custom/script
 exec = pomodoro.lua status -anc
@@ -338,7 +348,7 @@ interval = 60
 
 [module/investing]
 type = custom/script
-exec = investing-cli --no-errors -l -o sbsw,btc -k $(cat $PRIVATE/yahoo) && investing-cli -an -k $(cat $PRIVATE/yahoo)
+exec = investing-cli --no-errors -l -o sbsw,btc,btc -k $(cat $PRIVATE/yahoo) && investing-cli -an -k $(cat $PRIVATE/yahoo)
 click-left = investing-cli -ln -k $(cat $PRIVATE/yahoo)
 click-right = investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)
 interval = 1800

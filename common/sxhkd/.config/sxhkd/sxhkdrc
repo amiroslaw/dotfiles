@@ -212,6 +212,7 @@ super + {_,shift,ctrl} + i
 	~/.config/qutebrowser/userscripts/session.sh webapp
 	}
 
+# remove video, audio or restore
 super + {shift,ctrl,_} + Delete 
 	{ rmmpv-playing.sh, \
 	rmmpd-playing.sh, \

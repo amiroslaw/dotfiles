@@ -94,6 +94,7 @@ c.content.blocking.adblock.lists = [
 
 # ======================= BINDINGS general =================== {{{
 config.unbind('ad')
+# changing style
 config.bind('<Ctrl-R>', 'config-cycle content.user_stylesheets "~/.config/qutebrowser/css/solarized-light.css" "~/.config/qutebrowser/css/apprentice.css" "~/.config/qutebrowser/css/darculized.css" "~/.config/qutebrowser/css/gruvbox.css" "~/.config/qutebrowser/css/solarized-dark.css"  ""')
 config.bind(',,', 'tab-close')
 
@@ -249,7 +250,10 @@ config.bind('cr', 'spawn -u hint_wrapper copyable select.lua --read')
 config.bind('cg', 'spawn -u hint_wrapper copyable select.lua --search')
 config.bind('cl', 'spawn -u hint_wrapper copyable select.lua --search:l') # search with deepl
 config.bind('ct', 'spawn -u hint_wrapper copyable select.lua --search:t')
+config.bind('cd', 'spawn -u hint_wrapper copyable select.lua --search:d')
 config.bind('cm', 'spawn -u hint_wrapper copyable select.lua --search:m')
+config.bind('cw', 'spawn -u hint_wrapper copyable select.lua --search:w')
+config.bind('cv', 'spawn -u hint_wrapper copyable select.lua --search:y') # yt
 # duplicate ';y'
 config.bind('cy', 'hint links yank')
 config.bind('cY', 'hint --rapid links yank')

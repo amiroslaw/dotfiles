@@ -610,8 +610,9 @@ if telescope then
 	telescope.load_extension 'ultisnips'
 	nmap('tU', '<cmd>Telescope ultisnips <cr>')
 	telescope.load_extension('smart_open')
+	-- { cwd_only = true, } limit to current directory; does not support smart-case
 	nmap('<c-f>', '<cmd>Telescope smart_open <cr>')
-	-- telescope.load_extension("yank_history")
+	-- telescope.load_extension("yank_history") 
 	-- nmap('ty', '<cmd>Telescope yank_history <cr>')
 end -- }}} 
 
