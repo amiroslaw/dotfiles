@@ -401,7 +401,11 @@ vim.cmd 'silent! call repeat#set("\\<Plug>MyWonderfulMap", v:count)'
 vim.g.calendar_google_calendar = 1
 vim.g.calendar_google_task = 1
 vim.g.calendar_first_day = 'monday'
-nmap('<F9>', ':Calendar <CR>')
+vim.g.calendar_calendar_candidates = {'arek', 'taskwarrior', 'inwestycje'}
+vim.g.calendar_views = {'month', 'day_7', 'day', 'agenda'} -- I'm not sure about agenda
+vim.g.calendar_cyclic_view = 1
+
+nmap('<F9>', ':Calendar -view=day_7<CR>')
 nmap('<S-F9>', ':Calendar -view=year -split=horizontal -position=below -height=10 <CR>') -- TODO shift, can't be done -- }}} 
 
 -- marks {{{

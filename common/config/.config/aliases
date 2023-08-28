@@ -449,6 +449,17 @@ wypakuj () {
      fi
 }
 
+# fzf sdkman
+sju() {
+   sdk use java $(sdk list java | grep 'installed\|local only' | grep -v '>>>' | awk '{print $NF}' | fzf)
+ }
+sjd() {
+   sdk default java $(sdk list java | grep 'installed\|local only' | awk '{print $NF}' | fzf)
+ }
+sji() {
+   sdk install java $(sdk list java | tail -n +6 | head -n -5 | grep -v 'installed\|local only' | awk '{print $NF}' | fzf)
+ }
+
 #}}}
 
 #{{{ bindkey
