@@ -348,7 +348,6 @@ local task = require('taskmaker').setup({
 vmap('<LocalLeader>w', '<cmd>TaskmakerAddTasks <CR>')
 nmap('<LocalLeader>x', '<cmd>TaskmakerToggle <CR>') -- }}} 
 
-
 -- Windows {{{
 nmap('<leader>M', '<Cmd>WindowsToggleAutowidth<CR>')
 nmap('<leader>m', '<Cmd>WindowsMaximize<CR>') -- }}} 
@@ -421,16 +420,17 @@ require('marks').setup {
 		next_bookmark = 'mN', -- next in the current group
 		prev_bookmark = 'mP',
 		delete_bookmark = 'mX',
-		annotate = 'm/',
+		annotate = 'm/', -- only for groupmarks
 	},
-	bookmark_0 = {
+	bookmark_0 = { -- groupmarks remove by dm0
 		sign = '⚑',
 		virt_text = 'TODO',
 	},
 }
 nmap('ml', ':MarksListBuf<cr>')
 nmap('mA', ':MarksListAll<cr>')
-nmap('mL', ':BookmarksListAll<cr>') -- }}} 
+nmap('mL', ':BookmarksListAll<cr>') -- groupmarks
+-- }}} 
 
 -- undo tree {{{
 nmap('<A-u>', ':UndotreeToggle<cr>')
@@ -535,19 +535,50 @@ nmap('<leader>r', '<Plug>RestNvim<cr>', { noremap = false })
 nmap('<leader>rr', '<Plug>RestNvimLast<cr>', { noremap = false })
 nmap('<leader>rp', '<Plug>RestNvimPreview<cr>', { noremap = false }) -- }}} 
 
--- browser search {{{
--- https://github.com/voldikss/vim-browser-search
-nmap('gs', '<Plug>SearchNormal', { noremap = false }) -- can operate with text objects: gss
-vmap('gs', '<Plug>SearchVisual', { noremap = false })
-nmap('gS', 'gsiw', { noremap = false }) -- can operate with text objects: gss
-nmap('<Leader>g', ':BrowserSearch<cr>') -- search in default (google)
-vmap('<Leader>g', ':BrowserSearch<cr>')
-vim.g.browser_search_default_engine = 'google'
-vim.g.browser_search_engines = { -- have to change sourcecode to change default list
-    deepl ='https://www.deepl.com/en/translator#en/pl/%s',
-    diki = 'https://www.diki.pl/slownik-angielskiego?q=%s',
-    ceneo= 'https://www.ceneo.pl/;szukaj-%s',
-  } -- }}} 
+-- browser.nvim {{{
+-- https://github.com/lalitmee/browse.nvim 
+bookmarks = {
+    ['youtube'] = 'https://www.youtube.com/results?search_query=%s',
+	['diki']= 'https://www.diki.pl/slownik-angielskiego?q=%s',
+	['deepl'] ='https://www.deepl.com/en/translator#en/pl/%s',
+    ['translator'] = 'https://translate.google.pl/?hl=pl#pl/en/%s',
+    ['cambridge'] = 'https://dictionary.cambridge.org/spellcheck/english/?q=%s', 
+    ['thesaurus'] = 'https://www.thesaurus.com/browse/%s?s=t',
+	['ceneo']= 'https://www.ceneo.pl/;szukaj-%s',
+    ['brave'] = 'https://search.brave.com/search?q=%s',
+    ['wiki-pl'] = 'https://pl.wikipedia.org/wiki/%s',
+    ['wiki-en'] = 'https://en.wikipedia.org/wiki/%s',
+	["gh"] = "https://github.com/search?q=%s",
+	["github"] = {
+      ["name"] = "Group: github",
+      ["code_search"] = "https://github.com/search?q=%s&type=code",
+      ["repo_search"] = "https://github.com/search?q=%s&type=repositories",
+      ["issues_search"] = "https://github.com/search?q=%s&type=issues",
+      ["pulls_search"] = "https://github.com/search?q=%s&type=pullrequests",
+  },
+}
+local browse = require('browse')
+browse.setup({
+  provider = "google", -- duckduckgo, bing
+  bookmarks = bookmarks
+})
+nmap('gs', ':execute "normal viw" | lua require"browse".input_search()<cr>')
+vmap('gs', '<cmd>lua require"browse".input_search()<cr>')
+nmap('go', ':execute "normal viw" | lua require"browse".open_bookmarks()<cr>')
+vmap('go', '<cmd>lua require"browse".open_bookmarks()<cr>')
+-- maybe chnage order to gbs; gbo; gwd
+nmap('<Leader>gss', ':execute "normal vis" | lua require"browse".input_search()<cr>') -- sentence
+nmap('<Leader>gsb', ':execute "normal vib" | lua require"browse".input_search()<cr>') -- bracket
+nmap('<Leader>gs"', [[:execute 'normal vi"' | lua require"browse".input_search()<cr>]])
+nmap("<Leader>gs'", [[:execute "normal vi'" | lua require"browse".input_search()<cr>]])
+nmap('<Leader>gos', ':execute "normal vis" | lua require"browse".open_bookmarks()<cr>') 
+nmap('<Leader>gob', ':execute "normal vib" | lua require"browse".open_bookmarks()<cr>') 
+nmap('<Leader>go"', [[:execute 'normal vi"' | lua require"browse".open_bookmarks()<cr>]])
+nmap("<Leader>go'", [[:execute "normal vi'" | lua require"browse".open_bookmarks()<cr>]])
+nmap('<Leader>gd', '<cmd>lua require"browse.devdocs".search_with_filetype()<cr>') -- search with context of filetype
+nmap('<Leader>gwd', ':execute "normal viw" | lua require"browse.devdocs".search_with_filetype()<cr>')
+vmap('<Leader>gd', '<cmd>lua require"browse.devdocs".search_with_filetype()<cr>')
+-- }}} 
 
 -- Telescope {{{
 --  https://github.com/nvim-telescope/telescope.nvim#pickers
@@ -647,7 +678,6 @@ vim.g.UltiSnipsJumpBackwardTrigger = '<c-k>'
 vim.g.UltiSnipsSnippetsDir = HOME .. '~/.config/nvim/UltiSnips'
 vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' } -- }}} 
 
- 
 -- yanky {{{
 	-- maybe causes crash
 -- https://github.com/gbprod/yanky.nvim#%EF%B8%8F-special-put
@@ -871,7 +901,7 @@ require("nap").setup({
 -- ZenMode {{{
 -- https://github.com/folke/zen-mode.nvim
 nmap('<F6>', ':ZenMode <CR>')
--- require("zen-mode").toggle({
+-- require("zen-mode").toggle({ -- doesn't work
 --   window = {
 --     width = .85
 --   },

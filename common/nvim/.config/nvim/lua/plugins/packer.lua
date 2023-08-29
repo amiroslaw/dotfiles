@@ -1,7 +1,7 @@
 -- any change requiers :PackerCompile
 -- https://github.com/wbthomason/packer.nvim
 return require('packer').startup(function()
-	use {'liangxianzhe/nap.nvim'}
+	use {'liangxianzhe/nap.nvim'} -- jumps
 	use {'uga-rosa/translate.nvim'}
 	-- use {'uga-rosa/translate.nvim', cmd = {'Translate'}} -- error
 	use {'rhysd/vim-grammarous', cmd = {'GrammarousCheck'}}
@@ -21,7 +21,8 @@ return require('packer').startup(function()
 			require('yanky').setup {}
 		end,
 	}
-	use 'voldikss/vim-browser-search'
+	use{ "lalitmee/browse.nvim", requires = { "nvim-telescope/telescope.nvim" }, }
+	-- use 'voldikss/vim-browser-search'
 	use 'kyazdani42/nvim-web-devicons'
 	use { 'amiroslaw/fm-nvim', cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit', 'TaskWarriorTUI' } }
 	use { 'folke/zen-mode.nvim', branch = 'main', cmd = { 'ZenMode' }, 
@@ -79,7 +80,6 @@ return require('packer').startup(function()
 			end,
 		},
 	}
-
 	use 'SirVer/ultisnips'
 
 	-- NOTE
@@ -124,6 +124,7 @@ return require('packer').startup(function()
 				ensure_installed = {
 					'java',
 					'scala',
+					'kotlin',
 					'javascript',
 					'typescript',
 					'lua',
@@ -131,13 +132,14 @@ return require('packer').startup(function()
 					'http',
 					'json',
 					'css',
-					'http',
-					'kotlin',
+					'html',
 					'scss',
 					'toml',
 					'yaml',
 					'bash',
-				}, -- TSInstall css html "asciidoc"
+					'http',
+					'python',
+				}, -- TSInstall css html; "asciidoc" doesn't support yet
 				highlight = {
 					enable = true,
 					additional_vim_regex_highlighting = false,

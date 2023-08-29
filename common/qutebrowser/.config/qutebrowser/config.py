@@ -1,5 +1,3 @@
-# vim: foldmethod=marker
-
 # Documentation:
 #   qute://help/configuring.html
 #   qute://help/settings.html
@@ -473,3 +471,5 @@ c.hints.selectors["video"] = [ "ytd-thumbnail a#thumbnail", '.video-grid > div >
 # move cursor in command mode
 # bind go set-cmd-text :open {url:pretty} ;; fake-key -g <Home><Ctrl-Right><Shift-End>
 # }}}
+
+# vim: foldmethod=marker
