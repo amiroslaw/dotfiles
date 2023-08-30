@@ -115,9 +115,9 @@ config.bind('<Ctrl+T>', 'spawn --userscript translate')
 config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
 config.bind('M', 'bookmark-add --toggle')
 config.bind('<Escape>', 'mode-enter normal ;; jseval -q document.activeElement.blur()', 'insert') # unfocus input
-config.bind("<Ctrl-v>", "hint inputs --first ;; later 200 insert-text {clipboard}")
+config.bind("<Ctrl-v>", "hint inputs --first ;; cmd-later 200 insert-text {clipboard}")
 config.bind('<F7>', 'open -t file:///home/miro/Documents/notebook/preview.html')
-config.bind('<F1>', 'spawn preview-ascii.sh ' + os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/qt-default-bindings.adoc ;; later 1000 open -t file:///home/miro/Documents/notebook/preview.html")
+config.bind('<F1>', 'spawn preview-ascii.sh ' + os.environ["XDG_CONFIG_HOME"] + "/qutebrowser/qt-default-bindings.adoc ;; cmd-later 1000 open -t file:///home/miro/Documents/notebook/preview.html")
 
 config.bind('<Ctrl-j>', 'scroll-px 0 50', 'caret')
 config.bind('<Ctrl-k>', 'scroll-px 0 -50', 'caret')
@@ -135,7 +135,7 @@ config.bind('tg', 'tab-give')
 config.bind('tc', 'tab-clone')
 config.bind('>', 'tab-move +')
 config.bind('<', 'tab-move -')
-config.bind('tt', 'set-cmd-text -sr :tab-focus')
+config.bind('tt', 'cmd-set-text -sr :tab-focus')
 config.bind('<Ctrl-o>', 'tab-focus last')
 config.bind('$', 'tab-focus -1')
 config.bind('wn', 'open -w')
@@ -143,7 +143,9 @@ config.bind('<Ctrl-n>', 'open -w')
 # }}}
 
 # ======================= JSEVAL ============= {{{
-# click-element can be a native replacement but currently only supports id https://github.com/qutebrowser/qutebrowser/issues/5356
+# maybe jseval could be replace with click-element, or have the most frequent usage e.g. zcys - zc(click)y(youtube)s(subscribe button)
+# The `:click-element` command now can also click elements based on its ID (`id`), a CSS selector (`css`), a position (`position`), or click the currently focused element (`focused`).
+# Syntax: :click-element [--target target] [--force-event] [--select-first] filter [value]
 config.bind('zr', 'jseval -q document.getElementById("reload-button").click()') # reload page
 
 CYCLE_INPUTS = "jseval -q -f /usr/share/qutebrowser/scripts/cycle-inputs.js"
@@ -282,8 +284,8 @@ config.bind('es', 'spawn -u session.sh save')
 config.bind('el', 'spawn -u session.sh load')
 config.bind('ex', 'spawn -u session.sh delete')
 config.bind('ew', 'spawn -u session.sh webapp')
-# config.bind('es', 'set-cmd-text --space :session-load ')
-config.bind('ZZ', ':session-save --only-active-window ;; later 500 close')    
+# config.bind('es', 'cmd-set-text --space :session-load ')
+config.bind('ZZ', ':session-save --only-active-window ;; cmd-later 500 close')    
 
 # }}}
 
@@ -319,7 +321,7 @@ config.bind("<Ctrl-Shift-d>", "fake-key <Shift-End><Delete>", "insert")
 config.bind('<Ctrl-y>', 'insert-text {primary}', 'insert') # doesn't work
 config.bind("<Ctrl-i>", "edit-text", "insert")
 config.bind("<Ctrl-i>", "edit-text")
-# :bind gI hint inputs --first ;; mode-enter insert ;; later 50 edit-text
+# :bind gI hint inputs --first ;; mode-enter insert ;; cmd-later 50 edit-text
 config.bind('ei', "mode-enter insert ;; fake-key <Enter> ;; mode-enter normal" )
 config.bind('<Ctrl-j>', 'fake-key <Down>', 'insert')
 config.bind('<Ctrl-k>', 'fake-key <Up>', 'insert')
@@ -332,8 +334,8 @@ config.bind('xa', 'config-cycle --temp --print content.blocking.enabled false tr
 config.bind('xj', 'config-cycle --temp --print input.spatial_navigation false true')
 config.bind('xw', 'config-cycle --temp --print qt.workarounds.remove_service_workers true false')
 
-config.bind('xp', 'set-cmd-text --space :screenshot ') # todo bind to print scr and get current date
-config.bind('xs', 'set-cmd-text --space :scroll-to-anchor ')
+config.bind('xp', 'cmd-set-text --space :screenshot ') # todo bind to print scr and get current date
+config.bind('xs', 'cmd-set-text --space :scroll-to-anchor ')
 # }}}
 
 # ======================= Searchengines ============= {{{
@@ -415,7 +417,7 @@ config.bind('sd', 'open -b d {primary} ')
 config.bind('sD', 'open -b d {clipboard} ')
 config.bind('sd', 'spawn -u selection.sh d', 'caret')
 
-config.bind('sg', 'set-cmd-text --space :open -t site:{url} ')
+config.bind('sg', 'cmd-set-text --space :open -t site:{url} ')
 
 config.bind('zz', 'spawn -u selection.sh ')
 config.bind('zz', 'spawn -u selection.sh', 'caret')
@@ -469,7 +471,7 @@ c.hints.selectors["video"] = [ "ytd-thumbnail a#thumbnail", '.video-grid > div >
 # rdrview -B qutebrowser - bład
 # config.bind(',F', 'spawn -u openfeeds') - module needed
 # move cursor in command mode
-# bind go set-cmd-text :open {url:pretty} ;; fake-key -g <Home><Ctrl-Right><Shift-End>
+# bind go cmd-set-text :open {url:pretty} ;; fake-key -g <Home><Ctrl-Right><Shift-End>
 # }}}
 
 # vim: foldmethod=marker
