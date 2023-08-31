@@ -1,26 +1,23 @@
-require 'plugins'
 -- S-k - jump to help page
 -- free keybinding leader-b/B
 -- TODO
 -- add shortcuts like in shell imap('<C-e>', 'normal A')
 -- VARIABLES
 local HOME = os.getenv 'HOME'
-vim.cmd 'source ~/Documents/Ustawienia/stow-private/calendar.vim'
 
--- COLORSCHEMES {{{
-local function getBackground(hour)
-		local hour = hour and hour or 20
-		local currentHour = tonumber(os.date '%H')
-		if currentHour > 5 and currentHour < hour then
-			return 'light'
-		else
-			return 'dark'
-		end
+--{{{ lazy
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
-vim.cmd 'colorscheme solarized8_high'
--- vim.cmd 'colorscheme flattened_light'
-vim.o.background = getBackground()
-vim.cmd [[let ayucolor="light" ]]
+vim.opt.rtp:prepend(lazypath)
 -- }}} 
 
 -- Autocommands {{{
@@ -62,11 +59,6 @@ vim.api.nvim_create_autocmd( -- Prefer Neovim terminal insert mode to normal mod
 		command = [[startinsert]],
 	}
 )
-vim.api.nvim_create_autocmd('BufWritePost', {
-	pattern = { 'plugins.lua' },
-	command = 'source <afile> | PackerCompile',
-	group = vim.api.nvim_create_augroup('packerCompile', { clear = true }), -- clear true is default
-})
 vim.api.nvim_create_autocmd('TextYankPost', {
 	command = 'silent! lua vim.highlight.on_yank {timeout=600}',
 	group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }), -- clear true is default
@@ -178,7 +170,7 @@ end -- }}}
 vim.g.mapleader = ';'
 vim.g.maplocalleader=" " --space
 nmap('<leader>/', ':nohlsearch<cr>') -- from nvim 0.6 it's by default c-l
-nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>')
+nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>') -- doesn't work with lazy.nvim
 nmap('<F1>', ':term taskwarrior-tui<CR>')
 nmap(',l', '<cmd>luafile dev/init.lua<cr>', {}) -- for plugin development
 nmap('Zz', ' :q! <cr>')
@@ -338,6 +330,25 @@ vim.fn.setreg('f', 'f)a kb  ')
 -- }}} 
 
 -- PLUGINS {{{
+require("lazy").setup("plugins")
+nmap('<F11>', ':Lazy<CR>')
+
+-- COLORSCHEMES {{{
+local function getBackground(hour)
+		local hour = hour and hour or 20
+		local currentHour = tonumber(os.date '%H')
+		if currentHour > 5 and currentHour < hour then
+			return 'light'
+		else
+			return 'dark'
+		end
+end
+vim.cmd 'colorscheme solarized8_high'
+-- vim.cmd 'colorscheme flattened_light'
+vim.o.background = getBackground()
+vim.cmd [[let ayucolor="light" ]]
+-- }}} 
+
 -- taskmaker {{{
 local task = require('taskmaker').setup({
 	app = 'taskwarrior', -- {'taskwarrior', 'todo.txt'}
@@ -397,10 +408,11 @@ vim.g.startify_change_to_dir = 0
 vim.cmd 'silent! call repeat#set("\\<Plug>MyWonderfulMap", v:count)'
 
 -- calendar.vim {{{
+vim.cmd 'source ~/Documents/Ustawienia/stow-private/calendar.vim'
 vim.g.calendar_google_calendar = 1
 vim.g.calendar_google_task = 1
 vim.g.calendar_first_day = 'monday'
-vim.g.calendar_calendar_candidates = {'arek', 'taskwarrior', 'inwestycje'}
+vim.g.calendar_calendar_candidates = {'arek', 'warrior', 'inwestycje'}
 vim.g.calendar_views = {'month', 'day_7', 'day', 'agenda'} -- I'm not sure about agenda
 vim.g.calendar_cyclic_view = 1
 
@@ -537,7 +549,7 @@ nmap('<leader>rp', '<Plug>RestNvimPreview<cr>', { noremap = false }) -- }}}
 
 -- browser.nvim {{{
 -- https://github.com/lalitmee/browse.nvim 
-bookmarks = {
+local bookmarks = {
     ['youtube'] = 'https://www.youtube.com/results?search_query=%s',
 	['diki']= 'https://www.diki.pl/slownik-angielskiego?q=%s',
 	['deepl'] ='https://www.deepl.com/en/translator#en/pl/%s',
@@ -549,10 +561,10 @@ bookmarks = {
     ['wiki-pl'] = 'https://pl.wikipedia.org/wiki/%s',
     ['wiki-en'] = 'https://en.wikipedia.org/wiki/%s',
 	["gh"] = "https://github.com/search?q=%s",
-	["github"] = {
+	["github"] = { -- in groups selection doesn't work
       ["name"] = "Group: github",
-      ["code_search"] = "https://github.com/search?q=%s&type=code",
       ["repo_search"] = "https://github.com/search?q=%s&type=repositories",
+      ["code_search"] = "https://github.com/search?q=%s&type=code",
       ["issues_search"] = "https://github.com/search?q=%s&type=issues",
       ["pulls_search"] = "https://github.com/search?q=%s&type=pullrequests",
   },
@@ -651,13 +663,9 @@ if telescope then
 	-- nmap('ty', '<cmd>Telescope yank_history <cr>')
 end -- }}} 
 
--- urlview {{{
---                       urlview https://github.com/axieax/urlview.nvim
-require('urlview').setup {
-	default_picker = 'telescope', -- native,
-	sorted = false,
-}
-nmap('<Leader>u', ':UrlView<cr>') -- }}} 
+-- urlview {{{ https://github.com/axieax/urlview.nvim
+nmap('<Leader>u', ':UrlView<cr>') 
+-- }}} 
 
 -- previm {{{
 --  https://github.com/previm/previm
@@ -764,7 +772,7 @@ local dict = require("cmp_dictionary")
 
 dict.switcher({
   filetype = {
-	asciidoc = {dirEn, dirPl },
+	asciidoctor = {dirEn, dirPl },
 	markdown = {dirEn, dirPl },
 	text = {dirEn, dirPl },
   },
@@ -874,6 +882,8 @@ xmap('<LocalLeader>pr', 'viw:Translate PL -source=EN -output=replace<CR>')
 -- grammarous {{{
 vim.g['grammarous#use_vim_spelllang'] = 1
 -- vim.g['grammarous#enable_spell_check'] = 1
+-- https://github.com/rhysd/vim-grammarous/issues/110#issuecomment-1404863074
+vim.g['grammarous#jar_url'] = 'https://www.languagetool.org/download/LanguageTool-5.9.zip' 
 nmap('<LocalLeader>cc', '<cmd>GrammarousCheck --lang=en<CR>')
 nmap('<LocalLeader>cp', '<cmd>GrammarousCheck --lang=pl <CR>')
 nmap('<LocalLeader>ch', '<Plug>(grammarous-move-to-previous-error)', { noremap = false }) -- Move cursor to the previous error
@@ -901,18 +911,6 @@ require("nap").setup({
 -- ZenMode {{{
 -- https://github.com/folke/zen-mode.nvim
 nmap('<F6>', ':ZenMode <CR>')
--- require("zen-mode").toggle({ -- doesn't work
---   window = {
---     width = .85
---   },
---   plugins = {
---     wezterm = {
---       enabled = true,
---       font = "+4", -- (10% increase per step)
---     },
---   },
--- })
-
 -- }}} 
  
 -- }}} 
