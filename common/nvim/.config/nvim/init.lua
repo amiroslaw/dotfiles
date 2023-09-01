@@ -526,18 +526,21 @@ local bookmarks = {
     ['translator'] = 'https://translate.google.pl/?hl=pl#pl/en/%s',
     ['cambridge'] = 'https://dictionary.cambridge.org/spellcheck/english/?q=%s', 
     ['thesaurus'] = 'https://www.thesaurus.com/browse/%s?s=t',
+    ['allegro']= 'https://allegro.pl/listing?string=%s',
 	['ceneo']= 'https://www.ceneo.pl/;szukaj-%s',
-    ['brave'] = 'https://search.brave.com/search?q=%s',
     ['wiki-pl'] = 'https://pl.wikipedia.org/wiki/%s',
     ['wiki-en'] = 'https://en.wikipedia.org/wiki/%s',
+    ['arch-wiki'] = 'https://wiki.archlinux.org/?search=%s',
+    ['piped-videos'] = 'https://piped.kavin.rocks/results?search_query=%s',
+    ['brave'] = 'https://search.brave.com/search?q=%s',
 	["gh"] = "https://github.com/search?q=%s",
 	["gh_repo"] = "https://github.com/search?q=%s&type=repositories",
-	["github"] = { -- in groups selection doesn't work
-      ["name"] = "Group: github",
-      ["code_search"] = "https://github.com/search?q=%s&type=code",
-      ["issues_search"] = "https://github.com/search?q=%s&type=issues",
-      ["pulls_search"] = "https://github.com/search?q=%s&type=pullrequests",
-  },
+	-- ["github"] = { -- in groups doesn't work selection 
+ --      ["name"] = "Group: github",
+ --      ["code_search"] = "https://github.com/search?q=%s&type=code",
+ --      ["issues_search"] = "https://github.com/search?q=%s&type=issues",
+ --      ["pulls_search"] = "https://github.com/search?q=%s&type=pullrequests",
+  -- },
 }
 local browse = require('browse')
 browse.setup({
