@@ -320,39 +320,10 @@ vim.fn.setreg('u', 'a]()hp0i[') -- markdown link
 vim.fn.setreg('f', 'f)a kb  ') 
 -- }}} 
 
--- PLUGINS {{{
+-- PLUGINS {{{ 
+	-- Move small configuration to plugins.lua, left only shortcuts
 require("lazy").setup("plugins")
 nmap('<F11>', ':Lazy<CR>')
-
--- COLORSCHEMES {{{
-local function getBackground(hour)
-		local hour = hour and hour or 20
-		local currentHour = tonumber(os.date '%H')
-		if currentHour > 5 and currentHour < hour then
-			return 'light'
-		else
-			return 'dark'
-		end
-end
-vim.cmd 'colorscheme solarized8_high'
--- vim.cmd 'colorscheme flattened_light'
-vim.o.background = getBackground()
-vim.cmd [[let ayucolor="light" ]]
--- }}} 
-
--- taskmaker {{{
-local task = require('taskmaker').setup({
-	app = 'taskwarrior', -- {'taskwarrior', 'todo.txt'}
-	feedback = true,
-	sync = true, -- synchronization
-	-- default_context = 'in',
-})
-vmap('<LocalLeader>w', '<cmd>TaskmakerAddTasks <CR>')
-nmap('<LocalLeader>x', '<cmd>TaskmakerToggle <CR>') -- }}} 
-
--- Windows {{{
-nmap('<leader>M', '<Cmd>WindowsToggleAutowidth<CR>')
-nmap('<leader>m', '<Cmd>WindowsMaximize<CR>') -- }}} 
 
 -- nmap('<leader>f', '<cmd> !stylua --config-path ~/.config/stylua/stylua.toml % <cr>')
 nmap('<leader>f', '<cmd> lua vim.lsp.buf.format() <cr>')
@@ -397,6 +368,14 @@ vim.g.startify_change_to_dir = 0
 --"""""""""""""""""
 -- repeat
 vim.cmd 'silent! call repeat#set("\\<Plug>MyWonderfulMap", v:count)'
+
+-- taskmaker {{{
+vmap('<LocalLeader>w', '<cmd>TaskmakerAddTasks <CR>')
+nmap('<LocalLeader>x', '<cmd>TaskmakerToggle <CR>') -- }}} 
+
+-- Windows {{{
+nmap('<leader>M', '<Cmd>WindowsToggleAutowidth<CR>')
+nmap('<leader>m', '<Cmd>WindowsMaximize<CR>') -- }}} 
 
 -- calendar.vim {{{
 vim.cmd 'source ~/Documents/Ustawienia/stow-private/calendar.vim'
@@ -552,9 +531,9 @@ local bookmarks = {
     ['wiki-pl'] = 'https://pl.wikipedia.org/wiki/%s',
     ['wiki-en'] = 'https://en.wikipedia.org/wiki/%s',
 	["gh"] = "https://github.com/search?q=%s",
+	["gh_repo"] = "https://github.com/search?q=%s&type=repositories",
 	["github"] = { -- in groups selection doesn't work
       ["name"] = "Group: github",
-      ["repo_search"] = "https://github.com/search?q=%s&type=repositories",
       ["code_search"] = "https://github.com/search?q=%s&type=code",
       ["issues_search"] = "https://github.com/search?q=%s&type=issues",
       ["pulls_search"] = "https://github.com/search?q=%s&type=pullrequests",
@@ -611,7 +590,7 @@ if telescope then
 					['<C-h>'] = 'which_key',
 					['<C-n>'] = 'cycle_history_next',
 					['<C-p>'] = 'cycle_history_prev',
-				},
+					["<cr>"] = function(bufnr) require("telescope.actions.set").edit(bufnr, "tab drop") end }, -- go to tab if open
 			},
 		},
 	}
@@ -622,8 +601,9 @@ if telescope then
 	nmap('to', '<cmd>Telescope oldfiles<cr>')
 	nmap('tl', '<cmd>Telescope current_buffer_fuzzy_find skip_empty_lines=true<cr>') -- lines in file
 	nmap('tj', '<cmd>Telescope jumplist<cr> ') -- I changed source code for showing only current file
-	nmap('ta', '<cmd>Telescope buffers show_all_buffers=false<cr>') -- closed files
-	nmap('tq', '<cmd>Telescope quickfix<cr> ') -- quickfixhistory
+	nmap('ta', '<cmd>Telescope buffers ignore_current_buffer=true sort_mru=true show_all_buffers=false<cr>') -- closed files
+	nmap('tq', '<cmd>Telescope quickfix<cr> ') -- quickfix history
+	nmap('td', '<cmd>Telescope diagnostic<cr> ')
 	nmap('tn', '<cmd>Telescope loclist<cr> ')
 	nmap('tc', '<cmd>Telescope commands <cr> ')
 	nmap('th', '<cmd>Telescope help_tags<cr> ') -- nivm api
@@ -654,7 +634,8 @@ if telescope then
 	-- nmap('ty', '<cmd>Telescope yank_history <cr>')
 end -- }}} 
 
--- urlview {{{ https://github.com/axieax/urlview.nvim
+-- urlview {{{ 
+-- https://github.com/axieax/urlview.nvim
 nmap('<Leader>u', ':UrlView<cr>') 
 -- }}} 
 
@@ -688,11 +669,6 @@ xmap('p', "<Plug>(YankyPutAfter)", { noremap = false })
 nmap("<A-n>", "<Plug>(YankyCycleForward)", { noremap = false })
 nmap("<A-p>", "<Plug>(YankyCycleBackward)", { noremap = false }) 
 -- }}} 
-
--- Status and tab bars {{{
-require('lualine').setup { options = { theme = 'dracula', component_separators = '|', globalstatus = true }, 
--- sections = {lualine_a = {'buffers'}} - takes too much space
-} -- }}} 
 
 -- nvim-cmp {{{
 -- https://github.com/hrsh7th/nvim-cmp
@@ -837,29 +813,10 @@ require('gitsigns').setup {
 	end,
 } -- }}} 
 
--- {{{ lightspeed 
--- https://github.com/ggandor/lightspeed.nvim#-configuration
-require'lightspeed'.setup {
-  ignore_case = false,
-  exit_after_idle_msecs = { unlabeled = 3000, labeled = nil },
-  jump_to_unique_chars = { safety_timeout = 400 },
-} -- }}}
-
 -- translate {{{
 --https://github.com/uga-rosa/translate.nvim
 -- let g:deepl_api_auth_key = 'MY_AUTH_KEY'
 -- command = "deepl_free", -- require credit card
-require("translate").setup({
-    default = {
-	    output = 'insert', -- split, floating, insert, replace, register
-		    lang_abbr = {
-		        pl = "polish",
-		    },
-		    end_marks = {
-		        polish = { ".", "?", "!", },
-		    },
-    },
-})
 xmap('<LocalLeader>ee', '<Cmd>Translate EN -source=PL<CR>')
 nmap('<LocalLeader>ee', '<Cmd>Translate EN -source=PL<CR>')
 nmap('<LocalLeader>er', 'viw:Translate EN -source=PL -output=replace<CR>') 
@@ -903,7 +860,22 @@ require("nap").setup({
 -- https://github.com/folke/zen-mode.nvim
 nmap('<F6>', ':ZenMode <CR>')
 -- }}} 
- 
+-- }}} 
+
+-- COLORSCHEMES {{{
+local function getBackground(hour)
+		local hour = hour and hour or 20
+		local currentHour = tonumber(os.date '%H')
+		if currentHour > 5 and currentHour < hour then
+			return 'light'
+		else
+			return 'dark'
+		end
+end
+vim.cmd 'colorscheme solarized8_high'
+-- vim.cmd 'colorscheme flattened_light'
+vim.o.background = getBackground()
+vim.cmd [[let ayucolor="light" ]]
 -- }}} 
 -- vim: foldmethod=marker
 -- set complete+=kspell spellcheck complete

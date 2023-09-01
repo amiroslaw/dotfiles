@@ -4,15 +4,21 @@ return {
 	{ 'anuvyklack/windows.nvim', -- Automatically resizes your windows
 		dependencies = 'anuvyklack/middleclass',
 		config = true,
+		event = 'VeryLazy',
 	},
 	{ 'mg979/vim-visual-multi', branch = 'master' },
-	'tpope/vim-repeat',
+	{ "tpope/vim-repeat", event = "VeryLazy" },
 	'chentoast/marks.nvim',
 	'mhinz/vim-startify', -- start screen
 	{ 'mbbill/undotree', cmd = { 'UndotreeToggle' } },
 	{ 'gbprod/yanky.nvim', config = true },
-	{ 'lalitmee/browse.nvim', dependencies = { 'nvim-telescope/telescope.nvim' } },
-	{ 'amiroslaw/fm-nvim', cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit', 'TaskWarriorTUI' } },
+	{ 'lalitmee/browse.nvim',event = 'VeryLazy', dependencies = { 'nvim-telescope/telescope.nvim' } },
+	{ 'amiroslaw/fm-nvim', cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit', 'TaskWarriorTUI' },
+		opts = { app = 'taskwarrior', -- {'taskwarrior', 'todo.txt'}
+				feedback = true,
+				sync = true,
+			}
+	},
 	{ 'okuuva/auto-save.nvim',
 		cmd = 'ASToggle', -- optional for lazy loading on command
 		event = { 'InsertLeave', 'TextChanged' }, -- optional for lazy loading on trigger events
@@ -23,7 +29,13 @@ return {
 		opts = { spelling = { enabled = true, sugesstions = 20, ignore_missing = true }, },
 	},
 	'liangxianzhe/nap.nvim', -- jumps between buffer, tab, file, quickfix
-	'ggandor/lightspeed.nvim',
+	{ 'ggandor/lightspeed.nvim', opts = {
+			  ignore_case = false,
+			  exit_after_idle_msecs = { unlabeled = 3000, labeled = nil },
+			  jump_to_unique_chars = { safety_timeout = 400 },
+		},
+	-- enabled = false
+	},
 	{ 'nvim-telescope/telescope.nvim',
 		cmd = 'Telescope',
 		dependencies = {
@@ -43,7 +55,13 @@ return {
 	--}}}
 
 	--{{{ Note
-	{ 'uga-rosa/translate.nvim', cmd = { 'Translate' } },
+	{ 'uga-rosa/translate.nvim', cmd = { 'Translate' }, opts = {
+			default = { output = 'insert', -- split, floating, insert, replace, register
+					lang_abbr = { pl = "polish", },
+					end_marks = { polish = { ".", "?", "!", }, },
+			},
+		}
+	},
 	{ 'rhysd/vim-grammarous', cmd = { 'GrammarousCheck' } },
 	{ 'hrsh7th/nvim-cmp',
 		event = 'InsertEnter',
@@ -64,10 +82,10 @@ return {
 			end,
 		},
 	},
-	'SirVer/ultisnips',
+	{ 'SirVer/ultisnips', event = 'InsertEnter', },
 	{ 'itchyny/calendar.vim', cmd = 'Calendar' }, -- problem with api; maybe delete
 	{ 'amiroslaw/taskmaker.nvim', cmd = { 'TaskmakerAddTasks', 'TaskmakerToggle' } },
-	'aserebryakov/vim-todo-lists', -- , version = '0.7.1'
+	-- 'aserebryakov/vim-todo-lists', -- , version = '0.7.1'
 	-- 'dbeniamine/todo.txt-vim',
 	{ 'kabbamine/lazyList.vim', cmd = 'LazyList' },
 	{ 'axieax/urlview.nvim',
@@ -98,11 +116,9 @@ return {
 	{ 'sbdchd/neoformat', cmd = { 'Neoformat' } },
 	{ 'gennaro-tedesco/nvim-jqx', ft = { 'json' } },
 	{ 'numToStr/Comment.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = true },
-	-- test after and wants
-	-- { 'abecodes/tabout.nvim', dependencies = { 'nvim-treesitter', 'nvim-cmp' }, event = 'InsertEnter' }, -- doesn't support asciidoc
-	{ 'windwp/nvim-autopairs', config = true },
-	{ 'NTBBloodbath/rest.nvim', branch = 'main', ft = { 'http' }, dependencies = { 'nvim-lua/plenary.nvim' } }, -- maybe delete
+	{ 'windwp/nvim-autopairs', event = 'InsertEnter', config = true },
 	{ 'jose-elias-alvarez/null-ls.nvim', branch = 'main', dependencies = { 'nvim-lua/plenary.nvim' } },
+	{ 'NTBBloodbath/rest.nvim', branch = 'main', ft = { 'http' }, dependencies = { 'nvim-lua/plenary.nvim' } }, -- maybe delete
 	{ 'nvim-treesitter/nvim-treesitter',
 		build = ':TSUpdate',
 		config = function()
@@ -133,6 +149,8 @@ return {
 			}
 		end,
 	},
+	-- test after and wants
+	-- { 'abecodes/tabout.nvim', dependencies = { 'nvim-treesitter', 'nvim-cmp' }, event = 'InsertEnter' }, -- doesn't support asciidoc
 	--}}}
 
 	--{{{ UI
@@ -146,7 +164,9 @@ return {
 		},
 	},
 	{ 'alvarosevilla95/luatab.nvim', dependencies = 'kyazdani42/nvim-web-devicons', config = true, event = 'VeryLazy' }, -- tabline
-	{ 'nvim-lualine/lualine.nvim', event = 'VeryLazy' },
+	{ 'nvim-lualine/lualine.nvim', event = 'VeryLazy',
+		opts = { options = { theme = 'dracula', component_separators = '|', globalstatus = true }, -- sections = {lualine_a = {'buffers'}} - takes too much space
+	}},
 	--}}}
 	--{{{ COLORSCHEMES and Syntax
 	'baskerville/vim-sxhkdrc',
