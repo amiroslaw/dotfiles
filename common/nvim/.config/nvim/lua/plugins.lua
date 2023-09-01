@@ -36,6 +36,10 @@ return {
 		},
 	},
 	{ 'danielfalk/smart-open.nvim', branch = '0.2.x', dependencies = { 'kkharji/sqlite.lua' } },
+	{ "chrisgrieser/nvim-origami",
+		event = "BufReadPost", 
+		opts = true,
+	},
 	--}}}
 
 	--{{{ Note
@@ -86,6 +90,11 @@ return {
 	--{{{ Code
 	{ 'lewis6991/gitsigns.nvim', event = { 'BufReadPre', 'BufNewFile' } },
 	'kylechui/nvim-surround',
+	{ "sustech-data/wildfire.nvim",
+		event = "VeryLazy",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		opts =  { filetype_exclude = { "qf", 'asciidoctor' }, } -- exclude unil treesitter will support asciidoc
+	},
 	{ 'sbdchd/neoformat', cmd = { 'Neoformat' } },
 	{ 'gennaro-tedesco/nvim-jqx', ft = { 'json' } },
 	{ 'numToStr/Comment.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = true },

@@ -109,7 +109,7 @@ vim.o.fileencoding = 'utf-8'
 vim.o.fileencodings = 'utf-8', 'latin1'
 vim.o.linebreak = true
 vim.cmd 'syntax enable'
-
+vim.o.startofline = true -- for nvim-origami plugin
 
 -- IncSearch
 vim.o.ignorecase = true
