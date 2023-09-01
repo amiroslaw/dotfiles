@@ -552,6 +552,7 @@ vmap('gs', '<cmd>lua require"browse".input_search()<cr>')
 nmap('go', ':execute "normal viw" | lua require"browse".open_bookmarks()<cr>')
 vmap('go', '<cmd>lua require"browse".open_bookmarks()<cr>')
 -- maybe chnage order to gbs; gbo; gwd
+nmap('<Leader>ga', '<cmd>lua require"browse".browse()<cr>') -- all options
 nmap('<Leader>gss', ':execute "normal vis" | lua require"browse".input_search()<cr>') -- sentence
 nmap('<Leader>gsb', ':execute "normal vib" | lua require"browse".input_search()<cr>') -- bracket
 nmap('<Leader>gs"', [[:execute 'normal vi"' | lua require"browse".input_search()<cr>]])
@@ -560,9 +561,8 @@ nmap('<Leader>gos', ':execute "normal vis" | lua require"browse".open_bookmarks(
 nmap('<Leader>gob', ':execute "normal vib" | lua require"browse".open_bookmarks()<cr>') 
 nmap('<Leader>go"', [[:execute 'normal vi"' | lua require"browse".open_bookmarks()<cr>]])
 nmap("<Leader>go'", [[:execute "normal vi'" | lua require"browse".open_bookmarks()<cr>]])
-nmap('<Leader>gd', '<cmd>lua require"browse.devdocs".search_with_filetype()<cr>') -- search with context of filetype
-nmap('<Leader>gwd', ':execute "normal viw" | lua require"browse.devdocs".search_with_filetype()<cr>')
-vmap('<Leader>gd', '<cmd>lua require"browse.devdocs".search_with_filetype()<cr>')
+nmap('<Leader>gd', ':execute "normal viw" | lua require"browse.devdocs".search_with_filetype()<cr>') -- search devdocs with context of filetype
+vmap('<Leader>gd', '<cmd>lua require"browse.devdocs".search_with_filetype()<cr>') -- selection doesn't work
 -- }}} 
 
 -- Telescope {{{
@@ -572,6 +572,7 @@ vim.o.maxmempattern = 3000 -- fix pattern uses more memory than 'maxmempattern',
 
 local telescope = require 'telescope'
 if telescope then
+local actions = require "telescope.actions"
 	telescope.setup {
 		defaults = {
 			prompt_prefix = '   ',
@@ -590,16 +591,22 @@ if telescope then
 					['<C-j>'] = 'move_selection_next',
 					['<C-k>'] = 'move_selection_previous',
 					['<C-Space>'] = 'select_default',
-					['<C-h>'] = 'which_key',
+					['<C-w>'] = 'which_key',
 					['<C-n>'] = 'cycle_history_next',
 					['<C-p>'] = 'cycle_history_prev',
-					["<cr>"] = function(bufnr) require("telescope.actions.set").edit(bufnr, "tab drop") end }, -- go to tab if open
+					['<C-x>'] = actions.close, -- IDK why default c-c doesn't work
+					['<C-h>'] = actions.select_horizontal,
+					-- ["<cr>"] = function(bufnr) require("telescope.actions.set").edit(bufnr, "tab drop") end  
+					},
+				},
 			},
-		},
-	}
+			pickers = { 
+				buffers = { mappings = { i = { ["<CR>"] = actions.select_tab_drop } } },-- go to tab if open
+					}
+		}
 
 	nmap('<c-s>', '<cmd>Telescope live_grep<cr>')
-	nmap('<tp>', '<cmd>Telescope find_files<cr>')
+	nmap('tp', '<cmd>Telescope find_files<cr>')
 	-- nmap('tp', '<cmd>Telescope find_files find_command=rg,--hidden,--files<cr>') -- with hidden files
 	nmap('to', '<cmd>Telescope oldfiles<cr>')
 	nmap('tl', '<cmd>Telescope current_buffer_fuzzy_find skip_empty_lines=true<cr>') -- lines in file
@@ -607,11 +614,12 @@ if telescope then
 	nmap('ta', '<cmd>Telescope buffers ignore_current_buffer=true sort_mru=true show_all_buffers=false<cr>') -- closed files
 	nmap('tq', '<cmd>Telescope quickfix<cr> ') -- quickfix history
 	nmap('td', '<cmd>Telescope diagnostic<cr> ')
+	nmap('tb', '<cmd>Telescope git_branches<cr>')
+	nmap('tg', '<cmd>Telescope git_status<cr>')
 	nmap('tn', '<cmd>Telescope loclist<cr> ')
 	nmap('tc', '<cmd>Telescope commands <cr> ')
 	nmap('th', '<cmd>Telescope help_tags<cr> ') -- nivm api
 	nmap('tH', '<cmd>Telescope command_history<cr> ')
-	nmap('tg', '<cmd>Telescope git_status<cr>')
 	nmap('tk', '<cmd>Telescope keymaps<cr>')
 	nmap('tf', '<cmd>Telescope file_browser<cr>') -- can go to the parent dir
 	nmap('tr', '<cmd>Telescope registers<cr>')

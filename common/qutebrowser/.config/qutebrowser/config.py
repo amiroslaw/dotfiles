@@ -367,10 +367,9 @@ c.url.searchengines = {
     't': 'https://translate.google.pl/?hl=pl#pl/en/{}',
     'cam': 'https://dictionary.cambridge.org/spellcheck/english/?q={}', 
     'sci': 'https://sci-hub.se/{}', 
-    'gh': 'https://github.com/search?q={}'
-    'gr': "https://github.com/search?q={}&type=repositories",
+    'gh': 'https://github.com/search?q={}',
+    'gr': "https://github.com/search?q={}&type=repositories"
 }
-        }
 
 # ======================= SEARCH bindings ============= {{{
 config.bind('ss', 'open -b g {primary} ')

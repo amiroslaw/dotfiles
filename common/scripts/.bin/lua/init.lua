@@ -42,7 +42,8 @@ rofiInput - optional arguments that can be passed via table
 --]]
 
 --- FUNCTIONAL <<<
-package.path = os.getenv('SCRIPTS') .. '/lua/' .. package.path
+-- package.path = os.getenv('SCRIPTS') .. '/lua/' .. package.path
+package.path = os.getenv('SCRIPTS') .. '/lua/?.lua;' .. package.path
 M = require "moses"
 
 --- functions <<<
