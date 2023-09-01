@@ -29,12 +29,33 @@ return {
 		opts = { spelling = { enabled = true, sugesstions = 20, ignore_missing = true }, },
 	},
 	'liangxianzhe/nap.nvim', -- jumps between buffer, tab, file, quickfix
-	{ 'ggandor/lightspeed.nvim', opts = {
-			  ignore_case = false,
-			  exit_after_idle_msecs = { unlabeled = 3000, labeled = nil },
-			  jump_to_unique_chars = { safety_timeout = 400 },
-		},
-	-- enabled = false
+	{ "folke/flash.nvim",
+	  event = "VeryLazy",
+	  opts = {
+		  search = {
+			mode = function(str) -- beginning of a word
+			  return "\\<" .. str
+			end,
+		  },
+		modes = { 
+			char = { jump_labels = true, -- for actions d/y
+			keys = { "f", "F", ";", "," }, -- deleted t and T
+			}
+		  }
+	  },
+	  keys = {
+		{ "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "Flash" },
+		{ "<s-a-d>", mode = { "n", "o", "x" }, function() require("flash").jump({ pattern = vim.fn.expand("<cword>") }) end, desc = "Under cursor" },
+		{ "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+		{ "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+		{ "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+		{ "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+		{ "<a-l>", mode = { "n", "o", "x" }, function() require("flash").jump( {
+			  search = { mode = "search", max_length = 0 },
+			  label = { after = { 0, 0 } },
+			  pattern = "^"
+			}) end, desc = "Jump line" },
+	  },
 	},
 	{ 'nvim-telescope/telescope.nvim',
 		cmd = 'Telescope',
@@ -149,8 +170,6 @@ return {
 			}
 		end,
 	},
-	-- test after and wants
-	-- { 'abecodes/tabout.nvim', dependencies = { 'nvim-treesitter', 'nvim-cmp' }, event = 'InsertEnter' }, -- doesn't support asciidoc
 	--}}}
 
 	--{{{ UI

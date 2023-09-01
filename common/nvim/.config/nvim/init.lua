@@ -620,7 +620,7 @@ if telescope then
 	nmap('ti', '<cmd>Telescope<cr>') -- list of the pickers
 
 	-- nmap('tt', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope current_buffer_tags<CR>')
-	nmap('T', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope tags<CR>')
+	-- nmap('T', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope tags<CR>') -- jjjj
 	telescope.load_extension 'heading'
 	nmap('tt', '<cmd>Telescope heading <cr>')
 	telescope.load_extension 'changes'
@@ -860,6 +860,7 @@ require("nap").setup({
 -- https://github.com/folke/zen-mode.nvim
 nmap('<F6>', ':ZenMode <CR>')
 -- }}} 
+
 -- }}} 
 
 -- COLORSCHEMES {{{
