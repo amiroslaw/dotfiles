@@ -27,15 +27,6 @@ vim.api.nvim_create_autocmd( -- go to last loc when opening a buffe
 		command = [[if @% !~# '\.git[\/\\]COMMIT_EDITMSG$' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif]],
 	}
 )
--- vim.g.java_fold=1 do not work
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = { 'lua', 'java', 'javascript', 'typescript', 'css', 'scss' },
-	command = [[setlocal foldmethod=syntax]],
-})
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = { 'asciidoc' },
-	command = [[setlocal foldmethod=expr]],
-})
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 	pattern = { '*.json' },
 	command = [[set filetype=json]],
@@ -53,12 +44,10 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 	command = [[set filetype=markdown]],
 })
 vim.api.nvim_create_autocmd( -- Prefer Neovim terminal insert mode to normal mode. IDK if it's default mode
-	'BufEnter',
-	{
-		pattern = { 'term://*' },
-		command = [[startinsert]],
-	}
-)
+	'BufEnter', {
+	pattern = { 'term://*' },
+	command = [[startinsert]],
+})
 vim.api.nvim_create_autocmd('TextYankPost', {
 	command = 'silent! lua vim.highlight.on_yank {timeout=600}',
 	group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }), -- clear true is default
@@ -96,6 +85,8 @@ end
 -- SETTINGS {{{
 -- vim.o.ch = 0 -- hide command, from v8
 vim.o.foldlevelstart = 9 -- unfold at start - don't work after changes
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 vim.o.termguicolors = true
 vim.b.buftype = '' -- fix Cannot write buftype option is set
 vim.o.laststatus = 3
