@@ -50,7 +50,7 @@ return {
 		{ "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
 		{ "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
 		{ "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-		{ "<a-l>", mode = { "n", "o", "x" }, function() require("flash").jump( {
+		{ "<LocalLeader>l", mode = { "n", "o", "x" }, function() require("flash").jump( {
 			  search = { mode = "search", max_length = 0 },
 			  label = { after = { 0, 0 } },
 			  pattern = "^"
@@ -62,11 +62,15 @@ return {
 		dependencies = {
 			{ 'nvim-lua/popup.nvim', lazy = true },
 			{ 'fhill2/telescope-ultisnips.nvim' },
-			{ 'crispgm/telescope-heading.nvim', pin = true }, -- I added asciidoc support
+			{ 'crispgm/telescope-heading.nvim' },
 			{ 'nvim-lua/plenary.nvim' },
 			{ 'amiroslaw/telescope-changes.nvim' },
 			-- { 'gbprod/yanky.nvim'},
 		},
+	},
+	{ 'nvim-telescope/telescope-fzf-native.nvim', 
+		build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
+		dependencies = 'nvim-telescope/telescope.nvim',
 	},
 	{ 'danielfalk/smart-open.nvim', branch = '0.2.x', dependencies = { 'kkharji/sqlite.lua' } },
 	{ "chrisgrieser/nvim-origami",
@@ -129,6 +133,10 @@ return {
 	--{{{ Code
 	{ 'lewis6991/gitsigns.nvim', event = { 'BufReadPre', 'BufNewFile' } },
 	'kylechui/nvim-surround',
+	{ "roobert/surround-ui.nvim",
+		dependencies = { "kylechui/nvim-surround", "folke/which-key.nvim", },
+		opts = { root_key = "S" }, -- leader S
+	},
 	{ "sustech-data/wildfire.nvim",
 		event = "VeryLazy",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
@@ -162,7 +170,10 @@ return {
 					'bash',
 					'http',
 					'python',
+					'vim',
+					'dockerfile',
 				}, -- TSInstall css html; "asciidoc" doesn't support yet
+				auto_install = true,
 				highlight = {
 					enable = true,
 					additional_vim_regex_highlighting = false,

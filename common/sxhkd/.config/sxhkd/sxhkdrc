@@ -225,7 +225,7 @@ super + {_,shift,ctrl} + BackSpace
 
 # tasks; todo; calendar
 super + u ; {u,c,g,f,i,t,r,p,n,a}
-	{ dunstify options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nW-task sync\nm-modify task\nn-newsboat", \
+	{ notify-send options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nW-task sync\nm-modify task\nn-newsboat", \
 	gcal-add.lua, \
 	java -jar ~/.bin/grywalizacja.jar, \
 	timefx, \
@@ -284,7 +284,7 @@ super + {shift,ctrl} + o
 # -------------------------------------------------------------------------
 # url.lua menu will ask for the number of the links
 super + e ; {e,h,k,K,m,M,v,V,d,D,y,Y,w,W,r,R,g,G,c,i}
-	{dunstify options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr-speed reader\nR-read\nc-calendar\nk(K)-kindle\ni-investing", \
+	{notify-send options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr-speed reader\nR-read\nc-calendar\nk(K)-kindle\ni-investing", \
     url.lua --menu --input, \
     url.lua --kindle --email -n 1,  url.lua --kindle -n 10, \
     url.lua --tor -n 1,  url.lua --tor -n 10, \
@@ -305,7 +305,7 @@ super + {_, shift,ctrl} + g
 	{search.lua --google -c, search.lua --google -p, search.lua --brave -c}
 
 super + s ; {s,h,g,G,b,B,u,U,y,Y,m,M}
-	{ dunstify options: " (capital-clipboard):\nh-help menu\ng-google\nb-brave\nu-duckduck\ny-yt\nm-maps\nw-wiki\nc-ceneo\no-cenowarka\na-allegro\nz-amazon\ns-so\nf-filmweb\nd-diki\nl-deepL\nr-translator\np-pl-en trans\ne-en-pl trans\nx-tuxi\nt-tor\ni-info from cheatsh", \
+	{ notify-send options: " (capital-clipboard):\nh-help menu\ng-google\nb-brave\nu-duckduck\ny-yt\nm-maps\nw-wiki\nc-ceneo\no-cenowarka\na-allegro\nz-amazon\ns-so\nf-filmweb\nd-diki\nl-deepL\nr-translator\np-pl-en trans\ne-en-pl trans\nx-tuxi\nt-tor\ni-info from cheatsh", \
 	search.lua --menu -input, \
 	search.lua --google -p, search.lua --google -c, \
 	search.lua --brave -p, search.lua --brave -c, \
@@ -338,7 +338,7 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 # -------------------------------------------------------------------------
 # clipster and notes; add J nad fix previous-copy primary
 super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}
-	{dunstify options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from clip\nl(L)-note from sel\nw -write note", \
+	{notify-send options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from clip\nl(L)-note from sel\nw -write note", \
 	clipster -sc, \
 	$ROFI/clipster/roficlip-primary, \
 	clipster -po, \

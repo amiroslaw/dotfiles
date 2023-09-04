@@ -103,7 +103,8 @@ local function readable()
 	local tmpname = os.tmpname()
 	for _, link in ipairs(linkTab) do
 		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to asciidoc --output ' .. tmpname .. '.adoc')
-		os.execute('st -c read -n read -e nvim ' .. tmpname .. '.adoc')
+		-- os.execute('st -c read -n read -e nvim ' .. tmpname .. '.adoc')
+		os.execute('wezterm start --class read -- nvim ' .. tmpname .. '.adoc')
 		assert(createFile == 0, 'Could not create file')
 	end
 	return 'Created file ' .. tmpname

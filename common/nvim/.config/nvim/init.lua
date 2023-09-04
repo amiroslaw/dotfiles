@@ -127,6 +127,8 @@ vim.o.hidden = true
 vim.wo.cursorline = true
 vim.wo.cursorcolumn = true
 
+vim.opt.iskeyword:append('-') -- words separeted by - will recognise as a one word
+
 -- }}} 
 
 -- SHORTCUTS {{{
@@ -160,7 +162,8 @@ end -- }}}
 
 vim.g.mapleader = ';'
 vim.g.maplocalleader=" " --space
-nmap('<leader>/', ':nohlsearch<cr>') -- from nvim 0.6 it's by default c-l
+-- nmap('x', '"_x') -- doesn't add to register from `x`, will brake xp
+nmap('<C-/>', ':nohlsearch<cr>')
 nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>') -- doesn't work with lazy.nvim
 nmap('<F1>', ':term taskwarrior-tui<CR>')
 nmap(',l', '<cmd>luafile dev/init.lua<cr>', {}) -- for plugin development
@@ -177,8 +180,6 @@ vmap('<c-a-k>', ':m .-2<CR>gv=gv')
 
 nmap('gf', '<c-w>gf') -- open file in a new tab
 vmap('gf', '<c-w>gf')
-nmap('<LocalLeader>f', '<c-w>gf') -- open file in a new tab
-vmap('<LocalLeader>f', '<c-w>gf')
 nmap('gF', '<c-w>vgf') -- in vertical split
 vmap('gF', '<c-w>vgf')
 
@@ -232,13 +233,14 @@ nmap(',j', '<cmd>lua vim.diagnostic.goto_next() <CR>' )
 nmap(',k', '<cmd>lua vim.diagnostic.goto_prev() <CR> ')
 -- }}} 
 
-
 -- Tabs, windows and terminal{{{
 
 -- Tabs
 nmap('<tab>', 'gt')
 nmap('<s-tab>', 'gT')
 nmap('<C-t>', ':tabnew<CR>')
+nmap('<LocalLeader>ss', ':split<CR>')
+nmap('<LocalLeader>sv', ':vs<CR>')
 
 -- windows split also in terminal mode
 tmap('<A-h>', '<C-\\><C-N><C-w>h')
@@ -346,6 +348,7 @@ nmap('<leader>N', ':Ranger<CR>')
 -- surround
 -- visual mode  + S"
 nmap('<leader>s', 'ysiW', { noremap = false }) -- surround a word
+-- <leader>S witch-key
 require("nvim-surround").setup({
     surrounds = {
             ["l"] =  { -- surround text and append url in asciidoc
@@ -596,6 +599,7 @@ local actions = require "telescope.actions"
 					['<C-p>'] = 'cycle_history_prev',
 					['<C-x>'] = actions.close, -- IDK why default c-c doesn't work
 					['<C-h>'] = actions.select_horizontal,
+					['<C-CR>'] = actions.file_tab,
 					-- ["<cr>"] = function(bufnr) require("telescope.actions.set").edit(bufnr, "tab drop") end  
 					},
 				},
@@ -606,6 +610,7 @@ local actions = require "telescope.actions"
 		}
 
 	nmap('<c-s>', '<cmd>Telescope live_grep<cr>')
+	nmap('ts', '<cmd>Telescope grep_string<cr>') --  string under your cursor or selection in your current working directory
 	nmap('tp', '<cmd>Telescope find_files<cr>')
 	-- nmap('tp', '<cmd>Telescope find_files find_command=rg,--hidden,--files<cr>') -- with hidden files
 	nmap('to', '<cmd>Telescope oldfiles<cr>')
@@ -623,7 +628,7 @@ local actions = require "telescope.actions"
 	nmap('tk', '<cmd>Telescope keymaps<cr>')
 	nmap('tf', '<cmd>Telescope file_browser<cr>') -- can go to the parent dir
 	nmap('tr', '<cmd>Telescope registers<cr>')
-	nmap('ts', '<cmd>Telescope spell_suggest<cr>')
+	nmap('tS', '<cmd>Telescope spell_suggest<cr>')
 	nmap('t/', '<cmd>Telescope search_history<cr> ')
 	nmap('t1', '<cmd>Telescope man_pages<cr>')
 	nmap('tC', '<cmd>Telescope colorscheme<cr>')
