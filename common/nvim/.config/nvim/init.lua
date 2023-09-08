@@ -329,7 +329,7 @@ nmap('<F11>', ':Lazy<CR>')
 
 -- nmap('<leader>f', '<cmd> !stylua --config-path ~/.config/stylua/stylua.toml % <cr>')
 nmap('<leader>f', '<cmd> lua vim.lsp.buf.format() <cr>')
-vmap('<leader>f', '<cmd> lua vim.lsp.buf.range_formatting() <cr>')
+vmap('<leader>f', '<cmd> lua vim.lsp.buf.format() <cr>')
 
 --""""""""""""""""""
 -- https://github.com/sbdchd/neoformat
