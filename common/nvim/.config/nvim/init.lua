@@ -185,7 +185,9 @@ vmap('gF', '<c-w>vgf')
 
 -- page scroll, override defaults
 nmap('<C-d>', '<C-f> <cr>', { nowait = true })
+imap('<C-d>', '<C-o><c-d>', { nowait = true })
 nmap('<C-u>', '<C-b> <cr>')
+imap('<C-u>', '<C-o><c-u>')
 nmap('<C-a-d>', '<C-d> <cr>')
 nmap('<C-a-u>', '<C-u> <cr>')
 --folds
@@ -203,13 +205,17 @@ nmap('<S-X>', '<C-^>') -- alternate-file file that was last edited in the curren
 nmap('<leader>P', [["_diwP]]) -- keep pasting over the same thing
 nmap('Y', 'y$') -- from nvim 0.6 it's by default
 imap('<C-v>', '<Esc>pa ')
---" insert mode
--- move to the nexst/previous word
-imap('<C-a>', '<C-o>b')
-imap('<C-d>', '<C-o>w')
 -- move to the nexst/previous occurrence
 nmap('<A-a>', '#')
 nmap('<A-d>', '*')
+--" insert, redline bash shortcuts
+-- move to the nexst/previous word/char; move to begginig/end of line
+imap('<A-f>', '<C-o>w')
+imap('<A-b>', '<C-o>b')
+imap('<C-f>', '<C-o>l')
+imap('<C-b>', '<C-o>h')
+imap('<C-a>', '<C-o>0') -- or not blank _
+imap('<C-e>', '<C-o>$') -- or not blank g_
 
 -- jump paragraphs next line in insert mode
 nmap('<C-j>', 'gj')
@@ -277,7 +283,7 @@ imap('<A-s>', '<cmd>setlocal spell spelllang=en_us<CR>')
 nmap('<LocalLeader>t', ':.!trans -shell pl:en -show-original n  -show-prompt-message n -show-languages n -no-ansi ')
 nmap('<LocalLeader>T', ':.!trans -shell en:pl -show-original n  -show-prompt-message n -show-languages n -no-ansi ')
 nmap('<C-e>', 'z=')
-imap('<C-e>', 'z=')
+-- imap('<C-e>', '<C-o>z=') -- wrong? and occupied
 nmap('<S-e>', '[s')
 nmap('<a-e>', '[s1z=`]') -- auto correction for the last occurrence
 vmap('<a-e>', '[s1z=`]')
