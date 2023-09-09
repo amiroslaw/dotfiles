@@ -27,7 +27,7 @@ return { -- Must be in the end
 	default_cursor_style = 'SteadyBar', -- the best in vim
 	font_size = 11,
 	font = wezterm.font_with_fallback(
-		{ 'SauceCodePro Nerd Font Mono', 'FiraCode Nerd Font Mono' },
+		{ 'FiraCode Nerd Font Mono', 'SauceCodePro Nerd Font Mono',},
 		{ weight = 'Regular' } -- { weight = 'Medium' }
 	),
 	hide_tab_bar_if_only_one_tab = true,
