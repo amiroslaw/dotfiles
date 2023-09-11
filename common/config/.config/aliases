@@ -307,6 +307,8 @@ alias Rm='rm -iv'
 #}}}
 
 # {{{ FZF
+alias ff='fzm' # fzf-marks bash plugin
+# alias ff='"$(fd --type f | fzf)"'
 alias fp='rg --files | fzf --preview="bat {} --color=always"'
 alias fn='nvim -o "$(fd --type f | fzf)"'
 alias fnh='nvim -o "$(fd --hidden --type f | fzf)"'
@@ -314,7 +316,6 @@ alias fb='bat "$(fd --type f | fzf)"'
 alias fbh='bat "$(fd --hidden --type f | fzf)"'
 alias fcd='cd "$(fd --type d | fzf)"'
 alias fcdh='cd "$(fd --hidden --type d | fzf)"'
-alias ff='"$(fd --type f | fzf)"'
 alias ffh='"$(fd --hidden --type f | fzf)"'
 # execute, I have shortcut for this 
 # fz mv # To move files. You can write the destination after selecting the files.
@@ -459,7 +460,13 @@ sjd() {
 sji() {
    sdk install java $(sdk list java | tail -n +6 | head -n -5 | grep -v 'installed\|local only' | awk '{print $NF}' | fzf)
  }
-
+alias sdki='sdk install'
+alias sdkun='sdk uninstall'
+alias sdkls='sdk list'
+alias sdku='sdk use'
+alias sdkd='sdk default'
+alias sdkc='sdk current'
+alias sdkup='sdk upgrade'
 #}}}
 
 #{{{ bindkey

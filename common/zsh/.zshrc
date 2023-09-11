@@ -1,11 +1,16 @@
 # -------------------------------------------------------------------------
-#                       sources
+#                       p10k
 # -------------------------------------------------------------------------
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-source "${HOME}/.config/aliases"
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.config/p10k.zsh ]] || source ~/.config/p10k.zsh
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
+source "${HOME}/.config/aliases"
+autoload -Uz compinit #for taskwarrior fix
+compinit
 
 # -------------------------------------------------------------------------
 #                       # Options section
@@ -32,7 +37,6 @@ zstyle ':completion:*' menu select
 zmodload -i zsh/complist
 # expand alias with TAB it can expand $()
 zstyle ':completion:*' completer _expand_alias _complete _ignored
-# bindkey "mykeybinding" _expand_alias
 
 # -------------------------------------------------------------------------
 #                       history
@@ -59,16 +63,18 @@ if ! zgenom saved; then
 	zgenom ohmyzsh plugins/history 
 	zgenom ohmyzsh plugins/web-search 
 	zgenom ohmyzsh plugins/colored-man-pages
+	zgenom ohmyzsh plugins/taskwarrior
+	zgenom ohmyzsh plugins/dirhistory
 	# zgenom ohmyzsh plugins/fasd # has error
 	zgenom load wookayin/fzf-fasd
+	zgenom load lincheney/fzf-tab-completion
 	zgenom load zsh-users/zsh-completions
 	zgenom load zsh-users/zsh-autosuggestions
 	zgenom load zsh-users/zsh-syntax-highlighting
 	zgenom load romkatv/powerlevel10k powerlevel10k
 	zgenom load arzzen/calc.plugin.zsh
-	zgenom load urbainvaes/fzf-marks # mark alias_name ctrl-g TODO check if it works
-	zgenom load ptavares/zsh-sdkman
-	zgenom load plugins/taskwarrior
+	zgenom load urbainvaes/fzf-marks # mark alias_name; fzm to cd
+	zgenom load MichaelAquilina/zsh-you-should-use
 	# zgenom load jeffreytse/zsh-vi-mode # can override some keybindings
 	# zgenom ohmyzsh plugins/git 
 	# zgenom load ChrisPenner/copy-pasta #alternative xclip-copyfile; xclip-pastefile
@@ -93,14 +99,9 @@ bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 # bindkey -v '^?' backward-delete-char
 
-source ~/.config/fzf/fzf.zsh
-source ~/.config/broot/launcher/bash/br
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-
-# To customize prompt, run `p10k configure` or edit ~/.config/p10k.zsh.
-[[ ! -f ~/.config/p10k.zsh ]] || source ~/.config/p10k.zsh
 
 # Needed it if the plugin is not loaded
 eval "$(fasd --init auto)"
@@ -110,9 +111,9 @@ eval "$(fasd --init auto)"
 export SDKMAN_DIR="/home/miro/.local/share/sdkman"
 [[ -s "/home/miro/.local/share/sdkman/bin/sdkman-init.sh" ]] && source "/home/miro/.local/share/sdkman/bin/sdkman-init.sh"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.config/p10k.zsh ]] || source ~/.config/p10k.zsh
-
-source /home/miro/.config/broot/launcher/bash/br
+source ~/.config/fzf/fzf.zsh
+source ~/.config/broot/launcher/bash/br
+source ~/.config/zgenom/sources/lincheney/fzf-tab-completion/___/zsh/fzf-zsh-completion.sh
+bindkey '^I' fzf_completion
 
 eval $(thefuck --alias)
