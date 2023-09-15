@@ -25,7 +25,8 @@
 " :~ - relative to the home directory
 " :. - relative to current directory
 " :h - head of the file name
-" :t - tail of the file name
+" :t - tail of the fil
+" name
 " :r - root of the file name (without last extension)
 " :e - extension of the file name (last one)
 " :s?pat?sub? - substitute the first occurrence of pat with sub. You can use any character for '?', but it must not occur in pat or sub.
@@ -448,7 +449,7 @@ filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm,*.svg,*avif},<imag
 		" \ echo %f > ~/test,
 
 " wezterm
-fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*avif wezterm imgcat --width %pw --height %ph %c:p %pd
+fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*webp,*avif wezterm imgcat --width %pw --height %ph %c:p %pd
 
 " kitty 
 " fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*avif},<image/*>
@@ -502,7 +503,7 @@ mark p /home/miro/Code/Projects
 mark P /home/miro/Musics/PODCASTS
 mark r /run/media/miro
 " mark s /home/miro/Code/SourceCode
-mark s /home/miro/Code/blog/scully/miroslaw
+mark s /home/miro/Documents/share/Screens
 mark t /home/miro/.local/share/vifm/Trash
 mark T /home/miro/.local/share/Trash
 mark u /home/miro/Documents/Ustawienia

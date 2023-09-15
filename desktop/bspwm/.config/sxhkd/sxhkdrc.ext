@@ -1,6 +1,6 @@
 super + Print
-	$ROFI/dmmaim
+	screenshot.lua --menu
 
 {_,ctrl,shift,ctrl+shift} + Print
-	screenshot.sh {window,quality,selection,clipboard}
+	screenshot.lua {active-window,region,monitor1,active-window -o=clipboard}
 

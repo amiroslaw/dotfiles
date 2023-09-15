@@ -29,7 +29,7 @@ local icons = {
                    '*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::',
     images = ' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*.ppm,,*.svg,,'..
                  '*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,'..
-                 '*.xwd::',
+                 '*.xwd,,*.webp,,*.avif::',
     audio = ' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,'..
                 '*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,'..
                 '*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::',

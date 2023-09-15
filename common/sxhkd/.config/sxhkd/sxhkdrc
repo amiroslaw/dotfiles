@@ -429,11 +429,11 @@ super + shift + {comma,period}
 	# mpc seek -{10,120}
 # Increase volume, chyba cudzysłowy nie działają 
 
+# screenshot.sh in ext
 #
 # KEYPAD
 # ______________    
 # KP_Insert 
-	# screenshot.sh window
 
 # działa na 0 jak i KP0 😐
 # KP_Begin

@@ -361,6 +361,7 @@ local cases = {
 }
 
 for key,_ in pairs(args) do
+	print(key)
 	local switch = switch(cases, key)
 	if switch and args[key] then
 		xpcall(switch, errorMsg, param)

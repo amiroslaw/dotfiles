@@ -1,8 +1,9 @@
 super + Scroll_Lock
-	$ROFI/dmmaim
+	screenshot.lua --menu
 
 {_,ctrl,shift,ctrl+shift} + Scroll_Lock
-	screenshot.sh {window,quality,selection,clipboard}
+	~/.bin/screenshot.lua {active-window,region,monitor1,active-window -o=clipboard}
+
 
 # backlight
 XF86MonBrightness{Up,Down}
