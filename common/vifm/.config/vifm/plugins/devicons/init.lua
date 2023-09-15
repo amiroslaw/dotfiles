@@ -19,7 +19,7 @@ local icons = {
     -- various file names
     other = ' ::../::, ::*.sh::',
     cxx = ' ::*.hpp,,*.cpp,,*.cc,,*.hh::, ::*.h,,*.c::',
-    docs = ' ::copying,,license::, ::.git/,,*.git/::/',
+	git = ' ::.git/,,*.git/::/',
     ebooks = ' ::*.epub,,*.fb2,,*.djvu,,*.mobi::, ::*.pdf::',
     xml = ' ::*.htm,,*.html,,*.shtml,,*.xhtml,,*.xml::',
 
@@ -33,11 +33,35 @@ local icons = {
     audio = ' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,'..
                 '*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,'..
                 '*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::',
-    media = ' ::*.avi,,*.ts,,*.axv,,*.divx,,*.m2v,,*.m4p,,*.m4v,,.mka,,'..
+    media = ' ::*.avi,,*.ts,,*.axv,,*.divx,,*.m2v,,*.m4p,,*.m4v,,.mka,,'..
                 '*.mkv,,*.mov,,*.mp4,,*.flv,,*.mp4v,,*.mpeg,,*.mpg,,*.nuv,,'..
                 '*.ogv,,*.pbm,,*.pgm,,*.qt,,*.vob,,*.wmv,,*.xvid,,*.webm::',
     office = ' ::*.doc,,*.docx::, ::*.xls,,*.xlsm,,*.xlsx::,'..
              ' ::*.pptx,,*.ppt::',
+	license = ' ::license,,copyright,,copying,,LICENSE,,COPYRIGHT,,COPYING::', 
+	configs =' ::.Xdefaults,,.Xresources,,.bashprofile,,.bash_profile,,.bashrc,,.dmrc,,.d_store,,.fasd,,.gitconfig,,.gitignore,,.jack-settings,,.mime.types,,.nvidia-settings-rc,,.pam_environment,,.profile,,.recently-used,,.selected_editor,,.xinitpurc,,.zprofile,,.yarnc,,.snclirc,,.tmux.conf,,.urlview,,.config,,.ini,,.user-dirs.dirs,,.mimeapps.list,,.offlineimaprc,,.msmtprc,,.Xauthority,,config::',
+	python =' ::*.py,,*.pyc,,*.pyd,,*.pyo::',
+	php =' ::*.php::',
+	markdown =' ::*.markdown,,*.md::',
+	adoc = ' ::*.adoc,,*.md::',
+	json =' ::*.json::',
+	js =' ::*.js::',
+	jsx =' ::*.jsx::',
+	mustasche =' ::*.mustasche::',
+	css =' ::*.css,,*.less,,*.bat,,*.conf,,*.ini,,*.rc,,*.yml,,*.cfg::',
+	scss =' ::*.scss::',
+	lua =' ::*.lua::',
+	go =' ::*.go::',
+	ts =' ::*.ts::',
+	db =' ::*.db,,*.dump,,*.sql::',
+	diff =' ::*.diff,,*.sum,,*.md5,,*.sha512::',
+	java =' ::*.java,,*.jar,,*.kt::',
+	scala =' ::*.scala::',
+	clj =' ::*.clj,,*.cljc::',
+	cljs =' ::*.cljs,,*.edn::',
+	bash =' ::*.fish,,*.sh,,*.bash::',
+	rust =' ::*.rlib,,*.rs::',
+	log =' ::*.log::',
 }
 
 local active = false

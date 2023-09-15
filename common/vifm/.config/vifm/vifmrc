@@ -448,8 +448,13 @@ filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm,*.svg,*avif},<imag
         \ sxiv -fa %f %i,
 		" \ echo %f > ~/test,
 
-" wezterm
+" problems with webp and avif, that should work in wezterm
+" imgcat
 fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*webp,*avif wezterm imgcat --width %pw --height %ph %c:p %pd
+" sixel needs sixel lib 
+" fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*webp,*avif
+"          \ img2sixel -S -w $((%pw*9)) %c %pd,
+"          \ convert -identify %f -verbose /dev/null
 
 " kitty 
 " fileviewer {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*avif},<image/*>
