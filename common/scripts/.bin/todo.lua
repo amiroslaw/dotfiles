@@ -10,7 +10,7 @@ List of the options:
 
 -- dependency: zenity
 ]]
-todoPath = os.getenv('NOTE') ..  '/tasks/inbox.adoc'
+todoPath = os.getenv('NOTE') ..  '/Zadania/inbox.adoc'
 function show() 
 	local ok, list, err = run('task rc.verbose=nothing minimal | zenity --text-info')
 	if not ok then

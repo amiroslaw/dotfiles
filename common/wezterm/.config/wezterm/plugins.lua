@@ -1,7 +1,7 @@
 local wezterm = require 'wezterm'
 
 -- return list of files
-function scandir(directory)
+local function scandir(directory)
 	local t = {}
 	local success, filename = wezterm.run_child_process { 'ls', '-1', directory }
 	for i, filename in ipairs(wezterm.split_by_newlines(filename)) do
@@ -98,6 +98,16 @@ return {
 		end
 		window:set_config_overrides(overrides)
 	end),
+
+	-- get font size based on the hostname
+	getFontSize = function(hostsConfig)
+		local hostname = wezterm.hostname()
+		for _,config in ipairs(hostsConfig) do
+			if hostname == config[1] then
+			  return config[2]
+			end
+		end
+	end,
 
 	getColorscheme = function(dark, light, hour)
 		if not light then

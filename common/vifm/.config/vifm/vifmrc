@@ -294,6 +294,9 @@ nmap al :alink<cr>
 
 "history dir
 nmap o :history <cr>
+"  c-i would override tab
+nmap <A-o> :histnext <cr>
+nmap <C-o> :histprev <cr> 
 " show command  history
 nmap <A-h> :history cmd <cr>
 " history search 

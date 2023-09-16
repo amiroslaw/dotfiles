@@ -13,8 +13,8 @@ export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
 export HISTFILE="${XDG_STATE_HOME}"/bash/history
 
-export TODO_DIR="$NOTE/Documents/notebook/todo"
-export TODOTXT_DEFAULT_ACTION=ls
+# export TODO_DIR="$NOTE/Documents/notebook/Old/todo"
+# export TODOTXT_DEFAULT_ACTION=ls
 
 # didn't move
 # export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
