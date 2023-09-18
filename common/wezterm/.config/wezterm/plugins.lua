@@ -99,14 +99,15 @@ return {
 		window:set_config_overrides(overrides)
 	end),
 
-	-- get font size based on the hostname
-	getFontSize = function(hostsConfig)
+	-- dynamic configuration based on hostname, if not exist than it will return value from the first table
+	hostConfig = function(configs)
 		local hostname = wezterm.hostname()
-		for _,config in ipairs(hostsConfig) do
-			if hostname == config[1] then
-			  return config[2]
+		for _,config in ipairs(configs) do
+			if hostname == configs[1] then
+			  return configs[2]
 			end
 		end
+		return configs[1][2]
 	end,
 
 	getColorscheme = function(dark, light, hour)

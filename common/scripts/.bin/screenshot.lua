@@ -24,6 +24,7 @@ local STAMP = os.date('%y-%m-%dT%H%M%S')
 local args = cliparse(arg, 'target')
 local target = 'active-window'
 local output = 'file'
+local format = 'webp'
 local quality
 -- arguments
 if args.target then
@@ -49,47 +50,54 @@ local function getPartialPath(active)
 	if active then
 		local stat, name, err = run('xdotool getactivewindow getwindowname', "Can't get windowname")
 		assert(stat, err)
-		windowName = name[1].. '-'
+		windowName = name[1]:gsub('/', ''):gsub('$','')
 	end
-	return DIR .. '/' .. windowName .. STAMP
+	return string.format('%s/%s-%s', DIR, windowName, STAMP)
 end
 
 local function getActiveWindowId()
 	local stat, windowNameId, err = run('xdotool getactivewindow', "Can't get windowname Id")
 	assert(stat, err)
-	return windowNameId[1] .. ' '
+	return windowNameId[1]
 end
 
 local function getMonitor(nr)
-	local stat, monitor, err = run("xrandr --listactivemonitors | grep '+' | awk '{print $4, $3}' | awk -F'[x/+* ]' 'NR==" .. nr .. " {print $2\"x\"$4\"+\"$6\"+\"$7}'", "Can't get windowname Id")
+	local cmd = string.format("xrandr --listactivemonitors | grep '+' | awk '{print $4, $3}' | awk -F'[x/+* ]' 'NR==%d {print $2\"x\"$4\"+\"$6\"+\"$7}'", nr)
+	local stat, monitor, err = run(cmd , "Can't get windowname Id")
 	assert(stat, err)
-	return monitor[1] .. ' '
+	return monitor[1]
 end
 -- DISPLAYS=$(xrandr --listactivemonitors | grep '+' | awk '{print $4, $3}' | awk -F'[x/+* ]' '{print $1,$2"x"$4"+"$6"+"$7}')
 
+-- param and path
 local cases = {
-	["active-window"] = ' -i ' .. getActiveWindowId() ..  getPartialPath(true),
-	['region'] = ' -s '  ..  getPartialPath() .. 'S',
-	['monitor1'] = ' -g ' .. getMonitor(1) .. getPartialPath(),
-	['monitor2'] = ' -g ' .. getMonitor(2) .. getPartialPath(),
+	["active-window"] = {' -i ' .. getActiveWindowId(), getPartialPath(true)},
+	['region'] = {' -s ',  getPartialPath() .. 'S'},
+	['monitor1'] = {' -g ' .. getMonitor(1), getPartialPath()},
+	['monitor2'] = {' -g ' .. getMonitor(2), getPartialPath()},
 }
 local function takeScreen()
-	local cmd = switch(cases, target)
+	local params = switch(cases, target)
 	if quality then
-		cmd =  ' -m ' .. quality .. ' ' .. cmd .. 'Q'
+		params[1] = params[1] .. ' -m ' .. quality
+		params[2] = params[2] .. 'Q'
 	end
 	local stat, err
-	run('sleep 0.5')
+	local path
+	run('sleep 0.1')
 	if output=='file' then
-		-- stat, _, err = run('maim  ' .. cmd .. 'sc.png', "Can't take screenshot")
-		stat, _, err = run('maim -f webp ' .. cmd .. 'sc.webp', "Can't take screenshot")
+		-- stat, _, err = run('maim  ' .. params .. 'sc.png', "Can't take screenshot")
+		path = ('%ssc.%s'):format(params[2], format)
+		local cmd = string.format('maim -f %s %s %q', format, params[1], path)
+		print(cmd)
+		stat, _, err = run(cmd, "Can't take screenshot")
 	else -- clipboard doesn't work with webp
 		-- can't combine with selection 
 		-- error handling doesn't work
 		stat, _, err = run('maim -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png', "Can't take screenshot to clipboard")
 	end
 	if stat then
-		local split = split(cmd, '/')
+		local split = split(path, '/')
 		notify('Took screen ' ..  split[#split])
 	else
 		errorMsg(err)
@@ -98,19 +106,20 @@ end
 
 if args.help or args.h then
 	print(HELP)
+	return
 end
 
 if args.menu or args.m then
-	local keysFun = {
-		['Alt-q'] = {'quality', function() quality = 10  end,}
-	}
-	local rofiOptions = {prompt = 'screenshot', width = '25ch', keys = keysFun}
-	target, keybind = rofiMenu(cases, rofiOptions )
-	output, keybind2 = rofiMenu({'file', 'clipboard'}, rofiOptions )
-	keybind = keybind or keybind2
+	local keyQuality = { ['Alt-q'] = {'hight quality', function() quality = 10  end,}}
+	local keyJpg = { ['Alt-j'] = {'jpg format', function() format = 'jpg'  end,},} -- png has reversed quality values
+	target, keyQ = rofiMenu(cases, {prompt = 'screenshot', width = '25ch', keys = keyQuality})
+	output, keyJ = rofiMenu({'file', 'clipboard'}, {prompt = 'screenshot', width = '25ch', keys = keyJpg} )
 
-	if keysFun[keybind] then 
-		keysFun[keybind][2]()
+	if keyQuality[keyQ] then 
+		keyQuality[keyQ][2]()
+	end
+	if keyJpg[keyJ] then 
+		keyJpg[keyJ][2]()
 	end
 end
 takeScreen()

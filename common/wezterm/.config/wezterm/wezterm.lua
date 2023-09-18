@@ -26,7 +26,7 @@ local launch_menu = {
 
 return { -- Must be in the end
 	default_cursor_style = 'SteadyBar', -- the best in vim
-	font_size = plugins.getFontSize {{'pc', 12}, {'laptop', 11}}, 
+	font_size = plugins.hostConfig {{'pc', 12}, {'laptop', 11}}, 
 	font = wezterm.font_with_fallback(
 		{ 'FiraCode Nerd Font Mono', 'SauceCodePro Nerd Font Mono',},
 		{ weight = 'Regular' } -- { weight = 'Medium' }
