@@ -20,7 +20,8 @@ local DIR= os.getenv('HOME') .. "/Pictures/Screens"
 local stat, _, err = run('mkdir -p ' .. DIR, 'Can not create ' .. DIR)
 assert(stat, err)
 local STAMP = os.date('%y-%m-%dT%H%M%S')
-local OCR_IMG= '/tmp/ocr.png'
+local OCR_DIR= '/tmp/lua/'
+local OCR_IMG= OCR_DIR .. '/ocr.png'
 
 -- parse arguments and flags
 local args = cliparse(arg, 'target')
@@ -73,7 +74,7 @@ end
 -- DISPLAYS=$(xrandr --listactivemonitors | grep '+' | awk '{print $4, $3}' | awk -F'[x/+* ]' '{print $1,$2"x"$4"+"$6"+"$7}')
 
 local function ocr()
-	local textFile = os.tmpname()
+	local textFile = createTmpFile({prefix = 'ocr'})
 	local stat, _, err = run('maim -m 1 -s ' .. OCR_IMG, 'Could not take screenshot')
 	assert(stat, err)
 	local ocrCmd = ('tesseract %q %q'):format(OCR_IMG, textFile)
@@ -92,7 +93,7 @@ local function ocr()
 	else
 		notify('ocr', text)
 	end
-	os.execute('rm ' .. OCR_IMG)
+	os.execute(('rm %q %q'):format(OCR_IMG, textFile))
 end
 
 -- param and path

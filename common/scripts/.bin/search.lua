@@ -37,6 +37,14 @@ elseif args.phrase then
 	phraseArg = args.phrase[1]	
 end
 
+local function createTmpFile(prefix)
+	local dir = '/tmp/lua/'
+	local fileName = ('%s%s-%s'):format(dir, prefix, os.date('%s'))
+	local cmd = ('mkdir -p %q && touch %q'):format(dir, fileName)
+	assert(os.execute(cmd) == 0, 'Did not create temporary file')
+	return fileName
+end
+
 function cheat()
 	return function(phraseArg)
 	local topics = {
@@ -56,21 +64,21 @@ function cheat()
 		ls = 'app'
 	}
 
-	local tmpname = os.tmpname()
+	local tmpFile = createTmpFile({prefix = 'cheat'})
 	local topic, code = rofiMenu(topics, {prompt = 'cheatsh', width = '25ch'})
 	if not code then return end
 	local query = phraseArg:gsub('%s', '+')
 	local status = 1
 	if topics[topic] == 'lang' then
 		if query == '' then query = ':list' elseif query == 'l' then query = ':learn' end -- :learn; def=:list
-		status = os.execute('curl cht.sh/' .. topic .. '/' .. query .. '?T' .. ' > ' .. tmpname) -- ?T without ascii
+		status = os.execute('curl cht.sh/' .. topic .. '/' .. query .. '?T' .. ' > ' .. tmpFile) -- ?T without ascii
 	else
-		status = os.execute('curl cht.sh/' .. topic .. '~' .. query .. '?T' .. ' > ' .. tmpname)
+		status = os.execute('curl cht.sh/' .. topic .. '~' .. query .. '?T' .. ' > ' .. tmpFile)
 	end
 	assert(status == 0, 'Can not fetch data')
 	-- terminal = os.getenv('TERM') - won't have class or title name option
-	-- os.execute("wezterm start --class cheatsh -- less -R " .. tmpname)
-	os.execute('st -c cheatsh -n cheatsh -e nvim ' .. tmpname)
+	-- os.execute("wezterm start --class cheatsh -- less -R " .. tmpFile)
+	os.execute('st -c cheatsh -n cheatsh -e nvim ' .. tmpFile)
 end
 end
 

@@ -67,7 +67,7 @@ if ! zgenom saved; then
 	zgenom ohmyzsh plugins/dirhistory
 	# zgenom ohmyzsh plugins/fasd # has error
 	zgenom load wookayin/fzf-fasd
-	zgenom load lincheney/fzf-tab-completion
+	zgenom load lincheney/fzf-tab-completion # breaks some completions
 	zgenom load zsh-users/zsh-completions
 	zgenom load zsh-users/zsh-autosuggestions
 	zgenom load zsh-users/zsh-syntax-highlighting

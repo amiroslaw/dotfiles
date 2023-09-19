@@ -100,25 +100,25 @@ local function kindle()
 end
 
 local function readable()
-	local tmpname = os.tmpname()
+	local tmpPath, tmpName = createTmpFile({prefix = 'readable', format = 'adoc'})
 	for _, link in ipairs(linkTab) do
-		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to asciidoc --output ' .. tmpname .. '.adoc')
-		-- os.execute('st -c read -n read -e nvim ' .. tmpname .. '.adoc')
-		os.execute('wezterm start --class read -- nvim ' .. tmpname .. '.adoc')
+		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to asciidoc --output ' .. tmpPath)
+		-- os.execute('st -c read -n read -e nvim ' .. tmpPath)
+		os.execute('wezterm start --class read -- nvim ' .. tmpPath)
 		assert(createFile == 0, 'Could not create file')
 	end
-	return 'Created file ' .. tmpname
+	return 'Created file ' .. tmpName
 end 
 
 local function speed()
-	local tmpname = os.tmpname()
+	local tmpPath, tmpName = createTmpFile({prefix = 'rsvp'})
 	for _, link in ipairs(linkTab) do
-		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to plain --output ' .. tmpname)
-		os.execute('wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. tmpname .. ' | speedread -w 330"') 
-		-- os.execute('st -c rsvp -n rsvp -e sh -c "cat ' .. tmpname .. ' | speedread -w 330"') 
+		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to plain --output ' .. tmpPath)
+		os.execute('wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. tmpPath .. ' | speedread -w 330"') 
+		-- os.execute('st -c rsvp -n rsvp -e sh -c "cat ' .. tmpPath .. ' | speedread -w 330"') 
 		assert(createFile == 0, 'Could not create file')
 	end
-	return 'RSVP finished ' .. tmpname
+	return 'RSVP finished ' .. tmpName
 end 
 
 local function execXargs(cmd, outputDir)

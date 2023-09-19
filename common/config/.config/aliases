@@ -346,6 +346,7 @@ fo() {
 # }}}
 
 # {{{ FASD
+# doesn't work correctly with fzf-tab-completion
 # fasd search from last opened files, paths
 # im and select a file will open in sxiv
 alias n='f -e nvim' 

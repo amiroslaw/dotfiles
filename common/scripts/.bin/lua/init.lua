@@ -31,6 +31,7 @@ notifyError(string)
 rofiNumberInput([prompt])
 rofiInput([rofiOptions]) 
 rofiMenu(entriesTab, [rofiOptions]), returns table if selected multiple items or string otherwise. For the second argument returns keybinding, if custom keys were provided.
+createTmpFile([rofiOptions]) creates TmpFile in /tmp/lua/ returns filepath and fileName
 editor(path|text, [editorName]) Opens file or text in editor. 
 dialog(msg, [style]) - show rofi's dialog
 optionTab - Options can be parser form an array (ordered table) or a dictionary.
@@ -302,7 +303,7 @@ function run(cmd, errorMsg)
 
 	-- for testing a bug
   if not Out_t then
-	  notifyError('test - run command can not read output')
+	  notifyError('test - run command in init.lua; can not read output')
   end
 
   os.remove(OutFile_s)
@@ -375,6 +376,27 @@ function enum(tab)
 end -- >>>
 
 --- util for scripting <<< 
+-- createTmpFile <<<
+--[[
+createTmpFile in /tmp/lua/ 
+returns filepath and fileName
+--]]
+function createTmpFile(options)
+	local format = ''
+	local prefix = ''
+	if options.format then
+		format = '.' .. options.format
+	end
+	if options.prefix then
+		prefix = options.prefix
+	end
+	local dir = '/tmp/lua/'
+	local fileName = ('%s-%s%s'):format(prefix, os.date('%s'), format)
+	local cmd = ('mkdir -p %q && touch %s%s'):format(dir, dir, fileName)
+	assert(os.execute(cmd) == 0, 'Did not create temporary file')
+
+	return ('%s%s'):format(dir, fileName), fileName
+end -- >>>
 
 -- editor <<<
 --[[
@@ -393,10 +415,10 @@ function editor(text, editorName)
 	end
 
 	if text and editorName then
-		local fileName = os.tmpname() .. '.adoc'
-		io.open(fileName, 'w'):write(text)
-		local ok = os.execute(editorName .. ' ' .. fileName )
-		assert(ok == 0, 'Could not open ' .. fileName)
+		local file = createTmpFile({format = 'adoc'})
+		io.open(file, 'w'):write(text)
+		local ok = os.execute(editorName .. ' ' .. file )
+		assert(ok == 0, 'Could not open ' .. file)
 	end
 end 
 --- >>>
@@ -571,7 +593,8 @@ function log(input, level, file)
 	if (type(input) ~= 'table') and (type(input) ~= 'string') then
 		return nil
 	end
-	local file = file or '/tmp/lua.log'
+	os.execute('mkdir -p /tmp/lua/')
+	local file = file or '/tmp/lua/lua.log'
 	local level = level or 'INFO'
 	local date = '[' .. os.date '%Y-%m-%d %H:%M:%S' .. '] '
 	local logPrefix = date .. '[' .. level .. '] '
