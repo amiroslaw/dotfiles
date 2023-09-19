@@ -26,7 +26,7 @@ SCRIPTING
 cliparse cliparse(arg); cliparse({'-aib','--key','defKey','--opt=2'}, 'defKeyArg'); value option can have space even in a quote
 getConfigProperties(path) - - Read configuration file with key=value format. Function returns table(map).
 switch(cases, pattern)
-notify(string)
+notify("title", 'description', style) --  title can be a string or table
 notifyError(string)
 rofiNumberInput([prompt])
 rofiInput([rofiOptions]) 
@@ -67,6 +67,7 @@ M.fun.gsub  = function(p,r) return function(s) local o =  s:gsub(p,r); return o 
 -- notify <<<
 --[[
 Send notification.
+notify([string/table], string, tabel) --  title can be a string or table
 usage - type of the quotation marsks are important
 style = { [' red '] = 'red', 'default', }
 notify("title", 'first pattern is red and the second has a default color', style)
