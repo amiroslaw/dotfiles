@@ -1,6 +1,6 @@
 " vim: filetype=vim :
 " DEPENDENCY
-" fd, rg, fzf, patool or atool, xclip, dua, trash-cli, exa, pdfunite, udevil
+" fd, rg, fzf, patool or atool, xclip, dua, trash-cli, eza, pdfunite, udevil
 "sxiv,tree, meld dragon-drop tesseract
 "
 " TODO
@@ -478,7 +478,7 @@ fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*webp,*avif wezterm imgcat --wid
 " 	\ vifmimg clear
 
 " enable tree colors in folder preview
-fileviewer */,.*/ exa --color=always --tree --level=5 %c/
+fileviewer */,.*/ eza --color=always --tree --level=5 %c/
 
 " bat viewer HAVE to be on the bottom
 " fileviewer {*.md,*.txt,*.adoc,*.lua,*.csv,*.html,*.htm,*.java,*.kt,*.kts,*.sh,*.js,*.ts,*.css,*.scss,*.json,*.yml,*.yaml,*.toml} bat --color always --plain %c

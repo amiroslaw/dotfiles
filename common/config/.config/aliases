@@ -17,7 +17,7 @@
 # atool
 # trans
 # gcalcli
-# exa
+# eza
 # broot
 #}}}
 
@@ -160,6 +160,7 @@ alias di='dua interactive'
 #{{{ Organization
 alias t='task'
 alias ta='task add +in'
+alias tan='~/.config/task/scripts/tan.sh'
 alias td='task done '
 alias tm='task modify '
 alias tbd='task burndown.daily'
@@ -285,15 +286,15 @@ alias ......='cd ../../../../..'
 #}}}
 
 #{{{ list of the files/directories
-alias l='exa --icons'
-alias la='exa --icons -la'
-alias ll='exa --icons -l' #long
-alias lt='exa --icons --tree'
-alias lr='exa --icons --recurse'
-alias ld='exa --only-dirs'
+alias l='eza --icons'
+alias la='eza --icons -la'
+alias ll='eza --icons -l' #long
+alias lt='eza --icons --tree'
+alias lr='eza --icons --recurse'
+alias ld='eza --only-dirs'
 alias treeh='tree -Ch'
 # sort by size
-alias lls='exa --icons -l -ssize --reverse'
+alias lls='eza --icons -l -ssize --reverse'
 alias brs='br --sizes'
 alias brh='br --hidden'
 #}}}
@@ -317,6 +318,7 @@ alias fbh='bat "$(fd --hidden --type f | fzf)"'
 alias fcd='cd "$(fd --type d | fzf)"'
 alias fcdh='cd "$(fd --hidden --type d | fzf)"'
 alias ffh='"$(fd --hidden --type f | fzf)"'
+alias hc="	fc -ln 0 |	awk '!a[\$0]++' |	fzf --tac |	xclip -selection clipboard" # copy command from history
 # execute, I have shortcut for this 
 # fz mv # To move files. You can write the destination after selecting the files.
 fz() {
@@ -461,7 +463,7 @@ sji() {
    sdk install java $(sdk list java | tail -n +6 | head -n -5 | grep -v 'installed\|local only' | awk '{print $NF}' | fzf)
  }
 alias sdki='sdk install'
-alias sdkun='sdk uninstall'
+alias sdkr='sdk uninstall'
 alias sdkls='sdk list'
 alias sdku='sdk use'
 alias sdkd='sdk default'
