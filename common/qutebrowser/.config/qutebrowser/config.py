@@ -27,6 +27,8 @@ config.set('content.javascript.enabled', True, 'devtools://*')
 config.set('content.javascript.enabled', True, 'chrome://*/*')
 config.set('content.javascript.enabled', True, 'qute://*/*')
 # c.content.unknown_url_scheme_policy = "allow-all"
+# CORS
+config.set('content.local_content_can_access_remote_urls', True)
 # }}}
 
 # ======================= CONFIG ============= {{{
