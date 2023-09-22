@@ -8,6 +8,7 @@
 # -------------------------------------------------------------------------
 #                       shortcuts
 # -------------------------------------------------------------------------
+# ALT-p - path both file and directory
 # ALT-f - Paste the selected file path(s) into the command line
 # ALT-F - Paste the selected file path(s) into the command line  with hidden
 # ALT-d - cd into the selected directory
@@ -21,8 +22,10 @@
 # ALT-w - Run application
 # ALT-v - Edit line in vim with ctrl-e: oh-my-zsh do it by esc; v
 # ALT-a - aliases
+# ALT-m - fzm fzf-marks
 
 # bindkey '\ef' → alt '^F' ctr
+
 # global
 export FZF_DEFAULT_OPTS='--height 80% --layout=reverse --border --bind tab:down,shift-tab:up,alt-j:down,alt-k:up,alt-l:accept,ctrl-a:select-all+accept'
 export FZF_DEFAULT_COMMAND='fd'
@@ -94,6 +97,7 @@ fzf-file-widget() {
 }
 zle     -N   fzf-file-widget
 bindkey '\ef' fzf-file-widget
+alias f='fzf-file-widget'
 
 fzf-hidden-file-widget() {
 	CMD="$FZF_HIDDEN_FILE_COMMAND"
@@ -105,6 +109,7 @@ fzf-hidden-file-widget() {
 }
 zle     -N   fzf-hidden-file-widget
 bindkey '\eF' fzf-hidden-file-widget
+# alias F='fzf-hidden-file-widget' global for fzf
 
 fzf-path-widget() {
 	CMD="$FZF_PATH_COMMAND"
@@ -136,6 +141,7 @@ fzf-cd-widget() {
 }
 zle     -N    fzf-cd-widget
 bindkey '\ed' fzf-cd-widget
+alias d='fzf-cd-widget'
 
 # ALT-Shift-D - cd into the selected directory with hidden dirs
 fzf-cd-hidden-widget() {
@@ -157,7 +163,7 @@ fzf-cd-hidden-widget() {
 }
 zle     -N    fzf-cd-hidden-widget
 bindkey '\eD' fzf-cd-hidden-widget
-
+alias D='fzf-cd-hidden-widget'
 
 # ALT-H - Paste the selected command from history into the command line
 fzf-history-widget() {
@@ -177,6 +183,7 @@ fzf-history-widget() {
 }
 zle     -N   fzf-history-widget
 bindkey '\eh' fzf-history-widget
+alias h='fzf-history-widget'
 
 # -------------------------------------------------------------------------
 #                       CUSTOM
@@ -209,7 +216,7 @@ bindkey '\ev' edit-command-line
 #   - CTRL-E or Enter key to open with the $EDITOR
 fzf_open() {
 	zle -I;
-	FZF_CMD="$FZF_FILE_COMMAND | fzf $FZF_DEFAULT_OPTS $FZF_FILE_OPTS --query="$1" --exit-0 --expect=alt-o,ctrl-e --prompt='alt-o→open;else→edit >'"
+	FZF_CMD="$FZF_FILE_COMMAND | fzf $FZF_DEFAULT_OPTS $FZF_FILE_OPTS --query="$1" --exit-0 --expect=alt-o,ctrl-e --prompt='open: alt-o→open;else→edit >'"
 	IFS=$'\n' out=("$(eval "$FZF_CMD" )")
 	key=$(head -1 <<< "$out")
 	file=$(head -2 <<< "$out" | tail -1)
@@ -219,10 +226,11 @@ fzf_open() {
 }
 zle     -N   fzf_open;
 bindkey '\ee' fzf_open
+alias E='fzf_open'
 
 fzf_open_hidden() {
 	zle -I;
-	FZF_CMD="$FZF_HIDDEN_FILE_COMMAND | fzf $FZF_DEFAULT_OPTS $FZF_FILE_OPTS --query="$1" --exit-0 --expect=alt-o,ctrl-e --prompt='alt-o→open;else→edit >'"
+	FZF_CMD="$FZF_HIDDEN_FILE_COMMAND | fzf $FZF_DEFAULT_OPTS $FZF_FILE_OPTS --query="$1" --exit-0 --expect=alt-o,ctrl-e --prompt='open hidden: alt-o→open;else→edit >'"
 	IFS=$'\n' out=("$(eval "$FZF_CMD" )")
 	key=$(head -1 <<< "$out")
 	file=$(head -2 <<< "$out" | tail -1)
@@ -231,11 +239,12 @@ fzf_open_hidden() {
 	fi
 }
 zle     -N   fzf_open_hidden;
-bindkey '\eO' fzf_open_hidden
+bindkey '\eE' fzf_open_hidden
+alias E='fzf_open_hidden'
 
 fzf_fasd_open() {
 	zle -I;
- FZF_CMD="fzf $FZF_DEFAULT_OPTS $FZF_FILE_OPTS --query="$1" --exit-0 --expect=alt-o,ctrl-e --prompt='alt-o→open;else→edit >'"
+ FZF_CMD="fzf $FZF_DEFAULT_OPTS $FZF_FILE_OPTS --query="$1" --exit-0 --expect=alt-o,ctrl-e --prompt='fasd: alt-o→open;else→edit >'"
   IFS=$'\n' out=("$(eval "fasd -Rfl | $FZF_CMD" )")
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
@@ -245,6 +254,7 @@ fzf_fasd_open() {
 }
 zle     -N   fzf_fasd_open
 bindkey '\eo' fzf_fasd_open
+alias o='fzf_fasd_open'
 
 fzf_fasd_cd() {
 	zle -I;
@@ -263,6 +273,8 @@ fzf_fasd_cd() {
 }
 zle     -N   fzf_fasd_cd;
 bindkey '\ej' fzf_fasd_cd
+
+alias j='fzf_fasd_cd'
 
 FZF_ALIAS_OPTS=${FZF_ALIAS_OPTS:-"--preview-window up:3:hidden:wrap"}
 
@@ -283,6 +295,16 @@ zle -N fzf_alias
 bindkey -M emacs '\ea' fzf_alias
 bindkey -M vicmd '\ea' fzf_alias
 bindkey -M viins '\ea' fzf_alias
+
+fzf_mark() {
+	zle -I;
+  local ret=fzm
+  zle reset-prompt
+  return $ret
+}
+zle     -N   fzf_mark
+bindkey '\em' fzm
+alias m='fzm'
 
 } always {
   eval $__fzf_key_bindings_options

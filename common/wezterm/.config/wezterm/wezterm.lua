@@ -46,6 +46,7 @@ return { -- Must be in the end
 		top = '0.2cell',
 		bottom = '0.2cell',
 	},
+	default_workspace = "main",
 	color_scheme = plugins.getColorscheme 'Poimandres Storm',
 	use_fancy_tab_bar = false,
 	enable_scroll_bar = true,

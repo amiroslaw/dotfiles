@@ -52,6 +52,7 @@ mapCS('Tab', act { ActivateTabRelative = 1 })
 mapCS('>', act.CharSelect { copy_on_select = true, copy_to = 'ClipboardAndPrimarySelection' }) -- emoji
 mapCS('e', act { ShowLauncherArgs = { flags = 'FUZZY|LAUNCH_MENU_ITEMS' } })
 map('F1', act { ShowLauncherArgs = { flags = 'FUZZY|KEY_ASSIGNMENTS' } }, 'ALT')
+-- map('F8', act { ShowLauncherArgs = { flags = 'FUZZY|WORKSPACES' } }, 'ALT')
  -- action = wezterm.action.ActivateCommandPalette,
 -- Custom Actions
 mapCS('o', act { EmitEvent = 'trigger-vim-with-scrollback' })
@@ -133,5 +134,5 @@ return {
 	keys = keys,
 	mouse_bindings = mouse_bindings,
 	key_tables = key_tables,
-	leader = { key = "phys:CapsLock", timeout_milliseconds = math.maxinteger, },
+	leader = { key = ";", mods = 'CTRL', timeout_milliseconds = math.maxinteger, },
 }

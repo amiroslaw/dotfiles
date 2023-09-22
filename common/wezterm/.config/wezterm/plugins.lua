@@ -13,15 +13,53 @@ end
 return {
 	-- status in table bar
 	wezterm.on('update-right-status', function(window, pane)
-		 local status = '😀 '
-		 if window:leader_is_active() then
-			 status = ' ❗ '
-		 end
-		 local status = status .. wezterm.strftime '%Y-%m-%d %H:%M:%S'
-		  window:set_right_status(wezterm.format {
-			{ Attribute = { Italic = true } },
-			{ Text = status },
-		  })
+	  -- Workspace name
+	  local stat = window:active_workspace()
+	  local stat_color = "#bb9af7"
+	  -- It's a little silly to have workspace name all the time
+	  -- Utilize this to display LDR or current key table name
+	  if window:active_key_table() then
+		stat = window:active_key_table()
+		stat_color = "#7dcfff"
+	  end
+	  if window:leader_is_active() then
+		 stat = 'leader ❗'
+		stat_color = "#f7768e"
+	  end
+	  -- Current working directory - doesn't work
+	  local basename = function(s)
+		local splits ={}
+		for token in s:gmatch("([^/]+)") do
+		   table.insert(splits, token)
+		end
+		return splits[#splits]
+	  end
+	  -- CWD and CMD could be nil (e.g. viewing log using Ctrl-Alt-l). Not a big deal, but check in case
+	  local cwd = pane:get_current_working_dir()
+	  cwd = cwd and basename(cwd) or ""
+	  -- Current command
+	  -- local cmd = pane:get_foreground_process_name()
+	  -- cmd = cmd and basename(cmd) or ""
+
+	local time = wezterm.strftime '%m-%d %H:%M'
+
+	  window:set_right_status(wezterm.format({
+		-- Wezterm has a built-in nerd fonts
+		-- https://wezfurlong.org/wezterm/config/lua/wezterm/nerdfonts.html
+		{ Foreground = { Color = stat_color } },
+		{ Text = "  " },
+		{ Text = wezterm.nerdfonts.oct_table .. "  " .. stat },
+		{ Foreground = { Color = "#e0af68" } },
+		{ Text = " | " },
+		{ Text = wezterm.nerdfonts.md_folder .. "  " .. cwd },
+		-- { Text = " | " },
+		-- { Foreground = { Color = "#e0af68" } },
+		-- { Text = wezterm.nerdfonts.fa_code .. "  " .. cmd },
+		"ResetAttributes",
+		{ Text = " | " },
+		{ Text = wezterm.nerdfonts.md_clock .. "  " .. time },
+		{ Text = "  " },
+	  }))
 	end),
 
 	wezterm.on('trigger-vim-with-scrollback', function(window, pane)

@@ -266,8 +266,8 @@ nmap cd :mkdir %c:r <cr>
 nmap <F8> :touch <space> 
 nmap cf :touch %c.txt <space> 
 " nmap <F9> :! setsid -f nvim-qt %f <cr>
-nmap O :! nvim-qt %f <cr>
-nmap md :!typora %f &<cr>
+nmap O :! fasd -A %f && nvim-qt %f <cr>
+nmap md :!fasd -A %f && typora %f &<cr>
 
 "COMAND VIFM
 " shortcut list
@@ -423,7 +423,7 @@ filextype {*.mobi,*.epub,*azw3,*azw,*pobi}
 		\ xreader %f %i,
 		" \ bookworm %f %i,
 
-filetype {*.md,*.txt,*.adoc,*.lua,*.csv,*.java,*.ts,*.css,*.js,*.ks} nvim
+filetype {*.md,*.txt,*.adoc,*.lua,*.csv,*.java,*.ts,*.css,*.js,*.ks} fasd -A %f && nvim %f
 filextype *.md,*.txt
         \ {Open with typora}
         \ typora %f %i,

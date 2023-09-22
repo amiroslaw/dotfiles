@@ -2,6 +2,7 @@
 # clipster --nul -ocn 2 | xclip -sel clip - nie wiem czy -nul nie dodaje specjalnego znaku 
 # WAŻNE jak podajemy ścieżkę to po = nie dawać spacji
 # kolumna musi być escapowana w awk "{print \$1}"
+# type 'alias' → shows command for the alias
 #alias =''
 # https://github.com/Bash-it/bash-it/blob/master/aliases/available/docker.aliases.bash
 
@@ -130,10 +131,8 @@ alias jj='java -jar'
 alias tor='stty stop undef && stty start undef && screen -x tor'
 alias huliomail='tmpmail -g Huliofff@1secmail.org && tmpmail -r'
 alias ping='prettyping'
-alias vi='nvim'
 alias neofetch='fastfetch'
 alias rest='wuzz'
-alias vim='nvim'
 # alias viswap_rm= 'rm ~/.local/share/nvim/swap/*'
 # alias viswap='rm ~/.local/share/nvim/swap/*'
 alias viswap_rm= 'rm -f ~/.local/state/nvim/swap/*'
@@ -308,17 +307,17 @@ alias Rm='rm -iv'
 #}}}
 
 # {{{ FZF
-alias ff='fzm' # fzf-marks bash plugin
-# alias ff='"$(fd --type f | fzf)"'
-alias fp='rg --files | fzf --preview="bat {} --color=always"'
 alias fn='nvim -o "$(fd --type f | fzf)"'
 alias fnh='nvim -o "$(fd --hidden --type f | fzf)"'
+alias ffh='"$(fd --hidden --type f | fzf)"'
+alias fp='rg --files | fzf --preview="bat {} --color=always"'
 alias fb='bat "$(fd --type f | fzf)"'
 alias fbh='bat "$(fd --hidden --type f | fzf)"'
+alias hc="	fc -ln 0 |	awk '!a[\$0]++' |	fzf --tac |	xclip -selection clipboard" # copy command from history
+# dubbled keys in key-bindings.zsh 
+alias ff='"$(fd --type f | fzf)"'
 alias fcd='cd "$(fd --type d | fzf)"'
 alias fcdh='cd "$(fd --hidden --type d | fzf)"'
-alias ffh='"$(fd --hidden --type f | fzf)"'
-alias hc="	fc -ln 0 |	awk '!a[\$0]++' |	fzf --tac |	xclip -selection clipboard" # copy command from history
 # execute, I have shortcut for this 
 # fz mv # To move files. You can write the destination after selecting the files.
 fz() {
@@ -346,12 +345,16 @@ fo() {
 # }}}
 
 # {{{ FASD
-# doesn't work correctly with fzf-tab-completion
 # fasd search from last opened files, paths
 # im and select a file will open in sxiv
+
+v () {
+	fasd -A "$1" 
+	nvim "$1"
+}
+alias vim='v'
 alias n='f -e nvim' 
 alias i='f -e sxiv'  
-alias m='f -e mpv'  
 alias p='f -e zathura'  
 alias lo='f -e libreoffice'  
 
