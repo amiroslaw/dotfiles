@@ -266,7 +266,7 @@ nmap('<A-l>', '<C-w>l')
 tmap('<Esc>', '<C-\\><C-n>')
 -- Prefer Neovim terminal insert mode to normal mode.
 nmap('<F2>', ':vsplit term://zsh<cr>')
-nmap('<S-F2>', ':split term://zsh<cr>') -- TODO can't have shift
+nmap('<F24>', ':split term://zsh<cr>') -- S-F2
 -- }}} 
 
 --""""""""""""""""""
@@ -395,7 +395,7 @@ vim.g.calendar_views = {'month', 'day_7', 'day', 'agenda'} -- I'm not sure about
 vim.g.calendar_cyclic_view = 1
 
 nmap('<F9>', ':Calendar -view=day_7<CR>')
-nmap('<S-F9>', ':Calendar -view=year -split=horizontal -position=below -height=10 <CR>') -- TODO shift, can't be done -- }}} 
+nmap('<F21>', ':Calendar -view=year -split=horizontal -position=below -height=10 <CR>') -- shift F9 -- }}} 
 
 -- marks {{{
 -- https://github.com/chentoast/marks.nvim
@@ -478,7 +478,7 @@ vmap('glmo', ":LazyList '1. '<CR>")
 
 -- vim-asciidoctor {{{
 --  https://github.com/habamax/vim-asciidoctor
-nmap('<S-F7>', ':Asciidoctor2DOCX<CR>') -- TODO shift, can't be bind
+nmap('<F19>', ':Asciidoctor2DOCX<CR>') -- S-F7
 vim.g.asciidoctor_syntax_conceal = 1
 vim.g.asciidoctor_folding = 2
 vim.g.asciidoctor_folding_level = 6
@@ -874,7 +874,7 @@ nmap('<F6>', ':ZenMode <CR>')
 
 -- LuaSnip {{{
 nmap('<F5>', '<cmd>lua require("luasnip.loaders.from_lua").load({paths = "~/.config/nvim/luasnippets/"})<cr>')
-nmap('<F29>', '<cmd>lua require("luasnip.loaders").edit_snippet_files()<CR>')
+nmap('<F17>', '<cmd>lua require("luasnip.loaders").edit_snippet_files()<CR>') -- S-F5
 local ls = require("luasnip")
 vim.keymap.set({"i", "s"}, "<TAB>", function() if ls.expand_or_jumpable() then ls.expand_or_jump() end end, {silent = true})
 vim.keymap.set({"i", "s"}, "<S-TAB>", function() ls.jump(-1) end, {silent = true})
