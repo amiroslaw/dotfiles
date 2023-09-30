@@ -899,7 +899,7 @@ end
 vim.cmd 'colorscheme solarized8_high'
 -- vim.cmd 'colorscheme flattened_light'
 vim.o.background = getBackground()
-vim.cmd [[let ayucolor="light" ]]
+-- vim.cmd [[let ayucolor="light" ]]
 -- }}} 
 -- vim: foldmethod=marker
 -- set complete+=kspell spellcheck complete
