@@ -851,20 +851,17 @@ nmap('<LocalLeader>cf', '<Plug>(grammarous-fixit)', { noremap = false }) --	Fix 
  -- }}} 
 
 -- nap-nvim {{{
-grammarousNext = [[execute "normal \<Plug>(grammarous-move-to-next-error)"]]
-grammarousPrev = [[execute "normal \<Plug>(grammarous-move-to-previous-error)"]]
 require("nap").setup({
     next_prefix = "<a-o>",
     prev_prefix = "<a-i>",
     next_repeat = "<c-o>",
     prev_repeat = "<c-i>",
     operators = {   ["c"] = {
-        next = { command = grammarousNext, desc = "grammarous-move-to-next-error", },
-        prev = { command = grammarousPrev, desc = "grammarous-move-to-prev-error", },
-        mode = { "n", "v", "o" },
+        next = { rhs = '<Plug>(grammarous-move-to-next-error)', opts = {desc = "grammarous-move-to-next", noremap = false} },
+        prev = { rhs = '<Plug>(grammarous-move-to-previous-error)', opts = {desc = "grammarous-move-to-prev", noremap = false} },
+        mode = { "n" },
     }, },
 })
-	--<Plug>(grammarous-move-to-previous-error)
 -- }}} 
 
 -- ZenMode {{{
