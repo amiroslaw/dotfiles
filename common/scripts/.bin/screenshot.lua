@@ -14,6 +14,8 @@ screenshot.lua active-window -o=clipboard q=9
 
 -- dependency: rofi, xclip, maim, tesseract for ocr
 -- TODO: choose monitor with resolution label
+-- clipboard option only takes active-window
+-- add both option for save to clipboard and file - format different than png won't work
 ]]
 
 local DIR= os.getenv('HOME') .. "/Pictures/Screens"
@@ -104,6 +106,7 @@ local cases = {
 	['monitor2'] = {' -g ' .. getMonitor(2), getPartialPath()},
 	['ocr'] = {'ocr'},
 }
+
 local function takeScreen()
 	local params = switch(cases, target)
 	if quality then
@@ -123,7 +126,7 @@ local function takeScreen()
 		-- error handling doesn't work
 		stat, _, err = run('maim -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png', "Can't take screenshot to clipboard")
 	end
-	if stat then
+	if stat and output == 'file' then
 		local split = split(path, '/')
 		notify('Took screen ' ..  split[#split])
 	else

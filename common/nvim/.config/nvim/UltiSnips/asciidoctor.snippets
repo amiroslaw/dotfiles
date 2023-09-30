@@ -17,8 +17,7 @@
 #   [3] https://github.com/redhat-documentation/modular-docs
 # ${1:placeholder}
 # $0 ostatni tabstop - jak pójdziemy dalej to wyjdziemy poza snippet
-# Visual wkleja wcześniej zaznaczony tekst
-# VISUAL nie dział więc coś coś takiego mam ${2:`xclip -o -sel clip`}
+# Visual wkleja wcześniej zaznaczony tekst z vim a nie System clipboard Selection
 # ${VISUAL:default-text} - jak mamy zaznaczony text i naciśniemy tab i nazwę snippetu i tab to zostanie wklejony ten tekst. Może nie być nic zaznaczone i wtedy musimy normalnie wpisać.
 # tab to UltiSnipsExpandTrigger np. c-l
 
@@ -127,7 +126,7 @@ ${3:`xclip -o -sel clip`}
 $0
 endsnippet
 
-snippet code-collapse "collapsible code from clipboard" !b
+snippet collapse "collapsible code from clipboard" !b
 ${1:title}
 [%collapsible]
 ====
