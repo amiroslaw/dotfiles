@@ -164,7 +164,6 @@ vim.g.mapleader = ';'
 vim.g.maplocalleader=" " --space
 -- nmap('x', '"_x') -- doesn't add to register from `x`, will brake xp
 nmap('<C-/>', ':nohlsearch<cr>')
-nmap('<F5>', ':source' .. HOME .. '/.config/nvim/init.lua <cr>') -- doesn't work with lazy.nvim
 nmap('<F1>', ':term taskwarrior-tui<CR>')
 nmap(',l', '<cmd>luafile dev/init.lua<cr>', {}) -- for plugin development
 nmap('Zz', ' :q! <cr>')
@@ -647,8 +646,8 @@ local actions = require "telescope.actions"
 	nmap('tt', '<cmd>Telescope heading <cr>')
 	telescope.load_extension 'changes'
 	nmap('tu', '<cmd>Telescope changes <cr>')
-	telescope.load_extension 'ultisnips'
-	nmap('tU', '<cmd>Telescope ultisnips <cr>')
+	telescope.load_extension 'luasnip'
+	nmap('tU', '<cmd>Telescope luasnip <cr>')
 	telescope.load_extension('smart_open')
 	-- { cwd_only = true, } limit to current directory; does not support smart-case
 	nmap('<c-f>', '<cmd>Telescope smart_open <cr>')
@@ -670,16 +669,6 @@ nmap('<leader>v', ':PrevimOpen <CR>')
 vim.g.previm_disable_default_css = 1
 vim.g.previm_custom_css_path = HOME .. '/.config/nvim/custom/md-prev.css' -- }}} 
 
--- ultisnips {{{
-vim.g.UltiSnipsEditSplit = 'vertical'
-vim.g.UltiSnipsExpandTrigger = '<c-l>'
--- shortcut to go to next position
-vim.g.UltiSnipsJumpForwardTrigger = '<c-l>'
--- shortcut to go to previous position
-vim.g.UltiSnipsJumpBackwardTrigger = '<c-k>'
-vim.g.UltiSnipsSnippetsDir = HOME .. '~/.config/nvim/UltiSnips'
-vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips' } -- }}} 
-
 -- yanky {{{
 	-- maybe causes crash
 -- https://github.com/gbprod/yanky.nvim#%EF%B8%8F-special-put
@@ -696,11 +685,11 @@ nmap("<A-p>", "<Plug>(YankyCycleBackward)", { noremap = false })
 -- https://github.com/hrsh7th/nvim-cmp
 local cmp = require 'cmp'
 cmp.setup {
-	snippet = {
-		expand = function(args)
-			vim.fn['UltiSnips#Anon'](args.body)
-		end,
-	},
+    snippet = {
+      expand = function(args)
+        require'luasnip'.lsp_expand(args.body)
+      end
+    },
 	mapping = {
 		-- ['<CR>'] = cmp.mapping(cmp.mapping.confirm { select = true }, { 'i', 'c' }),
 		['<C-l>'] = cmp.mapping(cmp.mapping.confirm { select = true }, { 'i', 'c' }),
@@ -712,7 +701,7 @@ cmp.setup {
 	},
 	sources = { -- order is important
 		-- { name = "nvim_lsp" },
-		{ name = 'ultisnips', keyword_length = 1 },
+		{ name = 'luasnip', keyword_length = 1 }, 
 		{ name = 'buffer', keyword_length = 2, option = { keyword_pattern = [[\k\+]] } },
 		{ name = 'nvim_lua' },
 		{ name = 'nvim_lsp' },
@@ -730,7 +719,7 @@ cmp.setup {
 			item.kind = ' '
 			item.menu = ({
 				buffer = '',
-				ultisnips = '',
+				luasnip = '',
 				nvim_lsp = '',
 				nvim_lua = '',
 				path = '',
@@ -883,6 +872,18 @@ require("nap").setup({
 nmap('<F6>', ':ZenMode <CR>')
 -- }}} 
 
+-- LuaSnip {{{
+nmap('<F5>', '<cmd>lua require("luasnip.loaders.from_lua").load({paths = "~/.config/nvim/luasnippets/"})<cr>')
+nmap('<F29>', '<cmd>lua require("luasnip.loaders").edit_snippet_files()<CR>')
+local ls = require("luasnip")
+vim.keymap.set({"i", "s"}, "<TAB>", function() if ls.expand_or_jumpable() then ls.expand_or_jump() end end, {silent = true})
+vim.keymap.set({"i", "s"}, "<S-TAB>", function() ls.jump(-1) end, {silent = true})
+
+vim.keymap.set({"i", "s"}, "<C-l>", function()
+	if ls.choice_active() then
+		ls.change_choice(1)
+	end
+end, {silent = true})
 -- }}} 
 
 -- COLORSCHEMES {{{

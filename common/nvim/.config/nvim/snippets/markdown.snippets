@@ -1,0 +1,99 @@
+# Markdown
+
+# Includes octopress (http://octopress.org/) snippets
+
+###########################
+# Sections and Paragraphs #
+###########################
+snippet h1 "Header 1" b
+	# ${1}
+	$0
+snippet h2 "Header 2" b
+	## ${1}
+	$0
+snippet h3 "Header 3" b
+	### ${1}
+	$0
+snippet h4 "Header 4" b
+	#### ${1}
+	$0
+snippet h5 "Header 5" b
+	##### ${1}
+	$0
+snippet h6 "Header 6" b
+	###### ${1}
+	$0
+snippet h7 "Header 6" b
+	###### ${1}
+	$0
+
+###################
+# Text formatting #
+###################
+
+snippet italic "italics"
+	*${1:${VISUAL}}* $0
+
+snippet bold "bold"
+	**${1:${VISUAL}}** $0
+
+snippet bolditalic "bold italics"
+	***${1:${VISUAL}}*** $0
+
+snippet common "Comment"
+	<!-- ${1:${VISUAL}} -->$0
+
+################
+# Common stuff #
+################
+snippet link "Link"
+	[${1:${CLIP_SELECT}}](${2:$CLIP_CLIP}) $0
+
+# select and copy link
+snippet linkclip "Link from Selection"
+	[${1:`xclip -o -sel prim`}]($CLIP_CLIP) $0
+
+snippet linkemail
+	[${1:${VISUAL}}](mailto:${2:email}) $0
+
+snippet img "Image"
+	![${1:${VISUAL}}]($2) $0
+
+snippet code "Inline Code" i
+	\`$1\` $0
+
+snippet codeblock "Codeblock" b
+	\`\`\`
+	${1:code}
+	\`\`\`
+	$0
+
+snippet java "Codeblock" b
+	\`\`\`java
+	${1:code}
+	\`\`\`
+	$0
+
+snippet refl "Reference Link"
+	[${1:${VISUAL:Text}}][${2:id}]$0
+
+	[$2]:${4:https://${3:www.url.com}} "${5:$4}"
+
+snippet fnt "Footnote"
+	[^${1:${VISUAL:Footnote}}]$0
+
+	[^$1]:${2:Text}
+
+snippet detail "Disclosure"
+	<details${3: open=""}>
+	  ${1:<summary>${2}</summary>}$0
+	</details>
+
+	post_jump "create_table(snip)"
+snippet "tb([1-9][1-9])" "Fancy table" br
+	`!p snip.rv = match.group(1)`
+
+snippet zadtag "zadanie"
+	- [ ] ${1:zadanie}    @${2:tag}
+
+# vim:ft=snippets:

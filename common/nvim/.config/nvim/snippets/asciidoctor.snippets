@@ -1,0 +1,214 @@
+priority 2000
+
+snippet adocexp "adoc experimental atribute" !b
+	:experimental:
+	$0
+
+snippet task "Task * [ ]"
+	* [ ] ${VISUAL}$1
+
+# -------------------------------------------------------------------------
+#                             Block Elements
+# -------------------------------------------------------------------------
+
+snippet caution "Admonition: Caution" !b
+	CAUTION: ${VISUAL}$1
+	$0
+
+snippet important "Admonition: Important" !b
+	IMPORTANT: ${VISUAL}$1
+	$0
+
+snippet note "Admonition: Note" !b
+	NOTE: ${VISUAL}$1
+	$0
+
+snippet tip "Admonition: Tip" !b
+	TIP: ${VISUAL}$1
+	$0
+
+snippet warning "Admonition: Warning" !b
+	WARNING: ${VISUAL}$1
+	$0
+
+# -------------------------------------------------------------------------
+#                          User Interface Macros
+# -------------------------------------------------------------------------
+
+snippet btn "Button" !w
+	btn:[${1:${VISUAL}}] $0
+
+snippet kbd "Keyboard Shortcut" !w
+	kbd:[${1:${VISUAL:Ctrl+}$2}] $0
+
+snippet menu "Menu Selection" !w
+	menu:${1:${VISUAL:File}}[$2] $0
+
+# -------------------------------------------------------------------------
+#                            Links and Images
+# -------------------------------------------------------------------------
+# link:${1:$CLIP_CLIP}[${2:${VISUAL}}] $0
+# link:${1:$CLIP_CLIP}[${2:`xclip -o -sel prim`}] $0
+
+snippet link "Link" !w
+	${1:$CLIP_CLIP}[${2:${CLIP_SELECT}}] $0
+
+# select and copy link
+snippet lsel "Link from Selection" !w
+	${1:$CLIP_CLIP}[${2:$CLIP_SELECT}] $0
+
+snippet file "File link" !w
+	file://${1:$CLIP_CLIP}[${2:${VISUAL:file ref}}] $0
+
+snippet filerel "Relative file link" !w
+	link:./$1[${2:${VISUAL:file ref}}] $0
+
+snippet mailto "Email" !w
+	mailto:$1[${2:${VISUAL}}] $0
+
+snippet img "Image" !b
+	image::$1[${2:${VISUAL:alt}}] $0
+
+snippet imgatr "Image and atributes" !b
+	.${3:Figure}
+	image::$1[${2:${VISUAL:alt}},${4:width},${5:height}] $0
+
+snippet imglink "Image link after click" !b
+	.${3:Figure}
+	[link=${6:click link}]
+	image::$1[${2:${VISUAL:alt}},${4:width},${5:height}] $0
+
+snippet video "Video" !b
+	video::$1[${2:${VISUAL}}] $0
+
+snippet tree "Directories tree" !b
+	.${3:Figure}
+	[tree,file="${2:alt}"]
+	${1:$CLIP_CLIP}
+	$0
+
+# -------------------------------------------------------------------------
+#                               Directives
+# -------------------------------------------------------------------------
+
+# Include directive:
+snippet includelines "Include lines" !b
+	include::${1:${VISUAL}}[lines=${2:from}..${3:to}]$0
+
+snippet include "Include offset" !b
+	include::${1:${VISUAL}}[${2:leveloffset=+1}]$0
+
+# -------------------------------------------------------------------------
+#                             Text Formatting
+# -------------------------------------------------------------------------
+
+snippet italic
+	__${1:${VISUAL}}__ $0
+snippet bold
+	**${1:${VISUAL}}** $0
+snippet mono "Monospace Text (Unconstrained)" !i
+	\`\`${1:${VISUAL}}\`\` $0
+snippet sup "Superscript Text" !i
+	^${1:${VISUAL}}^ $0
+snippet sub "Suberscript Text" !i
+	~${1:${VISUAL}}~ $0
+
+# Single curved quotes:
+# snippet quotes "Single Curved Quotes" !w
+# '\`${1:${VISUAL}}\`'$0
+
+# Double curved quotes:
+# snippet quotes2 "Double Curved Quotes" !w
+# "\`${1:${VISUAL}}\`"$0
+
+
+# -------------------------------------------------------------------------
+#                             Semantic Markup
+# -------------------------------------------------------------------------
+# idk adds class 
+# Application name:
+# snippet application "Application Name" !w
+# [application]\`${VISUAL}$1\`$0
+
+# # Application name - alternative version:
+# snippet app "Application Name" !w
+# [application]\`${VISUAL}$1\`$0
+
+# # Cited work title:
+# snippet citetitle "Cited Work Title" !w
+# [citetitle]\`${VISUAL}$1\`$0
+
+# # Cited work title - alternative version:
+# snippet cite "Cited Work Title" !w
+# [citetitle]\`${VISUAL}$1\`$0
+
+# # Command:
+# snippet command "Command" !w
+# [command]\`${VISUAL}$1\`$0
+
+# # Command - alternative version:
+# snippet cmd "Command" !w
+# [command]\`${VISUAL}$1\`$0
+
+# # File name:
+# snippet filename "File Name" !w
+# [filename]\`${VISUAL}$1\`$0
+
+# # File name - alternative version:
+# snippet file "File Name" !w
+# [filename]\`${VISUAL}$1\`$0
+
+# # Directory name - for convenience:
+# snippet directory "Directory Name" !w
+# [filename]\`${VISUAL}$1\`$0
+
+# # Directory name - alternative version:
+# snippet dir "Directory Name" !w
+# [filename]\`${VISUAL}$1\`$0
+
+# # Function name:
+# snippet function "Function Name" !w
+# [function]\`${VISUAL}$1\`$0
+
+# # Function name - alternative version:
+# snippet func "Function Name" !w
+# [function]\`${VISUAL}$1\`$0
+
+# # GUI element name:
+# snippet gui "GUI Element Name" !w
+# [gui]\`${VISUAL}$1\`$0
+
+# # Option name:
+# snippet option "Option Name" !w
+# [option]\`${VISUAL}$1\`$0
+
+# # Option name - alternative version:
+# snippet opt "Option Name" !w
+# [option]\`${VISUAL}$1\`$0
+
+# # Package name:
+# snippet package "Package Name" !w
+# [package]\`${VISUAL}$1\`$0
+
+# # Package name - alternative version:
+# snippet pkg "Package Name" !w
+# [package]\`${VISUAL}$1\`$0
+
+# # Parameter name:
+# snippet parameter "Parameter Name" !w
+# [parameter]\`${VISUAL}$1\`$0
+
+# # Parameter name - alternative version:
+# snippet param "Parameter Name" !w
+# [parameter]\`${VISUAL}$1\`$0
+
+# # System item:
+# snippet systemitem "System Item" !w
+# [systemitem]\`${VISUAL}$1\`$0
+
+# # System item - alternative version:
+# snippet sys "System Item" !w
+# [systemitem]\`${VISUAL}$1\`$0
+
+# snippet test "System Item" !w
+# [systemitem]\`${VISUAL}$1\`$0

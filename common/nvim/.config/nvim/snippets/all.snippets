@@ -1,0 +1,67 @@
+priority -60
+
+#{{{ fold
+snippet fold "nvim fold comment"
+	$LINE_COMMENT{{{ $1
+	$CLIP_CLIP
+	$LINE_COMMENT}}} 
+	$0
+snippet foldset "vim fold setting" b
+	$LINE_COMMENT vim: foldmethod=marker
+	$0
+#}}} 
+
+
+snippet lorem
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+#########
+# DATES #
+#########
+snippet date "YYYY-MM-DD" w
+	`strftime("%Y-%m-%d")`
+
+snippet dateISO "ISO format datetime" w
+	`strftime("%Y-%m-%d %H:%M:%S%z")`
+
+snippet time "hh:mm" w
+	`strftime("%H:%M")`
+
+snippet datetime "YYYY-MM-DD hh:mm" w
+	`strftime("%Y-%m-%d %H:%M")`
+
+########################
+#        files         #
+########################
+snippet filename 
+	$TM_FILENAME
+snippet filename-base 
+	$TM_FILENAME_BASE
+snippet filepath-relative
+	$FILEPATH
+snippet filepath-relative
+	$RELATIVE_FILEPATH
+snippet directory
+	$TM_DIRECTORY
+
+##################################################
+#                   formatting                   #
+##################################################
+snippet br
+	(${1:${VISUAL}}) $0
+snippet bc
+	{${1:${VISUAL}}} $0
+snippet bs
+	[${1:${VISUAL}}] $0
+snippet ba
+	<${1:${VISUAL}}> $0
+snippet qd
+	"${1:${VISUAL}}" $0
+snippet qs
+	'${1:${VISUAL}}' $0
+
+# snippet qg
+# `${1:${VISUAL}}` $0
+
+# vim:ft=snippets:
+# vim: foldmethod=marker

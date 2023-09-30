@@ -61,10 +61,11 @@ return {
 		cmd = 'Telescope',
 		dependencies = {
 			{ 'nvim-lua/popup.nvim', lazy = true },
-			{ 'fhill2/telescope-ultisnips.nvim' },
+			-- { 'fhill2/telescope-ultisnips.nvim' },
 			{ 'crispgm/telescope-heading.nvim' },
 			{ 'nvim-lua/plenary.nvim' },
 			{ 'amiroslaw/telescope-changes.nvim' },
+			{ "benfowler/telescope-luasnip.nvim",   module = "telescope._extensions.luasnip",}, 
 			-- { 'gbprod/yanky.nvim'},
 		},
 	},
@@ -97,17 +98,44 @@ return {
 			{ 'hrsh7th/cmp-calc' },
 			{ 'hrsh7th/cmp-cmdline' },
 			{ 'dmitmel/cmp-cmdline-history' },
-			{ 'quangnguyen30192/cmp-nvim-ultisnips' },
 			{ 'hrsh7th/cmp-nvim-lua' }, -- vim.api
 			{ 'hrsh7th/cmp-nvim-lsp' },
 			{ 'uga-rosa/cmp-dictionary' },
+			{ 'saadparwaiz1/cmp_luasnip' },
 			-- { 'amarakon/nvim-cmp-buffer-lines' },
-			config = function()
-				require('cmp-nvim-ultisnips').setup {}
-			end,
 		},
 	},
-	{ 'SirVer/ultisnips', event = 'InsertEnter', },
+	{ "L3MON4D3/LuaSnip",
+		version = "2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+		event = 'InsertEnter', 
+		-- install jsregexp (optional!).
+		-- build = "make install_jsregexp"
+		-- dependencies = 'honza/vim-snippets',  -- remove if can't exclude
+		config = function() 
+		require('luasnip.loaders.from_snipmate').lazy_load({ 
+			-- include = { 'all', 'java', 'kotlin', 'lua', 'md', 'asciidoctor' }, -- need to include even for custom
+			path = { "./snippets" } -- doesn't work
+		})
+		require('luasnip.loaders.from_lua').lazy_load({ })
+		-- custom envs
+		local function select() return vim.fn.getreg('*', 1, true) end
+		local function clipboard() return vim.fn.getreg('+', 1, true) end
+		require('luasnip').env_namespace("CLIP", { vars = { CLIP = clipboard, SELECT = select } })
+		require('luasnip').config.setup({ 
+			update_events = 'TextChanged,TextChangedI',
+			history = true, -- keep around last sniiiet local to jump back
+			enable_autosnippets = true,
+			store_selection_keys = "<Tab>",
+			ext_opts = {
+				[require("luasnip.util.types").choiceNode] = {
+					active = { virt_text = { { "🟢", "GruvboxOrange" } } }
+					},
+				[require("luasnip.util.types").insertNode] = {
+					active = { virt_text = { { "✏️", "GruvboxOrange" } } }
+					}}
+			})
+		end
+	},
 	{ 'itchyny/calendar.vim', cmd = 'Calendar' }, -- problem with api; maybe delete
 	{ 'amiroslaw/taskmaker.nvim', cmd = { 'TaskmakerAddTasks', 'TaskmakerToggle' } },
 	-- 'aserebryakov/vim-todo-lists', -- , version = '0.7.1'
