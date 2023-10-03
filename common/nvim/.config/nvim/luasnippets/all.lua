@@ -61,8 +61,7 @@ end
 local visual = function(args, parent)
 	return sn(nil, i(1, parent.snippet.env.LS_SELECT_DEDENT))
 end
-return { 
-	s('luasnip', t 'test'),
+local snippets = {
     s({ trig = "comment" }, box({ box_width = 50 })),
     s({ trig = "comment-line" }, box({})),
 -- idk if .( trigger won't be better
@@ -90,3 +89,25 @@ return {
 		})),
 }
 
+-- TODO 
+-- doesn't show in cmp when have autosnippet
+-- https://hub.espanso.org/contractions-en
+-- https://www.google.com/search?q=enlish abberivation[english abbreviation - Google Search]
+local abbreviations = {
+agm = "Good morning.",
+agw = 'have a good week.',
+agwe = 'have a nice weekend.',
+aty = 'Thank you.',
+ayw = "You're welcome.",
+atf = 'Thanks for the feedback.',
+awl = "I'd like to", 
+aih = "I have to",
+ayh = "You have to", 
+aidk = "I don't know", 
+}
+
+for i,v in pairs(abbreviations) do
+	table.insert(snippets, s( { trig = i, snippetType = 'autosnippet' }, t(v .. ' ')))
+end
+
+return snippets

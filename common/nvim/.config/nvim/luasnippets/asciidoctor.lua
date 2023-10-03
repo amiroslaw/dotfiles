@@ -18,6 +18,40 @@ local conds = require("luasnip.extras.expand_conditions")
 local l = require("luasnip.extras").lambda
 local postfix = require("luasnip.extras.postfix").postfix
 local matches = require("luasnip.extras.postfix").matches
+-- TODO 
+-- extract
+-- local languages = function () return { t('java'), t('lua'), t('bash'), } end
+-- local languages = { t('java'), t('lua'), t('bash'), } 
+-- local titleChoices = { sn(1, {t '.', i(1, 'title')}), t(''), } 
+
+local recLs
+recLs = function()
+	return sn(nil, {
+		c(1, { -- important!! Having the sn(...) as the first choice will cause infinite recursion.
+			t({""}),
+			-- The same dynamicNode as in the snippet (also note: self reference).
+			sn(nil, {t({"", "* "}), i(1), d(2, recLs, {})}),
+		}),
+	});
+end
+local recLsChecked
+recLsChecked = function()
+	return sn(nil, {
+		c(1, {
+			t({""}),
+			sn(nil, {t({"", "* [ ] "}), i(1), d(2, recLsChecked, {})}),
+		}),
+	});
+end
+local recLsDescription
+recLsDescription = function()
+	return sn(nil, {
+		c(1, {
+			t({""}),
+			sn(nil, {i(1), t({"", " :: "}), i(2), d(3, recLsDescription, {})}),
+		}),
+	});
+end
 
 -- TODO move to util file
 local clip = function(_, parent)
@@ -63,24 +97,12 @@ local codeBlockMd = [[
 ```
 {}]]
 
--- TODO 
--- url regex expand
--- bold surround
--- extract
--- local languages = function () return { t('java'), t('lua'), t('bash'), } end
--- local languages = { t('java'), t('lua'), t('bash'), } 
--- local titleChoices = { sn(1, {t '.', i(1, 'title')}), t(''), } 
-
-local rec_ls
-rec_ls = function()
-	return sn(nil, {
-		c(1, { -- important!! Having the sn(...) as the first choice will cause infinite recursion.
-			t({""}),
-			-- The same dynamicNode as in the snippet (also note: self reference).
-			sn(nil, {t({"", "* [ ] "}), i(1), d(2, rec_ls, {})}),
-		}),
-	});
-end
+local quoteBlock = [[
+{}
+____
+{}
+____
+{}]]
 
 return {
 	-- s('link',),
@@ -102,20 +124,34 @@ return {
 		c(1, {t'**', t'__', t'``', t'^^', t'~~'}),
 		d(2, visual) , r(1)
 	})),
-	-- s('bold', fmt('**{}**', { d(1, visual)})), -- from snippets
-	s(
-		{ trig = "a%d", regTrig = true },
-		f(function(_, snip)
-			return "Triggered with " .. snip.trigger .. "."
-		end, {})
-	),
+	-- s('bold', fmt('**{}**', { d(1, visual)})), -- bold italic and mono is in snipmate
 -- endless list, when is choice node go to next element
 	s("ls", {
 		c(1, { sn(1, {t '.', i(1, 'title')}), t(''), }),
-		t({'', "* [ ] "}),
-		i(2), d(3, rec_ls, {}),
+		t({'', "* "}),
+		i(2), d(3, recLs, {}),
 		t "",
 		i(0)
+	}),
+	s("ls-checked", {
+		c(1, { sn(1, {t '.', i(1, 'title')}), t(''), }),
+		t({'', "* [ ] "}),
+		i(2), d(3, recLsChecked, {}),
+		t "",
+		i(0)
+	}),
+	s("ls-description", {
+		c(1, { sn(1, {t '.', i(1, 'title')}), t(''),}),
+		t({'', ''} ),
+		c(2, { sn(1, t('[horizontal]', '')), t'' }),
+		t({'', ''} ),
+		i(3), c(4, { t' :: ', t' ::: ', t' :::: '}), i(5), 
+		-- i(2), d(3, recLsDescription, {}),
+		t({'', ''} ), i(0)
+	}),
+	s("lsd", {
+		i(1), c(2, { t' :: ', t' ::: ', t' :::: '}), i(3), 
+		t({'', ''} ), i(0)
 	}),
 	-- s('bb', {t '**', f(visual_selection, 1), i(1), t '**'}),
 	s('code', fmt(codeBlock, {
@@ -125,7 +161,12 @@ return {
 		i(0)
 		})
 	),
-
+	s('quote', fmt(quoteBlock, {
+		c(1, { sn(1, {t '[quote, ', i(1, 'title'), t']'}), t(''), }),
+		d(2, clip),
+		i(0)
+		})
+	),
 	s('code-md', fmt(codeBlockMd, {
 		c(1, { t('java'), t('lua'), t('bash'), }),
 		d(2, clip),
@@ -158,6 +199,12 @@ return {
 		c(1, { t 'WARNING: ', t 'IMPORTANT: ', t 'NOTE: ', t 'TIP: ', t 'CAUTION: '}),
 		d(2, clip),
 		i(0)
+	}),
+	s({trig = 'kbd',  description = 'Keyboard Shortcut'}, {
+		t'kdb:[', 
+		c(1, { t 'Ctrl + ', t 'Shift + ', t 'Super + ', t 'Tab + ',  t ''}),
+		c(2, {i(1, 'key'), t 'Ctrl + ', t 'Shift + ', t 'Super + ', t 'Tab + '}),
+		i(3), t '] '
 	}),
 
     s({trig = "table(%d+)x(%d+)", regTrig = true}, {

@@ -11,6 +11,8 @@ snippet foldset "vim fold setting" b
 	$0
 #}}} 
 
+snippet todo
+	$LINE_COMMENT TODO: ${1:${VISUAL}}
 
 snippet lorem
 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -59,9 +61,8 @@ snippet qd
 	"${1:${VISUAL}}" $0
 snippet qs
 	'${1:${VISUAL}}' $0
-
-# snippet qg
-# `${1:${VISUAL}}` $0
+snippet qg
+	\`${1:${VISUAL}}\` $0
 
 # vim:ft=snippets:
 # vim: foldmethod=marker

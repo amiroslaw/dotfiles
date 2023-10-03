@@ -4,13 +4,28 @@ snippet adocexp "adoc experimental atribute" !b
 	:experimental:
 	$0
 
-snippet task "Task * [ ]"
+snippet lsc "checked * [ ]"
 	* [ ] ${VISUAL}$1
 
 # -------------------------------------------------------------------------
 #                             Block Elements
 # -------------------------------------------------------------------------
+snippet jumbotron
+	.${1:title}
+	****
+	${2:${VISUAL}}
+	****
+	$0
 
+snippet block-example
+	====
+	${2:${VISUAL}}
+	====
+	$0
+
+##################################################
+#                   Admonition                   #
+##################################################
 snippet caution "Admonition: Caution" !b
 	CAUTION: ${VISUAL}$1
 	$0
@@ -38,11 +53,8 @@ snippet warning "Admonition: Warning" !b
 snippet btn "Button" !w
 	btn:[${1:${VISUAL}}] $0
 
-snippet kbd "Keyboard Shortcut" !w
-	kbd:[${1:${VISUAL:Ctrl+}$2}] $0
-
 snippet menu "Menu Selection" !w
-	menu:${1:${VISUAL:File}}[$2] $0
+	menu:${1:${VISUAL}}[$2] $0
 
 # -------------------------------------------------------------------------
 #                            Links and Images

@@ -223,8 +223,32 @@ return {
 	},
 	{ 'alvarosevilla95/luatab.nvim', dependencies = 'kyazdani42/nvim-web-devicons', config = true, event = 'VeryLazy' }, -- tabline
 	{ 'nvim-lualine/lualine.nvim', event = 'VeryLazy',
-		opts = { options = { theme = 'dracula', component_separators = '|', globalstatus = true }, -- sections = {lualine_a = {'buffers'}} - takes too much space
-	}},
+		config = function()
+			local function line_total()
+				return tostring(vim.api.nvim_buf_line_count(vim.fn.winbufnr( vim.g.statusline_winid))) 
+			end
+			local spellang = function ()
+				if vim.opt.spell:get() ~= true then return '[]' end
+				local lang = table.concat(vim.opt_local.spelllang:get(), '/')
+				return lang == '' and '--' or lang
+			end
+			local permissions = function ()
+				local the_file = vim.fn.expand('%:p')
+				local rw = vim.opt_local.readonly:get() == true and 'r' or 'rw'
+				local x = vim.fn.executable(the_file) == 1 and 'x' or ''
+				local m = vim.api.nvim_buf_get_option(0, 'modified') == true and '+' or ''
+				return the_file == '' and '[]'..m or rw..x..m
+			end
+			require'lualine'.setup {
+			 options = { theme = 'dracula', component_separators = '|', globalstatus = true }, 
+			 sections = {
+				lualine_x = {'selectioncount', 'searchcount'}, -- redundant
+				lualine_y = {spellang, permissions, 'filetype'},
+				 lualine_z = {line_total, 'progress', 'location'}}
+		 }
+		-- opts = { options = { theme = 'dracula', component_separators = '|', globalstatus = true }, -- sections = {lualine_a = {'buffers'}} - takes too much space
+	-- }
+	end },
 	--}}}
 	--{{{ COLORSCHEMES and Syntax
 	'baskerville/vim-sxhkdrc',
