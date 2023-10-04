@@ -225,7 +225,7 @@ super + {_,shift,ctrl} + BackSpace
 
 # tasks; todo; calendar
 super + u ; {u,c,g,f,i,t,r,p,n,a}
-	{ notify-send options: "c-gcal\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nW-task sync\nm-modify task\nn-newsboat", \
+	{ notify-send options: "c-gcal-add\ng-gamification\nf-timefx\nt-todo\ni-add to inbox\nr-pom repeat\np-pom pause\nn-gcal notify\na-gcal agenda\no-portfolio\ne-edit setup\ns-add setup\nS-show setup\nw-TW-tui\nW-task sync\nm-modify task\nn-newsboat", \
 	gcal-add.lua, \
 	java -jar ~/.bin/grywalizacja.jar, \
 	timefx, \

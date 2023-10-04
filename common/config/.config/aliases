@@ -227,12 +227,13 @@ alias kals='gcalcli search'
 
 #{{{ Dev
 # maven 
+alias mvn='mvnd'
 alias mi='mvn install'
 alias mci='mvn clean install'
 alias mp='mvn package'
 alias mcp='mvn clean package'
 alias mcis='mci -Dmaven.test.skip=true'
-alias mps='mcp -Dmaven.test.skip=true'
+alias mcps='mcp -Dmaven.test.skip=true'
 alias mpsa='mcp -DskipTests'
 alias mdep='mvn dependency:tree'
 alias mpom='mvn help:effective-pom'

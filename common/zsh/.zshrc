@@ -115,7 +115,10 @@ unset fasd_cache
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/miro/.local/share/sdkman"
-[[ -s "/home/miro/.local/share/sdkman/bin/sdkman-init.sh" ]] && source "/home/miro/.local/share/sdkman/bin/sdkman-init.sh"
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+
+export MVND_HOME="/opt/mvnd" 
+[[ -s '$MVND_HOME/bin/mvnd-bash-completion.bash' ]] && 'source $MVND_HOME/bin/mvnd-bash-completion.bash'
 
 source ~/.config/fzf/fzf.zsh
 source ~/.config/broot/launcher/bash/br
