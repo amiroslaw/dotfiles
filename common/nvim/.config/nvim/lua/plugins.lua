@@ -33,13 +33,13 @@ return {
 	  event = "VeryLazy",
 	  opts = {
 		  search = {
-			mode = function(str) -- beginning of a word
+			mode = function(str) -- only match at the beginning of a word
 			  return "\\<" .. str
 			end,
 		  },
 		modes = { 
 			char = { jump_labels = true, -- for actions d/y
-			keys = { "f", "F", ";", "," }, -- deleted t and T
+			keys = { "f", "F", ";", "," }, -- removed t and T
 			}
 		  }
 	  },

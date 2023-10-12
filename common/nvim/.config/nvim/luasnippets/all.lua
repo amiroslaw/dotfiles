@@ -95,15 +95,18 @@ local snippets = {
 -- https://www.google.com/search?q=enlish abberivation[english abbreviation - Google Search]
 local abbreviations = {
 agm = "Good morning.",
-agw = 'have a good week.',
-agwe = 'have a nice weekend.',
+agw = 'Have a good week.',
+agwe = 'Have a nice weekend.',
 aty = 'Thank you.',
 ayw = "You're welcome.",
 atf = 'Thanks for the feedback.',
 awl = "I'd like to", 
 aih = "I have to",
 ayh = "You have to", 
-aidk = "I don't know", 
+aidk = "I don't know,", 
+awdm = "What do you mean?",
+ait = "I think,",
+aidt = "I don't think,",
 }
 
 for i,v in pairs(abbreviations) do

@@ -203,11 +203,11 @@ noremap ct :ocr <cr>
 command! ocr echo %f:gs? ?^? | xargs -n1 | xargs -r -I @ -P 0 sh -c 'V="@"; tesseract "${V//^/ }" "${V//^/ }"'
 noremap cT :!for i in %f; do tesseract "$i"  "${i%%.png}"; done <cr>
 " noremap ct :!echo %f | xargs -n1 | xargs -r -I @ -P 0  tesseract "@" "@" <cr>
-"dragon dr - drag from and dl drop to
-nmap dr :!dragon-drop %f <cr> 
+"dragon dr - drag from and dR drop to
 " will drag all selected files, cos it doesn't have multiple selection option
-nmap dR :!dragon-drop -a %f <cr> 
-nmap dl :!dragon-pull.sh <cr>
+nmap dr :!dragon-drop -a %f <cr> 
+" nmap dR :!dragon-drop %f <cr> 
+nmap dR :!dragon-pull.sh <cr>
 " ffmpeg
 command! ffmpegSegment !for i in %f; do  ffmpeg -i "$i" -f segment -segment_time 900 -c copy "${i%%.*}-%%02d.mp3"; done 
 noremap cm :ffmpegSegment <cr>
