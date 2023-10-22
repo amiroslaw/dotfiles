@@ -482,7 +482,7 @@ nmap('<F19>', ':Asciidoctor2DOCX<CR>') -- S-F7
 vim.g.asciidoctor_syntax_conceal = 1
 vim.g.asciidoctor_folding = 2
 vim.g.asciidoctor_folding_level = 6
-vim.g.asciidoctor_fenced_languages = { 'java', 'typescript', 'javascript', 'bash', 'html', 'xml', 'lua', 'css' } -- 'kotlin' add syntax TODO
+vim.g.asciidoctor_fenced_languages = { 'java', 'typescript', 'javascript', 'bash', 'html', 'xml', 'lua', 'css', 'sql' } -- 'kotlin' add syntax TODO
 -- vim.g.asciidoctor_syntax_indented = 0
 -- vim.g.asciidoctor_fold_options = 0
 vim.g.asciidoctor_img_paste_command = 'xclip -selection clipboard -t image/png -o > %s%s'
@@ -620,7 +620,7 @@ local actions = require "telescope.actions"
 	-- nmap('tp', '<cmd>Telescope find_files find_command=rg,--hidden,--files<cr>') -- with hidden files
 	nmap('to', '<cmd>Telescope oldfiles<cr>')
 	nmap('tl', '<cmd>Telescope current_buffer_fuzzy_find skip_empty_lines=true<cr>') -- lines in file
-	nmap('tj', '<cmd>Telescope jumplist<cr> ') -- I changed source code for showing only current file
+	nmap('tJ', '<cmd>Telescope jumplist sort_lastused=true <cr> ') -- I changed source code for showing only current file, idk if sort_lastused works
 	nmap('ta', '<cmd>Telescope buffers ignore_current_buffer=true sort_mru=true show_all_buffers=false<cr>') -- closed files
 	nmap('tq', '<cmd>Telescope quickfix<cr> ') -- quickfix history
 	nmap('td', '<cmd>Telescope diagnostic<cr> ')
@@ -644,8 +644,9 @@ local actions = require "telescope.actions"
 	-- nmap('T', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope tags<CR>') -- jjjj
 	telescope.load_extension 'heading'
 	nmap('tt', '<cmd>Telescope heading <cr>')
-	telescope.load_extension 'changes'
-	nmap('tu', '<cmd>Telescope changes <cr>')
+	telescope.load_extension 'jumps'
+	nmap('tu', '<cmd>Telescope jumps changes <cr>')
+	nmap('tj', '<cmd>Telescope jumps jumpbuff <cr>')
 	telescope.load_extension 'luasnip'
 	nmap('tU', '<cmd>Telescope luasnip <cr>')
 	telescope.load_extension('smart_open')
