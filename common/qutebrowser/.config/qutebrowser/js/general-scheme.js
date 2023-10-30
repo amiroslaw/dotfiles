@@ -8,7 +8,7 @@ if(url.includes("")) {
 } else if(url.includes("")) {
 
 } else {
-	alert('url pattern not found');
+	alert('None action for this page');
 }
 
 

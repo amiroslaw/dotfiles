@@ -1,3 +1,4 @@
+// click copy text, url button
 var url = document.location.hostname;
 
 if (url.includes("youtube")) {

@@ -14,6 +14,15 @@ if(url.includes("youtube")) {
 	let favoriteButton = document.querySelector('.modal-container > button');
 	console.log(favoriteButton)
 	favoriteButton.click();
+} else if(url.includes("pepper")) {
+	let bookmark = document.querySelector('[data-t=addBookmark]');
+	if(bookmark == null) {
+		bookmark = document.querySelector('[data-t=removeBookmark]');
+	}
+	bookmark.click();
+} else if(url.includes("mail.google")) {
+	let archive = document.querySelector('[aria-label=Archiwizuj]');
+	archive.click();
 } else if(url.includes("deezer")) {
 	let favoriteButton = getHtmlElement("#page_player [aria-label=\'Add to Favorite tracks\']", "#page_player [aria-label=\'Dodaj do ♡\']");
 	if(favoriteButton == null) {

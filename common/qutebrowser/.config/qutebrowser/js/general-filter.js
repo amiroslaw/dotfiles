@@ -1,3 +1,4 @@
+// click the filter button
 var url = document.location.hostname;
 
 if(url.includes("duckduckgo")) {

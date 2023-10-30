@@ -1,3 +1,5 @@
+// click the alert, annotation, comment button
+
 var url = document.location.hostname;
 
 if(url.includes("pepper")) {

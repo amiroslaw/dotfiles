@@ -167,6 +167,9 @@ config.bind('zc', 'jseval -qf ~/.config/qutebrowser/js/general-copy.js')
 config.bind('zs', 'jseval -qf ~/.config/qutebrowser/js/general-sort.js') 
 config.bind('zh', 'jseval -qf ~/.config/qutebrowser/js/general-home.js')
 config.bind('zf', 'jseval -qf ~/.config/qutebrowser/js/general-filter.js')
+config.bind('zd', 'jseval -qf ~/.config/qutebrowser/js/general-delete.js')
+config.bind('zj', 'jseval -qf ~/.config/qutebrowser/js/general-next.js')
+config.bind('zk', 'jseval -qf ~/.config/qutebrowser/js/general-previous.js')
 # }}}
 
 # ======================= HINTS ============= {{{
