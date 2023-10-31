@@ -353,7 +353,6 @@ command! pasteFile xclip-pastefile
 " 2>/dev/null but better use %i
 " Pdf need poppler and libcaca
 filextype {*.pdf},<application/pdf> zathura %c %i &, pqiv %c, xreader %c
-fileviewer {*.pdf},<application/pdf> pdftotext -nopgbrk %c -
 
 " PostScript
 filextype {*.ps,*.eps,*.ps.gz},<application/postscript> zathura %f, pqiv %f,
@@ -364,8 +363,6 @@ filetype {*.wav,*.mp3,*.flac,*.m4a,*.wma,*.ape,*.ac3,*.og[agx],*.spx,*.opus},<au
        \ mpv --no-video %f,
        \ {Play using ffplay}
        \ ffplay -nodisp -autoexit %c,
-fileviewer {*.mp3},<audio/mpeg> mp3info
-fileviewer {*.flac},<audio/flac> soxi
 
 " Video
 filextype {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,*.fl[icv],*.m2v,*.mov,*.webm,*.mts,*.m4v,*.r[am],*.qt,*.divx,*.as[fx]},<video/*>
@@ -378,14 +375,6 @@ filextype {*.m3u},<video/*>
 		\ mpv --profile=stream %f %i,
 		\ mpv %f %i,
 
-fileviewer {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,*.fl[icv],*.m2v,*.mov,*.webm,*.mts,*.m4v,*.r[am],*.qt,*.divx,*.as[fx]},<video/*>
-         \ ffprobe -pretty %c 2>&1
-" fileviewer *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
-" 	\*.fl[icv],*.m2v,*.mov,*.webm,*.mts,*.m4v,*.r[am],*.qt,*.divx,
-" 	\ vifmimg videopreview %px %py %pw %ph %c
-" 	\ %pc
-" 	\ vifmimg clear
-
 " Web
 filextype {*.html,*.htm},<text/html>
         \ {Open with qutebrowser}
@@ -397,23 +386,14 @@ filetype {*.html,*.htm},<text/html> links, nvim, lynx
 
 " Man page
 filetype {*.[1-8]},<text/troff> man ./%c
-fileviewer {*.[1-8]},<text/troff> man ./%c | col -b
 
 filetype {*.7z,*.zip,*.zip,*.jar,*.war,*.ear,*.oxt,*.apkg,*.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz},
 			\ file-roller %f &>/dev/null &
-fileviewer *.7z,*.bz2,*.cab,*.cpio,*.deb,*.gz,
-        \*.msi,*.pkg,*.rar,*.tar,*.tgz,*.xz,*.zip
-        \ als %f | less
 
 " Office files
 filextype {*.odt,*.ods,*.doc,*.docx,*.xls,*.xlsx,*.csv,*.odp,*.pptx,*.ppt},
          \<application/vnd.openxmlformats-officedocument.*,application/msword,application/vnd.ms-excel>
         \ libreoffice %f &
-fileviewer {*.doc},<application/msword> catdoc %c
-fileviewer {*.docx},<application/vnd.openxmlformats-officedocument.wordprocessingml.document> docx2txt.pl %f -
-"or with unoconv
-" fileviewer *.odt,*.doc,*.docx unoconv -f text --stdout %c 
-" fileviewer *.ods,*.xls,*.xlsx unoconv -f csv --stdout %c
 
 "e-book
 filextype {*.cbr,*cbz} pqiv %f,
@@ -451,10 +431,85 @@ filextype {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp,*.webm,*.svg,*avif},<imag
         \ pqiv -f %f %i,
         \ sxiv -fa %f %i,
 		" \ echo %f > ~/test,
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" viewers                                        "
+""""""""""""""""""""""""""""""""""""""""""""""""""
+fileviewer {*.[1-8]},<text/troff> man ./%c | col -b
+fileviewer *.7z,*.bz2,*.cab,*.cpio,*.deb,*.gz,
+        \*.msi,*.pkg,*.rar,*.tar,*.tgz,*.xz,*.zip
+        \ als %f | less
+fileviewer {*.doc},<application/msword> catdoc %c
+fileviewer {*.docx},<application/vnd.openxmlformats-officedocument.wordprocessingml.document> docx2txt.pl %f -
+"or with unoconv
+" fileviewer *.odt,*.doc,*.docx unoconv -f text --stdout %c 
+" fileviewer *.ods,*.xls,*.xlsx unoconv -f csv --stdout %c
 
-" problems with webp and avif, that should work in wezterm
+" fileviewer {*.mp3},<audio/mpeg> mp3info
+" fileviewer {*.flac},<audio/flac> soxi
+" fileviewer {*.pdf},<application/pdf> pdftotext -nopgbrk %c -
+" fileviewer {*.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,*.fl[icv],*.m2v,*.mov,*.webm,*.mts,*.m4v,*.r[am],*.qt,*.divx,*.as[fx]},<video/*>
+"          \ ffprobe -pretty %c 2>&1
+
+" ueberzug
+" https://github.com/vifm/vifm/tree/master/data/plugins/ueberzug - DEPENDENCIES
+fileviewer <image/gif>
+	\ #ueberzug#image_no_cache %px %py %pw %ph
+	\ %pc
+	\ #ueberzug#clear
+
+" Otherwise, use the video fileviewer for gifs
+" fileviewer <video/*>,<image/gif>
+fileviewer <video/*>
+	\ #ueberzug#video %px %py %pw %ph
+	\ %pc
+	\ #ueberzug#clear
+
+fileviewer <image/*>
+	\ #ueberzug#image %px %py %pw %ph
+	" or \ #ueberzug#image_no_cache %px %py %pw %ph
+	\ %pc
+	\ #ueberzug#clear
+fileviewer <audio/*>
+	\ #ueberzug#audio %px %py %pw %ph
+	\ %pc
+	\ #ueberzug#clear
+fileviewer <font/*>
+	\ #ueberzug#djvu %px %py %pw %ph
+	\ %pc
+	\ #ueberzug#clear
+
+fileviewer *.pdf
+	\ #ueberzug#pdf %px %py %pw %ph
+	\ %pc
+	\ #ueberzug#clear
+fileviewer *.epub
+	\ #ueberzug#epub %px %py %pw %ph
+	\ %pc
+	\ #ueberzug#clear
+fileviewer *.djvu
+	\ #ueberzug#djvu %px %py %pw %ph
+	\ %pc
+	\ #ueberzug#clear
+
+fileviewer *.cbz
+	\ #ueberzug#cbz %px %py %pw %ph
+	\ %pc
+	\ #ueberzug#clear
+fileviewer *.cbt
+	\ #ueberzug#cbt %px %py %pw %ph %c
+	\ %pc
+	\ #ueberzug#clear
+fileviewer *.cbr
+	\ #ueberzug#cbr %px %py %pw %ph %c
+	\ %pc
+	\ #ueberzug#clear
+fileviewer *.cb7
+	\ #ueberzug#cb7 %px %py %pw %ph %c
+	\ %pc
+	\ #ueberzug#clear
 " imgcat
-fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*webp,*avif wezterm imgcat --width %pw --height %ph %c:p %pd
+" problems with webp and avif, that should work in wezterm
+" fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*webp,*avif wezterm imgcat --width %pw --height %ph %c:p %pd
 " sixel needs sixel lib 
 " fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*webp,*avif
 "          \ img2sixel -S -w $((%pw*9)) %c %pd,
@@ -466,17 +521,6 @@ fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*webp,*avif wezterm imgcat --wid
 " 	\ %pc
 " 	\ kitty icat --clear --silent %pd
 	 " \ identify %f
-
-"ueberzung
-" fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.xpm
-" 	\ vifmimg draw %px %py %pw %ph %c
-" 	\ %pc
-" 	\ vifmimg clear
-
-" fileviewer *.ico
-" 	\ vifmimg magickpreview %px %py %pw %ph %c
-" 	\ %pc
-" 	\ vifmimg clear
 
 " enable tree colors in folder preview
 fileviewer */,.*/ eza --color=always --tree --level=5 %c/
