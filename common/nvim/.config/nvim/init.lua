@@ -605,7 +605,9 @@ local actions = require "telescope.actions"
 					['<C-x>'] = actions.close, -- IDK why default c-c doesn't work
 					['<C-h>'] = actions.select_horizontal,
 					['<C-CR>'] = actions.file_tab,
-					-- ["<cr>"] = function(bufnr) require("telescope.actions.set").edit(bufnr, "tab drop") end  
+					['<a-a>'] = actions.add_selected_to_qflist,
+					['<a-q>'] = actions.smart_send_to_qflist + actions.open_qflist, -- send all if not selected
+						-- ["<cr>"] = function(bufnr) require("telescope.actions.set").edit(bufnr, "tab drop") end  
 					},
 				},
 			},
