@@ -110,6 +110,7 @@ set suggestoptions=normal,visual,view,otherpane,keys,marks,registers
 set confirm-=delete
 " Total size of selected files To get the total size of selected files change %s to %E, %T-alias
 set statusline="  %T%= %A %10u:%-7g %15E %20d  "
+" set statusline=#statusbar#fmt " plugin but with error
 
 autocmd DirEnter * !fasd -A %d %i
 
@@ -180,7 +181,7 @@ command! unpack atool -x %f &>/dev/null &
 nmap RR	:!atool --extract-to=%D %f <cr>
 nmap rl	:packList <cr> 
 command! packList atool -l %f %m
-nmap rc :Pack 7z <cr>
+nmap rp :Pack 7z <cr>
 " nmap rc	:!atool -a %d:t.7z %f <cr> 
 " nmap rr	:!patool extract %f <cr>
 " nmap RR	:!patool extract --outdir %D %f <cr>
@@ -282,8 +283,8 @@ nmap aa ggvG<cr>
 "unselect all
 nmap au vv<cr>
 nmap I :invert s <cr>
-nmap S	:sync <cr>
-nmap s	:sort <cr>
+nmap <A-s>	:sync <cr>
+nmap S	:sort <cr>
 nmap U	:undolist <cr>
 "podglad w panelu, maybe change to tw
 nmap w	:view <cr>
