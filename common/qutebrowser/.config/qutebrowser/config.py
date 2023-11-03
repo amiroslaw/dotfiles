@@ -223,8 +223,7 @@ config.bind('ahs', urlCmdHint+ 'url.lua --speed "{hint-url}"')
 config.bind('als', 'spawn url.lua --speed "{url}"')
 # MEDIA
 config.bind('<Ctrl-w>', 'hint --rapid links spawn mpv.lua --push {hint-url}')
-config.bind('<Shift-w>', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv
-config.bind('alm', 'spawn -v mpv.lua --makeOnline --input "{url}"')
+config.bind('<Shift-w>', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv; override qb script
 config.bind('ahv', urlCmdHint + '-v mpv.lua --videoplay {hint-url}')
 config.bind('aav', 'spawn -v mpv.lua --videolist --save --input')
 config.bind('alv', 'spawn -v mpv.lua --videoplay "{url}"')
@@ -234,8 +233,11 @@ config.bind('alp', 'spawn -v mpv.lua --popupplay {url}')
 config.bind('aha', urlCmdHint + '-v mpv.lua --audioplay {hint-url}')
 config.bind('aaa', 'spawn -v mpv.lua --audiolist --save --input')
 config.bind('ala', 'spawn -v mpv.lua --audioplay "{url}"')
-config.bind(';w', 'hint video userscript yt.lua')
-config.bind(';W', 'spawn --userscript yt.lua')
+config.bind(';w', 'hint links spawn -uv mpv-queue.sh {hint-url}')
+config.bind(';W', 'spawn -uv mpv-queue.sh {url}')
+config.bind(';p', 'hint video userscript yt.lua')
+config.bind(';P', 'spawn --userscript yt.lua')
+config.bind('alm', 'spawn -v mpv.lua --makeOnline --input "{url}"')
 # }}}
 
 # ======================= COPING OR CREATE ============= {{{
