@@ -71,6 +71,9 @@ local function getMonitor(nr)
 	local cmd = string.format("xrandr --listactivemonitors | grep '+' | awk '{print $4, $3}' | awk -F'[x/+* ]' 'NR==%d {print $2\"x\"$4\"+\"$6\"+\"$7}'", nr)
 	local stat, monitor, err = run(cmd , "Can't get windowname Id")
 	assert(stat, err)
+	if not monitor[1] then
+		errorMsg('monitor does not exist')
+	end
 	return monitor[1]
 end
 -- DISPLAYS=$(xrandr --listactivemonitors | grep '+' | awk '{print $4, $3}' | awk -F'[x/+* ]' '{print $1,$2"x"$4"+"$6"+"$7}')
@@ -100,26 +103,25 @@ end
 
 -- param and path
 local cases = {
-	["active-window"] = {' -i ' .. getActiveWindowId(), getPartialPath(true)},
-	['region'] = {' -s ',  getPartialPath() .. 'S'},
-	['monitor1'] = {' -g ' .. getMonitor(1), getPartialPath()},
-	['monitor2'] = {' -g ' .. getMonitor(2), getPartialPath()},
-	['ocr'] = {'ocr'},
+	["active-window"] = function() return ' -i ' .. getActiveWindowId(), getPartialPath(true) end,
+	['region'] = function() return ' -s ',  getPartialPath() .. 'S' end,
+	['monitor1'] = function() return ' -g ' .. getMonitor(1), getPartialPath() end,
+	['monitor2'] = function() return ' -g ' .. getMonitor(2), getPartialPath() end,
+	['ocr'] = function() return 'ocr' end,
 }
 
 local function takeScreen()
-	local params = switch(cases, target)
+	local target, partialPath = switch(cases, target)()
 	if quality then
-		params[1] = params[1] .. ' -m ' .. quality
-		params[2] = params[2] .. 'Q'
+		target = target .. ' -m ' .. quality
+		partialPath = partialPath .. 'Q'
 	end
 	local stat, err
 	local path
 	run('sleep 0.1')
 	if output=='file' then
-		-- stat, _, err = run('maim  ' .. params .. 'sc.png', "Can't take screenshot")
-		path = ('%ssc.%s'):format(params[2], format)
-		local cmd = string.format('maim -f %s %s %q', format, params[1], path)
+		path = ('%ssc.%s'):format(partialPath, format)
+		local cmd = string.format('maim -f %s %s %q', format, target, path)
 		stat, _, err = run(cmd, "Can't take screenshot")
 	else -- clipboard doesn't work with webp
 		-- can't combine with selection 
