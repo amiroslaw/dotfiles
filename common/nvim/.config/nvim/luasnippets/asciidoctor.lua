@@ -107,18 +107,21 @@ ____
 return {
 	-- s('link',),
     -- s({trig = "(https?://([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))", regTrig = true}, f(function(_, snip) return snip.captures[1].. '[]' end)),
--- formatting 
+	-- postfix(".fl" , l("[" .. vim.fn.getreg('+', 1, true)[1] .. "]")),
+-- formatting
 	postfix(".fb" , l("**" .. l.POSTFIX_MATCH .. "**")),
 	postfix(".fi" , l("__" .. l.POSTFIX_MATCH .. "__")),
 	postfix(".fc" , l("``" .. l.POSTFIX_MATCH .. "``")),
 	postfix(".fp" , l("^^" .. l.POSTFIX_MATCH .. "^^")),
-	postfix(".fb" , l("~~" .. l.POSTFIX_MATCH .. "~~")),
+	postfix(".ft" , l("~~" .. l.POSTFIX_MATCH .. "~~")),
+	postfix(".fd" , l(l.POSTFIX_MATCH .. " :: ")),
 	postfix(".ff" , c(1, {
 			l("**" .. l.POSTFIX_MATCH .. "**"),
 			l("__" .. l.POSTFIX_MATCH .. "__"),
 			l("``" .. l.POSTFIX_MATCH .. "``"),
 			l("^^" .. l.POSTFIX_MATCH .. "^^"),
 			l("~~" .. l.POSTFIX_MATCH .. "~~"),
+			l(l.POSTFIX_MATCH .. " :: "),
 		})),
 	s('ff', fmt('{}{}{} ', { 
 		c(1, {t'**', t'__', t'``', t'^^', t'~~'}),

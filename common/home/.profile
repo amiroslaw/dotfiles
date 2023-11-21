@@ -9,8 +9,9 @@ unset MANPATH
 
 # Set our default path
 export SELENIUM="$HOME/Ext/selenium/chromedriver"
-export GRAALVM_HOME="$HOME/.sdkman/candidates/java/22.2.r17-grl"
+export GRAALVM_HOME="$HOME/.local/share/sdkman/candidates/java/22.1.0.1.r17-gln/"
 PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin:$HOME/.local/share/gem/ruby/2.7.0/bin:$GRAALVM_HOME/bin:$SELENIUM"
+# PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin:$HOME/.local/share/gem/ruby/2.7.0/bin:$SELENIUM"
 export PATH
 
 export NIK=~/.local/share/sdkman/candidates/java/23.r20-nik/bin/native-image
@@ -29,6 +30,7 @@ export VISUAL="nvim"
 export GUI_EDITOR=/usr/bin/nvim-qt
 export OPENER="xdg-open"
 export PAGER="less"
+export MANPAGER="nvim +Man!"
 export TERMINAL="wezterm"
 export TERM_LT="st"
 export BROWSER="qutebrowser"
@@ -39,6 +41,7 @@ export READER="zathura"
 export VIDEO="smplayer"
 export IMAGE="pqiv"
 export GAMIFICATION="/home/miro/Documents/Ustawienia/configs/grywalizacja"
+export OLLAMA_MODELS="$HOME/Ext/ollama"
 
 # configs
 export XDG_CONFIG_DIRS=/usr/etc/xdg:/etc/xdg

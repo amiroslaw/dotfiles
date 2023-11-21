@@ -298,8 +298,11 @@ nmap o :history <cr>
 "  c-i would override tab
 nmap <A-o> :histnext <cr>
 nmap <C-o> :histprev <cr> 
-" show command  history
 nmap <A-h> :history cmd <cr>
+" reopens the last visible menu
+nmap <A-h> :copen <cr>
+" show command  history
+" nmap <A-h> :history cmd <cr>
 " history search 
 nmap <C-h> :history search <cr>
 

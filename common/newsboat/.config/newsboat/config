@@ -24,12 +24,16 @@ bind-key S rev-sort
 #show-read-feeds no
 # auto-reload yes # I use cron
 # external-url-viewer "urlscan -dc -r 'linkhandler {}'"
+reload-time 60
+reload-threads 15
 external-url-viewer "~/.config/newsboat/link.sh {}"
-reload-threads 10
 notify-program "/usr/bin/notify-send"
 error-log "~/.local/share/newsboat/error.log"
 scrolloff 5
-prepopulate-query-feeds yes
+wrap-scroll yes
+# show unread items from query
+prepopulate-query-feeds no
+# confirm-mark-feed-read no
 
 max-browser-tabs 30 # when using the open-all-unread-in-browser or open-all-unread-in-browser-and-mark-read commands.
 # filters
