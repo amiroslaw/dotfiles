@@ -1,0 +1,61 @@
+{
+  "grammar-append": {
+    "type": "chat",
+    "opts": {
+      "template": "Modify the following {{lang}} text to improve only grammar and spelling:  \n\n{{input}}",
+      "strategy": "append",
+      "params": {
+        "model": "mistral:7b",
+        "temperature": 0.3
+      }
+    },
+    "args": {
+      "lang": {
+        "type": "string",
+        "optional": "true",
+        "default": "english"
+      }
+    }
+  },
+  "translate-append": {
+    "type": "chat",
+    "opts": {
+      "template": "Translate this into {{lang}}:\n\n{{input}}",
+      "strategy": "append",
+      "params": {
+        "model": "mistral:7b",
+        "temperature": 0.3
+      }
+    },
+    "args": {
+      "lang": {
+        "type": "string",
+        "optional": "true",
+        "default": "english"
+      }
+    }
+  },
+  "format-adoc": {
+    "type": "chat",
+    "opts": {
+      "template": "Render the following text as a asciidoc {{what}}, in this pattern(note that `|` doesn't exist on the end  of the line) \n
+	|===\n
+	| cell 11 | cell 12 \n
+	| cell 21 | cell 22 \n
+	|===
+	  :\n\n{{input}}",
+      "strategy": "replace",
+      "params": {
+        "model": "mistral:7b"
+      }
+    },
+    "args": {
+      "what": {
+        "type": "string",
+        "optional": "false",
+        "default": "table"
+      }
+    }
+  }
+
+}

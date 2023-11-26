@@ -40,8 +40,8 @@ super + {_,shift} + Escape
 	{dunstctl close-all,dunstctl history-pop}
 
 # In case bspwmrc fails to execute/you wish have plugged in a new monitor
-super + shift + r
-	bspwmrc
+super + {_,shift} + r
+	{rofi-chat.sh, bspwmrc}
 
 #
 # Window manipulation

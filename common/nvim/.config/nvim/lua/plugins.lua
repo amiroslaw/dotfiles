@@ -78,6 +78,17 @@ return {
 		event = "BufReadPost", 
 		opts = true,
 	},
+	{ "huynle/ogpt.nvim",
+		event = "VeryLazy",
+		opts = {
+			actions_paths = { '~/.config/nvim/custom/ogpt-actions.json'}
+		},
+		dependencies = {
+		  "MunifTanjim/nui.nvim",
+		  "nvim-lua/plenary.nvim",
+		  "nvim-telescope/telescope.nvim"
+		}
+	},
 	--}}}
 
 	--{{{ Note

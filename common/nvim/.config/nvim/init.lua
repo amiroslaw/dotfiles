@@ -36,7 +36,7 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 	command = [[set filetype=text]],
 })
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
-	pattern = { 'qutebrowser-editor-*', 'tmpcompose.txt' },
+	pattern = { 'qutebrowser-editor-*', 'tmpcompose.txt', '/tmp/txt/*' },
 	command = [[setlocal spell spelllang=en | startinsert]],
 })
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
@@ -133,6 +133,7 @@ vim.opt.iskeyword:append('-') -- words separeted by - will recognise as a one wo
 
 -- SHORTCUTS {{{
 -- map functions {{{
+local key = vim.keymap.set
 function map(mode, shortcut, command, opts)
 	local options = { noremap = true, silent = true }
 	-- if opts ~= nil and opts.nowait then options.nowait = true end
@@ -891,8 +892,26 @@ vim.keymap.set({"i", "s"}, "<C-h>", function()
 	if ls.choice_active() then
 		ls.change_choice(1)
 	end
-end, {silent = true})
+end, {silent = true, desc = 'luasnip next choice' })
 -- }}} 
+
+--{{{ ogpt https://github.com/huynle/ogpt.nvim
+key('n', '<LocalLeader>oo', '<cmd>OGPT<CR>', {desc = 'OGPT'} )
+key('n', '<LocalLeader>oa', '<cmd>OGPTActAs<CR>', {desc = 'OGPTActAs'} )
+key({ "n", "v" }, '<LocalLeader>oe', "<cmd>OGPTEditWithInstruction<CR>", { desc = "Edit with instruction",  })
+key({ "n", "v" }, '<LocalLeader>oc', "<cmd>OGPTRun grammar-append<CR>", { desc = "Grammar Correction",  })
+key({ "n", "v" }, '<LocalLeader>ol', "<cmd>OGPTRun translate-append<CR>", { desc = "Translate to english",  })
+key({ "n", "v" }, '<LocalLeader>oL', "<cmd>OGPTRun translate-append polish<CR>", { desc = "Translate to polish",  })
+key({ "n", "v" }, '<LocalLeader>ok', "<cmd>OGPTRun keywords<CR>", { desc = "Keywords",  })
+key({ "n", "v" }, '<LocalLeader>oj', "<cmd>OGPTRun javdoc<CR>", { desc = "Java documentation",  })
+key({ "n", "v" }, '<LocalLeader>ot', "<cmd>OGPTRun add_tests<CR>", { desc = "Add Tests",  })
+key({ "n", "v" }, '<LocalLeader>oi', "<cmd>OGPTRun optimize_code<CR>", { desc = "Optimize Code",  })
+key({ "n", "v" }, '<LocalLeader>os', "<cmd>OGPTRun summarize<CR>", { desc = "Summarize",  })
+key({ "n", "v" }, '<LocalLeader>ob', "<cmd>OGPTRun fix_bugs<CR>", { desc = "Fix Bugs",  })
+key({ "n", "v" }, '<LocalLeader>ox', "<cmd>OGPTRun explain_code<CR>", { desc = "Explain Code",  })
+key({ "n", "v" }, '<LocalLeader>or', "<cmd>OGPTRun code_readability_analysis<CR>", { desc = "Code Readability Analysis",  })
+key({ "n", "v" }, '<LocalLeader>of', "<cmd>OGPTRun format-adoc table<CR>", { desc = "Format asciidoc table",  })
+--}}} 
 
 -- COLORSCHEMES {{{
 local function getBackground(hour)
