@@ -28,14 +28,13 @@ getConfigProperties(path) - - Read configuration file with key=value format. Fun
 switch(cases, pattern)
 notify("title", 'description', style) --  title can be a string or table
 notifyError(string)
-rofiNumberInput([prompt])
-rofiInput([rofiOptions]) 
 rofiMenu(entriesTab, [rofiOptions]), returns table if selected multiple items or string otherwise. For the second argument returns keybinding, if custom keys were provided.
 createTmpFile([rofiOptions]) creates TmpFile in /tmp/lua/ returns filepath and fileName
 editor(path|text, [editorName]) Opens file or text in editor. 
 dialog(msg, [style]) - show rofi's dialog
 optionTab - Options can be parser form an array (ordered table) or a dictionary.
-rofiInput - optional arguments that can be passed via table
+rofiNumberInput([prompt])
+rofiInput([rofiOptions])  optional arguments that can be passed via table
 	prompt (string)
 	height (number)-  max lines than rofi can show
 	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
@@ -485,6 +484,7 @@ opt - optional arguments that can be passed via table
 	prompt (string)
 	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
 	msg (string) - Message information, accepts pango markup(html like).
+TODO maybe change to rofiInput(prompt, [options])
 --]]
 function rofiInput(options) 
 	local opt = combineOptions(options)

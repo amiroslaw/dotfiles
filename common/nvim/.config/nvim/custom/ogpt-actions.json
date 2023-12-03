@@ -2,7 +2,7 @@
   "grammar-append": {
     "type": "chat",
     "opts": {
-      "template": "Modify the following {{lang}} text to improve only grammar and spelling:  \n\n{{input}}",
+      "template": "Modify the following {{lang}} text to improve only grammar and spelling, don't wrap the answer with quotation marks:  \n\n{{input}}",
       "strategy": "append",
       "params": {
         "model": "mistral:7b",

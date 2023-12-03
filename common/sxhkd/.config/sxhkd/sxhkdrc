@@ -41,7 +41,7 @@ super + {_,shift} + Escape
 
 # In case bspwmrc fails to execute/you wish have plugged in a new monitor
 super + {_,shift} + r
-	{rofi-chat.sh, bspwmrc}
+	{chat.lua, bspwmrc}
 
 #
 # Window manipulation
