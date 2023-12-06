@@ -95,6 +95,7 @@ browser "~/.config/newsboat/link.sh"
 # uppercase chars are alternative actions
 # help
 macro h set browser "notify-send %u 'm: dmenu\n b: browser\n l/L:rdrview-lynx/lynx\n w/W: rdrview-w3m/w3m\n i/I:image\n c: copy link\n r/R:read\n s: rsvp\n\nDOWNLOAD(unread)\n d/D: audio\n y/Y: video\n k/K: kindle\n\nMEDIA(play)\n j: metadata\n ;/: → push [all] to playlist\n p/P: popup\n a/A: audio\n v/V: video'" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro f set browser "sauron.sh" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
 macro m set browser "~/.config/newsboat/dmenuhandler.sh" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro b set browser "setsid -f $BROWSER" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro l set browser "rdrview -A 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36' -B lynx" ; open-in-browser ; set browser ~/.config/newsboat/link.sh

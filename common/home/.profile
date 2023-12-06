@@ -42,6 +42,7 @@ export VIDEO="smplayer"
 export IMAGE="pqiv"
 export GAMIFICATION="/home/miro/Documents/Ustawienia/configs/grywalizacja"
 export OLLAMA_MODELS="$HOME/Ext/ollama"
+export OLLAMA_HOST=":11434"
 
 # configs
 export XDG_CONFIG_DIRS=/usr/etc/xdg:/etc/xdg

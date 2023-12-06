@@ -51,7 +51,7 @@ M = require "moses"
 -- like operators but can take arguments
 -- extends by than; usefull if you need pass a param filter, or map
 M.fun = {}
--- example of grater than: filter(seq, fun.gt(4))
+-- example of grater than: :filter(M.fun.gt(4))
 M.fun.gt  = function(n) return function(m) return m > n end end;
 M.fun.lt  = function(n) return function(m) return m < n end end;
 M.fun.eq  = function(n) return function(m) return m == n end end;
@@ -256,6 +256,7 @@ end
 
 -- run <<<
 --[[
+TODO - better return values in this order [output, status, error], It would be better for Moses library - M(run(cmd)), but we will lose error handling
 Warning: can't be execute in parallel, also sometimes have problem with reading output from tmp files. - fix with tmp file name
 
 This is kind of a wrapper function to os.execute and io.popen.

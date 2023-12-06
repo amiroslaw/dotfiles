@@ -29,6 +29,7 @@ trackball.sh &
 nm-applet &
 nvidia-fan.sh -c ~/.config/nfancurve/config &
 sleep 200 && newsboat -x reload &
+# jeszcze jest parametr do zmiany folderu z modelem
 sleep 200 && ollama serve &
 sleep 500 && megasync &
 # sleep 500 && gcal-show.sh &

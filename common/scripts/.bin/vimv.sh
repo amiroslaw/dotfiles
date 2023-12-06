@@ -4,6 +4,7 @@ set -eu
 # Lists the current directory's files in Vim, so you can edit it and save to rename them
 # USAGE: vimv [file1 file2]
 # https://github.com/thameera/vimv
+# can't add a folder/file
 
 declare -r FILENAMES_FILE=$(mktemp "${TMPDIR:-/tmp}/vimv.XXX")
 

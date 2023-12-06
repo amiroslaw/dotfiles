@@ -1,4 +1,6 @@
 #!/usr/bin/luajit
+-- maybe remove renameLastPlaylist i renamePlaylist  bo i tak mam rofi menu który po prostu to robi przez funkcję rename
+-- czy gdzieś jest używane --metadata - chyba w mpv
 
 function help()
 print [[
@@ -17,8 +19,9 @@ Actions:
 	--videolist -V → Play video from the playlist
 	--popupplay -p → Play video in lower resolution from the url
 	--popuplist -P → Play video in lower resolution from the playlist
-	--makeLocal -l → Create playlist (m3u) from the directories in current location 
-	--makeOnline -m → Create playlist (m3u) from the url `--push` command
+	--localList -l → Create playlist (m3u) from the directories in current location 
+	--queueList -q → Create playlist (m3u) from the pueue
+	--onlineList -m → Create playlist (m3u) from the YT playlist
 	--open -o [--list] [dir] → Open and manage videos or playlists
 	--rename -n [dir] → Change name of the last playlist
 	--metadata -M → Retrieves metadata form the video
@@ -37,8 +40,8 @@ mpv.lua --push url
 mpv.lua --videolist --save=custom-playlist-name
 mpv.lua --videolist --input
 mpv.lua --rename=custom-playlist-name
-mpv.lua --makeLocal --input ~/Videos
-mpv.lua --makeLocal --save=YouTube ~/Videos/yt
+mpv.lua --localList --input ~/Videos
+mpv.lua --localList --save=YouTube ~/Videos/yt
 mpv.lua --audioplay --resume
 
 In order to change stream format and options it's needed to add the profiles `stream` and `stream-popup` into the mpv.conf file.
@@ -95,13 +98,6 @@ if args.resume or args.r then
 	end
 end
 
-local function getHost()
-	-- local pageUrl = assert(io.open(TMP_PLAYLIST, 'r'):read('*l'), 'Did not read page url') -- reads first line
-	local playlist = readf(TMP_PLAYLIST) 
-	local pageUrl = playlist[#playlist] -- gets last line
-	-- return (pageUrl .. '/'):match '://(.-)/'
-	return pageUrl:match('^%w+://([^/]+)'):gsub('www.', ''):match '([^.]+)'
-end
 
 local function buildName(defaultName)
 	if args.input or args.i then
@@ -122,16 +118,45 @@ local function buildName(defaultName)
 	return defaultName
 end
 
-local function savePlaylist()
-	if args.save or args.s or args.input or args.i then
-		assert(os.execute('mkdir -p ' .. DIR_PLAYLISTS) == 0, 'Did not create playlist dir ' .. DIR_PLAYLISTS)
-		local defaultName = os.date '%Y-%m-%dT%H%M-' .. getHost()
-		local listName = buildName(defaultName)
-		if listName then
-			assert( os.execute('mv ' .. TMP_PLAYLIST .. ' "' .. DIR_PLAYLISTS .. '/' .. listName .. '.m3u"') == 0, 'Did not move playlist to ' .. DIR_PLAYLISTS)
-		end
+local function getMetadata(url)
+	local extinf = ''
+	local ok, out, err = run('yt-dlp -i --print duration,title "' .. url .. '"', "Can't get metadata form: " .. url)
+	if not ok then
+		log(err, 'WARNING')	
 	end
-	assert(os.execute('rm -f ' .. TMP_PLAYLIST) == 0, 'Did not remove playlist')
+	if #out == 2 then
+		extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
+	end
+	return extinf .. url
+end
+
+local function makeQueueList(group)
+
+local urlPattern = '(https?://([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))'
+local _,out = run(("pueue status --json | jq -r '.tasks.[] | select(.group == \"%s\") | .command'"):format(group))
+
+if #out == 0 then
+	notify('No url in the ' .. group)
+	return
+end
+local links =  M(out)
+	:map(M.fun.match(urlPattern))
+	:keys()
+	:value()
+	
+	local hostName = links[1]:match('^%w+://([^/]+)'):gsub('www.', ''):match '([^.]+)'
+	local defaultName = os.date '%Y-%m-%dT%H%M-' .. hostName
+	local listName = buildName(defaultName)
+
+-- :filter(M.fun.contains(urlPattern))
+local playlistNameTemplate = '#EXTM3U\n#PLAYLIST: ' .. listName .. '\n'
+local playlistTemplate = playlistNameTemplate .. M(links)
+	:map(getMetadata)
+	:concat('\n')
+	:value()
+
+	assert(os.execute('mkdir -p ' .. DIR_PLAYLISTS) == 0, 'Did not create playlist dir ' .. DIR_PLAYLISTS)
+	io.open(('%s/%s.m3u'):format(DIR_PLAYLISTS,listName), 'w'):write(playlistTemplate)
 end
 
 local function play(url, cmd)
@@ -146,20 +171,6 @@ end
 local function list(cmd)
 	local ok, _, err = run(cmd .. TMP_PLAYLIST, 'Error: run mpv list' )
 	assert(ok, err)
-	savePlaylist()
-end
-
-local function push(url)
-	local extinf = ''
-	local ok, out, err = run('yt-dlp -i --print duration,title "' .. url .. '"', "Can't get metadata form: " .. url)
-	print('yt-dlp -i --print duration,title ' .. url, "Can't get metadata form: " .. url)
-	if not ok then
-		log(err, 'WARNING')	
-	end
-	if #out == 2 then
-		extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
-	end
-	assert(io.open(TMP_PLAYLIST, 'a'):write(extinf .. url .. '\n'))
 end
 
 local function renamePlaylist(playlistName)
@@ -175,7 +186,7 @@ local function renameLastPlaylist()
 	renamePlaylist(latestPlaylist[1])
 end
 
-local function makeLocal()
+local function makeLocalList()
 	if param then
 		param =' --search-path="' .. param .. '"'
 	end
@@ -196,7 +207,7 @@ local function toMetaVideo(data)
 	return { url = data[1] , title = data[2], duration = data[3], channel = data[4], }
 end
 
-local function makeOnline()
+local function makeOnlineList()
 	local ok,out, err = run('yt-dlp -i --print original_url,title,duration,playlist_title "' .. param .. '"')
 	-- assert(ok, err) -- has an error with hidden or private videos
 	if not ok then
@@ -207,7 +218,6 @@ local function makeOnline()
 	if not playlistName then
 		return
 	end
-	local playlistInit = {}
 
 	local playlist = M(M.tabulate(M.partition(out,4)))
 						:map(toMetaVideo)
@@ -243,6 +253,7 @@ local function delete(selected)
 	end
 end
 
+-- for rofi menu
 local function rename(selected) 
 	args.input = true;
 	for _,playlist in ipairs(selected) do
@@ -254,6 +265,74 @@ end
 local function archive(selected) 
 	assert(os.execute('mkdir -p ' .. DIR_ARCHIVE) == 0, 'Did not create playlist dir ' .. DIR_ARCHIVE)
 	return 'mv ' .. concatPath(selected) .. ' "' .. DIR_ARCHIVE .. '"'
+end
+
+-- stop
+local function killQueue(group)
+	group = group and group or 'default'
+	local killStatus, _, err = run(("pueue kill -g %s"):format(group))
+	assert(killStatus, err)
+end
+
+-- A killed job will be restarted.
+local function restartQueue(group)
+	group = group and group or 'default'
+-- local		fetchStatus, queued = run(("pueue status -g %s --json | jq -c '.tasks.[] | select(.status == \"Queued\") | .id'"):format(group))
+-- will return error cos unfinished jobs doesn't have "done" value
+-- print(("pueue status --json | jq -r '.tasks.[] | select(.status.Done == \"Killed\" && .group == \"%s\") | .id'"):format(group))
+-- local		_, queued = run(("pueue status --json | jq -r '.tasks.[] | select(.status.Done == \"Killed\" && .group == \"%s\") | .id'"):format(group))
+-- local		_, queued = run(("pueue status -g %s --json | jq -r '.tasks.[] | select(.status.Done == \"Killed\") | .id'"):format(group))
+-- 		if #queued == 0 then
+-- 			notify('Any task to restart')
+-- 			return
+-- 		end
+-- 		local killedJobId = queued[1]
+-- 		nie trzeba id 
+		local restartStatus, err = run(("pueue restart -i -g %s"):format(group))
+		assert(restartStatus, err)
+		local startStatus, err = run(("pueue start -g %s"):format(group, killedJobId))
+		assert(startStatus, err)
+end
+
+-- TODO trzeba startować kolejkę po usunięciu
+-- remove jobs
+local function resetQueue(group)
+	group = group and group or 'default'
+	killQueue(group)
+	local _,ids = run(("pueue status --json | jq -r '.tasks.[] | select(.group == \"%s\") | .id'"):format(group))
+	ids = table.concat(ids, ' ')
+	print("pueue remove " .. ids)
+	local ok, _, err = run("pueue remove " .. ids)
+	assert(ok, err)
+end
+
+local function menu()
+	-- run("pueue status --json | jq -r '.groups'")
+	local _, groups = run("pueue status --json | jq -r '.tasks[].group'")
+	groups = M(groups):unique():value()
+	local prompt = 'Available queues; default:restart'
+	local keys = {
+		['Alt-k'] = 'kill',
+		['Alt-d'] = 'delete',
+		['Alt-l'] = 'm3u',
+	}
+
+	local selected, keybind = rofiMenu(groups, {prompt = prompt, keys = keys})
+ -- width = '95%'
+ 
+	 if selected == '' then
+		return
+	 end
+ 
+	if keys[keybind] == 'kill' then
+		killQueue(selected)
+	elseif keys[keybind] == 'delete' then
+		resetQueue(selected)
+	elseif keys[keybind] == 'm3u' then
+		createPlaylist(selected)
+	else -- default
+		restartQueue(selected)
+	end
 end
 
 -- When selected few playlists, they will be nested.
@@ -344,7 +423,7 @@ local function metadata()
 end
 
 local cases = {
-	['push'] = push, ['u'] = push,
+	['queueMenu'] = menu, ['m'] = menu,
 	['audioplay'] = M.bind2(play, CMD_AUDIO), ['a'] = M.bind2(play, CMD_AUDIO),
 	['audiolist'] = M.bind(list, CMD_AUDIO), ['A'] = M.bind(list, CMD_AUDIO),
 	['videoplay'] = M.bind2(play, CMD_VIDEO), ['v'] = M.bind2(play, CMD_VIDEO),
@@ -352,8 +431,9 @@ local cases = {
 	['popupplay'] = M.bind2(play, CMD_POPUP), ['p'] = M.bind2(play, CMD_POPUP),
 	['popuplist'] = M.bind(list, CMD_POPUP), ['P'] = M.bind(list, CMD_POPUP),
 	['ytsearch'] = ytsearch, ['y'] = ytsearch,
-	['makeLocal'] = makeLocal, ['l'] = makeLocal,
-	['makeOnline'] = makeOnline, ['m'] = makeOnline,
+	['localList'] = makeLocalList, ['l'] = makeLocalList,
+	['queueList'] = makeQueueList, ['q'] = makeQueueList,
+	['onlineList'] = makeOnlineList, ['i'] = makeOnlineList,
 	['metadata'] = metadata, ['M'] = metadata,
 	['open'] = openPlaylist, ['o'] = openPlaylist,
 	['rename'] = renameLastPlaylist, ['n'] = renameLastPlaylist,

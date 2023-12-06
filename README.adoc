@@ -1,9 +1,8 @@
 == dot files 
-My configurations. Currently, I use Manjaro with bspwm as a window manager and sxhkd. My goal is to make ergonomically environment - mostly I try to avoid using a mice and automate the mostly used actions. I like to follow to https://en.wikipedia.org/wiki/Unix_philosophy[Unix philosophy], so many programs that I use are small and can be run in terminal.
+My configurations. Currently, I use Manjaro with bspwm as a window manager and sxhkd. My goal is to make ergonomically environment - mostly, I try to avoid using a mouse and automate the mostly used actions. I like to follow to the https://en.wikipedia.org/wiki/Unix_philosophy[Unix philosophy], so many programs that I use are small and can be run in terminal.
 
 === The favorite programs 
-I want to highlight apps that I heavily use and they are crucial to my daily workflow. Many keybindings run my custom scripts. I prefer lua(jit) for scripting.
-
+I want to highlight apps that I heavily use and they are crucial to my daily workflow. Many keybindings run my custom scripts. I prefer Lua(JIT) for scripting.
 
 * https://qutebrowser.org/[qutebrowser - web browser]
 * https://davedavenport.github.io/rofi/[rofi - dmenu replacement]

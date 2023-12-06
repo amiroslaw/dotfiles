@@ -1,0 +1,20 @@
+[Unit]
+Description=Ollama Service
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+ExecStart=/usr/bin/ollama serve
+WorkingDirectory=/home/miro/Ext/ollama
+Environment="HOME=/home/miro/Ext/ollama"
+Environment="GIN_MODE=release"
+User=miro
+Group=miro
+Restart=on-failure
+RestartSec=3
+Type=simple
+PrivateTmp=yes
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

@@ -38,12 +38,8 @@
   "format-adoc": {
     "type": "chat",
     "opts": {
-      "template": "Render the following text as a asciidoc {{what}}, in this pattern(note that `|` doesn't exist on the end  of the line) \n
-	|===\n
-	| cell 11 | cell 12 \n
-	| cell 21 | cell 22 \n
-	|===
-	  :\n\n{{input}}",
+      "template": "Render the following text as a asciidoc {{what}}. Remove `|` from the end of the each row, align borders. Append and prepend `|===` to the table. Do not add notes, headings or additional words: \n
+	  {{input}}",
       "strategy": "replace",
       "params": {
         "model": "mistral:7b"

@@ -195,10 +195,12 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui", \
 	todo.lua add, \
-	setup.lua add, \
+	sauron.lua --queue, \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/power.sh
 	}
+
+# setup.lua add, \
 # scratchpad.sh  "$TERM_LT -c portfolio -n portfolio -e nvim ~/.config/investing/portfolio.yaml", \
 
 # youtube

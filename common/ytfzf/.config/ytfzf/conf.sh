@@ -1,6 +1,19 @@
 keep_cache=1
 
 video_pref=1080
+# video_player="sauron.sh"
+
+# load_url_handler()
+video_player () {
+   #check if detach is enabled
+   case "$is_detach" in
+   #    #disabled
+      0) sauron.sh "$@" ;;
+   #    #enabled
+      1) setsid -f sauron.sh "$@" > /dev/null 2>&1 ;;
+     esac
+}
+
 # The preference to use for youtube-dl in mpv.
 # $ytdl_pref
 # default: $video_pref+$audio_pref/best/$video_pref/$audio_pref

@@ -44,9 +44,11 @@ bspc config focus_follows_pointer true
 #bspc config pointer_follows_focus true #Some keybindings automatically enable and disable this setting
 
 ## TIPS
-# bspc -a class_name:instance_name:name → all *; first string in xprop WM_CLASS is instance_name 
-# in xprop WM_CLASS(STRING) = "Toolkit"(instance_name), "firefox" (class_name); WM_NAME(STRING) = "Progress"(name)
+# bspc -a class_name:instance_name → all *; first string in xprop WM_CLASS is instance_name 
+# in xprop WM_CLASS(STRING) = "Toolkit"(instance_name), "firefox" (class_name); 
 # in st -n ; alacritty --class; wezterm start --class instance_name -- top -c == instance_name
+# 3th parameter doesn't exist
+# WM_NAME(STRING) = "Progress"(name)
 
 bspc rule -a screenkey --unmanage
 bspc rule -a gcolor2 state=floating center=true
@@ -72,10 +74,12 @@ bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
 bspc rule -a Zathura state=tiled
 bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
 bspc rule -a '(?i)zenity' state=floating
-bspc rule -a '*:zenity:Progress' state=floating sticky=on focus=off layer=above center=false rectangle=188x85+1720+400
 bspc rule -a yad state=floating
 bspc rule -a menu state=floating
 bspc rule -a Pqiv state=fullscreen
+
+# 3th parameter doesn't exist
+# bspc rule -a '*:zenity:Progress' state=floating sticky=on focus=off layer=above center=false rectangle=188x85+1720+400
 
 ## Custom classes and names
 bspc rule -a '*:rsvp' state=floating sticky=on layer=above rectangle=1100x150+0+0 center=true

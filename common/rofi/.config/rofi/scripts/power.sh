@@ -13,7 +13,7 @@ set -e
 set -u
 
 # All supported choices
-all=(shutdown reboot suspend hibernate logout lockscreen)
+all=(shutdown reboot suspend hibernate screensaver logout lockscreen)
 
 # By default, show all (i.e., just copy the array)
 show=("${all[@]}")
@@ -26,6 +26,7 @@ texts[suspend]="suspend"
 texts[hibernate]="hibernate"
 texts[reboot]="reboot"
 texts[shutdown]="shut down"
+texts[screensaver]="screensaver"
 
 declare -A icons
 icons[lockscreen]="\uf023"
@@ -35,6 +36,7 @@ icons[suspend]="\uf9b1"
 icons[hibernate]="\uf7c9"
 icons[reboot]="\ufc07"
 icons[shutdown]="\uf011"
+icons[screensaver]="󰹑"
 icons[cancel]="\u00d7"
 
 declare -A actions
@@ -45,6 +47,7 @@ actions[suspend]="systemctl suspend"
 actions[hibernate]="systemctl hibernate"
 actions[reboot]="systemctl reboot"
 actions[shutdown]="systemctl poweroff"
+actions[screensaver]="xset dpms force off"
 
 # By default, ask for confirmation for actions that are irreversible
 confirmations=(reboot shutdown logout)

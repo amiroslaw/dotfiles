@@ -1,0 +1,5 @@
+mpv-fullscreen: 'mpv --profile=stream '
+mpv-popup: 'mpv --x11-name=videopopup --profile=stream-popup '
+mpv-audio: 'st -c audio -e mpv --profile=stream-audio '
+dl-video: yt-dlp --embed-metadata -o "~/Videos/YouTube/%(title)s.%(ext)s"
+dl-audio: yt-dlp --embed-metadata -f bestaudio -x --audio-format mp3 -o "~/Musics/PODCASTS/%(title)s.%(ext)s"

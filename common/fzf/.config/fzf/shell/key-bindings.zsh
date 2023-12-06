@@ -27,7 +27,8 @@
 # bindkey '\ef' → alt '^F' ctr
 
 # global
-export FZF_DEFAULT_OPTS='--height 80% --layout=reverse --border --bind tab:down,shift-tab:up,alt-j:down,alt-k:up,alt-l:accept,ctrl-a:select-all+accept'
+# export FZF_DEFAULT_OPTS='--height 80% --layout=reverse --border --bind tab:down,shift-tab:up,alt-j:down,alt-k:up,alt-l:accept,ctrl-a:select-all+accept' problem with selection in multi 
+export FZF_DEFAULT_OPTS='--height 80% --layout=reverse --border --bind alt-j:down,alt-k:up,alt-l:accept,ctrl-a:select-all+accept'
 export FZF_DEFAULT_COMMAND='fd'
 
 export FZF_PATH_COMMAND='fd'
