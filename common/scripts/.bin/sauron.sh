@@ -41,7 +41,7 @@ fullscreen() {
     printf "%s\n" "${input}" | \
     while read line
     do
-		pueue add -g mpv-video -- mpv-fullscreen "${line}" 1>/dev/null
+		pueue add -g mpv-fullscreen -- mpv-fullscreen "${line}" 1>/dev/null
     done
 }
 
@@ -49,7 +49,7 @@ popup() {
     printf "%s\n" "${input}" | \
     while read line
     do
-		pueue add -g mpv-video -- mpv-popup "${line}" 1>/dev/null
+		pueue add -g mpv-popup -- mpv-popup "${line}" 1>/dev/null
     done
 }
 
@@ -65,7 +65,7 @@ audio='audio        - mpd play audio'
 popup='popup        - mpv play popup video' 
 fullscreen='fullscreen   - mpv play fullscreen' 
 dl_video='dl-video     - yt-dlp download video'
-dl_audio='dl_audio     - yt-dlp download audio'
+dl_audio='dl-audio     - yt-dlp download audio'
 kindle='kindle        - download kindle article' 
 
 # fzf prompt to specify function to run on links from ytfzf

@@ -195,7 +195,7 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui", \
 	todo.lua add, \
-	sauron.lua --queue, \
+	qu.lua --menu, \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/power.sh
 	}

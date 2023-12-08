@@ -13,7 +13,8 @@ fi
 
 case "$url" in
 	*mkv|*webm|*mp4|*youtube.com/watch*|*youtube.com/playlist*|*youtube.com/shorts*|*youtu.be*|*hooktube.com*|*bitchute.com*|*odysee.com*)
-		setsid -f mpv.lua --videoplay "$url" >/dev/null 2>&1 ;;
+		pueue add -g mpv-fullscreen -- mpv-fullscreen "${url}" >/dev/null ;;
+		# setsid -f mpv.lua --videoplay "$url" >/dev/null 2>&1 ;;
 		# notify-send "newboat mpv" && setsid -f url.lua video "$url" >/dev/null 2>&1 ;;
 	*.png*|*.jpg*|*.jpe*|*.jpeg*|*.gif*)
 		curl -sL "$url" > "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")" && sxiv -a "/tmp/$(echo "$url" | sed "s/.*\///;s/%20/ /g")"  >/dev/null 2>&1 & ;;

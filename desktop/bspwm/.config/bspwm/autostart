@@ -6,7 +6,10 @@ export $(dbus-launch)
 screenlayout &
 wmname LG3D &
 ~/.config/polybar/launch.sh &
+# cursor theme
 xsetroot -cursor_name left_ptr &
+# hide cursor
+unclutter &
 sxhkd -c $HOME/.config/sxhkd/sxhkdrc.ext $HOME/.config/sxhkd/sxhkdrc &
 
 # picom --experimental-backends &
@@ -28,6 +31,7 @@ redshift -l 51.2:22.6 &
 trackball.sh &
 nm-applet &
 nvidia-fan.sh -c ~/.config/nfancurve/config &
+ifconfig wlo1 | awk '/inet / {print $2}' > "$PRIVATE/ip4pc" &
 sleep 200 && newsboat -x reload &
 # jeszcze jest parametr do zmiany folderu z modelem
 sleep 200 && ollama serve &
