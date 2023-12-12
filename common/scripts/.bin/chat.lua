@@ -1,36 +1,46 @@
 #!/bin/luajit
-local prompt = rofiInput({prompt = '  ', width = '70%'})
-if prompt == '' then
-	os.exit(1)
-end
 local OUT_DIR ='/tmp/txt/'
 local DATE_STAMP= os.date('%d-%H%M%S')
 local FILE = OUT_DIR .. 'ollama-' .. DATE_STAMP .. '.txt'
-os.execute('mkdir -p ' .. OUT_DIR)
-
 local OLLAMA_API_HOST = os.getenv 'OLLAMA_API_HOST'
+-- local font = os.getenv('TERM_LT_FONT'):format(18)
+local termRun = os.getenv 'TERM_LT' .. os.getenv('TERM_LT_RUN')
 local host = OLLAMA_API_HOST and OLLAMA_API_HOST or 'http://localhost:11434'
-
-local model = 'mistral'
-local serverCallCmd = [[
+local tagsCmd = ("curl %s/api/tags | jq -r '.models[].name' | rofi -dmenu"):format(host)
+local generateCmd = [[ 
 curl %s/api/generate -d '{ "model": "%s", "prompt": "%s", "stream": false }' | jq -r '.response'
 ]]
+local model = 'mistral'
 
 local function handleServiceError(answer)
-	if answer == '' then
+	if answer and answer == '' then
 		notifyError('Failed to connect to ' .. host)
 		os.exit(1)
 	end
 end
 
--- print(serverCallCmd:format(host, model, prompt))
-local answer = io.popen(serverCallCmd:format(host, model, prompt)):read '*a'
+if arg[1] and arg[1] == 'list' then
+	model = io.popen(tagsCmd:format(host)):read '*l'
+	handleServiceError(model)
+end
+
+local prompt = rofiInput({prompt = '  ', width = '70%'})
+if prompt == '' then
+	os.exit(1)
+end
+
+-- escape: '
+prompt = prompt:gsub("'", "'\\''")
+local answer = io.popen(generateCmd:format(host, model, prompt)):read '*a'
+print(generateCmd:format(host, model, prompt))
 handleServiceError(answer)
+
 print('----------------------------------------------\n')
 print(answer)
 
+os.execute('mkdir -p ' .. OUT_DIR)
 writef(answer, FILE)
 
-os.execute('st -c chat -n chat -e nvim ' .. FILE)
+os.execute(termRun:format('chat', 'nvim ' .. FILE))
 -- # zenity --info --text="$ANSWER"
 -- # wezterm start --class read -- nvim  $FILE

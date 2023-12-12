@@ -76,8 +76,6 @@ function cheat()
 		status = os.execute('curl cht.sh/' .. topic .. '~' .. query .. '?T' .. ' > ' .. tmpFile)
 	end
 	assert(status == 0, 'Can not fetch data')
-	-- terminal = os.getenv('TERM') - won't have class or title name option
-	-- os.execute("wezterm start --class cheatsh -- less -R " .. tmpFile)
 	os.execute('st -c cheatsh -n cheatsh -e nvim ' .. tmpFile)
 end
 end

@@ -31,8 +31,14 @@ export GUI_EDITOR=/usr/bin/nvim-qt
 export OPENER="xdg-open"
 export PAGER="less"
 export MANPAGER="nvim +Man!"
+# TERM is not available 
 export TERMINAL="wezterm"
-export TERM_LT="st"
+export TERM_FONT=" --config font_size=%d "
+# export TERM_RUN=" start --class '%s' -- %s "
+export TERM_RUN=' start --class "%s" -- %s '
+export TERM_LT="xst"
+export TERM_LT_FONT=" -f 'UbuntuMono Nerd Font:size=%d' "
+export TERM_LT_RUN=' -c "%s" -e %s'
 export BROWSER="qutebrowser"
 # export BROWSER="org.qutebrowser.qutebrowser.desktop"
 export READER="zathura"

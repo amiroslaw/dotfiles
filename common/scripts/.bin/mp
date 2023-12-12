@@ -14,7 +14,7 @@ manExe="man $manual"
 
 if [[ $1 == 'rofi' ]] 
 then
-	wezterm start --class 'man' -- man $manExe
+	eval $(printf "$TERMINAL $TERM_RUN" "man" "man $manExe")
 else
 	$manExe
 fi

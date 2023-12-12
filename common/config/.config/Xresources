@@ -2,14 +2,13 @@
 ! Scheme: Chris Kempson (http://chriskempson.com)
 !reload 
 !  xrdb Xresources
+! xrdb ~/.config/Xresources 
+st.opacity:      255
+st.font:	UbuntuMono Nerd Font:pixelsize=18:antialias=true:autohint=true;
+! st.font:	Noto Sans Mono:pixelsize=15:antialias=true:autohint=true;
 !*.font:                       9x15,xft:TerminessTTFNerdFontMono
-! *.font:	Noto Sans Mono:pixelsize=20:antialias=true:autohint=true;
-! *.font:	UbuntuMono Nerd Font:pixelsize=25:antialias=true:autohint=true;
-st.font:	Liberation Mono:bold:pixelsize=22:antialias=true:autohint=true;
+! st.font:	Liberation Mono:bold:pixelsize=15:antialias=true:autohint=true;
 !st.font:	CaskaydiaCove Nerd Font:pixelsize=13:antialias=true:autohint=true;
-/* st*renderFont: true */
-/* st*faceName: CaskaydiaCove Nerd Font */
-! st*faceSize: 22
 
 Xcursor.size: 12
 *.alpha: 1
