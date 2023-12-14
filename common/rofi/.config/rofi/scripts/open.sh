@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#TODO change mpv to pueue
 
 ROFI_OPTIONS=(-theme-str 'window {width:  80%;}' -l 25 -i -dmenu -multi-select -monitor -4 -matching normal)
 STREAM_PLAYLIST=~/Templates/mpvlists

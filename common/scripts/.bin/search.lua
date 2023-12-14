@@ -37,14 +37,6 @@ elseif args.phrase then
 	phraseArg = args.phrase[1]	
 end
 
-local function createTmpFile(prefix)
-	local dir = '/tmp/lua/'
-	local fileName = ('%s%s-%s'):format(dir, prefix, os.date('%s'))
-	local cmd = ('mkdir -p %q && touch %q'):format(dir, fileName)
-	assert(os.execute(cmd) == 0, 'Did not create temporary file')
-	return fileName
-end
-
 function cheat()
 	return function(phraseArg)
 	local topics = {
@@ -64,19 +56,24 @@ function cheat()
 		ls = 'app'
 	}
 
-	local tmpFile = createTmpFile({prefix = 'cheat'})
 	local topic, code = rofiMenu(topics, {prompt = 'cheatsh', width = '25ch'})
 	if not code then return end
 	local query = phraseArg:gsub('%s', '+')
-	local status = 1
+	local status = false
+	local err = 'Can not fetch data'
+	local out
+	local cmd = ('curl "cht.sh/%s%s%s?T"') -- ?T without ascii
 	if topics[topic] == 'lang' then
 		if query == '' then query = ':list' elseif query == 'l' then query = ':learn' end -- :learn; def=:list
-		status = os.execute('curl cht.sh/' .. topic .. '/' .. query .. '?T' .. ' > ' .. tmpFile) -- ?T without ascii
+		status, out, err = run(cmd:format(topic, '/', query)) 
 	else
-		status = os.execute('curl cht.sh/' .. topic .. '~' .. query .. '?T' .. ' > ' .. tmpFile)
+		status, out, err = run(cmd:format(topic, '~', query)) 
 	end
-	assert(status == 0, 'Can not fetch data')
-	os.execute('st -c cheatsh -n cheatsh -e nvim ' .. tmpFile)
+	assert(status, err)
+	local tmpFile = createTmpFile({prefix = 'cheat'})
+	writef(out,tmpFile)
+	local termCmd = (os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'):format('cheatsh', 'nvim ' .. tmpFile)
+	os.execute(termCmd)
 end
 end
 
@@ -95,7 +92,9 @@ end
 local function tuxi() --show error but work fine
 	local output = io.popen('tuxi -ra "' .. phraseArg ..'"'):read('*a')
 	assert(#output ~= 0, "Can not search")
-	os.execute("st -c read -n read -e sh -c 'echo \"" .. output .. "\" | nvim -'") -- can take terminal form env and save file into tmp
+
+	local cmd = ([[sh -c 'echo "%s" | nvim -']]):format(output)
+	os.execute((os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'):format('read', cmd)) -- can take terminal form env and save file into tmp
 end
 
 local function browser(url)
