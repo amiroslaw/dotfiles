@@ -61,6 +61,7 @@ M.fun.contains  = function(n) return function(m) local f = m:find(n) return M.is
 M.fun.match  = function(n) return function(m) return m:match(n) end end;
 -- returns replacement :map(M.fun.gsub('pattern', 'replace'))
 M.fun.gsub  = function(p,r) return function(s) local o =  s:gsub(p,r); return o end end;
+M.fun.notNil  = function(v) return v ~= nil end;
 -- >>>
 
 -- >>>
@@ -290,7 +291,7 @@ function run(cmd, errorMsg)
 
       Command_s = "( " .. Command_s .. " )" .. " 1> " .. OutFile_s .. " 2> " .. ErrFile_s
    local Status_code = os.execute(Command_s)
-  Out_t = readf(OutFile_s) -- sometimes is nil
+  Out_t = readf(OutFile_s) -- sometimes is nil - I think I fix that
 	local err_f  = io.open(ErrFile_s, "r")
 	local status = Status_code == 0
 	if not status and err_f then

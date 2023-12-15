@@ -35,7 +35,7 @@ wrap-scroll yes
 prepopulate-query-feeds no
 # confirm-mark-feed-read no
 
-max-browser-tabs 30 # when using the open-all-unread-in-browser or open-all-unread-in-browser-and-mark-read commands.
+max-browser-tabs 60 # when using the open-all-unread-in-browser or open-all-unread-in-browser-and-mark-read commands.
 # filters
 # ignore-article "*" "title =~ \"#shorts\" and tags # \"yt\""
 # ignore-article "*" "description =~ \"#shorts\" and tags # \"yt\""
@@ -93,9 +93,9 @@ bind-key ; macro-prefix
 # macro ; open-in-browser-noninteractively
 browser "~/.config/newsboat/link.sh"
 # uppercase chars are alternative actions
-# help
-macro h set browser "notify-send %u 'm: dmenu\n f: fzf\n b: browser\n l/L:rdrview-lynx/lynx\n w/W: rdrview-w3m/w3m\n i/I:image\n c: copy link\n r/R:read\n s: rsvp\n\nDOWNLOAD(unread)\n d/D: audio\n y/Y: video\n k/K: kindle\n\nMEDIA(play)\n j: metadata\n ;/: → push [all] to playlist\n p/P: popup\n a/A: audio\n v/V: video'" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro f set browser "sauron.sh" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
+# help menu
+macro h set browser "notify-send %u 'm: dmenu\nA: mark all read\n ;: fzf\n b: browser\n l/L:rdrview-lynx/lynx\n w/W: rdrview-w3m/w3m\n i/I:image\n c: copy link\n r/R:read\n s: rsvp\n\nDOWNLOAD(unread)\n d/D: audio\n y/Y: video\n k/K: kindle\n\nMEDIA(all unread)\n j: metadata\np/P: popup\n a/A: audio\n v/V: video'" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro ; set browser "sauron.sh" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
 macro m set browser "~/.config/newsboat/dmenuhandler.sh" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro b set browser "setsid -f $BROWSER" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro l set browser "rdrview -A 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36' -B lynx" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
@@ -107,11 +107,11 @@ macro W set browser "w3m" ; open-in-browser ; set browser ~/.config/newsboat/lin
 macro i set browser "sxiv" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro I set browser "sxiv" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 macro c set browser "echo %u | xclip -r -sel c" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-# download - uppercase chars will open all unread article and set as read
-macro d set browser "setsid -f url.lua --audio" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro D set browser "setsid -f url.lua --audio" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
-macro y set browser "setsid -f url.lua --video" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro Y set browser "setsid -f url.lua --video" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
+# download - uppercase chars will download all unread article and set as read
+macro d set browser "pueue add -g dl-audio -- dl-audio" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro D set browser "pueue add -g dl-audio -- dl-audio" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
+macro y set browser "pueue add -g dl-video -- dl-video" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro Y set browser "pueue add -g dl-video -- dl-video" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
 macro k set browser "setsid -f url.lua --kindle --email" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro K set browser "setsid -f url.lua --kindle" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 # read
@@ -122,16 +122,16 @@ macro s set browser "setsid -f url.lua --speed" ; open-in-browser-noninteractive
 # if you want to create playlist, you have to push ulr to it via `;`, or all unread `:`, after that you can run that playlist from A,V,P for audiolist, videolist popuplist
 # the parameter named means that after closing mpv, you can rename the playlist
 macro j set browser "setsid -f ~/.config/newsboat/video-metadata.lua" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro ; set browser "setsid -f mpv.lua --push" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro : set browser "setsid -f mpv.lua --push" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
-macro p set browser "setsid -f mpv.lua --popupplay" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro a set browser "setsid -f mpv.lua --audioplay" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro P set browser "setsid -f mpv.lua --popuplist -si" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro A set browser "setsid -f mpv.lua --audiolist -si" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro v set browser "setsid -f mpv.lua --videoplay" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro V set browser "setsid -f mpv.lua --videolist -si" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-# macro V set browser "setsid -f url.lua --video" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
+macro p set browser "pueue add -g mpv-popup -- mpv-popup" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro P set browser "pueue add -g mpv-popup -- mpv-popup" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
+macro a set browser "pueue add -g mpv-audio -- mpv-audio" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro A set browser "pueue add -g mpv-audio -- mpv-audio" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
+macro v set browser "pueue add -g mpv-fullscreen -- mpv-fullscreen" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro V set browser "pueue add -g mpv-fullscreen -- mpv-fullscreen" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
 
+# no pueue config
+# macro ; set browser "setsid -f mpv.lua --push" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+# macro : set browser "setsid -f mpv.lua --push" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 # some marcros with open-in-browser-noninteractively like lynx doesn't work
 
 # macro . set browser "mpv.lua videoplay" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh duplicate

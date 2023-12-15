@@ -48,8 +48,8 @@ super + {_,shift} + r
 # ______________
 
 # Close/kill window
-super + {_,shift} + q
-	bspc node -{c,k}
+super + {_,shift,ctrl} + q
+	{ bspc node -c, pueue kill --all, bspc node -k }
 
 # floating/all tile/all floating
 super + {_,shift,ctrl} + space

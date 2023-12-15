@@ -457,7 +457,7 @@ wypakuj () {
      fi
 }
 
-# pueue queue - some keymaps doesn't work
+# pueue queue - some keymaps doesn't work; even alt
 pu() {
   set -f
   local PUEUE_TASKS="pueue status --json | jq -c '.tasks' | jq -r '.[] | \"\(.id | tostring | (\" \" * (2 - length)) + .) | \(.group) | \(.path[-15:]) | \(.status) | \(.command[-15:]) | \(.start[:19])\"'"

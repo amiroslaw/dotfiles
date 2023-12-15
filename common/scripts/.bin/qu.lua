@@ -1,6 +1,6 @@
 #!/usr/bin/luajit
 
-function help()
+local function help()
 	print [[
 Utility script for managing the pueue program. It's a tool that processes a queue of shell commands.
 Using: mpv.lua [action] [group] [option]
@@ -30,6 +30,7 @@ trzeba najpierw kill aby usunąć - jak jest running to nie usunie tego joba
 
 TODO 
 jest problem jak dodaje listę z yt - ona się odpala jako dodatkowy job - zmienić funkcje w mpv.lua i tam ucinać parametr z list
+przy kill mpv i ponownym uruchomieniu nie zapisuje się gdzie mpv przerwał odtwarzanie, to jest normalne zachowanie przy np. killall mpv
 	]]
 end
 
@@ -73,6 +74,7 @@ end
 
 -- yt's list doesn't nest in mpv
 -- m3u list won't have duplicats
+-- I could pass url to --label option in pueue
 local function makeMpvList(group)
 	local _, out = run(('pueue status --json | jq -r \'.tasks.[] | select(.group == "%s") | .command\''):format(group))
 
@@ -104,24 +106,13 @@ end
 -- A killed job will be restarted.
 local function restartQueue(group)
 	group = group and group or 'default'
-	-- local		fetchStatus, queued = run(("pueue status -g %s --json | jq -c '.tasks.[] | select(.status == \"Queued\") | .id'"):format(group))
-	-- will return error cos unfinished jobs doesn't have "done" value
-	-- print(("pueue status --json | jq -r '.tasks.[] | select(.status.Done == \"Killed\" && .group == \"%s\") | .id'"):format(group))
-	-- local		_, queued = run(("pueue status --json | jq -r '.tasks.[] | select(.status.Done == \"Killed\" && .group == \"%s\") | .id'"):format(group))
-	-- local		_, queued = run(("pueue status -g %s --json | jq -r '.tasks.[] | select(.status.Done == \"Killed\") | .id'"):format(group))
-	-- 		if #queued == 0 then
-	-- 			notify('Any task to restart')
-	-- 			return
-	-- 		end
-	-- 		local killedJobId = queued[1]
-	-- 		nie trzeba id
 	local restartStatus, err = run(('pueue restart -i -g %s'):format(group))
 	assert(restartStatus, err)
 	local startStatus, err = run(('pueue start -g %s'):format(group))
 	assert(startStatus, err)
 end
 
--- remove jobs
+-- remove all jobs in a group
 local function resetQueue(group)
 	group = group and group or 'default'
 	killQueue(group)
@@ -134,31 +125,60 @@ local function resetQueue(group)
 	assert(ok, err)
 end
 
-local function menu()
+-- remove successful jobs from a group
+local function cleanQueue(group)
+	group = group and group or 'default'
+	local ok, _, err = run('pueue clean --successful-only -g ' .. group)
+	assert(ok, err)
+end
+
+local function buildStatus(group)
+	local selectGroup = ([[ pueue status --json | jq -r '.tasks[] | select(.group == "%s")]]):format(group)
+	local _, success = run(selectGroup .. [[ | .status | select(.Done? == "Success").Done' ]])
+	local _, killed = run(selectGroup .. [[ | .status | select(.Done? == "Killed").Done' ]])
+	local _, queued= run(selectGroup .. [[ | select(.status == "Queued").status' ]])
+	local _, running= run(selectGroup .. [[ | select(.status == "Running").status' ]])
+	local _, failed= run(selectGroup .. [[ | .status.Done?.Failed?' ]])
+	local active = running[1] and running[1] or ''
+	local key = ("%s \t K:%s; Q:%s; F:%s; S:%s; %s"):format(group, #killed, #queued, #failed, #success, active)
+	return {key, group}
+end
+
+local function buildRofiMenu(keys)
 	local _, groups = run "pueue status --json | jq -r '.tasks[].group'"
-	groups = M(groups):unique():value()
-	local prompt = 'Available queues; default:restart'
+	local options = M(groups)
+		:unique()
+		:map(buildStatus)
+		:toObj()
+		:value()
+
+	local prompt = 'Opened queues; default action:restart\nLabels: K:killed; Q:queued; F:failed; S:success'
+	return options, { prompt = prompt, keys = keys, width = '550px' }
+end
+
+local function menu()
 	local keys = {
 		['Alt-k'] = 'kill',
 		['Alt-d'] = 'delete',
+		['Alt-c'] = 'clean',
 		['Alt-l'] = 'm3u',
 	}
-
-	local selected, keybind = rofiMenu(groups, { prompt = prompt, keys = keys })
+	local options, config = buildRofiMenu(keys)
+	local selected, keybind = rofiMenu(options, config)
+	selected = options[selected]
 
 	if selected == '' then
 		return
 	end
 
-	if keys[keybind] == 'kill' then
-		killQueue(selected)
-	elseif keys[keybind] == 'delete' then
-		resetQueue(selected)
-	elseif keys[keybind] == 'm3u' then
-		makeMpvList(selected)
-	else -- default
-		restartQueue(selected)
-	end
+	local cases = {
+		['kill'] = killQueue,
+		['delete'] = resetQueue,
+		['clean'] = cleanQueue,
+		['m3u'] = makeMpvList,
+		[false] = restartQueue,
+	} 
+	switch(cases, keys[keybind])(selected)
 end
 
 local cases = {
@@ -167,6 +187,7 @@ local cases = {
 	['kill'] = killQueue, ['k'] = killQueue,
 	['restart'] =restartQueue , ['r'] = restartQueue,
 	['delete'] = resetQueue, ['d'] = resetQueue,
+	['clean'] = cleanQueue, ['c'] = cleanQueue,
 	['help'] = help, ['h'] = help,
 }
 
