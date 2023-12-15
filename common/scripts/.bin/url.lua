@@ -103,8 +103,8 @@ local function readable()
 	local tmpPath, tmpName = createTmpFile({prefix = 'readable', format = 'adoc'})
 	for _, link in ipairs(linkTab) do
 		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to asciidoc --output ' .. tmpPath)
-		-- os.execute('st -c read -n read -e nvim ' .. tmpPath)
-		os.execute('wezterm start --class read -- nvim ' .. tmpPath)
+		local termCmd = (os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'):format('read', 'nvim ' .. tmpPath)
+		os.execute(termCmd)
 		assert(createFile == 0, 'Could not create file')
 	end
 	return 'Created file ' .. tmpName
@@ -114,9 +114,10 @@ local function speed()
 	local tmpPath, tmpName = createTmpFile({prefix = 'rsvp'})
 	for _, link in ipairs(linkTab) do
 		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to plain --output ' .. tmpPath)
-		-- os.execute('wezterm --config font_size=19.0 start --class rsvp -- sh -c "cat ' .. tmpPath .. ' | speedread -w 330"') 
-		os.execute('st -c rsvp -n rsvp -f "UbuntuMono Nerd Font:size=20" -e sh -c "cat ' .. tmpPath .. ' | speedread -w 330"') 
+		local cmd = ('sh -c "cat %s | speedread -w 330"'):format(tmpPath)
+		os.execute((os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_FONT' .. os.getenv 'TERM_LT_RUN'):format(18, 'rsvp', cmd))
 		assert(createFile == 0, 'Could not create file')
+	-- os.execute('st -c rsvp -n rsvp -f "UbuntuMono Nerd Font:size=20" -e sh -c "cat ' .. tmpPath .. ' | speedread -w 330"') 
 	end
 	return 'RSVP finished ' .. tmpName
 end 
@@ -144,8 +145,7 @@ end
 
 function video()
 	local cmd = "| xargs -P 0 -I {} yt-dlp --embed-metadata -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
-      --no-playlist \
-      --sponsorblock-remove all \
+	-- local cmd = "| xargs -P 0 -I {} yt-dlp -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
 	-- local cmd = "| xargs -P 0 -I {} yt-dlp --embed-metadata --restrict-filenames -o '".. YT_DIR .. "%(title)s.%(ext)s' {}"
 	return execXargs(cmd, YT_DIR)
 end

@@ -71,12 +71,16 @@ function copyAdocUrl()
 end
 
 function speed()
-	assert(os.execute( 'wezterm --config font_size=19.0 start --class rsvp -- sh -c "echo ' .. CONST.selectedTxt .. ' | speedread -w 300"') == 0, 'Error in function speed()')
+	local termCmd = (os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_FONT' .. os.getenv 'TERM_LT_RUN')
+		:format(19, 'rsvp', 'sh -c "echo \'' .. CONST.selectedTxt .. '\' | speedread -w 300"')
+	local ok, _, err = run(termCmd)
+	assert(ok, err)
 end
 
 function read()
 	assert(writef(CONST.selectedTxt, CONST.readerTmp), 'read() - IO error')
-	os.execute('st -c read -n read -e nvim ' .. CONST.readerTmp)
+	local termCmd = (os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'):format('read', 'nvim ' .. CONST.readerTmp)
+	os.execute(termCmd)
 end
 
 function searchEngine(engine, txt)

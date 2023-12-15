@@ -267,7 +267,7 @@ nmap('<A-l>', '<C-w>l')
 tmap('<Esc>', '<C-\\><C-n>')
 -- Prefer Neovim terminal insert mode to normal mode.
 nmap('<F2>', ':vsplit term://zsh<cr>')
-nmap('<F24>', ':split term://zsh<cr>') -- S-F2
+nmap('<F14>', ':split term://zsh<cr>') -- S-F2
 -- }}} 
 
 --""""""""""""""""""

@@ -45,7 +45,7 @@ bspc config focus_follows_pointer true
 ## TIPS
 # bspc -a class_name:instance_name:name → all *
 # bspc rule -a appName:class_name → in xprop WM_CLASS(STRING) = "Toolkit"(instance_name), "firefox" (class_name)
-# in st -n ; alacritty --class; wezterm start --class instance_name -- top -c == instance_name
+# in st -n ; alacritty --class; wezterm start --class instance_name -- top -c == instance_name → "*:instance_name"
 
 bspc rule -a screenkey --unmanage
 bspc rule -a gcolor2 state=floating center=true

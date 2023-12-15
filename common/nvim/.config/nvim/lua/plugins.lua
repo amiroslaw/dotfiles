@@ -81,6 +81,8 @@ return {
 	{ "huynle/ogpt.nvim",
 		event = "VeryLazy",
 		opts = {
+			-- api_key_cmd = 'http://192.168.1.32:11434',
+			-- api_host_cmd = 'http://192.168.1.32:11434',
 			actions_paths = { '~/.config/nvim/custom/ogpt-actions.json'}
 		},
 		dependencies = {

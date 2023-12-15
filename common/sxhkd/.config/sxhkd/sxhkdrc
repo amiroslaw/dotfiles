@@ -40,8 +40,8 @@ super + {_,shift} + Escape
 	{dunstctl close-all,dunstctl history-pop}
 
 # In case bspwmrc fails to execute/you wish have plugged in a new monitor
-super + {_,shift} + r
-	{rofi-chat.sh, bspwmrc}
+super + {_,shift,ctrl} + r
+	{chat.lua, chat.lua list, bspwmrc}
 
 #
 # Window manipulation
@@ -188,7 +188,7 @@ super + a ; b
 super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 	{ firefox, \
 	/opt/idea-IU-212.5284.40/bin/idea.sh, \
-	$TERMINAL start --class vifm -- vifm, \
+	$TERM_LT -c vifm -e vifm, \
 	pcmanfm, \
 	keecli.sh, \
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
@@ -205,7 +205,7 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 
 # youtube
 super + {_,shift,ctrl} + y
-	{ wezterm -e --class ytfzf -- ytfzf -u vid.sh,  mpv.lua -o,  mpv.lua -o ~/Videos}
+	{ $TERM_LT -c ytfzf -e ytfzf -u vid.sh,  mpv.lua -o,  mpv.lua -o ~/Videos}
 
 # internet
 super + {_,shift,ctrl} + i
@@ -242,8 +242,8 @@ super + u ; {u,c,g,f,i,t,r,p,n,a}
 super + u ; {s,S,e,o,m,w,W,b}
 	{ setup.lua add, \
 	setup.lua | zenity --text-info, \
-	wezterm start --class 'setup' -- nvim $SETUP, \
-	wezterm start --class 'portfolio'  -- nvim ~/.config/investing/portfolio.yaml, \
+	$TERM_LT -c 'setup' -e nvim $SETUP, \
+	$TERM_LT -c 'portfolio'  -e nvim ~/.config/investing/portfolio.yaml, \
 	pomodoro.lua modify,\
 	task sync && scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui", \
 	/home/miro/.config/task/scripts/sync.sh, \
@@ -272,7 +272,7 @@ super + o ; {o,j,d,D,v,c,y,z,f,F,b,i,p,u,s}
 		$TERM_LT -e bmenu, \
 		$TERM_LT -e nmtui, \
 		$TERM_LT -e ncmpcpp, \
-		wezterm -e --class ytfzf -- ytfzf -u popup.sh, \
+		$TERM_LT -c ytfzf -e ytfzf -u popup.sh, \
 		mpv.lua -y, \
 		}
 
