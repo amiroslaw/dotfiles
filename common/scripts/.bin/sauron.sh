@@ -14,7 +14,7 @@ kindle() {
     printf "%s\n" "${input}" | \
     while read line
     do
-		pueue add -g kindle -- url.lua --kindle --email url "${line}" 1>/dev/null
+		setsid -f url.lua --kindle --email "${line}" 1>/dev/null
     done
 }
 
@@ -23,7 +23,7 @@ dl_video() {
     printf "%s\n" "${input}" | \
     while read line
     do
-		pueue add -g dl-video -- dl-video "${line}" 1>/dev/null
+		setsid -f url.lua --dlVideo "${line}" 1>/dev/null
     done
 }
 
@@ -32,7 +32,7 @@ dl_audio() {
     printf "%s\n" "${input}" | \
     while read line
     do
-		pueue add -g dl-audio -- dl-audio "${line}" 1>/dev/null
+		setsid -f url.lua --dlAudio "${line}" 1>/dev/null
     done
 }
 
@@ -41,7 +41,7 @@ fullscreen() {
     printf "%s\n" "${input}" | \
     while read line
     do
-		pueue add -g mpv-fullscreen -- mpv-fullscreen "${line}" 1>/dev/null
+		setsid -f url.lua --mpvFullscreen "${line}" 1>/dev/null
     done
 }
 
@@ -49,7 +49,7 @@ popup() {
     printf "%s\n" "${input}" | \
     while read line
     do
-		pueue add -g mpv-popup -- mpv-popup "${line}" 1>/dev/null
+		setsid -f url.lua --mpvPopup "${line}" 1>/dev/null
     done
 }
 
@@ -57,7 +57,7 @@ audio() {
     printf "%s\n" "${input}" | \
     while read line
     do
-		pueue add -g mpv-audio -- mpv-audio "${line}" 1>/dev/null
+		setsid -f url.lua --mpvAudio "${line}" 1>/dev/null
     done
 }
 # fzf prompt variables spaces to line up menu options

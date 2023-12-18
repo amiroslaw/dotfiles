@@ -7,20 +7,14 @@ Using: mpv.lua [action] [group] [option]
 
 Actions:
 	--menu -m → 
-	--mpvList, -l → Create playlist (m3u) from the pueue
 	--kill, -k →
 	--restart, -r →
 	--delete, -d →
 	--help, -h → Show help
-Options for mpvList:
-	--save=name -s → save playlist, a name can be provide or it will be generated
-	--noInput -i → skip prompt for a name of the playlist
 
 examples:
 qu.lua --kill queueGroupName
 qu.lua --restart queueGroupName
-qu.lua --mpvList queueGroupName --videolist --save=custom-playlist-name
-qu.lua --mpvList queueGroupName --noInput
 
 In order to change stream format and options it's needed to add the profiles `stream` and `stream-popup` into the mpv.conf file.
 Dependencies: pueue, rofi, notify-send, jq, zenity
@@ -34,9 +28,6 @@ przy kill mpv i ponownym uruchomieniu nie zapisuje się gdzie mpv przerwał odtw
 	]]
 end
 
-local DIR_PLAYLISTS = os.getenv 'HOME' .. '/Templates/mpvlists'
-local LINK_REGEX = '(https?://([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))'
-
 local function errorMsg(msg)
 	print(msg)
 	log(msg, 'ERROR')
@@ -45,56 +36,6 @@ end
 
 local args = cliparse(arg, 'params')
 local params = args.params and args.params or {}
-
-local function buildName(defaultName)
-	local save = args.save or args.s
-	if save then
-		save = save[1] and save[1] or defaultName
-		return save
-	end
-	if args.noInput or args.i then
-		return defaultName
-	end
-	local ok, out, err =
-		run('zenity --entry --text="Playlist name" --entry-text="' .. defaultName .. '"', "Can't run zenity")
-	return out[1]
-end
-
-local function getMetadata(url)
-	local extinf = ''
-	local ok, out, err = run('yt-dlp -i --print duration,title "' .. url .. '"', "Can't get metadata form: " .. url)
-	if not ok then
-		log(err, 'WARNING')
-	end
-	if #out == 2 then
-		extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
-	end
-	return extinf .. url
-end
-
--- yt's list doesn't nest in mpv
--- m3u list won't have duplicats
--- I could pass url to --label option in pueue
-local function makeMpvList(group)
-	local _, out = run(('pueue status --json | jq -r \'.tasks.[] | select(.group == "%s") | .command\''):format(group))
-
-	if #out == 0 then
-		notify('No url in the ' .. group)
-		return
-	end
-	local links = M(out):map(M.fun.match(LINK_REGEX)):keys():value()
-
-	local hostName = links[1]:match('^%w+://([^/]+)'):gsub('www.', ''):match '([^.]+)'
-	local defaultName = os.date '%Y-%m-%dT%H%M-' .. hostName
-	local listName = buildName(defaultName)
-
-	-- :filter(M.fun.contains(urlPattern))
-	local playlistNameTemplate = '#EXTM3U\n#PLAYLIST: ' .. listName .. '\n'
-	local playlistTemplate = playlistNameTemplate .. M(links):map(getMetadata):concat('\n'):value()
-
-	assert(os.execute('mkdir -p ' .. DIR_PLAYLISTS) == 0, 'Did not create playlist dir ' .. DIR_PLAYLISTS)
-	io.open(('%s/%s.m3u'):format(DIR_PLAYLISTS, listName), 'w'):write(playlistTemplate)
-end
 
 -- stop
 local function killQueue(group)
@@ -156,6 +97,10 @@ local function buildRofiMenu(keys)
 	return options, { prompt = prompt, keys = keys, width = '550px' }
 end
 
+local function makeMpvList(group)
+	assert(os.execute('mpv.lua --makeQueue --input ' .. group) == 0, "Can't make m3u playlist form a queue " .. group)
+end
+
 local function menu()
 	local keys = {
 		['Alt-k'] = 'kill',
@@ -183,7 +128,6 @@ end
 
 local cases = {
 	['menu'] = menu, ['m'] = menu,
-	['mpvList'] = makeMpvList, ['l'] = makeMpvList,
 	['kill'] = killQueue, ['k'] = killQueue,
 	['restart'] =restartQueue , ['r'] = restartQueue,
 	['delete'] = resetQueue, ['d'] = resetQueue,

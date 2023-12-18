@@ -195,7 +195,7 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui", \
 	todo.lua add, \
-	qu.lua --menu, \
+	mpv.lua -o ~/Videos , \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
 	rofi -show power-menu -modi power-menu:$ROFI/power.sh
 	}
@@ -205,7 +205,9 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 
 # youtube
 super + {_,shift,ctrl} + y
-	{ $TERM_LT -c ytfzf -e ytfzf -u vid.sh,  mpv.lua -o,  mpv.lua -o ~/Videos}
+	{ mpv.lua -o, \
+	qu.lua --menu, \
+	$TERM_LT -c ytfzf -e ytfzf }
 
 # internet
 super + {_,shift,ctrl} + i

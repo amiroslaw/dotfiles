@@ -18,7 +18,8 @@ Actions:
 	--popupplay -p → Play video in lower resolution from the url
 	--popuplist -P → Play video in lower resolution from the playlist
 	--makeLocal -l → Create playlist (m3u) from the directories in current location 
-	--makeOnline -m → Create playlist (m3u) from the url `--push` command
+	--makeOnline -m → Create playlist (m3u) from the url
+	--makeQueue -q → Create playlist (m3u) from a queue
 	--open -o [--list] [dir] → Open and manage videos or playlists
 	--rename -n [dir] → Change name of the last playlist
 	--metadata -M → Retrieves metadata form the video
@@ -40,6 +41,8 @@ mpv.lua --rename=custom-playlist-name
 mpv.lua --makeLocal --input ~/Videos
 mpv.lua --makeLocal --save=YouTube ~/Videos/yt
 mpv.lua --audioplay --resume
+mpv.lua --mpvList queueGroupName --videolist --save=custom-playlist-name
+mpv.lua --mpvList queueGroupName --noInput
 
 In order to change stream format and options it's needed to add the profiles `stream` and `stream-popup` into the mpv.conf file.
 For editing - set system env: GUI_EDITOR
@@ -223,6 +226,47 @@ local function makeOnline()
 	notify('created ' .. playlistName)
 end
 
+local function getMetadata(url)
+	local extinf = ''
+	local ok, out, err = run('yt-dlp -i --print duration,title "' .. url .. '"', "Can't get metadata form: " .. url)
+	if not ok then
+		log(err, 'WARNING')
+	end
+	if #out == 2 then
+		extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
+	end
+	return extinf .. url
+end
+
+-- yt's list doesn't nest in mpv
+-- m3u list won't have duplicats
+-- I could pass url to --label option in pueue
+local function makeQueue(group)
+	-- I could read a title from label
+	-- local cmd = [[pueue status --json | jq -r '.tasks.[] | select(.group == "%s") | "\(.label)@@@\(.command)"']]
+	-- local _, out = run(cmd:format(group))
+	local _, out = run(('pueue status --json | jq -r \'.tasks.[] | select(.group == "%s") | .command\''):format(group))
+
+	if #out == 0 then
+		notify('No url in the ' .. group)
+		return
+	end
+	local links = M(out):map(M.fun.match(LINK_REGEX)):keys():value()
+
+	local hostName = links[1]:match('^%w+://([^/]+)'):gsub('www.', ''):match '([^.]+)'
+	local defaultName = os.date '%Y-%m-%dT%H%M-' .. hostName
+	local listName = buildName(defaultName)
+
+	-- :filter(M.fun.contains(urlPattern))
+	local playlistNameTemplate = '#EXTM3U\n#PLAYLIST: ' .. listName .. '\n'
+	local playlistTemplate = playlistNameTemplate .. M(links):map(getMetadata):concat('\n'):value()
+
+	assert(os.execute('mkdir -p ' .. DIR_PLAYLISTS) == 0, 'Did not create playlist dir ' .. DIR_PLAYLISTS)
+	io.open(('%s/%s.m3u'):format(DIR_PLAYLISTS, listName), 'w'):write(playlistTemplate)
+	notify('Made playlist for ' .. group)
+end
+
+
 local function concatPath(files)
 	local paths = ' '
 	for _,file in ipairs(files) do
@@ -325,6 +369,7 @@ local function ytsearch()
 	if not keybind then return end -- cancel
 	local playlist = buildPlaylist(selected, videos)
 	if not keysFun[keybind] then -- default
+		-- TODO I removed play
 		play(CMD_VIDEO, 'video', playlist)
 	else
 		keysFun[keybind][2](playlist)
@@ -344,16 +389,10 @@ local function metadata()
 end
 
 local cases = {
-	['push'] = push, ['u'] = push,
-	['audioplay'] = M.bind2(play, CMD_AUDIO), ['a'] = M.bind2(play, CMD_AUDIO),
-	['audiolist'] = M.bind(list, CMD_AUDIO), ['A'] = M.bind(list, CMD_AUDIO),
-	['videoplay'] = M.bind2(play, CMD_VIDEO), ['v'] = M.bind2(play, CMD_VIDEO),
-	['videolist'] = M.bind(list, CMD_VIDEO), ['V'] = M.bind(list, CMD_VIDEO),
-	['popupplay'] = M.bind2(play, CMD_POPUP), ['p'] = M.bind2(play, CMD_POPUP),
-	['popuplist'] = M.bind(list, CMD_POPUP), ['P'] = M.bind(list, CMD_POPUP),
 	['ytsearch'] = ytsearch, ['y'] = ytsearch,
 	['makeLocal'] = makeLocal, ['l'] = makeLocal,
 	['makeOnline'] = makeOnline, ['m'] = makeOnline,
+	['makeQueue'] = makeQueue, ['q'] = makeQueue,
 	['metadata'] = metadata, ['M'] = metadata,
 	['open'] = openPlaylist, ['o'] = openPlaylist,
 	['rename'] = renameLastPlaylist, ['n'] = renameLastPlaylist,
