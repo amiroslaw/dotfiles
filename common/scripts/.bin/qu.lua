@@ -8,8 +8,11 @@ Using: mpv.lua [action] [group] [option]
 Actions:
 	--menu -m → 
 	--kill, -k →
-	--restart, -r →
+	--killAny, -K →
+	--cleanQueue, -c →
 	--delete, -d →
+	--restart, -r →
+	--list, l → show job list in a rofi menu, can be limited to provided group
 	--help, -h → Show help
 
 examples:
@@ -23,7 +26,7 @@ Testing:
 trzeba najpierw kill aby usunąć - jak jest running to nie usunie tego joba
 
 TODO 
-jest problem jak dodaje listę z yt - ona się odpala jako dodatkowy job - zmienić funkcje w mpv.lua i tam ucinać parametr z list
+Czasami po restarcie nie odpala się następny element. poprawiać też w jobList
 przy kill mpv i ponownym uruchomieniu nie zapisuje się gdzie mpv przerwał odtwarzanie, to jest normalne zachowanie przy np. killall mpv
 	]]
 end
@@ -44,21 +47,48 @@ local function killQueue(group)
 	assert(killStatus, err)
 end
 
+-- stop any running job, in their many - show menu
+local function killAny()
+	local _, running = run([[pueue status --json | jq -r '.tasks[] | select(.status == "Running").status' ]])
+	if #running == 0 then
+		notify('Any running jobs')
+		return
+	end
+
+	if #running < 2 then
+		local killStatus, _, err = run('pueue kill --all')
+		assert(killStatus, err)
+	else
+		local okList, runningJobs, err = run([[pueue status --json status=running | jq -r '.tasks[] | "\(.id) \(.label) @\(.group)"']])
+		assert(okList, err)
+		M(rofiMenu(runningJobs, { prompt = 'Jobs to kill', multi = true, width = '70%'}))
+				:map(M.fun.match('@[%w-]+$'))
+				:map(M.fun.gsub('@', ''))
+				:each(killQueue)
+		-- if you kill one job from a group the secound will start - change to pueue kill -g 
+		-- local selectedIds = M(selected)
+		-- 		:map(M.fun.match('^%d+'))
+		-- 		:concat(' ')
+		-- 		:value()
+		-- local killStatus, _, err = run('pueue kill ' .. selectedIds)
+		-- assert(killStatus, err)
+	end
+end
+
 -- A killed job will be restarted.
 local function restartQueue(group)
 	group = group and group or 'default'
-	local restartStatus, err = run(('pueue restart -i -g %s'):format(group))
+	local restartStatus, _, err = run(('pueue restart -i -g %s'):format(group))
 	assert(restartStatus, err)
-	local startStatus, err = run(('pueue start -g %s'):format(group))
+	local startStatus, _, err = run(('pueue start -g %s'):format(group))
 	assert(startStatus, err)
 end
 
--- remove all jobs in a group
+-- remove all jobs in a group, first kill them if necessary 
 local function resetQueue(group)
 	group = group and group or 'default'
 	killQueue(group)
 	local _, ids = run(('pueue status --json | jq -r \'.tasks.[] | select(.group == "%s") | .id\''):format(group))
-	ids = table.concat(ids, ' ')
 	print('pueue remove ' .. ids)
 	local ok, _, err = run('pueue remove ' .. ids)
 	assert(ok, err)
@@ -71,6 +101,51 @@ local function cleanQueue(group)
 	group = group and group or 'default'
 	local ok, _, err = run('pueue clean --successful-only -g ' .. group)
 	assert(ok, err)
+end
+
+local function makeMpvList(group)
+	assert(os.execute('mpv.lua --makeQueue --input ' .. group) == 0, "Can't make m3u playlist form a queue " .. group)
+end
+
+-- TODO, test 
+local function jobList(group)
+	if group then
+		group = ' -g ' .. group
+	else
+		group = ''
+	end
+	local ok, out, err = run('pueue status columns=id,status,label,command ' .. group) 
+	assert(ok, err)
+	local keys = {
+		['Alt-k'] = 'kill',
+		['Alt-d'] = 'delete',
+	}
+	local cases = {
+		['kill'] = 'pueue kill %s',
+		['delete'] = 'pueue remove %s', -- maybe kill before
+		[false] = 'pueue restart -i %s; pueue start %s',
+		-- ['kill'] = killQueue,
+		-- ['delete'] = resetQueue,
+		-- [false] = restartQueue,
+	} 
+	local jobs = M(out):filter(M.fun.contains('^%s%d'))
+					:value()
+	local selected, keybind = rofiMenu(jobs, { prompt = 'Default action:restart', multi = true, width = '70%', keys = keys})
+	if selected == '' then
+		menu()
+	end
+	local jobsId = M(selected)
+			:map(M.fun.match('%d+'))
+			:concat(' ')
+			:value()
+			-- :each(killQueue)
+	local cmd = switch(cases, keys[keybind])
+	printt(cmd .. jobsId)
+	local ok, _, err = run(cmd:format(jobsId, jobsId))
+	-- assert(ok, err)
+end
+local function jobListAll()
+	jobList()
 end
 
 local function buildStatus(group)
@@ -94,44 +169,46 @@ local function buildRofiMenu(keys)
 		:value()
 
 	local prompt = 'Opened queues; default action:restart\nLabels: K:killed; Q:queued; F:failed; S:success'
-	return options, { prompt = prompt, keys = keys, width = '550px' }
+	return options, { prompt = prompt, keys = keys, width = '800px' }
 end
 
-local function makeMpvList(group)
-	assert(os.execute('mpv.lua --makeQueue --input ' .. group) == 0, "Can't make m3u playlist form a queue " .. group)
-end
-
-local function menu()
+function menu()
 	local keys = {
 		['Alt-k'] = 'kill',
 		['Alt-d'] = 'delete',
 		['Alt-c'] = 'clean',
-		['Alt-l'] = 'm3u',
+		['Alt-m'] = 'm3u',
+		['Alt-l'] = 'list',
+		['Alt-a'] = 'all jobs',
 	}
-	local options, config = buildRofiMenu(keys)
-	local selected, keybind = rofiMenu(options, config)
-	selected = options[selected]
-
-	if selected == '' then
-		return
-	end
-
 	local cases = {
 		['kill'] = killQueue,
 		['delete'] = resetQueue,
 		['clean'] = cleanQueue,
 		['m3u'] = makeMpvList,
+		['list'] = jobList,
+		['all jobs'] = jobListAll,
 		[false] = restartQueue,
 	} 
+	local options, config = buildRofiMenu(keys)
+	local selected, keybind = rofiMenu(options, config)
+	if selected == '' then
+		return
+	end
+	selected = options[selected]
+
 	switch(cases, keys[keybind])(selected)
 end
+
 
 local cases = {
 	['menu'] = menu, ['m'] = menu,
 	['kill'] = killQueue, ['k'] = killQueue,
+	['killAny'] = killAny, ['K'] = killAny,
 	['restart'] =restartQueue , ['r'] = restartQueue,
 	['delete'] = resetQueue, ['d'] = resetQueue,
 	['clean'] = cleanQueue, ['c'] = cleanQueue,
+	['list'] = jobList, ['l'] = jobList,
 	['help'] = help, ['h'] = help,
 }
 

@@ -13,6 +13,9 @@ List of the actions:
 		--speed -s convert website to text for rsvp
 		--wget -w downlad file via wget
 		--gallery -g downlad images via gallery-dl 
+		--mpvPopup -p  add to a queue and open it in a popop window
+		--mpvFullscreen, -f add to a queue and open it in a fullscreen window
+		--mpvAudio, -a add to a queue and open it in as a audio
 		--help -h - show help
 
 List of the options:
@@ -20,7 +23,7 @@ List of the options:
 		--primary -p → takes url from the PRIMARY clipboard, instead of the CLIPBOARD clipboard
 		--input -i show form input for the number
 		--email -e → option for kinde, ebook will be send to a kindle device via email. You need to setup mailx and create $PRIVATE/kindle_email file with an email address
-		url - link of a website
+		url - link for a website/video
 
 Examples:
 Convert a website to asciidoc and show it a terminal.
@@ -37,31 +40,31 @@ url.lua --menu --primary
 dependencies:  clipster, yt-dlp, gallery-dl, rdrview, mailx, speedread, pandoc, pueue
 ]]
 
-YT_DIR = '~/Videos/YouTube/'
-WGET_DIR = '~/Downloads/wget' -- can't have spaces
-AUDIO_DIR = '~/Musics/PODCASTS/' 
-GALLERY_DIR = '~/Pictures/gallery-dl/'
-KINDLE_TMP_DIR = '/tmp/kindle/'
-LINK_REGEX = "^https?://(([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))"
-TOR_REGEX = "xt=urn:btih:([^&/]+)"
+local YT_DIR = '~/Videos/YouTube/'
+local WGET_DIR = '~/Downloads/wget'
+local AUDIO_DIR = '~/Musics/PODCASTS/' 
+local GALLERY_DIR = '~/Pictures/gallery-dl/'
+local KINDLE_TMP_DIR = '/tmp/kindle/'
+local LINK_REGEX = "^https?://(([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))"
+local TOR_REGEX = "xt=urn:btih:([^&/]+)"
 
 local function help() print(HELP); os.exit() end
 
 local args = cliparse(arg, 'url')
 local linkTab = args.url
 
-
-local function exec(cmd, url)
-	if M.isArray(url) then
+local function execQueue(cmd, group, url)
+	if type(url) == 'string' then
 		assert(os.execute(cmd .. url) == 0, 'Can not run: ' .. cmd)
+		return
 	end
 	local url, title = next(url)
-	print(url, title)
-	print(cmd:format(title) .. url)
 	assert(os.execute(cmd:format(title) .. url) == 0, 'Can not run: ' .. cmd)
+	local startStatus, err = run(('pueue start -g %s'):format(group))
+	assert(startStatus, err)
 end
 
-local function createTorrent()
+local function createTorrent(linkTab)
 	local torDir = os.getenv('TOR_WATCH')
 	os.execute('mkdir -p ' .. torDir)
 	for _, magnetlink in ipairs(linkTab) do
@@ -101,7 +104,7 @@ local function sendKindle()
 end
 
 -- execute script in order to have atomic job
-local function kindle()
+local function kindle(linkTab)
 	for _, link in ipairs(linkTab) do
 		if args.email or args.e then
 			os.execute('pueue add -g kindle url.lua --sendKindle ' .. link)
@@ -111,7 +114,7 @@ local function kindle()
 	end
 end
 
-local function readable()
+local function readable(linkTab)
 	local tmpPath, tmpName = createTmpFile({prefix = 'readable', format = 'adoc'})
 	for _, link in ipairs(linkTab) do
 		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to asciidoc --output ' .. tmpPath)
@@ -122,7 +125,7 @@ local function readable()
 	return 'Created file ' .. tmpName
 end 
 
-local function speed()
+local function speed(linkTab)
 	local tmpPath, tmpName = createTmpFile({prefix = 'rsvp'})
 	for _, link in ipairs(linkTab) do
 		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to plain --output ' .. tmpPath)
@@ -133,17 +136,17 @@ local function speed()
 	return 'RSVP finished ' .. tmpName
 end 
 
-local function wget()
+local function wget(linkTab)
 	os.execute('mkdir -p ' .. WGET_DIR)
-	local cmd = 'pueue add -- wget -P ' .. WGET_DIR
-	M(linkTab):each(M.bindn(exec, cmd))
+	local cmd = ('pueue add -- wget -P "%s" '):format(WGET_DIR)
+	M(linkTab):each(M.bindn(execQueue, cmd, 'default'))
  -- -U "Mozilla"
 end
 
-local function gallery()
+local function gallery(linkTab)
 	os.execute('mkdir -p ' .. GALLERY_DIR)
-	local cmd = 'pueue add -g dl-gallery -- gallery-dl -d ' .. GALLERY_DIR
-	M(linkTab):each(M.bindn(exec, cmd))
+	local cmd = ('pueue add -g dl-gallery -- gallery-dl -d "%s" '):format(GALLERY_DIR)
+	M(linkTab):each(M.bindn(execQueue, cmd, 'dl-gallery'))
 end
 
 --------------------------------------------------
@@ -153,52 +156,51 @@ end
 local function getTitle(url)
 	local ok, out, err = run('yt-dlp -i --print title "' .. url .. '"')
 	if ok and out[1] then
-		return {[url] = out[1] }
+		return {[url] = out[1]:gsub('"', "'") } -- escape "
 	end
 	return {[url] = ''}
 end
 
-local function dlAudio()
+local function dlAudio(linkTab)
 	os.execute('mkdir -p ' .. AUDIO_DIR)
 	local cmdDlp = 'yt-dlp --embed-metadata -f bestaudio -x --audio-format mp3 -o "' .. AUDIO_DIR .. '%%(title)s.%%(ext)s" '
 	local cmd = 'pueue add --escape --label "%s" -g dl-audio -- ' .. cmdDlp
 	M(linkTab):map(getTitle)
-		:each(M.bindn(exec, cmd))
+		:each(M.bindn(execQueue, cmd, 'dl-audio'))
 end
 
-local function dlVideo()
+local function dlVideo(linkTab)
 	os.execute('mkdir -p ' .. YT_DIR)
 	local cmdDlp = "yt-dlp --embed-metadata -o '" .. YT_DIR .. "%%(title)s.%%(ext)s' "
 	local cmd = 'pueue add --escape --label "%s" -g dl-video -- ' .. cmdDlp
 	M(linkTab):map(getTitle)
-		:each(M.bindn(exec, cmd))
+		:each(M.bindn(execQueue, cmd, 'dl-video'))
 end
 
 local function removeListParam(link)
 	return split(link,"&list=" )[1]
 end
 
-local function mpvPopup()
+local function mpvPopup(linkTab)
 	local cmd = 'pueue add --label "%s" -g mpv-popup -- mpv --x11-name=videopopup --profile=stream-popup '
 	M(linkTab):map(removeListParam)
 		:map(getTitle)
-		:each(M.bindn(exec, cmd))
+		:each(M.bindn(execQueue, cmd, 'mpv-popup'))
 end
 
-
-local function mpvFullscreen()
+local function mpvFullscreen(linkTab)
 	local cmd = 'pueue add  --label "%s" -g mpv-fullscreen -- mpv --profile=stream '
 	M(linkTab):map(removeListParam)
 		:map(getTitle)
-		:each(M.bindn(exec, cmd))
+		:each(M.bindn(execQueue, cmd, 'mpv-fullscreen'))
 end
 
-local function mpvAudio()
+local function mpvAudio(linkTab)
 	local termCmd = (os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'):format('audio', 'mpv --profile=stream-audio ')
-	local cmd = 'pueue add  --label "%s" -g mpv-audio -- ' .. termCmd
+	local cmd = 'pueue add -e --label "%s" -g mpv-audio -- ' .. termCmd
 	M(linkTab):map(removeListParam)
 		:map(getTitle)
-		:each(M.bindn(exec, cmd))
+		:each(M.bindn(execQueue, cmd, 'mpv-audio'))
 end
 
 local options = {
@@ -268,7 +270,7 @@ if argNumber then
 	linkTab = filterLinks(clipboard)
 end
 
-local status, val = pcall(action)
+local status, val = pcall(action, linkTab)
 if status then
 	notify(val)
 else

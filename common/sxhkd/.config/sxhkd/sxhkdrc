@@ -49,7 +49,7 @@ super + {_,shift,ctrl} + r
 
 # Close/kill window
 super + {_,shift,ctrl} + q
-	{ bspc node -c, pueue kill --all, bspc node -k }
+	{ bspc node -c, qu.lua --killAny, bspc node -k }
 
 # floating/all tile/all floating
 super + {_,shift,ctrl} + space
@@ -207,7 +207,7 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 super + {_,shift,ctrl} + y
 	{ mpv.lua -o, \
 	qu.lua --menu, \
-	$TERM_LT -c ytfzf -e ytfzf }
+	$TERM_LT -n ytfzf -e ytfzf }
 
 # internet
 super + {_,shift,ctrl} + i
@@ -292,9 +292,9 @@ super + e ; {e,h,k,K,m,M,v,V,d,D,y,Y,w,W,r,R,g,G,c,i}
     url.lua --menu --input, \
     url.lua --kindle --email -n 1,  url.lua --kindle -n 10, \
     url.lua --tor -n 1,  url.lua --tor -n 10, \
-    mpv.lua --videoplay --clip,  mpv.lua -vsi, \
-    url.lua --audio -n 1,  url.lua --audio -n 10, \
-    url.lua --video -n 1,  url.lua --video -n 10,  \
+    url.lua --mpvFullscreen -n 1,  url.lua --mpvFullscreen -n 10, \
+    url.lua --dlAudio -n 1,  url.lua --dlAudio -n 10, \
+    url.lua --dlVideo -n 1,  url.lua --dlVideo -n 10,  \
     url.lua --wget -n 1, url.lua --wget -n 10,  \
     url.lua --speed -n 1, url.lua --read -n 1,  \
     url.lua --gallery -n 1,  url.lua --gallery -n 10,  \
