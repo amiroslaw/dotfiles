@@ -89,7 +89,7 @@ local function resetQueue(group)
 	group = group and group or 'default'
 	killQueue(group)
 	local _, ids = run(('pueue status --json | jq -r \'.tasks.[] | select(.group == "%s") | .id\''):format(group))
-	print('pueue remove ' .. ids)
+	ids = table.concat(ids, ' ')
 	local ok, _, err = run('pueue remove ' .. ids)
 	assert(ok, err)
 	local ok, _, err = run('pueue start -g ' .. group)
@@ -119,11 +119,16 @@ local function jobList(group)
 	local keys = {
 		['Alt-k'] = 'kill',
 		['Alt-d'] = 'delete',
+		-- ['Alt-c'] = 'copy',
+		-- ['Alt-b'] = 'browse', -- override
 	}
 	local cases = {
 		['kill'] = 'pueue kill %s',
 		['delete'] = 'pueue remove %s', -- maybe kill before
-		[false] = 'pueue restart -i %s; pueue start %s',
+		-- TODO
+		-- ['copy'] = copyLink,
+		-- ['browse'] = browse,
+		[false] = 'pueue restart -i %s; pueue start %s', -- don't start next video - maybe start a group 
 		-- ['kill'] = killQueue,
 		-- ['delete'] = resetQueue,
 		-- [false] = restartQueue,
@@ -133,6 +138,7 @@ local function jobList(group)
 	local selected, keybind = rofiMenu(jobs, { prompt = 'Default action:restart', multi = true, width = '70%', keys = keys})
 	if selected == '' then
 		menu()
+		return
 	end
 	local jobsId = M(selected)
 			:map(M.fun.match('%d+'))

@@ -13,7 +13,8 @@ daemon:
   pause_group_on_failure: false
   pause_all_on_failure: false
   # callback: "export $(dbus-launch) && notify-send \"Task {{ id }}\nCommand: {{ command }}\nFinished with status '{{ result }}'\nTook: $(bc <<< \"{{end}} - {{start}}\") seconds\""
-  callback: "export $(dbus-launch) && notify-send \"Task {{ id }}\nCommand: {{ command }}\nFinished with status '{{ result }}'\""
+  # callback: "export $(dbus-launch) && notify-send \"Task {{ id }}\nCommand: {{ command }}\nFinished with status '{{ result }}'\""
+  callback: "export $(dbus-launch) && notify-send 'Task {{ id }}\nCommand: {{ command }}\nFinished with status {{ result }}'"
   env_vars: {}
   callback_log_lines: 10
   shell_command: null
