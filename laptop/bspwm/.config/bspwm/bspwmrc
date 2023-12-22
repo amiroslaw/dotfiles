@@ -43,9 +43,11 @@ bspc config focus_follows_pointer true
 #bspc config pointer_follows_focus true #Some keybindings automatically enable and disable this setting
 
 ## TIPS
-# bspc -a class_name:instance_name:name → all *
-# bspc rule -a appName:class_name → in xprop WM_CLASS(STRING) = "Toolkit"(instance_name), "firefox" (class_name)
-# in st -n ; alacritty --class; wezterm start --class instance_name -- top -c == instance_name → "*:instance_name"
+# bspc -a class_name:instance_name → all *; first string in xprop WM_CLASS is instance_name 
+# in xprop WM_CLASS(STRING) = "Toolkit"(instance_name), "firefox" (class_name); 
+# in st -n ; alacritty --class; wezterm start --class instance_name -- top -c == instance_name
+# 3th parameter doesn't exist
+# WM_NAME(STRING) = "Progress"(name)
 
 bspc rule -a screenkey --unmanage
 bspc rule -a gcolor2 state=floating center=true
@@ -63,7 +65,7 @@ bspc rule -a libreoffice state=tiled
 bspc rule -a '*:libreofficedev' state=tiled
 bspc rule -a '*:soffice' state=tiled
 bspc rule -a firefox private=on
-bspc rule -a firefox:Toolkit  state=floating sticky=on focus=off layer=above rectangle=380x210+1540+990
+bspc rule -a firefox:Toolkit state=floating sticky=on focus=off layer=above rectangle=380x210+1540+990
 
 bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
 bspc rule -a megasync state=floating
@@ -82,12 +84,13 @@ bspc rule -a '*:read' state=floating layer=above
 bspc rule -a '*:dropdown' state=floating center=true rectangle=1300x600+0+0
 bspc rule -a '*:music' state=floating center=true rectangle=1000x720+0+0
 bspc rule -a qb state=floating rectangle=700x400+0+0 center=true
-bspc rule -a audio state=floating rectangle=500x150+0+0 center=true
+bspc rule -a '*:audio' state=floating rectangle=500x150+0+0 center=true
 bspc rule -a '*:videopopup' state=floating sticky=on focus=off layer=above rectangle=380x210+1530+1330
 bspc rule -a 'application.Main' state=floating
 bspc rule -a ovh.miroslaw.timefx.TimeFX state=floating
 bspc rule -a '*:task' state=floating center=true rectangle=1000x720+0+0
 bspc rule -a '*:newsboat' state=floating center=true rectangle=1000x720+0+0
+bspc rule -a '*:ytfzf' state=floating center=true rectangle=1000x900+0+0
 bspc rule -a '*:chat' state=floating center=true rectangle=1000x720+0+0
 
 #bspc rule -a firefox desktop=I
