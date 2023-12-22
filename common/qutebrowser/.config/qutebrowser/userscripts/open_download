@@ -113,7 +113,7 @@ if [ -f /.flatpak-info ]; then
 else
     filetype=$(xdg-mime query filetype "$path")
     application=$(xdg-mime query default "$filetype")
-	dunstify $application
+	notify-send $application
 
     if [ -z "$application" ] ; then
         die "Do not know how to open »$file« of type $filetype"
