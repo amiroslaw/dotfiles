@@ -45,6 +45,7 @@
   "tabular": { "branch": "master", "commit": "339091ac4dd1f17e225fe7d57b48aff55f99b23a" },
   "tagbar": { "branch": "master", "commit": "5d6990e4fc5b3e3b88a3af90146f2561c4f6d828" },
   "taskmaker.nvim": { "branch": "master", "commit": "657797f422f4f86d457b880d220f805001943436" },
+  "telescope-egrepify.nvim": { "branch": "master", "commit": "acd69d06a774f930edac5bd75ebe8d4e2854f336" },
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "6c921ca12321edaa773e324ef64ea301a1d0da62" },
   "telescope-heading.nvim": { "branch": "main", "commit": "23ce2c9ef252aecbaa37300c1209b5ef2b51e6c5" },
   "telescope-jumps.nvim": { "branch": "master", "commit": "21cb4097a1cf4655db426bb3f9bd7508298cc044" },

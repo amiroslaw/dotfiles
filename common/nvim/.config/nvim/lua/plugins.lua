@@ -74,6 +74,7 @@ return {
 		dependencies = 'nvim-telescope/telescope.nvim',
 	},
 	{ 'danielfalk/smart-open.nvim', branch = '0.2.x', dependencies = { 'kkharji/sqlite.lua' } },
+	{ "fdschmidt93/telescope-egrepify.nvim", dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" } },
 	{ "chrisgrieser/nvim-origami",
 		event = "BufReadPost", 
 		opts = true,

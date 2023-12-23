@@ -617,7 +617,8 @@ local actions = require "telescope.actions"
 					}
 		}
 
-	nmap('<c-s>', '<cmd>Telescope live_grep<cr>')
+	-- nmap('<c-s>', '<cmd>Telescope live_grep<cr>')
+	nmap('<c-s>', '<cmd>Telescope egrepify<cr>')
 	nmap('ts', '<cmd>Telescope grep_string<cr>') --  string under your cursor or selection in your current working directory
 	nmap('tp', '<cmd>Telescope find_files<cr>')
 	-- nmap('tp', '<cmd>Telescope find_files find_command=rg,--hidden,--files<cr>') -- with hidden files
@@ -653,6 +654,7 @@ local actions = require "telescope.actions"
 	telescope.load_extension 'luasnip'
 	nmap('tU', '<cmd>Telescope luasnip <cr>')
 	telescope.load_extension('smart_open')
+	telescope.load_extension "egrepify"
 	-- { cwd_only = true, } limit to current directory; does not support smart-case
 	nmap('<c-f>', '<cmd>Telescope smart_open <cr>')
 	-- telescope.load_extension("yank_history") 
