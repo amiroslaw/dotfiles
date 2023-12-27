@@ -9,9 +9,9 @@ unset MANPATH
 
 # Set our default path
 export SELENIUM="$HOME/Ext/selenium/chromedriver"
-export GRAALVM_HOME="$HOME/.local/share/sdkman/candidates/java/22.1.0.1.r17-gln/"
-PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin:$HOME/.local/share/gem/ruby/2.7.0/bin:$GRAALVM_HOME/bin:$SELENIUM"
 # PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin:$HOME/.local/share/gem/ruby/2.7.0/bin:$SELENIUM"
+export GRAALVM_HOME="$HOME/.local/share/sdkman/candidates/java/23.1.1.r21-nik"
+PATH="/usr/local/sbin:/usr/local/bin:/usr/bin/core_perl:/usr/bin:$HOME/.config/bspwm/panel:$HOME/.bin:$HOME/.local/share/gem/ruby/2.7.0/bin:$GRAALVM_HOME/bin:$SELENIUM"
 export PATH
 
 export NIK=~/.local/share/sdkman/candidates/java/23.r20-nik/bin/native-image

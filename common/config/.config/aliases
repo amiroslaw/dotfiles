@@ -482,12 +482,15 @@ ctrl-f:reload^$PUEUE_TASKS^\
 # fzf sdkman
 sju() {
    sdk use java $(sdk list java | grep 'installed\|local only' | grep -v '>>>' | awk '{print $NF}' | fzf)
+   echo "change GRAALVM_HOME env !!"
  }
 sjd() {
    sdk default java $(sdk list java | grep 'installed\|local only' | awk '{print $NF}' | fzf)
+   echo "change GRAALVM_HOME env !!"
  }
 sji() {
    sdk install java $(sdk list java | tail -n +6 | head -n -5 | grep -v 'installed\|local only' | awk '{print $NF}' | fzf)
+   echo "change GRAALVM_HOME env !!"
  }
 alias sdki='sdk install'
 alias sdkr='sdk uninstall'
