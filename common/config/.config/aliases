@@ -35,7 +35,8 @@ alias mag='$path_script/magnet.sh "$(xclip -o -selection clipboard)"'
 alias crypto='investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)'
 alias yahoo-key='cd $PRIVATE && java -jar $PRIVATE/selenium.jar yahoo'
 alias selenium='cd $PRIVATE && java -jar $PRIVATE/selenium.jar '
-alias gry='java -jar ~/.bin/grywalizacja.jar &'
+alias gra='gamification'
+alias grat='gamification t -d yesterday'
 #}}}
 
 # {{{ config files
@@ -173,7 +174,7 @@ alias ti='timew'
 alias tit='timew summary :ids'
 alias tiy='timew summary :ids :yesterday'
 alias tiw='timew summary :week :ids'
-alias tia='timew summary :lastweek && timew procent :lastweek && timew tagsum :lastweek'
+alias tia='gamification s -f -s slim -d lastweek'
 alias tip='timew percentage'
 alias tidi='timew dist'
 alias in='$EDITOR "$NOTE"/tasks/inbox.adoc'
@@ -227,17 +228,17 @@ alias kals='gcalcli search'
 # #}}}
 
 #{{{ Dev
-# maven 
-alias mvn='mvnd'
-alias mi='mvn install'
-alias mci='mvn clean install'
-alias mp='mvn package'
-alias mcp='mvn clean package'
-alias mcis='mci -Dmaven.test.skip=true'
-alias mcps='mcp -Dmaven.test.skip=true'
-alias mpsa='mcp -DskipTests'
-alias mdep='mvn dependency:tree'
-alias mpom='mvn help:effective-pom'
+alias manative='mvn -Pnative native:compile -Dmaven.test.skip=true'
+# mavend
+alias mai='mvnd install'
+alias mapac='mvnd package'
+alias mainstc='mvnd clean install'
+alias mapacc='mvnd clean package'
+alias mainstct='mvnd clean install -Dmaven.test.skip=true'
+alias mapacct='mvnd clean package -Dmaven.test.skip=true'
+alias mat='mvnd clean package -Dmaven.test.skip=true -DskipTests'
+alias matree='mvn dependency:tree'
+alias mapom='mvn help:effective-pom'
 
 #}}}
 

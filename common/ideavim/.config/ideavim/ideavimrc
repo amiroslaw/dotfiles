@@ -102,10 +102,10 @@ let g:EasyMotion_smartcase = 1
 let g:EasyMotion_override_acejump = 0
 map s <Plug>(easymotion-f)
 map S <Plug>(easymotion-F)
-map f <Plug>(easymotion-j)
-map F <Plug>(easymotion-k)
-map <leader>t <Plug>(easymotion-eol-j)
-map <leader>T <Plug>(easymotion-eol-k)
+map <leader>f <Plug>(easymotion-j)
+map <leader>F <Plug>(easymotion-k)
+map <leader>g <Plug>(easymotion-eol-j)
+map <leader>G <Plug>(easymotion-eol-k)
 " t and s is used?
 " map <leader>T <Plug>(easymotion-b)
 " map <leader>t <Plug>(easymotion-w)
