@@ -82,7 +82,7 @@ if args.params then
 end
 
 if args.clip or args.c then
-	local status, clipboard, err = run('clipster -o --clipboard -n 1', "Can't read from cliparser")
+	local clipboard, status, err = run('clipster -o --clipboard -n 1', "Can't read from cliparser")
 	assert(status, err)
 	local match = clipboard[1]:match(LINK_REGEX)
 	if match then
@@ -108,7 +108,7 @@ end
 
 local function buildName(defaultName)
 	if args.input or args.i then
-		local ok, out, err =	run('zenity --entry --text="Playlist name" --entry-text="' .. defaultName .. '"', "Can't run zenity")
+		local out, ok, err = run('zenity --entry --text="Playlist name" --entry-text="' .. defaultName .. '"', "Can't run zenity")
 		return out[1]
 	end
 	local save = args.save or args.s
@@ -142,19 +142,19 @@ local function play(url, cmd)
 	file:write(url)
 	file:close()
 
-	local ok, _, err = run(cmd .. TMP_PLAY, 'Error: run mpv: ' .. url)
+	local _, ok, err = run(cmd .. TMP_PLAY, 'Error: run mpv: ' .. url)
 	assert(ok, err)
 end
 
 local function list(cmd)
-	local ok, _, err = run(cmd .. TMP_PLAYLIST, 'Error: run mpv list' )
+	local _, ok, err = run(cmd .. TMP_PLAYLIST, 'Error: run mpv list' )
 	assert(ok, err)
 	savePlaylist()
 end
 
 local function push(url)
 	local extinf = ''
-	local ok, out, err = run('yt-dlp -i --print duration,title "' .. url .. '"', "Can't get metadata form: " .. url)
+	local out, ok, err = run('yt-dlp -i --print duration,title "' .. url .. '"', "Can't get metadata form: " .. url)
 	print('yt-dlp -i --print duration,title ' .. url, "Can't get metadata form: " .. url)
 	if not ok then
 		log(err, 'WARNING')	
@@ -174,7 +174,7 @@ end
 
 -- rename lastest saved playlist
 local function renameLastPlaylist()
-	local ok, latestPlaylist = run('ls -1t ' .. DIR_PLAYLISTS)
+	local latestPlaylist = run('ls -1t ' .. DIR_PLAYLISTS)
 	renamePlaylist(latestPlaylist[1])
 end
 
@@ -200,7 +200,7 @@ local function toMetaVideo(data)
 end
 
 local function makeOnline()
-	local ok,out, err = run('yt-dlp -i --print original_url,title,duration,playlist_title "' .. param .. '"')
+	local out, ok, err = run('yt-dlp -i --print original_url,title,duration,playlist_title "' .. param .. '"')
 	-- assert(ok, err) -- has an error with hidden or private videos
 	if not ok then
 		notify('Warning', split(err, '\n'), {['YouTube said'] = 'red'})
@@ -228,7 +228,7 @@ end
 
 local function getMetadata(url)
 	local extinf = ''
-	local ok, out, err = run('yt-dlp -i --print duration,title "' .. url .. '"', "Can't get metadata form: " .. url)
+	local  out, ok, err = run('yt-dlp -i --print duration,title "' .. url .. '"', "Can't get metadata form: " .. url)
 	if not ok then
 		log(err, 'WARNING')
 	end
@@ -245,7 +245,7 @@ local function makeQueue(group)
 	-- I could read a title from label
 	-- local cmd = [[pueue status --json | jq -r '.tasks.[] | select(.group == "%s") | "\(.label)@@@\(.command)"']]
 	-- local _, out = run(cmd:format(group))
-	local _, out = run(('pueue status --json | jq -r \'.tasks.[] | select(.group == "%s") | .command\''):format(group))
+	local out = run(('pueue status --json | jq -r \'.tasks.[] | select(.group == "%s") | .command\''):format(group))
 
 	if #out == 0 then
 		notify('No url in the ' .. group)
@@ -310,7 +310,7 @@ local function openPlaylist()
 		filetype = ' -e m3u '
 	end
 
-	local ok, playlists, err = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-', "Can't find files" )
+	local  playlists, ok, err = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-', "Can't find files" )
 	assert(ok, err)
 	local prompt = 'default:open video; shift-enter:multi selection; Found:'.. #playlists
 	local keysFun = {
@@ -326,11 +326,11 @@ local function openPlaylist()
 	local selected, keybind = rofiMenu(playlists, {prompt = prompt, keys = keysFun, multi=true, width = '95%'})
 	if not keybind then return end -- cancel
 	if not keysFun[keybind] then -- default
-		local ok, _, err = run(CMD_VIDEO .. concatPath(selected))
+		local _, ok, err = run(CMD_VIDEO .. concatPath(selected))
 		assert(ok, 'Error: Can not play video ')
 	else
 		local cmd = keysFun[keybind][2]
-		local ok, _, err = run(cmd(selected))
+		local _, ok, err = run(cmd(selected))
 		assert(ok, 'Error: Can not execute ')
 	end
 end
@@ -347,7 +347,7 @@ end
 -- alternative: https://github.com/pystardust/ytfzf 
 local function ytsearch()
 	local query = param and param or rofiInput({prompt = 'Search YT'})
-	local ok, results, err = run('yt-dlp --print original_url,title,duration,channel "ytsearch15:' .. query .. '"', 'Search error: ')
+	local results, ok, err = run('yt-dlp --print original_url,title,duration,channel "ytsearch15:' .. query .. '"', 'Search error: ')
 	assert(ok, err)
 
 	local videos = M(M.tabulate(M.partition(results,4)))
@@ -379,7 +379,7 @@ end
 
 -- Gets metadata form YouTube's video
 local function metadata()
-	local ok, metadata, err = run('ffprobe -print_format json -show_format "' .. param .. '"', 'Can not retrieve metadata')
+	local metadata, ok, err = run('ffprobe -print_format json -show_format "' .. param .. '"', 'Can not retrieve metadata')
 	assert(ok, err)
 	local json = jsonish(table.concat(metadata, '\n'))
 	json = json.format.tags

@@ -13,7 +13,7 @@ local sentenses = {}
 for match in selectedTxt:gmatch '([^.?!]+)' do
 	table.insert(sentenses, match)
 end
-selectedTxt = rofiMenu(sentenses, {prompt = 'Sentense'})
+selectedTxt = rofiMenu(sentenses, {prompt = 'Sentense'})[1]
 
 local ok = os.execute('echo "' .. selectedTxt .. '" | xclip -sel clip')
 if ok then

@@ -1,7 +1,7 @@
 #!/usr/bin/luajit
 local toBoolean = { ['True'] = true, ['False'] = false }
 
-local ok, metadata, err = run('yt-dlp -i --print title,duration_string,like_count,view_count,is_live,live_status "' .. arg[1] .. '"')
+local  metadata, ok, err = run('yt-dlp -i --print title,duration_string,like_count,view_count,is_live,live_status "' .. arg[1] .. '"')
 
 if not ok and err:match ' in %d+' then
 	local due = err:match '%d+%s%w+'

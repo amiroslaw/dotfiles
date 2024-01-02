@@ -43,23 +43,23 @@ local params = args.params and args.params or {}
 -- stop
 local function killQueue(group)
 	group = group and group or 'default'
-	local killStatus, _, err = run(('pueue kill -g %s'):format(group))
+	local  _, killStatus, err = run(('pueue kill -g %s'):format(group))
 	assert(killStatus, err)
 end
 
 -- stop any running job, in their many - show menu
 local function killAny()
-	local _, running = run([[pueue status --json | jq -r '.tasks[] | select(.status == "Running").status' ]])
+	local running = run([[pueue status --json | jq -r '.tasks[] | select(.status == "Running").status' ]])
 	if #running == 0 then
 		notify('Any running jobs')
 		return
 	end
 
 	if #running < 2 then
-		local killStatus, _, err = run('pueue kill --all')
+		local  _, killStatus, err = run('pueue kill --all')
 		assert(killStatus, err)
 	else
-		local okList, runningJobs, err = run([[pueue status --json status=running | jq -r '.tasks[] | "\(.id) \(.label) @\(.group)"']])
+		local  runningJobs, okList, err = run([[pueue status --json status=running | jq -r '.tasks[] | "\(.id) \(.label) @\(.group)"']])
 		assert(okList, err)
 		M(rofiMenu(runningJobs, { prompt = 'Jobs to kill', multi = true, width = '70%'}))
 				:map(M.fun.match('@[%w-]+$'))
@@ -78,9 +78,9 @@ end
 -- A killed job will be restarted.
 local function restartQueue(group)
 	group = group and group or 'default'
-	local restartStatus, _, err = run(('pueue restart -i -g %s'):format(group))
+	local  _, restartStatus, err = run(('pueue restart -i -g %s'):format(group))
 	assert(restartStatus, err)
-	local startStatus, _, err = run(('pueue start -g %s'):format(group))
+	local  _, startStatus, err = run(('pueue start -g %s'):format(group))
 	assert(startStatus, err)
 end
 
@@ -88,18 +88,18 @@ end
 local function resetQueue(group)
 	group = group and group or 'default'
 	killQueue(group)
-	local _, ids = run(('pueue status --json | jq -r \'.tasks.[] | select(.group == "%s") | .id\''):format(group))
+	local ids = run(('pueue status --json | jq -r \'.tasks.[] | select(.group == "%s") | .id\''):format(group))
 	ids = table.concat(ids, ' ')
-	local ok, _, err = run('pueue remove ' .. ids)
+	local  _, ok, err = run('pueue remove ' .. ids)
 	assert(ok, err)
-	local ok, _, err = run('pueue start -g ' .. group)
+	local  _, ok, err = run('pueue start -g ' .. group)
 	assert(ok, err)
 end
 
 -- remove successful jobs from a group
 local function cleanQueue(group)
 	group = group and group or 'default'
-	local ok, _, err = run('pueue clean --successful-only -g ' .. group)
+	local  _, ok, err = run('pueue clean --successful-only -g ' .. group)
 	assert(ok, err)
 end
 
@@ -107,14 +107,13 @@ local function makeMpvList(group)
 	assert(os.execute('mpv.lua --makeQueue --input ' .. group) == 0, "Can't make m3u playlist form a queue " .. group)
 end
 
--- TODO, test 
 local function jobList(group)
 	if group then
 		group = ' -g ' .. group
 	else
 		group = ''
 	end
-	local ok, out, err = run('pueue status columns=id,status,label,command ' .. group) 
+	local out, ok, err = run('pueue status columns=id,status,label,command ' .. group) 
 	assert(ok, err)
 	local keys = {
 		['Alt-k'] = 'kill',
@@ -136,7 +135,7 @@ local function jobList(group)
 	local jobs = M(out):filter(M.fun.contains('^%s%d'))
 					:value()
 	local selected, keybind = rofiMenu(jobs, { prompt = 'Default action:restart', multi = true, width = '70%', keys = keys})
-	if selected == '' then
+	if not keybind then
 		menu()
 		return
 	end
@@ -147,7 +146,7 @@ local function jobList(group)
 			-- :each(killQueue)
 	local cmd = switch(cases, keys[keybind])
 	printt(cmd .. jobsId)
-	local ok, _, err = run(cmd:format(jobsId, jobsId))
+	local  _, ok, err = run(cmd:format(jobsId, jobsId))
 	-- assert(ok, err)
 end
 local function jobListAll()
@@ -156,19 +155,18 @@ end
 
 local function buildStatus(group)
 	local selectGroup = ([[ pueue status --json | jq -r '.tasks[] | select(.group == "%s")]]):format(group)
-	local _, success = run(selectGroup .. [[ | .status | select(.Done? == "Success").Done' ]])
-	local _, killed = run(selectGroup .. [[ | .status | select(.Done? == "Killed").Done' ]])
-	local _, queued= run(selectGroup .. [[ | select(.status == "Queued").status' ]])
-	local _, running= run(selectGroup .. [[ | select(.status == "Running").status' ]])
-	local _, failed= run(selectGroup .. [[ | .status.Done?.Failed?' ]])
+	local success = run(selectGroup .. [[ | .status | select(.Done? == "Success").Done' ]])
+	local killed = run(selectGroup .. [[ | .status | select(.Done? == "Killed").Done' ]])
+	local queued= run(selectGroup .. [[ | select(.status == "Queued").status' ]])
+	local running= run(selectGroup .. [[ | select(.status == "Running").status' ]])
+	local failed= run(selectGroup .. [[ | .status.Done?.Failed?' ]])
 	local active = running[1] and running[1] or ''
 	local key = ("%s \t K:%s; Q:%s; F:%s; S:%s; %s"):format(group, #killed, #queued, #failed, #success, active)
 	return {key, group}
 end
 
 local function buildRofiMenu(keys)
-	local _, groups = run "pueue status --json | jq -r '.tasks[].group'"
-	local options = M(groups)
+	local options = M(run("pueue status --json | jq -r '.tasks[].group'"))
 		:unique()
 		:map(buildStatus)
 		:toObj()
@@ -198,10 +196,10 @@ function menu()
 	} 
 	local options, config = buildRofiMenu(keys)
 	local selected, keybind = rofiMenu(options, config)
-	if selected == '' then
+	if not keybind then
 		return
 	end
-	selected = options[selected]
+	selected = options[selected[1]]
 
 	switch(cases, keys[keybind])(selected)
 end

@@ -60,7 +60,7 @@ local function execQueue(cmd, group, url)
 	end
 	local url, title = next(url)
 	assert(os.execute(cmd:format(title) .. url) == 0, 'Can not run: ' .. cmd)
-	local startStatus, err = run(('pueue start -g %s'):format(group))
+	local _, startStatus, err = run(('pueue start -g %s'):format(group))
 	assert(startStatus, err)
 end
 
@@ -99,7 +99,7 @@ local function sendKindle()
 	local link = args[1]
 	local kindleEmail = io.input(os.getenv('PRIVATE') .. '/kindle_email'):read('*l'):gsub('%s', '')
 	local title = createEpub(link)
-	ok, _, err = run('echo "' .. title .. '\nKindle article from reader" | mailx -v -s "Convert" -a"' .. KINDLE_TMP_DIR .. title .. '.epub" ' .. kindleEmail, "Can't send book: " .. title)
+	_, ok, err = run('echo "' .. title .. '\nKindle article from reader" | mailx -v -s "Convert" -a"' .. KINDLE_TMP_DIR .. title .. '.epub" ' .. kindleEmail, "Can't send book: " .. title)
 	assert(ok,err)
 end
 
@@ -154,7 +154,7 @@ end
 --------------------------------------------------
 
 local function getTitle(url)
-	local ok, out, err = run('yt-dlp -i --print title "' .. url .. '"')
+	local out, ok = run('yt-dlp -i --print title "' .. url .. '"')
 	if ok and out[1] then
 		return {[url] = out[1]:gsub('"', "'") } -- escape "
 	end
@@ -239,7 +239,7 @@ local action = help
 
 if args.menu or args.m then
 	local selection = rofiMenu(options)
-	action = switch(options, selection)
+	action = switch(options, selection[1])
 else
 	for key,_ in pairs(args) do
 		local selection = switch(options, key)

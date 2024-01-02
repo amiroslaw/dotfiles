@@ -9,7 +9,7 @@ UTILS
 printt(table, file) to print tables on screen or to file
 readf(file) read file, returns table
 writef(string|table, file, [readmode]) write table/string to file, can't have nil
-status,out,err = run(cmd, msgErr) - status is boolean; out is a table; executes external command and optionally capture the output
+out,status,err = run(cmd, msgErr) - status is boolean; out is a table; executes external command and optionally capture the output. if error output will be a empty table
 --luasnip
 filenamesplit( filepathStr ) --> pathStr, nameStr, extStr
 jsonish(string) → tab - This function parses the json-like string jsonStr to the lua table dataTab.
@@ -28,11 +28,11 @@ getConfigProperties(path) - - Read configuration file with key=value format. Fun
 switch(cases, pattern)
 notify("title", 'description', style) --  title can be a string or table
 notifyError(string)
-rofiMenu(entriesTab, [rofiOptions]), returns table if selected multiple items or string otherwise. For the second argument returns keybinding, if custom keys were provided.
 createTmpFile([rofiOptions]) creates TmpFile in /tmp/lua/ returns filepath and fileName
 editor(path|text, [editorName]) Opens file or text in editor. 
 dialog(msg, [style]) - show rofi's dialog
 optionTab - Options can be parser form an array (ordered table) or a dictionary.
+rofiMenu(entriesTab, [rofiOptions]), returns table. For the second argument returns keybinding, if custom keys were provided. If esc, code will be  false
 rofiNumberInput([prompt])
 rofiInput([rofiOptions])  optional arguments that can be passed via table
 	prompt (string)
@@ -256,22 +256,16 @@ end
 
 -- run <<<
 --[[
-TODO - better return values in this order [output, status, error], It would be better for Moses library - M(run(cmd)), but we will lose error handling
 Warning: can't be execute in parallel, also sometimes have problem with reading output from tmp files. - fix with tmp file name
 
-This is kind of a wrapper function to os.execute and io.popen.
-The problem with os.execute is that it can only return the
-exit status but not the command output. And io.popen can provide
-the command output but not an exit status. This function can do both.
+This is kind of a wrapper function to os.execute and io.popen. The problem with os.execute is that it can only return the exit status but not the command output. And io.popen can provide the command output but not an exit status. This function can do both.
 It will return the same return valus as os.execute plus table for output and error message.
 The output table contain the command output, 1 line per numeric index.
 Line feed and carriage return are removed from each line.
-The error output is a join of our error msg and the stderr stream.
+The error output is a join of our error msg and the stderr stream. In this case output is a empty table.
 
 cmd     = command to execute, can be string or table
-status,out,err = run("ls -l", "error msg")
-printt(out)
-print(err)
+out,status,err = run("ls -l", "error msg")
 --]]
 function run(cmd, errorMsg)
    if (type(cmd) ~= "string") and (type(cmd) ~= "table") then return nil end
@@ -304,12 +298,13 @@ function run(cmd, errorMsg)
 
 	-- for testing a bug
   if not Out_t then
+	  Out_t = {}
 	  notifyError('test - run command in init.lua; can not read output')
   end
 
   os.remove(OutFile_s)
   os.remove(ErrFile_s)
-  return status, Out_t, Err, Status_code
+  return Out_t, status, Err, Status_code
 end -- >>>
 
 --- exist <<<
@@ -509,7 +504,7 @@ function rofiNumberInput(prompt)
 end 
 
 --[[
-Shows a rofi menu. Returns string or table if multiple-select option was enabled. If custom keys were provided, it will return a keybind a second argument, otherwise 0. If nothing was selected it returns empty string and false for output and exit code.
+Shows a rofi menu. Returns table of the selected options. If custom keys were provided, it will return a keybind a second argument, otherwise 0. If nothing was selected it returns table with empty string and false for output and exit code.
 params:
 entriesTab - Options can be parser form an array (ordered table) or a dictionary.
 opt - optional arguments that can be passed via table
@@ -541,17 +536,17 @@ function rofiMenu(entriesTab, options)
 		lines = opt.height
 	end
 
-	local _, selected, err, code= run('echo "' .. entries .. '" | rofi -monitor -4 -i ' .. opt.multi .. ' -l ' .. lines .. ' -dmenu -p "' .. opt.prompt .. '" -theme-str "window {width:  ' .. opt.width .. ';}" ' .. opt.keys .. opt.msg)
+	local selected, _, err, code= run('echo "' .. entries .. '" | rofi -monitor -4 -i ' .. opt.multi .. ' -l ' .. lines .. ' -dmenu -p "' .. opt.prompt .. '" -theme-str "window {width:  ' .. opt.width .. ';}" ' .. opt.keys .. opt.msg)
 	-- local _, selected, err, code= run('echo "' .. entries .. '" | rofi -monitor -4 -i ' .. opt.multi .. ' -l ' .. lines .. ' -sep "' .. SEP .. '" -dmenu -p "' .. opt.prompt .. '" -theme-str "window {width:  ' .. opt.width .. ';}" ' .. opt.keys .. opt.msg)
 
 	-- rofi returns error code for hooks and returns error code for not selecting - it would be a rofi error
 	if err and err ~= '' then
 		notifyError(err)
-		return '', false
+		return {''}, false
 	end
 	-- only luajit returns different status code
 	if code == 256 then
-		return '', false
+		return {''}, false
 	end
 	if next(keys) and code > 256 then
 		code = code/256 - 9
@@ -563,7 +558,7 @@ function rofiMenu(entriesTab, options)
 		end
 		return selected, code
 	else
-		return selected[1], code
+		return selected, code
 	end
 
 end -- >>>

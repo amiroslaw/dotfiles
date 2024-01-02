@@ -35,21 +35,21 @@ local function switchView()
 	local selected, code = rofiMenu(views, {prompt = 'Switch view', width = '25ch'})
 	selected = code and selected or 'none'
 	local stat
-	if views[selected] == 'report' then
-		stat = os.execute('taskwarrior-tui --report=' .. selected)
+	if views[selected[1]] == 'report' then
+		stat = os.execute('taskwarrior-tui --report=' .. selected[1])
 	else
-		stat = os.execute('task context ' .. selected)
+		stat = os.execute('task context ' .. selected[1])
 	end
 	assert(stat == 0, "Coulden't switch view")
 end
 
 local function modifyTask(modification)
-	local stat, _, err = run(taskConfirmationCmd .. 'modify ' .. modification .. ' ' .. taskIDs, "Can't modify")
+	local  _,stat, err = run(taskConfirmationCmd .. 'modify ' .. modification .. ' ' .. taskIDs, "Can't modify")
 	assert(stat, err)
 end
 
 local function setPriority(priority)
-	local priority = priority and priority or rofiMenu({ ' ', 'L', 'M', 'H' }, {prompt = 'Set priority', width = '15ch'})
+	local priority = priority and priority or rofiMenu({ ' ', 'L', 'M', 'H' }, {prompt = 'Set priority', width = '15ch'})[1]
 	modifyTask('priority:' .. priority)
 end
 
@@ -89,7 +89,7 @@ end
 -- new item is a new project
 local function addTag()
 	local tags = M.clone(contextAliases)
-	local _, projects = run 'task _projects'
+	local projects = run 'task _projects'
 	for _, project in ipairs(projects) do
 		project = project:gsub('^%a', '#' .. project:match '^%a')
 		tags[project] = 'project'
@@ -109,6 +109,7 @@ local function removeTag()
 	tags['all contexts'] = 'allContexts'
 	tags['wait/someday'] = 'wait'
 	local selected, code = rofiMenu(tags, {prompt = 'Remove tag', width = '25ch'})
+	selected = selected[1]
 	if not code then return end
 
 	if tags[selected] == 'project' then
@@ -123,19 +124,19 @@ local function removeTag()
 end
 
 local function sync()
-	local stat, _, err = run('task sync', "Can't sync")
+	local _, stat, err = run('task sync', "Can't sync")
 	assert(stat, err)
 	notify 'Synchronized'
 end
 
 local function openInBrowser(url)
-	local stat, _, err = run('xdg-open "' .. url .. '"')
+	local _, stat, err = run('xdg-open "' .. url .. '"')
 	assert(stat, err)
 end
 
 local function parseUrls(taskId, annotationId)
 	local urlPattern = '(https?://([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))'
-	local _, annotation = run('task _get ' .. taskId .. '.annotations.' .. annotationId .. '.description')
+	local annotation = run('task _get ' .. taskId .. '.annotations.' .. annotationId .. '.description')
 	for match in annotation[1]:gmatch(urlPattern) do
 		openInBrowser(match)
 	end
@@ -144,7 +145,7 @@ end
 local function openUrl()
 	for i = 2, #arg do
 		local taskId = arg[i]
-		local stat, annoCount, err = run('task _get ' .. taskId .. '.annotations.count', "Can't open url from task: " .. taskId)
+		local annoCount,stat,  err = run('task _get ' .. taskId .. '.annotations.count', "Can't open url from task: " .. taskId)
 		assert(stat, err)
 		for j = 1, annoCount[1] do
 			parseUrls(taskId, j)
@@ -153,7 +154,7 @@ local function openUrl()
 end
 
 local function duplicate()
-	local stat, _, err = run(taskConfirmationCmd .. 'duplicate ' .. taskIDs, "Can't duplicate " .. taskIds)
+	local _, stat, err = run(taskConfirmationCmd .. 'duplicate ' .. taskIDs, "Can't duplicate " .. taskIds)
 	assert(stat, err)
 end
 
@@ -181,7 +182,7 @@ xpcall(switchFunction, errorMsg)
 -- with not hardcoded contexts
 -- IDK how to retrive all tags _context returns only defined contexts
 -- local tags = {}
--- local _, contexts = run 'task _context'
+-- local contexts = run 'task _context'
 -- for _, context in ipairs(contexts) do
 -- 	tags[context] = 'context'
 -- end

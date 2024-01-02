@@ -6,7 +6,7 @@ for branch in io.popen('git -C ' .. repoPath  .. ' branch'):lines() do
 	table.insert(branches, branch )
 end 
 
-local chosen = rofiMenu(branches, {prompt = 'git checkout', width = '25ch'})
+local chosen = rofiMenu(branches, {prompt = 'git checkout', width = '25ch'})[1]
 
 local status = os.execute('git -C ' .. repoPath .. ' checkout ' .. chosen)
 if status == 0 then

@@ -79,11 +79,11 @@ local function changeTWstate(state)
 	local taskUuid = io.open(CURRENT_PATH):read '*a'
 	local ok, _, err
 	if state == stateEnum.STOP then
-		ok, _, err = run('task stop ' .. taskUuid, 'Can not stop task: ' .. taskUuid)
+		_, ok, err = run('task stop ' .. taskUuid, 'Can not stop task: ' .. taskUuid)
 		assert(ok, err) 
 		alert 'Work stopped'
 	else
-		ok, _, err = run('task start ' .. taskUuid, 'Can not stop task: ' .. taskUuid)
+		_, ok, err = run('task start ' .. taskUuid, 'Can not stop task: ' .. taskUuid)
 		assert(ok, err) 
 		alert 'Work started'
 	end
@@ -154,7 +154,7 @@ end
 local function stopStatus()
 	local state = getState()
 	if state == stateEnum.STOP then
-		ok, count, err = run('task +ACTIVE count', 'Can not get active task information')
+		count, ok, err = run('task +ACTIVE count', 'Can not get active task information')
 		assert(ok, err) 
 		io.write(count[1])
 	else
@@ -202,10 +202,10 @@ end
 local function add()
 	local STOP = '#stop'
 	local PAUSE = '#pause'
-	local okContext, _, err = run('task context none',  'Could not switch context')
+	local _, okContext, err = run('task context none',  'Could not switch context')
 	-- assert(okContext, err) -- return error code 2 if it did not have context
 	--task rc.verbose=nothing minimal - wrap lines 
-	local ok, tasks, err = run('task rc.verbose=nothing minimal',  'Could not get task list')
+	local tasks, ok, err = run('task rc.verbose=nothing minimal',  'Could not get task list')
 	assert(ok, 'err')
 
 	table.insert(tasks, STOP)
@@ -214,16 +214,16 @@ local function add()
 	if not code then
 		return true
 	end
-	if selected == STOP then
+	if selected[1] == STOP then
 		stopStatus()
 		return
-	elseif selected == PAUSE then
+	elseif selected[1] == PAUSE then
 		pauseStatus()
 		return
 	end
 	-- local selectedId = selected:match '^%d+'
-	local selectedId = selected:match '^%s*%d+'
-	local okUuid, uuid, err = run('task _uuid ' .. selectedId, 'Could not fetch task uuid')
+	local selectedId = selected[1]:match '^%s*%d+'
+	local uuid, okUuid, err = run('task _uuid ' .. selectedId, 'Could not fetch task uuid')
 	assert(okUuid, err)
 	setCurrentTask(uuid)
 	io.open(STATUS_PATH, 'w'):write 'work'
@@ -253,7 +253,7 @@ function dailyInfo()
 	end
 	local taskUuid = io.open(CURRENT_PATH):read '*a'
 	local taskDesc = ''
-	local ok, description = run('task _get ' .. taskUuid .. '.description')
+	local description, ok  = run('task _get ' .. taskUuid .. '.description')
 	if ok then
 		taskDesc = description[1]
 	end
@@ -266,7 +266,7 @@ function annotate()
 end
 
 function getNextActionCount()
-	local ok, nextCounter = run('task stat:pending +next count')
+	local nextCounter, ok  = run('task stat:pending +next count')
 	if ok then
 		return	nextCounter[1] 
 	end
@@ -277,20 +277,20 @@ stateEnum = enum { STOP = stopStatus, BREAK = breakStatus, WORK = workStatus, PA
 
 local function modify()
 	local cmd = [[ timew summary :ids :week | awk '/@/ {out=""; startIndex=1; { if($1 ~/W/){ startIndex=4;} for(i=startIndex;i<=NF;i++)if($i !~/:/) out=out" "$i};  if($(NF-3) ~/:/) {print out" "$(NF-1)} else {print out" "$NF};  o=""}' | tac ]]
-	local ok, tasks, err = run(cmd, 'Error: modification')
+	local tasks, ok, err = run(cmd, 'Error: modification')
 	assert(ok, err) 
 	local action, code = rofiMenu({'lengthen', 'shorten'}, {prompt = 'modify interval'})
 	assert(code, "Can not modify")
 	local selectedTask, code = rofiMenu(tasks, {prompt = 'choose task (empty == last)', width = '94%'})
-	selectedTask = code and selectedTask or ' @1'
-	local taskId = selectedTask:match '^%s@%d+'
+	selectedTask[1] = code and selectedTask[1] or ' @1'
+	local taskId = selectedTask[1]:match '^%s@%d+'
 	local minutes = rofiNumberInput('Minutes')
-	local ok, _, err = run('timew ' .. action .. taskId .. ' ' .. minutes .. 'min', 'Could not modify task: ' .. taskId)
+	local _, ok, err = run('timew ' .. action[1] .. taskId .. ' ' .. minutes .. 'min', 'Could not modify task: ' .. taskId)
 	assert(ok, err) 
 end
 
 local function synchronise()
-	local ok, _, err = run('~/.config/task/scripts/sync.sh', 'Did not synchronise taskwarrior')
+	local _, ok, err = run('~/.config/task/scripts/sync.sh', 'Did not synchronise taskwarrior')
 	if ok then
 		msg = {['Synchronised'] = 'green'}
 		notify('Taskwarrior', next(msg), msg)
@@ -320,6 +320,7 @@ end
 local action = arg[1] and arg[1] or defaultOption
 if action == 'menu' then
 	action = rofiMenu(options, {prompt = 'Pomodoro menu'})
+	action = action[1]
 end
 local exec, param = switch(action)
 local ok, err = pcall(exec, param)

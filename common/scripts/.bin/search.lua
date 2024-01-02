@@ -63,11 +63,11 @@ function cheat()
 	local err = 'Can not fetch data'
 	local out
 	local cmd = ('curl "cht.sh/%s%s%s?T"') -- ?T without ascii
-	if topics[topic] == 'lang' then
+	if topics[topic[1]] == 'lang' then
 		if query == '' then query = ':list' elseif query == 'l' then query = ':learn' end -- :learn; def=:list
-		status, out, err = run(cmd:format(topic, '/', query)) 
+		out, status, err = run(cmd:format(topic[1], '/', query)) 
 	else
-		status, out, err = run(cmd:format(topic, '~', query)) 
+		out, status, err = run(cmd:format(topic[1], '~', query)) 
 	end
 	assert(status, err)
 	local tmpFile = createTmpFile({prefix = 'cheat'})
@@ -135,7 +135,7 @@ local function errorMsg(msg)
 end
 
 if args.menu or args.m then
-	local action = switch(options, rofiMenu(options, {prompt = 'Search', width = '25ch'}))
+	local action = switch(options, rofiMenu(options, {prompt = 'Search', width = '25ch'})[1])
 	xpcall(action, errorMsg, phraseArg)
 end
 

@@ -37,16 +37,14 @@ local function splitSentences()
 		table.insert(sentences, sentence)
 	end
 	local rofiOutput = rofiMenu(sentences, {prompt = 'Select sentence', multi = true, width = '95%'} )
-	if type(rofiOutput) == 'table' then
-		rofiOutput = table.concat(rofiOutput, '\n')
-	end
+	rofiOutput = table.concat(rofiOutput, '\n')
 	copy(rofiOutput)
 end
 
 function adoc()
 	local html = getHtmlElement().outerHTML
 	assert(writef(html, CONST.clipFileHtml), 'adoc - IO error')
-	local ok, out, err = run('pandoc --wrap=none --from html --to asciidoc --output ' .. CONST.clipFile .. ' ' .. CONST.clipFileHtml)
+	local out,ok,  err = run('pandoc --wrap=none --from html --to asciidoc --output ' .. CONST.clipFile .. ' ' .. CONST.clipFileHtml)
 	
 	if ok then
 		assert(os.execute('xclip -sel clip -i ' .. CONST.clipFile) == 0, 'Did not copy to clipboard -xclip')
@@ -73,7 +71,7 @@ end
 function speed()
 	local termCmd = (os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_FONT' .. os.getenv 'TERM_LT_RUN')
 		:format(19, 'rsvp', 'sh -c "echo \'' .. CONST.selectedTxt .. '\' | speedread -w 300"')
-	local ok, _, err = run(termCmd)
+	local _, ok, err = run(termCmd)
 	assert(ok, err)
 end
 

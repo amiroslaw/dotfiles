@@ -12,7 +12,7 @@ List of the options:
 ]]
 todoPath = os.getenv('NOTE') ..  '/Zadania/inbox.adoc'
 function show() 
-	local ok, list, err = run('task rc.verbose=nothing minimal | zenity --text-info')
+	local _, ok, err = run('task rc.verbose=nothing minimal | zenity --text-info')
 	if not ok then
 		notifyError(err)
 	end
@@ -24,7 +24,7 @@ function show()
 end
 
 function add() 
-	-- local ok, err = run('todo.sh add "' .. task .. '" +x')
+	-- local _, ok, err = run('todo.sh add "' .. task .. '" +x')
 	local task = io.popen('zenity --entry --text="Add task"'):read('*a')
 	local file = io.open(todoPath, "a+")
 	file:write("* [ ] " .. task)

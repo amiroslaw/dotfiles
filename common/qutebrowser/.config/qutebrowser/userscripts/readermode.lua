@@ -12,7 +12,7 @@ local CSS_PATH = os.getenv 'QUTE_CONFIG_DIR' .. '/css/reader-solarized-light.css
 local HTML_PATH = os.getenv 'QUTE_DATA_DIR' .. '/reader-mode.html'
 local CSS = '<link rel="stylesheet" type="text/css" href="' .. CSS_PATH ..'" />'
 -- local MODE = os.getenv 'QUTE_MODE'
-local okCreate, out, err = run('rdrview -H "' .. URL .. '" > ' .. HTML_PATH, 'Could not create html')
+local _, okCreate, err = run('rdrview -H "' .. URL .. '" > ' .. HTML_PATH, 'Could not create html')
 io.open(HTML_PATH, 'a+'):write(CSS)
 
 if okCreate then

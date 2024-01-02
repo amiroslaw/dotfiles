@@ -21,9 +21,9 @@ end
 local selectedAnchor, code = rofiMenu(anchors, {prompt = 'Jump to header'})
 
 if code then
-	local anchor = anchors[selectedAnchor]
+	local anchor = anchors[selectedAnchor[1]]
 	if not anchor then
-		anchor = selectedAnchor
+		anchor = selectedAnchor[1]
 	end
 	io.open(quteFifo, 'a'):write('scroll-to-anchor ' .. anchor)
 end

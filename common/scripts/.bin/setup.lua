@@ -12,9 +12,9 @@ if arg[1] then
 
 	local entry = rofiInput { prompt = 'Setup', width = '40%' }
 	entry = entry .. ' ' .. os.date('%Y/%m/%d_%H:%M')
-	selectedAsset = selectedAsset:gsub('/', '\\/')
+	selectedAsset = selectedAsset[1]:gsub('/', '\\/')
 	print('sed -i "/^'.. selectedAsset .. '/a '.. entry .. '" ' .. SETUP_PATH)
-	local ok, out, err = run('sed -i "/^'.. selectedAsset .. '/a '.. entry .. '" ' .. SETUP_PATH, "Can't write setup")
+	local  out, ok, err = run('sed -i "/^'.. selectedAsset .. '/a '.. entry .. '" ' .. SETUP_PATH, "Can't write setup")
 	if ok then
 		notify('added: ' .. entry)
 	else
