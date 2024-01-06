@@ -185,7 +185,7 @@ return {
 		opts =  { filetype_exclude = { "qf", 'asciidoctor' }, } -- exclude unil treesitter will support asciidoc
 	},
 	{ 'sbdchd/neoformat', cmd = { 'Neoformat' } },
-	{ 'gennaro-tedesco/nvim-jqx', ft = { 'json' } },
+	{ 'gennaro-tedesco/nvim-jqx', ft = { 'json', 'yaml' } },
 	{ 'numToStr/Comment.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = true },
 	{ 'windwp/nvim-autopairs', event = 'InsertEnter', config = true },
 	{ 'jose-elias-alvarez/null-ls.nvim', branch = 'main', dependencies = { 'nvim-lua/plenary.nvim' } },

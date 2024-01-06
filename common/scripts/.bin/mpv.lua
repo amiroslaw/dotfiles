@@ -10,13 +10,6 @@ Actions that run list, create a playlist (*.m3u) - after the player is closed sc
 Actions that manage playlists can take `--save[=playlistName]` or `--input` options for overrate default name.
 
 Actions:
-	--push -u → Add an url to the playlist
-	--audioplay -a → Play audio from the url
-	--audiolist -A → Play audio from the playlist
-	--videoplay -v → Play video from the url
-	--videolist -V → Play video from the playlist
-	--popupplay -p → Play video in lower resolution from the url
-	--popuplist -P → Play video in lower resolution from the playlist
 	--makeLocal -l → Create playlist (m3u) from the directories in current location 
 	--makeOnline -m → Create playlist (m3u) from the url
 	--makeQueue -q → Create playlist (m3u) from a queue
@@ -33,8 +26,6 @@ Options:
 	--list -L → filter only playlists
 
 examples:
-mpv.lua --audioplay url 
-mpv.lua --push url 
 mpv.lua --videolist --save=custom-playlist-name
 mpv.lua --videolist --input
 mpv.lua --rename=custom-playlist-name
@@ -48,7 +39,8 @@ In order to change stream format and options it's needed to add the profiles `st
 For editing - set system env: GUI_EDITOR
 Dependencies: mpv, st, clipster, fd, zenity, rofi, notify-send, yt-dlp, trash-put in optional
 
-TODO: add support for reading from env
+TODO: clean help after qu.lua change
+add support for reading from env
 doesn't clear playlist after abort prompt
 	]]
 
@@ -64,7 +56,7 @@ local LINK_REGEX = "(https?://([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:
 
 local CMD_VIDEO = 'mpv --profile=stream '
 local CMD_POPUP = 'mpv --x11-name=videopopup --profile=stream-popup '
-local CMD_AUDIO = 'st -c audio -e mpv --profile=stream-audio '
+local CMD_AUDIO = (os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'):format('audio', 'mpv --profile=stream-audio')
 
 local function errorMsg(msg)
 	print(msg)

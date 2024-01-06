@@ -2,7 +2,25 @@
   "grammar-append": {
     "type": "chat",
     "opts": {
-      "template": "Modify the following {{lang}} text to improve only grammar and spelling, don't wrap the answer with quotation marks. Explain not trivial mistakes.:  \n\n{{input}}",
+      "template": "Modify the following {{lang}} text to improve only grammar and spelling, don't wrap the answer with quotation marks.:  \n\n{{input}}",
+      "strategy": "append",
+      "params": {
+        "model": "mistral:latest",
+        "temperature": 0.3
+      }
+    },
+    "args": {
+      "lang": {
+        "type": "string",
+        "optional": "true",
+        "default": "english"
+      }
+    }
+  },
+  "grammar-append-explain": {
+    "type": "chat",
+    "opts": {
+      "template": "Modify the following {{lang}} text to improve only grammar and spelling, don't wrap the answer with quotation marks. Explain nontrivial mistakes.:  \n\n{{input}}",
       "strategy": "append",
       "params": {
         "model": "mistral:latest",
