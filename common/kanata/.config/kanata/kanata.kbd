@@ -1,0 +1,99 @@
+#|
+layers
+|#
+
+(defcfg
+linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-event-kbd)
+  process-unmapped-keys yes
+	danger-enable-cmd yes
+ sequence-timeout 3000
+)
+
+#|
+(deflayer name
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _              _              _    _    _ 
+)
+(deflayer name
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX    XX    XX              XX              XX    XX    XX
+)
+|#
+
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt cmp rctl
+)
+
+(deflayer base
+  @grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w     e    r    t    y    u    i    o    p    [    ]    \
+  @cap  @alt_a   @met_s   @sft_d @ctl_f  g   h   @ctl_j @sft_k @met_l @alt_; '    ret
+  @lsft z    x    c    v    b    n    m    ,    .    /    @rsft
+  lctl lmet @lalt           @spc            ralt cmp rmet
+) ;; ms sculpt with aplication key
+
+(deflayer numbers
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  _    S-4    S-=    S-9  S-0    S-2    S-\    -    =      S--    S-8    '    ret
+  _    S-1    S-3    S-[  S-]    S-`    S-7    [    ]    S-5    S-6    _
+  _    _    _              _              _    _    _ 
+)
+;; _    $    +    \(    \)    @    |    -    =    \_    *    '    ret
+;; _    !    #    {    }    ~    &    [    ]    %    ^    @mdf
+
+(deflayer navigation ;; plus media
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    ins 	C-y   C-v	C-c   C-x    XX    XX   XX
+  XX    XX    mute    vold  volu    XX    left down   up   rght   ret   XX    XX    
+  XX    XX    XX    XX    XX    XX    home	pgdn pgup	end	  ins   XX
+  XX    XX    XX              XX              XX    XX    XX 
+)
+;; ins S-ins	C-ins	S-del	- append paste copy cut 
+(defalias
+  lsft (tap-hold-press 200 200 S-9 lsft) ;; left bracket
+  rsft (tap-hold-press 200 200 S-0 rsft) ;; right bracket
+  grv (tap-hold-press 200 200 grv lrld) ;; reload on hold
+  cap (tap-hold-press 200 200 esc (layer-while-held navigation)) ;; esc
+  spc (tap-hold 200 200 spc (layer-while-held numbers))
+  ;; spc (one-shot 500 (layer-while-held numbers))
+)
+
+(defalias
+	alt_a (tap-hold 200 200 a lalt)
+    met_s (tap-hold 200 200 s lmet)
+    sft_d (tap-hold 200 200 d lsft)
+    ctl_f (tap-hold 200 200 f lctl)
+
+    ctl_j (tap-hold 200 200 j rctl)
+    sft_k (tap-hold 200 200 k rsft)
+    met_l (tap-hold 200 200 l rmet)
+    alt_; (tap-hold 200 200 ; lalt)
+)
+
+(defseq 
+  url (e u)
+  test (e t)
+)
+(deffakekeys 
+  url (cmd notify-send url)
+  test (cmd notify-send test)
+)
+
+(defalias 
+  lalt (tap-hold-release 200 200 sldr lalt)
+)
+(defvar
+)
+
+;; vim:filetype=lisp
