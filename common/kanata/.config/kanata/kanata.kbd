@@ -39,7 +39,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
   tab  q    w     e    r    t    y    u    i    o    p    [    ]    \
   @cap  @alt_a   @met_s	@ctl_d @sft_f g   h @sft_j @ctl_k @met_l @alt_; '    ret
   @lsft z    x    c    v    b    n    m    ,    .    /    @rsft
-  lctl @lmet @lalt           @spc            @ralt cmp rmet
+  lctl lmet @lalt           @spc            @ralt cmp rmet
 ) ;; ms sculpt with aplication key
 
 (deflayer numbers
@@ -54,14 +54,15 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 
 (deflayer navigation ;; plus media
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX    XX    XX    XX    XX    XX    ins 	C-y   C-v	C-c   C-x    XX    XX   XX
+  XX    XX    XX    XX    XX    XX    C-c   C-z	C-x   C-v  S-ins  XX    XX   XX
   XX    XX    mute    vold  volu    XX    left down   up   rght   ret   XX    XX    
   XX    XX    XX    XX    XX    XX    home	pgdn pgup	end	  ins   XX
   XX    XX    XX              XX              XX    XX    XX 
 )
-;; ins S-ins	C-ins	S-del	- append paste copy cut 
+;; S-ins; C-z: pase select, undo
+
 (defalias
-  lalt (tap-hold-release 200 200 sldr lalt)
+  ;; lcrt (tap-hold-release 200 200 sldr lcrt)
   ralt (tap-hold-press 200 200 bspc ralt) ;; release is not great
   lsft (tap-hold-press 200 200 S-9 lsft) ;; left bracket
   rsft (tap-hold-press 200 200 S-0 rsft) ;; right bracket
@@ -90,20 +91,27 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 
 (deflayer apps
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX    XX    XX    XX    XX    @tw    XX    XX    @idea    XX    @fm    XX    XX    XX
-  XX    XX    @off    XX    @vifm    XX    XX    XX @kee      XX    XX    XX    XX
-  XX    @todo    XX    XX    @video    @news    @note    XX    XX    XX    XX    XX
+  XX    @qu    XX    @news    XX    @tw    @yt    XX    @qb    XX    @fm    XX    XX    XX
+  XX    @audio @off    XX    @vifm    XX    @clip    @chat @kee      XX    XX    XX    XX
+  XX    @todo  @pom  @idea    @video    XX    @note    XX    XX    XX    XX    XX
   XX    XX    XX              XX              XX    XX    XX
 )
 
-
-(defalias 
+(defalias ;; common apps scripts
   apps (one-shot 500 (layer-while-held apps))
-  lmet (tap-hold-release 200 200 @apps lmet)
+  lalt (tap-hold-release 200 200 @apps lalt)
   ;; url (cmd )
+;; order matters
+  qu (cmd qu.lua --menu)
+  yt (cmd mpv.lua -o)
+  qb (cmd ~/.config/qutebrowser/userscripts/session.sh)
+  pom (cmd pomodoro.lua add -n)
   note (cmd wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim)
   idea (cmd /opt/idea-IU-212.5284.40/bin/idea.sh)
   vifm (cmd xst -c vifm -e vifm )
+  chat (cmd  scratchpad.sh chat "wezterm start --class chat -- nchat")
+  audio (cmd audio.sh toggle)
+  clip (cmd "/home/miro/.config/rofi/scripts/clipster/roficlip" )
   off (cmd rofi -show power-menu -modi power-menu:~/.config/rofi/scripts/power.sh)
   news (cmd scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat")
   tw (cmd scratchpad.sh task "xst -c task -n task -e taskwarrior-tui")
