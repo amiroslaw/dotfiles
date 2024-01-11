@@ -39,7 +39,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
   tab  q    w     e    r    t    y    u    i    o    p    [    ]    \
   @cap  @alt_a   @met_s   @sft_d @ctl_f  g   h   @ctl_j @sft_k @met_l @alt_; '    ret
   @lsft z    x    c    v    b    n    m    ,    .    /    @rsft
-  lctl lmet @lalt           @spc            ralt cmp rmet
+  lctl @lmet @lalt           @spc            @ralt cmp rmet
 ) ;; ms sculpt with aplication key
 
 (deflayer numbers
@@ -61,6 +61,8 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 )
 ;; ins S-ins	C-ins	S-del	- append paste copy cut 
 (defalias
+  lalt (tap-hold-release 200 200 sldr lalt)
+  ralt (tap-hold-press 200 200 bspc ralt) ;; release is not great
   lsft (tap-hold-press 200 200 S-9 lsft) ;; left bracket
   rsft (tap-hold-press 200 200 S-0 rsft) ;; right bracket
   grv (tap-hold-press 200 200 grv lrld) ;; reload on hold
@@ -70,6 +72,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 )
 
 (defalias
+  ;; maybe tap-hold-press
 	alt_a (tap-hold 200 200 a lalt)
     met_s (tap-hold 200 200 s lmet)
     sft_d (tap-hold 200 200 d lsft)
@@ -81,19 +84,41 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
     alt_; (tap-hold 200 200 ; lalt)
 )
 
-(defseq 
-  url (e u)
-  test (e t)
-)
-(deffakekeys 
-  url (cmd notify-send url)
-  test (cmd notify-send test)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                  APPLICATIONS                  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(deflayer apps
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
+  XX    XX    XX    XX    XX    @tw    XX    XX    @idea    XX    @fm    XX    XX    XX
+  XX    XX    @off    XX    @vifm    XX    XX    XX @kee      XX    XX    XX    XX
+  XX    @todo    XX    XX    @video    @news    @note    XX    XX    XX    XX    XX
+  XX    XX    XX              XX              XX    XX    XX
 )
 
+
 (defalias 
-  lalt (tap-hold-release 200 200 sldr lalt)
+  apps (one-shot 500 (layer-while-held apps))
+  lmet (tap-hold-release 200 200 @apps lmet)
+  ;; url (cmd )
+  note (cmd wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim)
+  idea (cmd /opt/idea-IU-212.5284.40/bin/idea.sh)
+  vifm (cmd xst -c vifm -e vifm )
+  off (cmd rofi -show power-menu -modi power-menu:~/.config/rofi/scripts/power.sh)
+  news (cmd scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat")
+  tw (cmd scratchpad.sh task "xst -c task -n task -e taskwarrior-tui")
+  kee (cmd keecli.sh)
+  video (cmd mpv.lua -o /home/miro/Videos)
+  todo (cmd todo.lua add)
+  fm (cmd pcmanfm )
+  ;; scripts (cmd sh -c "$(ls ~/.bin | rofi -dmenu)")
 )
-(defvar
-)
+
+;; (defseq 
+;;   url (e u)
+;;   test (e t)
+;; )
+;; (defvar
+;; )
 
 ;; vim:filetype=lisp
