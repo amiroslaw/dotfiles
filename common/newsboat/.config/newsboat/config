@@ -124,8 +124,10 @@ macro p set browser "setsid -f url.lua --mpvPopup" ; open-in-browser-noninteract
 macro P set browser "setsid -f url.lua --mpvPopup" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
 macro a set browser "setsid -f url.lua --mpvAudio" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro A set browser "setsid -f url.lua --mpvAudio" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
-macro v set browser "setsid -f url.lua --mpvFullscreen" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro V set browser "setsid -f url.lua --mpvFullscreen" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
+macro f set browser "setsid -f url.lua --mpvFullscreen" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro F set browser "setsid -f url.lua --mpvFullscreen" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
+macro v set browser "setsid -f url.lua --mpvVideo" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro V set browser "setsid -f url.lua --mpvVideo" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
 
 # no pueue config
 # macro ; set browser "setsid -f mpv.lua --push" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh

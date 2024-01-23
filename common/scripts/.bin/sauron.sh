@@ -19,16 +19,17 @@ kindle() {
 }
 
 # download with yt-dlp
-dl_video() {
+dlvideo() {
+	notify-send test
     printf "%s\n" "${input}" | \
     while read line
     do
-		setsid -f url.lua --dlVideo "${line}" 1>/dev/null
+		setsid -f url.lua --dlvideo "${line}" 1>/dev/null
     done
 }
 
 # download with yt-dlp
-dl_audio() {
+dlaudio() {
     printf "%s\n" "${input}" | \
     while read line
     do
@@ -42,6 +43,15 @@ fullscreen() {
     while read line
     do
 		setsid -f url.lua --mpvFullscreen "${line}" 1>/dev/null
+    done
+}
+
+# mpv fullscreen without queue
+video() {
+    printf "%s\n" "${input}" | \
+    while read line
+    do
+		setsid -f url.lua --mpvVideo "${line}" 1>/dev/null
     done
 }
 
@@ -61,11 +71,12 @@ audio() {
     done
 }
 # fzf prompt variables spaces to line up menu options
-audio='audio        - mpd play audio'
-popup='popup        - mpv play popup video' 
-fullscreen='fullscreen   - mpv play fullscreen' 
-dl_video='dl-video     - yt-dlp download video'
-dl_audio='dl-audio     - yt-dlp download audio'
+audio='audio        - mpd play audio in queue'
+popup='popup        - mpv play popup video in queue' 
+fullscreen='fullscreen   - mpv play fullscreen in queue' 
+video='video   - mpv play video' 
+dlvideo='dl video     - ytdlp download video'
+dlaudio='dl audio     - ytdlp download audio'
 kindle='kindle        - download kindle article' 
 
 # fzf prompt to specify function to run on links from ytfzf
@@ -73,8 +84,9 @@ menu=$(printf "%s\n" \
 	      "${audio}" \
 	      "${popup}" \
 	      "${fullscreen}" \
-	      "${dl_video}" \
-	      "${dl_audio}" \
+	      "${video}" \
+	      "${dlvideo}" \
+	      "${dlaudio}" \
 	      "${kindle}" \
 	      | fzf --delimiter='\n' --prompt='Pipe links to: ' --info=inline --layout=reverse --no-multi)
 
@@ -83,8 +95,9 @@ case "${menu}" in
    audio*) audio;;
    popup*) popup;;
    fullscreen*) fullscreen;;
-   dl_video*) dl_video;;
-   dl_audio*) dl_audio;;
+   video*) video;;
+   dlvideo*) dlvideo;;
+   dlaudio*) dlaudio;;
    kindle*) kindle;;
    *) exit;;
 esac

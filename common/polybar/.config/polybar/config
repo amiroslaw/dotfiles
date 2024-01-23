@@ -348,7 +348,7 @@ interval = 60
 
 [module/investing]
 type = custom/script
-exec = investing-cli --no-errors -l -o sbsw,btc,eth -k $(cat $PRIVATE/yahoo) && investing-cli -an -k $(cat $PRIVATE/yahoo)
+exec = investing-cli --no-errors -l -o sbsw,btc -k $(cat $PRIVATE/yahoo) && investing-cli -an -k $(cat $PRIVATE/yahoo)
 click-left = investing-cli -ln -k $(cat $PRIVATE/yahoo)
 click-right = investing-cli -t CRYPTO -p -k $(cat $PRIVATE/yahoo)
 interval = 1800
@@ -403,7 +403,6 @@ label-close-foreground = ${colors.foreground}
 label-separator = |
 label-separator-foreground = ${colors.foreground}
 
-; menu-0-0 = 
 ; menu-0-0-exec = betterlockscreen -l dimblur && sleep 1
 menu-0-0 =  
 menu-0-0-exec = systemctl hibernate
@@ -414,6 +413,8 @@ menu-0-2-exec = systemctl suspend
 ; menu-0-2-exec = betterlockscreen -l dimblur && sleep 1 && systemctl suspend
 menu-0-3 = 
 menu-0-3-exec = systemctl poweroff
+menu-0-4 = 
+menu-0-4-exec = xset dpms force off
 
 format-background = ${colors.background}
 format-foreground = #ff1a1a

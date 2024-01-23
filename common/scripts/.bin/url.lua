@@ -5,8 +5,8 @@ Utils for URLs.
 url.lua actions [options] url|clipItems
 List of the actions:
 		--menu -m show rofi with available actions
-		--dlAudio -a downlad audio via youtube-dl 
-		--dlVideo -v downlad video via youtube-dl 
+		--dlAudio -d downlad audio via youtube-dl 
+		--dlVideo -y downlad video via youtube-dl 
 		--tor -t create torrent file form a magnetlink
 		--kindle -k downlad video via gallery-dl 
 		--read -r convert website to asciidoc and show it in 'reader view' mode
@@ -16,6 +16,7 @@ List of the actions:
 		--mpvPopup -p  add to a queue and open it in a popop window
 		--mpvFullscreen, -f add to a queue and open it in a fullscreen window
 		--mpvAudio, -a add to a queue and open it in as a audio
+		--mpvVideo, -v play video in a fullscreen window
 		--help -h - show help
 
 List of the options:
@@ -53,6 +54,11 @@ local function help() print(HELP); os.exit() end
 local args = cliparse(arg, 'url')
 local linkTab = args.url
 
+local function startQueue(group)
+	local _, startStatus, err = run(('pueue start -g %s'):format(group))
+	assert(startStatus, err)
+end
+
 local function execQueue(cmd, group, url)
 	if type(url) == 'string' then
 		assert(os.execute(cmd .. url) == 0, 'Can not run: ' .. cmd)
@@ -60,8 +66,7 @@ local function execQueue(cmd, group, url)
 	end
 	local url, title = next(url)
 	assert(os.execute(cmd:format(title) .. url) == 0, 'Can not run: ' .. cmd)
-	local _, startStatus, err = run(('pueue start -g %s'):format(group))
-	assert(startStatus, err)
+	startQueue(group)
 end
 
 local function createTorrent(linkTab)
@@ -112,6 +117,7 @@ local function kindle(linkTab)
 			os.execute('pueue add -g kindle url.lua --createEpub ' .. link)
 		end
 	end
+	startQueue('kindle')
 end
 
 local function readable(linkTab)
@@ -188,13 +194,6 @@ local function mpvPopup(linkTab)
 		:each(M.bindn(execQueue, cmd, 'mpv-popup'))
 end
 
-local function mpvFullscreen(linkTab)
-	local cmd = 'pueue add  --label "%s" -g mpv-fullscreen -- mpv --profile=stream '
-	M(linkTab):map(removeListParam)
-		:map(getTitle)
-		:each(M.bindn(execQueue, cmd, 'mpv-fullscreen'))
-end
-
 local function mpvAudio(linkTab)
 	local termCmd = (os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'):format('audio', 'mpv --profile=stream-audio ')
 	local cmd = 'pueue add -e --label "%s" -g mpv-audio -- ' .. termCmd
@@ -203,9 +202,23 @@ local function mpvAudio(linkTab)
 		:each(M.bindn(execQueue, cmd, 'mpv-audio'))
 end
 
+local function mpvFullscreen(linkTab)
+	local cmd = 'pueue add  --label "%s" -g mpv-fullscreen -- mpv --profile=stream '
+	M(linkTab):map(removeListParam)
+		:map(getTitle)
+		:each(M.bindn(execQueue, cmd, 'mpv-fullscreen'))
+end
+
+local function mpvVideo(linkTab)
+	local cmd = 'pueue add  --label "%s" -g default -- mpv --profile=stream '
+	M(linkTab):map(removeListParam)
+		:map(getTitle)
+		:each(M.bindn(execQueue, cmd, 'default'))
+end
+
 local options = {
 	["dlAudio"]= dlAudio, ["d"]= dlAudio,
-	["dlVideo"]= dlVideo, ["v"]=dlVideo,
+	["dlVideo"]= dlVideo, ["y"]=dlVideo,
 	["tor"]= createTorrent, ["t"]= createTorrent,
 	["kindle"]= kindle, ["k"]= kindle,
 	["sendKindle"]= sendKindle,
@@ -217,6 +230,7 @@ local options = {
 	["mpvPopup"]= mpvPopup, ["p"]= mpvPopup,
 	["mpvFullscreen"]= mpvFullscreen, ["f"]= mpvFullscreen,
 	["mpvAudio"]= mpvAudio, ["a"]= mpvAudio,
+	["mpvVideo"]= mpvVideo, ["v"]= mpvVideo,
 	["h"]= help, ["help"]= help,
 }
 
