@@ -713,7 +713,6 @@ cmp.setup {
 		{ name = 'nvim_lsp' },
 		{ name = 'path' },
 		{ name = 'calc' },
-		{ name = 'dictionary' },
 	},
 	completion = {
 		completeopt = 'menu,menuone,noinsert',
@@ -749,26 +748,28 @@ cmp.setup.cmdline(':', {
 		{ name = 'path' },
 	},
 })
+
+-- https://github.com/uga-rosa/cmp-dictionary
+-- TODO limit output
+cmp.setup.filetype({ 'markdown', 'asciidoctor', 'text' }, {
+	sources = {
+		{ name = 'luasnip', keyword_length = 1 }, 
+		{ name = 'buffer', keyword_length = 2, option = { keyword_pattern = [[\k\+]] } },
+		{ name = 'path' },
+		{ name = 'calc' },
+		{ name = 'dictionary' },
+	}
+})
+local dict = require("cmp_dictionary")
 local dirEn = HOME .. '/.config/rofi/scripts/expander/en-popular'
 local dirPl = HOME .. '/.config/rofi/scripts/expander/pl-popular'
 
-local dict = require("cmp_dictionary")
-
-dict.switcher({
-  filetype = {
-	asciidoctor = {dirEn, dirPl },
-	markdown = {dirEn, dirPl },
-	text = {dirEn, dirPl },
-  },
- --  filepath = { ["%.tmux.*%.conf"] = { "/path/to/js.dict", "/path/to/js2.dict" }, },
-  -- spelllang = { en = "/path/to/english.dict", },
-})
 dict.setup {
-	exact = 4, -- -1 only exact the same prefix; should be gratter than keyword_length
-	capacity = 5,
+	paths = { dirEn, dirPl },
+	exact_length = 4, -- -1 only exact the same prefix; should be gratter than keyword_length
+	-- max_number_items = 9,
 	debug = false,
 } 
--- }}} 
 
 -- nullLs {{{
 local nullLs = require 'null-ls'
