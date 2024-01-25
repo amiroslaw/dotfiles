@@ -37,7 +37,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 (deflayer base
   @grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w     e    r    t    y    u    i    o    p    [    ]    \
-  @cap  @alt_a   @met_s	@ctl_d @sft_f g   h @sft_j @ctl_k @met_l @alt_; '    ret
+  @cap  @alt_a   @met_s	@ctl_d @sft_f g   @chh @chj @ctl_k @met_l @alt_; '    ret
   @lsft z    x    c    v    b    n    m    ,    .    /    @rsft
   lctl lmet @lalt           @spc            @ralt cmp rmet
 ) ;; ms sculpt with aplication key
@@ -69,6 +69,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
   grv (tap-hold-press 200 200 grv lrld) ;; reload on hold
   cap (tap-hold-press 200 200 esc (layer-while-held navigation)) ;; esc
   spc (tap-hold 200 200 spc (layer-while-held numbers))
+ ;; enter (switch  ((and u i)) ret break)
   ;; spc (one-shot 500 (layer-while-held numbers))
 )
 
@@ -84,6 +85,17 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
     met_l (tap-hold 200 200 l rmet)
     alt_; (tap-hold 200 200 ; lalt)
 )
+;; combos
+(defalias
+  chj (chord jh j)
+  chh (chord jh h)
+)
+;; jk will block c-s bind for homerow mods
+(defchords jh 100
+  (j    ) @sft_j
+  (   h ) h
+  (j  h ) ret ;; enter
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                  APPLICATIONS                  ;
@@ -91,10 +103,10 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 
 (deflayer apps
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
-  XX    @qu    XX    @news    XX    @tw    @yt    XX    @qb    XX    @fm    XX    XX    XX
-  XX    @audio @off    XX    @vifm    XX    @clip    @chat @kee      XX    XX    XX    XX
+  XX    XX    XX    @news    XX    @tw    @yt    XX    @qb    XX    @fm    XX    XX    XX
+  XX    @audio @off    XX    @vifm    XX    @clip    @chat @kee     @qu   XX    XX    XX
   XX    @todo  @pom  @idea    @video    XX    @note    XX    XX    XX    XX    XX
-  XX    XX    XX              XX              XX    XX    XX
+  XX    XX    ret              XX              XX    XX    XX
 )
 
 (defalias ;; common apps scripts
@@ -104,7 +116,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 ;; order matters
   qu (cmd qu.lua --menu)
   yt (cmd mpv.lua -o)
-  qb (cmd ~/.config/qutebrowser/userscripts/session.sh)
+  qb (cmd /home/miro/.config/qutebrowser/userscripts/session.sh)
   pom (cmd pomodoro.lua add -n)
   note (cmd wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim)
   idea (cmd /opt/idea-IU-212.5284.40/bin/idea.sh)
