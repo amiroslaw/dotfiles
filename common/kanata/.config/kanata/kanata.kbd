@@ -3,7 +3,7 @@ layers
 |#
 
 (defcfg
-linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-event-kbd)
+linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-event-kbd /dev/input/by-path/platform-i8042-serio-0-event-kbd)
   process-unmapped-keys yes
 	danger-enable-cmd yes
  sequence-timeout 3000
