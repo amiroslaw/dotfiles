@@ -104,33 +104,35 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 (deflayer apps
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX
   XX    XX    XX    @news    XX    @tw    @yt    XX    @qb    XX    @fm    XX    XX    XX
-  XX    @audio @off    XX    @vifm    XX    @clip    @chat @kee     @qu   XX    XX    XX
+  XX    @audio @off @rofi @vifm    XX    @clip    @chat @kee     @qu   XX    XX    XX
   XX    @todo  @pom  @idea    @video    XX    @note    XX    XX    XX    XX    XX
   XX    XX    ret              XX              XX    XX    XX
 )
 
 (defalias ;; common apps scripts
+  ;; without setsid apps will be terminated when kanata is killed
   apps (one-shot 500 (layer-while-held apps))
   lalt (tap-hold-release 200 200 @apps lalt)
   ;; url (cmd )
 ;; order matters
+	rofi(cmd rofi -modi drun,keys,run,top -show drun -show-icons -sidebar-mode -monitor -4 -matching fuzzy)
   qu (cmd qu.lua --menu)
-  yt (cmd mpv.lua -o)
-  qb (cmd /home/miro/.config/qutebrowser/userscripts/session.sh)
+  yt (cmd setsid mpv.lua -o)
+  qb (cmd setsid /home/miro/.config/qutebrowser/userscripts/session.sh)
   pom (cmd pomodoro.lua add -n)
-  note (cmd wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim)
-  idea (cmd /opt/idea-IU-212.5284.40/bin/idea.sh)
-  vifm (cmd xst -c vifm -e vifm )
-  chat (cmd  scratchpad.sh chat "wezterm start --class chat -- nchat")
+  note (cmd setsid wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim)
+  idea (cmd setsid /opt/idea-IU-212.5284.40/bin/idea.sh)
+  vifm (cmd setsid xst -c vifm -e vifm)
+  chat (cmd setsid scratchpad.sh chat "wezterm start --class chat -- nchat")
   audio (cmd audio.sh toggle)
   clip (cmd "/home/miro/.config/rofi/scripts/clipster/roficlip" )
   off (cmd rofi -show power-menu -modi power-menu:~/.config/rofi/scripts/power.sh)
-  news (cmd scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat")
-  tw (cmd scratchpad.sh task "xst -c task -n task -e taskwarrior-tui")
-  kee (cmd keecli.sh)
-  video (cmd mpv.lua -o /home/miro/Videos)
+  news (cmd setsid scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat")
+  tw (cmd setsid scratchpad.sh task "xst -c task -n task -e taskwarrior-tui")
+  kee (cmd setsid keecli.sh)
+  video (cmd setsid mpv.lua -o /home/miro/Videos)
   todo (cmd todo.lua add)
-  fm (cmd pcmanfm )
+  fm (cmd setsid pcmanfm )
   ;; scripts (cmd sh -c "$(ls ~/.bin | rofi -dmenu)")
 )
 

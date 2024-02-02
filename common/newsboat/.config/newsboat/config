@@ -94,7 +94,7 @@ bind-key ; macro-prefix
 browser "~/.config/newsboat/link.sh"
 # uppercase chars are alternative actions
 # help menu
-macro h set browser "notify-send %u 'm: dmenu\nA: mark all read\n ;: fzf\n b: browser\n l/L:rdrview-lynx/lynx\n w/W: rdrview-w3m/w3m\n i/I:image\n c: copy link\n r/R:read\n s: rsvp\n\nDOWNLOAD(unread)\n d/D: audio\n y/Y: video\n k/K: kindle\n\nMEDIA(all unread)\n j: metadata\np/P: popup\n a/A: audio\n v/V: video'" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro h set browser "notify-send %u 'm: dmenu\nA: mark all read\n ;: fzf\n b: browser\n l/L:rdrview-lynx/lynx\n w/W: rdrview-w3m/w3m\n i/I:image\n c: copy link\n r/R:read\n s: rsvp\n\nDOWNLOAD(unread)\n d/D: audio\n y/Y: video\n k/K: kindle\n\nMEDIA(all unread)\n j: metadata\np/P: popup\n a/A: audio\n f/F: video-fullscreen\n v/V: video-multi'" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro ; set browser "sauron.sh" ; open-in-browser ; set browser ~/.config/newsboat/link.sh
 macro m set browser "~/.config/newsboat/dmenuhandler.sh" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro b set browser "setsid -f $BROWSER" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh

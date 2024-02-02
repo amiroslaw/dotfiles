@@ -9,6 +9,7 @@ if [ -z "$1" ]; then
 else
   query=$1
 fi
+# doesn't exit
 baseurl="https://pirateproxy.live/search/"
 query="${query// /%20}"
 curl -s $baseurl"$query" > $cacheFile

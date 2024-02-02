@@ -302,7 +302,10 @@ local function openPlaylist()
 		filetype = ' -e m3u '
 	end
 
-	local  playlists, ok, err = run('fd --follow --type=f ' .. filetype .. ' --base-directory="' .. DIR_PLAYLISTS .. '" -X ls -t | cut -c 3-', "Can't find files" )
+	local cmd = ('fd --follow --type=f %s --base-directory="%s" --exec stat --format="%%Z %%n" {} \\; | sort -nr | cut -d\' \' -f2-'):format(filetype, DIR_PLAYLISTS)
+	print(cmd)
+	local  playlists, ok, err = run(cmd, "Can't find files" )
+
 	assert(ok, err)
 	local prompt = 'default:open video; shift-enter:multi selection; Found:'.. #playlists
 	local keysFun = {
