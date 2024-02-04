@@ -173,7 +173,12 @@ local function buildRofiMenu(keys)
 		:value()
 
 	local prompt = 'Opened queues; default action:restart\nLabels: K:killed; Q:queued; F:failed; S:success'
-	return options, { prompt = prompt, keys = keys, width = '800px' }
+	return options, { prompt = prompt, keys = keys, width = '600px' }
+end
+
+local function resetAll()
+	local _, stat, err = run('pueue reset', "Couldn't reset")
+	assert(stat, err)
 end
 
 function menu()
@@ -183,7 +188,8 @@ function menu()
 		['Alt-c'] = 'clean',
 		['Alt-m'] = 'm3u',
 		['Alt-l'] = 'list',
-		['Alt-a'] = 'all jobs',
+		['Alt-a'] = 'list all',
+		['Alt-x'] = 'reset all',
 	}
 	local cases = {
 		['kill'] = killQueue,
@@ -191,7 +197,8 @@ function menu()
 		['clean'] = cleanQueue,
 		['m3u'] = makeMpvList,
 		['list'] = jobList,
-		['all jobs'] = jobListAll,
+		['list all'] = jobListAll,
+		['reset all'] = resetAll,
 		[false] = restartQueue,
 	} 
 	local options, config = buildRofiMenu(keys)
