@@ -351,7 +351,8 @@ config.bind('xs', 'cmd-set-text --space :scroll-to-anchor ')
 # ======================= Searchengines ============= {{{
 # engine name (such as `DEFAULT`, or `ddg`) to a URL with a `{}` placeholder. The placeholder will be replaced by the search term, use `{{` and `}}` for literal `{`/`}` braces.  
 c.url.searchengines = {
-    'DEFAULT': 'https://www.google.com/search?q={}',
+    'DEFAULT': 'https://search.brave.com/search?q={}',
+    # 'DEFAULT': 'https://www.google.com/search?q={}',
     'g': 'https://www.google.com/search?q={}',
     'dd': 'https://duckduckgo.com/?q={}',
     'b': 'https://search.brave.com/search?q={}',
