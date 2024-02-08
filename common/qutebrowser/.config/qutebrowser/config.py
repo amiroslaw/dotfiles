@@ -383,9 +383,9 @@ c.url.searchengines = {
 }
 
 # ======================= SEARCH bindings ============= {{{
-config.bind('ss', 'open -b g {primary} ')
-config.bind('sS', 'open -b g {clipboard} ')
-config.bind('ss', 'spawn -u selection.sh g', 'caret')
+config.bind('ss', 'open -b b {primary} ')
+config.bind('sS', 'open -b b {clipboard} ')
+config.bind('ss', 'spawn -u selection.sh b', 'caret')
 config.bind('sk', 'open -b dd {primary} ')
 config.bind('sK', 'open -b dd {clipboard} ')
 config.bind('sk', 'spawn -u selection.sh dd', 'caret')
@@ -434,7 +434,7 @@ config.bind('sg', 'cmd-set-text --space :open -t site:{url} ')
 config.bind('zz', 'spawn -u selection.sh ')
 config.bind('zz', 'spawn -u selection.sh', 'caret')
 config.bind('zZ', 'spawn -u selection.sh {clipboard}')
-config.bind('<Ctrl-s>', 'open -t {primary} ')
+config.bind('<Ctrl-s>', 'open -t b {primary} ')
 config.bind('<Ctrl-l>', 'open -t l {primary} ')
 config.bind('<Ctrl-k>', 'open -t d {primary} ')
 config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh')
