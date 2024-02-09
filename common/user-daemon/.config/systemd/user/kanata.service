@@ -1,9 +1,14 @@
 [Unit]
 Description=Kanata Service
+Documentation=https://github.com/jtroo/kanata
 
 [Service]
 ExecStartPre=/sbin/modprobe uinput
 ExecStart=/home/miro/.bin/kanata -c /home/miro/.config/kanata/kanata.kbd
+Environment=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin
+Environment=DISPLAY=:0
+Environment=HOME=/home/miro
+Type=simple
 Restart=no
 
 [Install]

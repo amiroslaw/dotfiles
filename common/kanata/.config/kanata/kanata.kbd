@@ -39,7 +39,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
   tab  q    w     e    r    t    y    u    i    o    p    [    ]    \
   @cap  @alt_a   @met_s	@ctl_d @sft_f g   @chh @chj @ctl_k @met_l @alt_; '    ret
   @lsft z    x    c    v    b    n    m    ,    .    /    @rsft
-  lctl lmet @lalt           @spc            @ralt cmp rmet
+  lctl lmet @lalt           @spc            ralt cmp rmet
 ) ;; ms sculpt with aplication key
 
 (deflayer numbers
@@ -63,7 +63,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 
 (defalias
   ;; lcrt (tap-hold-release 200 200 sldr lcrt)
-  ralt (tap-hold-press 200 200 bspc ralt) ;; release is not great
+  ;; ralt (tap-hold-press 200 200 bspc ralt) ;; release is not great
   lsft (tap-hold-press 200 200 S-9 lsft) ;; left bracket
   rsft (tap-hold-press 200 200 S-0 rsft) ;; right bracket
   grv (tap-hold-press 200 200 grv lrld) ;; reload on hold
@@ -120,8 +120,8 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
   yt (cmd setsid mpv.lua -o)
   qb (cmd setsid /home/miro/.config/qutebrowser/userscripts/session.sh)
   pom (cmd pomodoro.lua add -n)
-  note (cmd setsid wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim)
-  idea (cmd setsid /opt/idea-IU-212.5284.40/bin/idea.sh)
+  note (cmd setsid wezterm start --class 'note' --cwd /home/miro/Documents/notebook -- nvim)
+  idea (cmd setsid /opt/idea-IU-232.8660.142/bin/idea.sh)
   vifm (cmd setsid xst -c vifm -e vifm)
   chat (cmd setsid scratchpad.sh chat "wezterm start --class chat -- nchat")
   audio (cmd audio.sh toggle)
