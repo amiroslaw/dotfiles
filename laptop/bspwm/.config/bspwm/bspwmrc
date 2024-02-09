@@ -133,7 +133,7 @@ polybar main -c $HOME/.config/polybar/config &
 xsetroot -cursor_name left_ptr &
 feh --no-fehbg --bg-scale '/home/miro/Pictures/wallpapers/4k-wallpaper-background-beautiful-853199.jpg' &
 picom --experimental-backends &
-sleep 200 && xmodmap ~/.config/Xmodmap &
+# sleep 200 && xmodmap ~/.config/Xmodmap &
 
 $HOME/.config/bspwm/autostart &
 

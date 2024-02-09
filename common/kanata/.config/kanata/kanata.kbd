@@ -63,9 +63,8 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 
 (defalias
   ;; lcrt (tap-hold-release 200 200 sldr lcrt)
-  ;; ralt (tap-hold-press 200 200 bspc ralt) ;; release is not great
-  lsft (tap-hold-press 200 200 S-9 lsft) ;; left bracket
-  rsft (tap-hold-press 200 200 S-0 rsft) ;; right bracket
+  lsft (tap-hold-press 200 200 bspc lsft) ;;  left bracket
+  ;; rsft (tap-hold-press 200 200 S-0 rsft) ;; right bracket
   grv (tap-hold-press 200 200 grv lrld) ;; reload on hold
   cap (tap-hold-press 200 200 esc (layer-while-held navigation)) ;; esc
   spc (tap-hold 200 200 spc (layer-while-held numbers))

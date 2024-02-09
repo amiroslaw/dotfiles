@@ -13,13 +13,12 @@ xset s noexpose &
 xset c on &
 xset -dpms &
 feh --no-fehbg --randomize --recursive --bg-fill /home/miro/Pictures/wall/* &
-trackpoint.sh
-clutter &
+trackpoint.sh &
+unclutter &
+kanata -c ~/.config/kanata/kanata.kbd &
 sleep 200 && light -S 80 &
 # xbacklight -set 15 &
 sleep 300 && megasync &
-# sleep 400 && export OLLAMA_API_HOST="http://$(cat "$PRIVATE/ip4pc"):11434"
-sleep 400 && export test="http://$(cat "$PRIVATE/ip4pc"):11434"
 clipster -d &
 redshift -l 51.2:22.6 &
 ## Run screenlock when suspending
