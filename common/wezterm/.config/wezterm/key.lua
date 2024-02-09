@@ -43,7 +43,7 @@ mapCS('n', act { ActivatePaneDirection = 'Next' })
 mapCS('p', act { ActivatePaneDirection = 'Prev' })
 -- mapCS('N', act { ActivatePaneDirection = 'Down' })
 -- Tabs
-mapCS('a', act { SpawnTab = 'CurrentPaneDomain' })
+mapCS('s', act { SpawnTab = 'CurrentPaneDomain' })
 mapCS('h', act { ActivateTabRelative = -1 })
 mapCS('l', act { ActivateTabRelative = 1 })
 mapCS('Tab', act { ActivateTabRelative = 1 })
@@ -56,7 +56,7 @@ map('F1', act { ShowLauncherArgs = { flags = 'FUZZY|KEY_ASSIGNMENTS' } }, 'ALT')
  -- action = wezterm.action.ActivateCommandPalette,
 -- Custom Actions
 mapCS('o', act { EmitEvent = 'trigger-vim-with-scrollback' })
-mapCS('s', plugins.openUrl)
+mapCS('a', plugins.openUrl)
 map('F2', act { EmitEvent = 'toggle-opacity' }, 'ALT')
 map('F3', act { EmitEvent = 'open-file-manager' }, 'ALT')
 map('F4', act { EmitEvent = 'toggle-ligatures' }, 'ALT') -- don't work
