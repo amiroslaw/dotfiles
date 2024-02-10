@@ -54,6 +54,7 @@ set ideajoin
 
 " # -------------------------------------------------------------------------
 " #                       PLUGINS
+" https://github.com/JetBrains/ideavim/blob/master/doc/IdeaVim%20Plugins.md
 " set exchange - interesting
 " Additional motions / text objects:
 "   s - Surround. Ex: cis" = change inside surrounding quotes
@@ -67,6 +68,15 @@ set ideajoin
 "   cx<motion> - Exchange/Transpose. Ex: cxiw, (move to other word), . = swap two words. Also: cxc, X
 "   <A-n>, <A-x>, <A-p>, g<A-n> - Multiple cursors.
 " # -------------------------------------------------------------------------
+" have to install from marketplace
+set which-key
+set timeoutlen=5000
+" jump between if and <> like with %
+" idk if it works
+Plug 'chrisbra/matchit'
+set matchit
+let b:match_words = '<:>,<tag>:</tag>'
+let b:match_words = 'if:end if'
 set NERDTree
 map <leader>N :NERDTreeToggle<cr>
 map <leader>n <Action>(SelectInProjectView)

@@ -64,7 +64,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 (defalias
   ;; lcrt (tap-hold-release 200 200 sldr lcrt)
   lsft (tap-hold-press 200 200 bspc lsft) ;;  left bracket
-  ;; rsft (tap-hold-press 200 200 S-0 rsft) ;; right bracket
+  rsft (tap-hold-press 200 200 S-0 rsft) ;; right bracket
   grv (tap-hold-press 200 200 grv lrld) ;; reload on hold
   cap (tap-hold-press 200 200 esc (layer-while-held navigation)) ;; esc
   spc (tap-hold 200 200 spc (layer-while-held numbers))
@@ -120,7 +120,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
   qb (cmd setsid /home/miro/.config/qutebrowser/userscripts/session.sh)
   pom (cmd pomodoro.lua add -n)
   note (cmd setsid wezterm start --class 'note' --cwd /home/miro/Documents/notebook -- nvim)
-  idea (cmd setsid /opt/idea-IU-232.8660.142/bin/idea.sh)
+  idea (cmd setsid /home/miro/Ext/idea-IU-233.14015.106/bin/idea.sh)
   vifm (cmd setsid xst -c vifm -e vifm)
   chat (cmd setsid scratchpad.sh chat "wezterm start --class chat -- nchat")
   audio (cmd audio.sh toggle)

@@ -32,7 +32,7 @@ trackball.sh &
 nm-applet &
 nvidia-fan.sh -c ~/.config/nfancurve/config &
 ifconfig wlo1 | awk '/inet / {print $2}' > "$PRIVATE/ip4pc" &
-kanata -c .config/kanata/kanata.kbd &
+kanata -c ~/.config/kanata/kanata.kbd &
 sleep 200 && newsboat -x reload &
 # jeszcze jest parametr do zmiany folderu z modelem
 sleep 200 && ollama serve &

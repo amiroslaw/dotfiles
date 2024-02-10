@@ -1,9 +1,10 @@
-clear mod4
-add mod4 = Super_L Super_R Control_R
-clear control
-add control = Control_L
-clear lock
-keycode 66 = Escape
+! I replaced it with kanata
+! clear mod4
+! add mod4 = Super_L Super_R Control_R
+! clear control
+! add control = Control_L
+! clear lock
+! keycode 66 = Escape
 ! keycode 66 = BackSpace
 !  XF86Calculator
 keycode 148 = period
