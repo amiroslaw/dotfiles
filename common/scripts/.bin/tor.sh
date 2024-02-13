@@ -10,7 +10,8 @@ else
   query=$1
 fi
 # doesn't exit
-baseurl="https://pirateproxy.live/search/"
+# baseurl="https://pirateproxy.live/search/"
+baseurl="https://pirateproxylive.org/search/"
 query="${query// /%20}"
 curl -s $baseurl"$query" > $cacheFile
 

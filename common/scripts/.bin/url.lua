@@ -29,6 +29,8 @@ List of the options:
 Examples:
 Convert a website to asciidoc and show it a terminal.
 url.lua --read url
+download torrent form clipboard
+url.lua --tor --number 1
 Search urls from 4 last PRIMARY clipboard items, and download them
 url.lua --wget --primary --number 4
 Prompt clipboard item numbers. Search urls from clipboard, and download videos

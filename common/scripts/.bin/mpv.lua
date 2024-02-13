@@ -175,7 +175,7 @@ local function makeLocal()
 		param =' --search-path="' .. param .. '"'
 	end
 	param = param and param or ''
-	local find = assert(io.popen('fd --type f --follow -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e wmv -e mp3 -e flac -e wav -e aac ' .. param):read '*a')
+	local find = assert(io.popen('fd --type f --follow -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e wmv -e mp3 -e flac -e wav -e aac -e mov ' .. param):read '*a')
 	local pwd = assert(io.popen('pwd'):read '*a')
 	pwd = split(pwd, '/')
 	local playlistName = pwd[#pwd]:gsub('\n', '')
@@ -297,7 +297,7 @@ end
 -- with too many files, it doesn't work
 local function openPlaylist()
 	DIR_PLAYLISTS = param and param or DIR_PLAYLISTS
-	local filetype = ' -e m3u -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg -e part'
+	local filetype = ' -e m3u -e mp4 -e mkv -e avi -e 4v -e mkv -e webm -e 3u -e mv -e pg -e part -e mov'
 	if args.list or args.L then
 		filetype = ' -e m3u '
 	end
