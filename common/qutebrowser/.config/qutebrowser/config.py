@@ -344,8 +344,11 @@ config.bind('xa', 'config-cycle --temp --print content.blocking.enabled false tr
 config.bind('xj', 'config-cycle --temp --print input.spatial_navigation false true')
 config.bind('xw', 'config-cycle --temp --print qt.workarounds.remove_service_workers true false')
 
-config.bind('xp', 'cmd-set-text --space :screenshot ') # todo bind to print scr and get current date
-config.bind('xs', 'cmd-set-text --space :scroll-to-anchor ')
+config.bind('xg', 'cmd-set-text --space :scroll-to-anchor ')
+# save website
+config.bind('xs', 'cmd-set-text --space :screenshot "{title}.png"') # todo bind to print scr and get current date
+config.bind('xp', 'cmd-set-text --space :print --pdf "{title}.pdf"')
+config.bind('xh', 'download --mhtml')
 # }}}
 
 # ======================= Searchengines ============= {{{

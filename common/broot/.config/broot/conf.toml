@@ -2,7 +2,7 @@
 # internal - overrite shortcut
 
 #####################
-icon_theme = "vscode"
+icon_theme = "nerdfont"
 # modal = true
 
 # files aren't open in $EDITOR 
