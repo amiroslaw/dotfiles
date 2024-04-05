@@ -65,28 +65,28 @@ local snippets = {
     s({ trig = "comment" }, box({ box_width = 50 })),
     s({ trig = "comment-line" }, box({})),
 -- idk if .( trigger won't be better
-		postfix(".br" , l("(" .. l.POSTFIX_MATCH .. ")")),
-		postfix(".bs" , l("[" .. l.POSTFIX_MATCH .. "]")),
-		postfix(".bc" , l("{" .. l.POSTFIX_MATCH .. "}")),
-		postfix(".ba" , l("<" .. l.POSTFIX_MATCH .. ">")),
-		postfix(".bb" , c(1, {
-				l("(" .. l.POSTFIX_MATCH .. ")"),
-				l("{" .. l.POSTFIX_MATCH .. "}"),
-				l("[" .. l.POSTFIX_MATCH .. "]"),
-				l("<" .. l.POSTFIX_MATCH .. ">"),
-			})),
-		postfix(".qd" , l('"' .. l.POSTFIX_MATCH .. '"')),
-		postfix(".qs" , l("'" .. l.POSTFIX_MATCH .. "'")),
-		postfix(".qg" , l("`" .. l.POSTFIX_MATCH .. "`")),
-		postfix(".qq" , c(1, {
-				l('"' .. l.POSTFIX_MATCH .. '"'),
-				l("'" .. l.POSTFIX_MATCH .. "'"),
-				l("`" .. l.POSTFIX_MATCH .. "`"),
-			})),
-		s('qq', fmt('{}{}{} ', { 
-			c(1, {t'"', t"'", t'`'}),
-			d(2, visual) , r(1)
+	postfix({trig=".br", dscr='round bracket'}, l("(" .. l.POSTFIX_MATCH .. ")")),
+	postfix({trig=".bs", dscr='square bracket'}, l("[" .. l.POSTFIX_MATCH .. "]")),
+	postfix({trig=".bc", dscr='curly bracket'}, l("{" .. l.POSTFIX_MATCH .. "}")),
+	postfix({trig=".ba", dscr='angle bracket'}, l("<" .. l.POSTFIX_MATCH .. ">")),
+	postfix(".bb" , c(1, {
+			l("(" .. l.POSTFIX_MATCH .. ")"),
+			l("{" .. l.POSTFIX_MATCH .. "}"),
+			l("[" .. l.POSTFIX_MATCH .. "]"),
+			l("<" .. l.POSTFIX_MATCH .. ">"),
 		})),
+	postfix({trig=".qd", dscr='double quote'}, l('"' .. l.POSTFIX_MATCH .. '"')),
+	postfix({trig=".qs", dscr='single quote'}, l("'" .. l.POSTFIX_MATCH .. "'")),
+	postfix({trig=".qb", dscr='back quote'}, l("`" .. l.POSTFIX_MATCH .. "`")),
+	postfix({trig=".qq", dscr='quote list'}, c(1, {
+			l('"' .. l.POSTFIX_MATCH .. '"'),
+			l("'" .. l.POSTFIX_MATCH .. "'"),
+			l("`" .. l.POSTFIX_MATCH .. "`"),
+		})),
+	s('qq', fmt('{}{}{} ', { 
+		c(1, {t'"', t"'", t'`'}),
+		d(2, visual) , r(1)
+	})),
 }
 
 -- TODO 

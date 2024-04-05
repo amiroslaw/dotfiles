@@ -104,18 +104,69 @@ ____
 ____
 {}]]
 
+
+local diagUml = [[
+{}
+[plantuml,{}]
+----
+@startuml
+{}
+@enduml
+----
+{}]]
+
+local diagJson = [[
+{}
+[plantuml,{}]
+----
+@startjson
+{}
+@endjson
+----
+{}]]
+
+local diagYaml = [[
+{}
+[plantuml,{}]
+----
+@startyaml
+{}
+@endyaml
+----
+{}]]
+
+local diagMindmap = [[
+{}
+[plantuml,{}]
+----
+@startmindmap
+{}
+@endmindmap
+----
+{}]]
+
+
+local diagHierarchy = [[
+{}
+[plantuml,{}]
+----
+@startwbs
+{}
+@endwbs
+----
+{}]]
+
 return {
 	-- s('link',),
     -- s({trig = "(https?://([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))", regTrig = true}, f(function(_, snip) return snip.captures[1].. '[]' end)),
 	-- postfix(".fl" , l("[" .. vim.fn.getreg('+', 1, true)[1] .. "]")),
--- formatting bold italic monospace 
-	postfix(".fb" , l("**" .. l.POSTFIX_MATCH .. "**")),
-	postfix(".fi" , l("__" .. l.POSTFIX_MATCH .. "__")),
-	postfix(".fm" , l("``" .. l.POSTFIX_MATCH .. "``")),
-	postfix(".fp" , l("^^" .. l.POSTFIX_MATCH .. "^^")),
-	postfix(".ft" , l("~~" .. l.POSTFIX_MATCH .. "~~")),
-	postfix(".fd" , l(l.POSTFIX_MATCH .. " :: ")),
-	postfix(".ff" , c(1, {
+	postfix({trig=".fb", dscr='bold'}, l("**" .. l.POSTFIX_MATCH .. "**")),
+	postfix({trig=".fi", dscr='italic'}, l("__" .. l.POSTFIX_MATCH .. "__")),
+	postfix({trig=".fm", dscr='monospace'}, l("``" .. l.POSTFIX_MATCH .. "``")),
+	postfix({trig=".fp", dscr='superscript up'}, l("^" .. l.POSTFIX_MATCH .. "^")),
+	postfix({trig=".ft", dscr='subscript down'}, l("~" .. l.POSTFIX_MATCH .. "~")),
+	postfix({trig=".fd", dscr='description list'}, l(l.POSTFIX_MATCH .. " :: ")),
+	postfix({trig=".ff", dscr='formating list'}, c(1, {
 			l("**" .. l.POSTFIX_MATCH .. "**"),
 			l("__" .. l.POSTFIX_MATCH .. "__"),
 			l("``" .. l.POSTFIX_MATCH .. "``"),
@@ -123,7 +174,7 @@ return {
 			l("~~" .. l.POSTFIX_MATCH .. "~~"),
 			l(l.POSTFIX_MATCH .. " :: "),
 		})),
-	s('ff', fmt('{}{}{} ', { 
+	s({trig='ff', dscr='formating'}, fmt('{}{}{} ', { 
 		c(1, {t'**', t'__', t'``', t'^^', t'~~'}),
 		d(2, visual) , r(1)
 	})),
@@ -152,7 +203,7 @@ return {
 		-- i(2), d(3, recLsDescription, {}),
 		t({'', ''} ), i(0)
 	}),
-	s("lsd", {
+	s({trig="lsd", dscr='list description'}, {
 		i(1), c(2, { t' :: ', t' ::: ', t' :::: '}), i(3), 
 		t({'', ''} ), i(0)
 	}),
@@ -192,6 +243,7 @@ return {
 		})
 	),
 
+
     s({trig = "h(%d)", regTrig = true, snippetType="autosnippet", description = 'header 1-7'}, {
       f(function( _, snip)
         return string.rep("=", snip.captures[1]) .. ' '
@@ -203,14 +255,51 @@ return {
 		d(2, clip),
 		i(0)
 	}),
-	s({trig = 'kbd',  description = 'Keyboard Shortcut'}, {
+	s({trig = 'kbd',  dscr = 'Keyboard Shortcut'}, {
 		t'kdb:[', 
 		c(1, { t 'Ctrl + ', t 'Shift + ', t 'Super + ', t 'Tab + ',  t ''}),
 		c(2, {i(1, 'key'), t 'Ctrl + ', t 'Shift + ', t 'Super + ', t 'Tab + '}),
 		i(3), t '] '
 	}),
 
-    s({trig = "table(%d+)x(%d+)", regTrig = true}, {
+	-- TODO: repeat from title to filename
+	s('diagUml', fmt(diagUml, {
+		c(1, { sn(1, {t '.', i(1, 'title')}), t(''), }),
+		i(2),
+		d(3, clip),
+		i(0)
+		})
+	),
+	s('diagJson', fmt(diagJson, {
+		c(1, { sn(1, {t '.', i(1, 'title')}), t(''), }),
+		i(2),
+		d(3, clip),
+		i(0)
+		})
+	),
+	s('diagYaml', fmt(diagYaml, {
+		c(1, { sn(1, {t '.', i(1, 'title')}), t(''), }),
+		i(2),
+		d(3, clip),
+		i(0)
+		})
+	),
+	s('diagMindmap', fmt(diagMindmap, {
+		c(1, { sn(1, {t '.', i(1, 'title')}), t(''), }),
+		i(2),
+		d(3, clip),
+		i(0)
+		})
+	),
+	s('diagHierarchy', fmt(diagHierarchy, {
+		c(1, { sn(1, {t '.', i(1, 'title')}), t(''), }),
+		i(2),
+		d(3, clip),
+		i(0)
+		})
+	),
+
+    s({trig = "table(%d+)x(%d+)", dscr='table', regTrig = true}, {
 		c(1, { sn(1, {t '.', i(1, 'title')}), t{''}, }),
 		t{'', ''},
         d(2, function(args, snip)
