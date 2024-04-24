@@ -202,7 +202,8 @@ noremap c- :removeSpaces <cr>
 command! removeSpaces echo %f:gs? ?^? | xargs -n1 | xargs -r -I@ -P 0  sh -c 'V="@"; mv "${V//^/ }" "${V//^/-}"'
 noremap ct :ocr <cr>
 command! ocr echo %f:gs? ?^? | xargs -n1 | xargs -r -I @ -P 0 sh -c 'V="@"; tesseract "${V//^/ }" "${V//^/ }"'
-noremap cT :!for i in %f; do tesseract "$i"  "${i%%.png}"; done <cr>
+command! ocrPL echo %f:gs? ?^? | xargs -n1 | xargs -r -I @ -P 0 sh -c 'V="@"; tesseract -l pol "${V//^/ }" "${V//^/ }"'
+noremap cT :!for i in %f; do tesseract "$i"  "${i%%}"; done <cr>
 " noremap ct :!echo %f | xargs -n1 | xargs -r -I @ -P 0  tesseract "@" "@" <cr>
 "dragon dr - drag from and dR drop to
 " will drag all selected files, cos it doesn't have multiple selection option

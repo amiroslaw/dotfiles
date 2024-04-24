@@ -63,11 +63,13 @@ end
 
 local function execQueue(cmd, group, url)
 	if type(url) == 'string' then
-		assert(os.execute(cmd .. url) == 0, 'Can not run: ' .. cmd)
+		cmd = (cmd .. ' "%s"'):format(url)
+		assert(os.execute(cmd) == 0, 'Can not run: ' .. cmd)
 		return
 	end
 	local url, title = next(url)
-	assert(os.execute(cmd:format(title) .. url) == 0, 'Can not run: ' .. cmd)
+	cmd = (cmd .. '"%s"'):format(title, url)
+	assert(os.execute(cmd) == 0, 'Can not run: ' .. cmd)
 	startQueue(group)
 end
 
