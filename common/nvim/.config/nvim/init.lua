@@ -288,7 +288,7 @@ nmap('<S-e>', '[s')
 nmap('<a-e>', '[s1z=`]') -- auto correction for the last occurrence
 vmap('<a-e>', '[s1z=`]')
 imap('<a-e>', '<Esc>[s1z=`]a')
--- capitalize the first word in the sentence and the last word
+-- capitalize The first word in the sentence and the word under the cursor
 nmap('<LocalLeader>U', '<c-(>~A')
 nmap('<LocalLeader>u', 'b~A')
 -- imap('<LocalLeader>u', '<Esc><c-(>~A') -- find shortcut
@@ -634,10 +634,10 @@ local actions = require "telescope.actions"
 	nmap('tc', '<cmd>Telescope commands <cr> ')
 	nmap('th', '<cmd>Telescope help_tags<cr> ') -- nivm api
 	nmap('tH', '<cmd>Telescope command_history<cr> ')
-	nmap('tk', '<cmd>Telescope keymaps<cr>')
+	nmap('tK', '<cmd>Telescope keymaps<cr>')
 	nmap('tf', '<cmd>Telescope file_browser<cr>') -- can go to the parent dir
 	nmap('tr', '<cmd>Telescope registers<cr>')
-	nmap('tS', '<cmd>Telescope spell_suggest<cr>')
+	nmap('tk', '<cmd>Telescope spell_suggest<cr>')
 	nmap('t/', '<cmd>Telescope search_history<cr> ')
 	nmap('t1', '<cmd>Telescope man_pages<cr>')
 	nmap('tC', '<cmd>Telescope colorscheme<cr>')

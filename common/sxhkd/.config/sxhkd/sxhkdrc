@@ -290,7 +290,7 @@ super + {shift,ctrl} + o
 super + e ; {e,h,k,K,m,M,v,V,d,D,y,Y,w,W,r,R,g,G,c,i}
 	{notify-send options: "h-help url menu\nm(M)-magnet\nv(V)-video\na(A)-audio dl\ny(Y)-yt dl\ng(G)-gallery-dl\nw(w)-wget\nr-speed reader\nR-read\nc-calendar\nk(K)-kindle\ni-investing", \
     url.lua --menu --input, \
-    url.lua --kindle --email -n 1,  url.lua --kindle -n 10, \
+    url.lua --kindle --email -n 1,  url.lua --kindle --email -n 10, \
     url.lua --tor -n 1,  url.lua --tor -n 10, \
     url.lua --mpvFullscreen -n 1,  url.lua --mpvFullscreen -n 10, \
     url.lua --dlAudio -n 1,  url.lua --dlAudio -n 10, \

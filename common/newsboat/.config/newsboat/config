@@ -113,7 +113,7 @@ macro D set browser "setsid -f url.lua --dlAudio" ; open-all-unread-in-browser-a
 macro y set browser "setsid -f url.lua --dlVideo" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro Y set browser "setsid -f url.lua --dlVideo" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
 macro k set browser "setsid -f url.lua --kindle --email" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
-macro K set browser "setsid -f url.lua --kindle" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
+macro K set browser "setsid -f url.lua --kindle --email" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 # read
 macro r set browser "setsid -f url.lua --read" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro R set browser "setsid -f url.lua --read" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
