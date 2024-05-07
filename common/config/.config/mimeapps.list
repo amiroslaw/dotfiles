@@ -1,4 +1,5 @@
 [Default Applications]
+inode/directory=pcmanfm.desktop;
 text/plain=nvim.desktop;micro.desktop;libreoffice-writer.desktop;
 text/x-scheme=nvim.desktop;
 text/html=org.qutebrowser.qutebrowser.desktop;
@@ -45,6 +46,7 @@ x-scheme-handler/kite=kite-copilot.desktop
 x-scheme-handler/tg=userapp-Telegram Desktop-2VLBT1.desktop
 
 [Added Associations]
+inode/directory=pcmanfm.desktop
 text/plain=nvim.desktop;micro.desktop;libreoffice-writer.desktop;
 text/x-scheme=nvim.desktop;
 text/html=nvim.desktop;org.qutebrowser.qutebrowser.desktop;

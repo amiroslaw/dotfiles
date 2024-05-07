@@ -218,7 +218,7 @@ return {
 	},
 	{ 'sbdchd/neoformat', cmd = { 'Neoformat' } },
 	{ 'gennaro-tedesco/nvim-jqx', ft = { 'json', 'yaml' } },
-	{ 'numToStr/Comment.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = true },
+	{ 'numToStr/Comment.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = true }, -- from v 0.10 won't be necessary 
 	{ 'windwp/nvim-autopairs', event = 'InsertEnter', config = true },
 	{ 'jose-elias-alvarez/null-ls.nvim', branch = 'main', dependencies = { 'nvim-lua/plenary.nvim' } },
 	{ 'NTBBloodbath/rest.nvim', branch = 'main', ft = { 'http' }, dependencies = { 'nvim-lua/plenary.nvim' } }, -- maybe delete
