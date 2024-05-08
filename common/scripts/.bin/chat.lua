@@ -9,7 +9,8 @@ local tagsCmd = ("curl %s/api/tags | jq -r '.models[].name' | rofi -dmenu"):form
 local generateCmd = [[ 
 curl %s/api/generate -d '{ "model": "%s", "prompt": "%s", "stream": false }' | jq -r '.response'
 ]]
-local model = 'mistral:latest'
+-- local model = 'mistral:latest'
+local model = 'llama3:latest'
 
 local function handleServiceError(answer)
 	if answer and answer == '' then

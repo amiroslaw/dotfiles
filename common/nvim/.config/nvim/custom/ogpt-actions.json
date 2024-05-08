@@ -5,7 +5,7 @@
       "template": "Modify the following {{lang}} text to improve only grammar and spelling, don't wrap the answer with quotation marks.:  \n\n{{input}}",
       "strategy": "replace",
       "params": {
-        "model": "mistral:latest",
+        "model": "llama3:latest",
         "temperature": 0.3
       }
     },
@@ -23,7 +23,7 @@
       "template": "Modify the following {{lang}} text to improve only grammar and spelling, don't wrap the answer with quotation marks. Explain nontrivial mistakes.:  \n\n{{input}}",
       "strategy": "replace",
       "params": {
-        "model": "mistral:latest",
+        "model": "llama3:latest",
         "temperature": 0.3
       }
     },
@@ -41,7 +41,7 @@
       "template": "Translate this into {{lang}}:\n\n{{input}}",
       "strategy": "replace",
       "params": {
-        "model": "mistral:latest",
+        "model": "llama3:latest",
         "temperature": 0.3
       }
     },
@@ -60,7 +60,7 @@
 	  {{input}}",
       "strategy": "replace",
       "params": {
-        "model": "mistral:latest"
+        "model": "llama3:latest"
       }
     },
     "args": {
