@@ -168,6 +168,7 @@ nmap('<C-/>', ':nohlsearch<cr>')
 nmap('<F1>', ':term taskwarrior-tui<CR>')
 nmap(',l', '<cmd>luafile dev/init.lua<cr>', {}) -- for plugin development
 nmap('Zz', ' :q! <cr>')
+imap('<c-z>', '<Esc>:wq<CR>')
 -- nmap('ZZ', ' :write | bdelete!<cr>')
 
 -- move lines up and down
@@ -903,6 +904,7 @@ key('n', '<LocalLeader>oo', '<cmd>OGPT<CR>', {desc = 'OGPT'} )
 key('n', '<LocalLeader>oa', '<cmd>OGPTActAs<CR>', {desc = 'OGPTActAs'} )
 key({ "n", "v" }, '<LocalLeader>oe', "<cmd>OGPTEditWithInstruction<CR>", { desc = "Edit with instruction",  })
 key({ "n", "v" }, '<LocalLeader>oc', "<cmd>OGPTRun grammar-append<CR>", { desc = "Grammar Correction",  })
+key({ "i" }, '<c-x>', "<esc><cmd>OGPTRun grammar-append<CR>", { desc = "Grammar Correction",  })
 key({ "n", "v" }, '<LocalLeader>oC', "<cmd>OGPTRun grammar-append-explain<CR>", { desc = "Grammar Correction with explanation",  })
 key({ "n", "v" }, '<LocalLeader>ol', "<cmd>OGPTRun translate-append<CR>", { desc = "Translate to english",  })
 key({ "n", "v" }, '<LocalLeader>oL', "<cmd>OGPTRun translate-append polish<CR>", { desc = "Translate to polish",  })
