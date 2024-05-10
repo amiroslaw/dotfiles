@@ -285,12 +285,27 @@ return {
 				local m = vim.api.nvim_buf_get_option(0, 'modified') == true and '+' or ''
 				return the_file == '' and '[]'..m or rw..x..m
 			end
+			local function asciidoc_header()
+				local filename = vim.api.nvim_buf_get_name(0)
+				local extension = filename:match("^.+(%..+)$")
+				if extension ~= ".adoc" and extension ~= ".asciidoc" then
+					return ''
+				end
+				local current_line = vim.api.nvim_win_get_cursor(0)[1]
+				for i = current_line, 1, -1 do
+					local line = vim.api.nvim_buf_get_lines(0, i-1, i, false)[1]
+					if line:match("^=+") then
+						return line:gsub("^=+", ""):gsub("^%s*(.-)%s*$", "%1")
+					end
+				end
+				return 'no header'
+			end
 			require'lualine'.setup {
 			 options = { theme = 'dracula', component_separators = '|', globalstatus = true }, 
 			 sections = {
 				lualine_x = {'selectioncount', 'searchcount'}, -- redundant
-				lualine_y = {spellang, permissions, 'filetype'},
-				 lualine_z = {line_total, 'progress', 'location'}}
+				lualine_y = {asciidoc_header, spellang, permissions, 'filetype'},
+				lualine_z = {line_total, 'progress', 'location'}}
 		 }
 		-- opts = { options = { theme = 'dracula', component_separators = '|', globalstatus = true }, -- sections = {lualine_a = {'buffers'}} - takes too much space
 	-- }
