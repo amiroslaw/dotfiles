@@ -98,10 +98,9 @@ uda.taskwarrior-tui.shortcuts.5=~/.config/task/scripts/tui.lua rm-inbox
 uda.taskwarrior-tui.shortcuts.6=~/.config/task/scripts/tui.lua url
 uda.taskwarrior-tui.shortcuts.7=~/.config/task/scripts/tui.lua rm-tag
 uda.taskwarrior-tui.shortcuts.8=~/.config/task/scripts/tui.lua duplicate
-uda.taskwarrior-tui.shortcuts.9=~/.config/task/scripts/sync.sh
+uda.taskwarrior-tui.shortcuts.9=task sync
 # 0 can't be bind
 # doesn't work
-# uda.taskwarrior-tui.shortcuts.9=~/.config/task/scripts/sync-inthe.sh
 uda.taskwarrior-tui.keyconfig.shortcut1=n
 
 
@@ -122,5 +121,7 @@ include dark-blue-256.theme
 #include no-color.theme
 news.version=2.6.0
 
+sync.local.server_dir=~/Documents/Ustawienia/stow-private/task/
+include ~/.config/task/extrc
 # include ~/Documents/Ustawienia/stow-private/task/wingtask/wingtask-config
-include ~/Documents/Ustawienia/stow-private/task/test/wingtask-config
+# include ~/Documents/Ustawienia/stow-private/task/test/wingtask-config

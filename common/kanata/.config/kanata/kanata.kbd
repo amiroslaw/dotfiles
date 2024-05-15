@@ -118,7 +118,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
   qu (cmd qu.lua --menu)
   yt (cmd setsid mpv.lua -o)
   qb (cmd setsid /home/miro/.config/qutebrowser/userscripts/session.sh)
-  pom (cmd pomodoro.lua add -n)
+  pom (cmd sh -c "task sync && pomodoro.lua add -n")
   note (cmd setsid wezterm start --class 'note' --cwd /home/miro/Documents/notebook -- nvim)
   idea (cmd setsid /home/miro/Ext/idea-IU-233.14015.106/bin/idea.sh)
   vifm (cmd setsid xst -c vifm -e vifm)

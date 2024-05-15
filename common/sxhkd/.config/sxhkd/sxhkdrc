@@ -193,7 +193,7 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 	keecli.sh, \
 	wezterm start --class 'note' --cwd ~/Documents/notebook -- nvim, \
 	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
-	scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui", \
+	task sync && scratchpad.sh task "$TERM_LT -c task -n task -e task taskwarrior-tui", \
 	todo.lua add, \
 	mpv.lua -o ~/Videos , \
 	sh -c $(ls ~/.bin | rofi -dmenu), \
@@ -247,7 +247,7 @@ super + u ; {s,S,e,o,m,w,W,b}
 	$TERM_LT -c 'setup' -e nvim $SETUP, \
 	$TERM_LT -c 'portfolio'  -e nvim ~/.config/investing/portfolio.yaml, \
 	pomodoro.lua modify,\
-	task sync && scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui", \
+	task sync && scratchpad.sh task "$TERM_LT -c task -n task -e task taskwarrior-tui", \
 	/home/miro/.config/task/scripts/sync.sh, \
 	scratchpad.sh newsboat "wezterm start --class newsboat -- newsboat", \
 	}
