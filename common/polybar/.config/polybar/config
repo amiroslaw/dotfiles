@@ -342,7 +342,7 @@ interval = 1800
 type = custom/script
 exec = pomodoro.lua status -anc
 click-middle = pomodoro.lua notify
-click-right = pomodoro.lua stop -n
+click-right = pomodoro.lua stop -n && task sync
 click-left = pomodoro.lua pause -n
 interval = 60
 

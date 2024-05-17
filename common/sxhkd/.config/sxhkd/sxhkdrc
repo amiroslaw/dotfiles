@@ -257,7 +257,7 @@ super + {shift,ctrl} + u
 		task sync && scratchpad.sh task "$TERM_LT -c task -n task -e taskwarrior-tui" }
 # pomodoro
 super + {_,shift, ctrl} + x
-	{ pomodoro.lua add -n, pomodoro.lua stop -n, pomodoro.lua menu -n }
+	{ pomodoro.lua add -n, pomodoro.lua stop -n && task sync, pomodoro.lua menu -n }
 
 # open media or dir with xdg-open; tui apps 
 super + o ; {o,j,d,D,v,c,y,z,f,F,b,i,p,u,s}

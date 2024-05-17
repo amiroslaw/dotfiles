@@ -159,6 +159,7 @@ local function stopStatus()
 		io.write(count[1])
 	else
 		os.execute('rm ' .. STATUS_PATH)
+		os.execute('task sync')
 		alert 'Finished'
 		changeTWstate(stateEnum.STOP)
 	end
