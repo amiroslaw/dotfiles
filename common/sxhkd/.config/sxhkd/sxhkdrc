@@ -41,7 +41,7 @@ super + {_,shift} + Escape
 
 # In case bspwmrc fails to execute/you wish have plugged in a new monitor
 super + {_,shift,ctrl} + r
-	{chat.lua, chat.lua list, bspwmrc}
+	{chat.lua, chat.lua --list, bspwmrc}
 
 #
 # Window manipulation
@@ -341,8 +341,8 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 #                       CLIPBOARD, NOTES 
 # -------------------------------------------------------------------------
 # clipster and notes; add J nad fix previous-copy primary
-super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}
-	{notify-send options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from clip\nl(L)-note from sel\nw -write note", \
+super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w,o}
+	{notify-send options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from clip\nl(L)-note from sel\nw -write note\no-summary", \
 	clipster -sc, \
 	$ROFI/clipster/roficlip-primary, \
 	clipster -po, \
@@ -351,7 +351,8 @@ super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w}
 	clipster.lua --next --clipboard, clipster.lua --next --primary, \
 	note.lua clip 1, note.lua clip, \
 	note.lua sel 1, note.lua sel, \
-	note.lua write
+	note.lua write, \
+	chat.lua --summary
 	}
 # clipboard, paste second from the clipboard or first from selection
 super + {_,shift,ctrl} + v

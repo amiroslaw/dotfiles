@@ -124,13 +124,18 @@ local function kindle(linkTab)
 	startQueue('kindle')
 end
 
+local function urlToDoc(url, filePath, docFormat)
+	local cmd = ('rdrview -H -A "Mozilla" "%s" -T title | pandoc --from html --to %s --output "%s"'):format(url, docFormat, filePath)
+	assert(os.execute(cmd) == 0, 'Could not create file')
+end
+
 local function readable(linkTab)
+	-- I assume that `linkTab` will have only one element
 	local tmpPath, tmpName = createTmpFile({prefix = 'readable', format = 'adoc'})
 	for _, link in ipairs(linkTab) do
-		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to asciidoc --output ' .. tmpPath)
+		urlToDoc(link, tmpPath, 'asciidoc')
 		local termCmd = (os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'):format('read', 'nvim ' .. tmpPath)
 		os.execute(termCmd)
-		assert(createFile == 0, 'Could not create file')
 	end
 	return 'Created file ' .. tmpName
 end 
@@ -138,10 +143,9 @@ end
 local function speed(linkTab)
 	local tmpPath, tmpName = createTmpFile({prefix = 'rsvp'})
 	for _, link in ipairs(linkTab) do
-		local createFile = os.execute('rdrview -H -A "Mozilla" "' .. link .. '" -T title | pandoc --from html --to plain --output ' .. tmpPath)
+		urlToDoc(link, tmpPath, 'plain')
 		local cmd = ('sh -c "cat %s | speedread -w 330"'):format(tmpPath)
 		os.execute((os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_FONT' .. os.getenv 'TERM_LT_RUN'):format(20, 'rsvp', cmd))
-		assert(createFile == 0, 'Could not create file')
 	end
 	return 'RSVP finished ' .. tmpName
 end 

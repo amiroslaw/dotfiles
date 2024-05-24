@@ -95,6 +95,11 @@ function search(engine)
 	searchEngine(engine, CONST.selectedTxt)
 end
 
+local function summary()
+	copy(CONST.selectedTxt)
+	os.execute('chat.lua summary')
+end
+
 local cases = {
 	['--adoc'] = adoc,
 	['--adoc-url'] = copyAdocUrl,
@@ -103,6 +108,7 @@ local cases = {
 	['--read'] = read,
 	['--split'] = splitSentences,
 	['--search'] = search,
+	['--summary'] = summary,
 	[false] = copy,
 }
 

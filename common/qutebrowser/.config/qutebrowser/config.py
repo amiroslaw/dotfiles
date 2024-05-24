@@ -195,6 +195,8 @@ config.bind(';s', 'hint links userscript doi.py')
 # bind-type-script: ahk
 urlCmdHint= 'hint links spawn '
 urlCmdRapid = 'hint --rapid links spawn '
+config.bind('alo', 'spawn chat.lua --summary --url="{url}"')
+config.bind('aho', urlCmdHint + 'chat.lua --summary --url="{hint-url}"')
 # rdrview
 config.bind('alf', 'spawn -u readermode.lua')
 config.bind('ahf', 'hint links userscript readermode.lua')
@@ -264,6 +266,7 @@ config.bind('cd', 'spawn -u hint_wrapper copyable select.lua --search:d')
 config.bind('cm', 'spawn -u hint_wrapper copyable select.lua --search:m')
 config.bind('cw', 'spawn -u hint_wrapper copyable select.lua --search:w')
 config.bind('cv', 'spawn -u hint_wrapper copyable select.lua --search:y') # yt
+config.bind('co', 'spawn -u hint_wrapper p select.lua --summary') # ai 
 # duplicate ';y'
 config.bind('cy', 'hint links yank')
 config.bind('cY', 'hint --rapid links yank')
