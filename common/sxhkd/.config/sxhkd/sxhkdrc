@@ -341,8 +341,8 @@ super + s ; {d,D,l,L,r,R,p,P,e,E,i,I}
 #                       CLIPBOARD, NOTES 
 # -------------------------------------------------------------------------
 # clipster and notes; add J nad fix previous-copy primary
-super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w,o}
-	{notify-send options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from clip\nl(L)-note from sel\nw -write note\no-summary", \
+super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w,o,O}
+	{notify-send options: "g-gui\np-(prim)selection\nr[R]-remove clip/sel\nj[J]-join clip/sel\nn(N)-next clip/sel\nk(K)-note from clip\nl(L)-note from sel\nw -write note\no-summary\nO-analise", \
 	clipster -sc, \
 	$ROFI/clipster/roficlip-primary, \
 	clipster -po, \
@@ -352,7 +352,8 @@ super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w,o}
 	note.lua clip 1, note.lua clip, \
 	note.lua sel 1, note.lua sel, \
 	note.lua write, \
-	chat.lua --summary
+	chat.lua --summary, \
+	chat.lua --text
 	}
 # clipboard, paste second from the clipboard or first from selection
 super + {_,shift,ctrl} + v

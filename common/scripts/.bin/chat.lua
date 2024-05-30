@@ -1,35 +1,33 @@
 #!/bin/luajit
 
 -- TODO 
--- generalize - for copied text/file; 
 -- add more resources - files  
 -- add more methods:  corrections;  
-local help = [[
+local HELP = [[
 --model -m → override default model
 --list -l → choose available model
 --summary -s → summary text default from clipboard
 --url -u → summary from text on website
 ]]
 
+local function help() print(HELP); os.exit() end
+
 local OLLAMA_API_HOST = os.getenv 'OLLAMA_API_HOST'
 local termRun = os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'
 local host = OLLAMA_API_HOST and OLLAMA_API_HOST or 'http://localhost:11434'
-local prompt = ''
 local generateCmd = [[ 
 curl %s/api/generate -d '{ "model": "%s", "prompt": "%s", "stream": false }' | jq -r '.response'
 ]]
+local PROMPT = enum({ summary =  "Summarize (use asciidoc format with lists and bold text if needed) following text: ", 
+					copiedText = '. Answer to that question based to following text: ' })
+
+local args = cliparse(arg, 'txt')
 
 local function handleServiceError(answer)
 	if answer and answer == '' then
 		notifyError('Failed to connect to ' .. host)
 		os.exit(1)
 	end
-end
-
-local args = cliparse(arg, 'txt')
-if args.help or args.h then
-	print(help)
-	os.exit(0)
 end
 
 local model = os.getenv 'AI_MODEL' and os.getenv 'AI_MODEL' or 'llama3:latest'
@@ -44,13 +42,15 @@ local function selectModel()
 	return model
 end
 
+local function ask() return rofiInput({prompt = '  ', width = '70%'}) end
+
 local function urlToTxt(url)
 	local cmd = ('rdrview -H -A "Mozilla" "%s" -T title | pandoc --from html --to plain --output -'):format(url)
 	return  io.popen(cmd):read '*a'
 end
 
-local function summaryPrompt()
-	local prompt = "Summarize (use asciidoc format with lists and bold text if needed) following text: "
+local function textAnalysis(prompt)
+	if prompt == PROMPT.copiedText then prompt = prompt .. ask() end 
 	if args.url or args.u then
 		local url = args.url and args.url or (args.u and args.u or args.url)
 		prompt = prompt .. urlToTxt(url[1])
@@ -76,15 +76,28 @@ local function escapeForJson(str)
   return string.gsub(str, ".", replace_char)
 end
 
-if args.summary or args.s then
-	prompt = summaryPrompt()
-else
-	prompt = rofiInput({prompt = '  ', width = '70%'})
-end
+local cases = {
+	['ask'] = ask, ['a'] = ask,
+	['summary'] = M.bind(textAnalysis, PROMPT.summary), ['s'] = M.bind(textAnalysis, PROMPT.summary),
+	['text'] = M.bind(textAnalysis, PROMPT.copiedText), ['t'] = M.bind(textAnalysis, PROMPT.copiedText),
+	['help'] = help, ['h'] = help,
+}
 
-if prompt == '' then
+local action = ask
+for key,_ in pairs(args) do
+	local selection = switch(cases, key)
+	if selection and args[key] then
+		action = selection
+	end
+end
+local ok, prompt = pcall(action)
+print(ok, prompt)
+
+if not prompt or prompt == '' or not ok then
+	print('brak')
 	os.exit(1)
 end
+
 prompt = escapeForJson(prompt)
 model = selectModel()
 local answer = io.popen(generateCmd:format(host, model, prompt)):read '*a'

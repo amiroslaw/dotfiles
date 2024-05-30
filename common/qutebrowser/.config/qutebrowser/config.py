@@ -195,8 +195,11 @@ config.bind(';s', 'hint links userscript doi.py')
 # bind-type-script: ahk
 urlCmdHint= 'hint links spawn '
 urlCmdRapid = 'hint --rapid links spawn '
+# AI
 config.bind('alo', 'spawn chat.lua --summary --url="{url}"')
 config.bind('aho', urlCmdHint + 'chat.lua --summary --url="{hint-url}"')
+config.bind('alt', 'spawn chat.lua --text --url="{url}"')
+config.bind('aht', urlCmdHint + 'chat.lua --text --url="{hint-url}"')
 # rdrview
 config.bind('alf', 'spawn -u readermode.lua')
 config.bind('ahf', 'hint links userscript readermode.lua')
