@@ -771,6 +771,7 @@ dict.setup {
 	-- max_number_items = 9,
 	debug = false,
 } 
+-- }}} 
 
 -- nullLs {{{
 local nullLs = require 'null-ls'
@@ -899,25 +900,45 @@ vim.keymap.set({"i", "s"}, "<C-h>", function()
 end, {silent = true, desc = 'luasnip next choice' })
 -- }}} 
 
---{{{ ogpt https://github.com/huynle/ogpt.nvim
-key('n', '<LocalLeader>oo', '<cmd>OGPT<CR>', {desc = 'OGPT'} )
-key('n', '<LocalLeader>oa', '<cmd>OGPTActAs<CR>', {desc = 'OGPTActAs'} )
-key({ "n", "v" }, '<LocalLeader>oe', "<cmd>OGPTEditWithInstruction<CR>", { desc = "Edit with instruction",  })
-key({ "n", "v" }, '<LocalLeader>oc', "<cmd>OGPTRun grammar-append<CR>", { desc = "Grammar Correction",  })
-key({ "i" }, '<c-x>', "<esc><cmd>OGPTRun grammar-append<CR>", { desc = "Grammar Correction",  })
-key({ "n", "v" }, '<LocalLeader>oC', "<cmd>OGPTRun grammar-append-explain<CR>", { desc = "Grammar Correction with explanation",  })
-key({ "n", "v" }, '<LocalLeader>ol', "<cmd>OGPTRun translate-append<CR>", { desc = "Translate to english",  })
-key({ "n", "v" }, '<LocalLeader>oL', "<cmd>OGPTRun translate-append polish<CR>", { desc = "Translate to polish",  })
-key({ "n", "v" }, '<LocalLeader>ok', "<cmd>OGPTRun keywords<CR>", { desc = "Keywords",  })
-key({ "n", "v" }, '<LocalLeader>oj', "<cmd>OGPTRun javdoc<CR>", { desc = "Java documentation",  })
-key({ "n", "v" }, '<LocalLeader>ot', "<cmd>OGPTRun add_tests<CR>", { desc = "Add Tests",  })
-key({ "n", "v" }, '<LocalLeader>oi', "<cmd>OGPTRun optimize_code<CR>", { desc = "Optimize Code",  })
-key({ "n", "v" }, '<LocalLeader>os', "<cmd>OGPTRun summarize<CR>", { desc = "Summarize",  })
-key({ "n", "v" }, '<LocalLeader>ob', "<cmd>OGPTRun fix_bugs<CR>", { desc = "Fix Bugs",  })
-key({ "n", "v" }, '<LocalLeader>ox', "<cmd>OGPTRun explain_code<CR>", { desc = "Explain Code",  })
-key({ "n", "v" }, '<LocalLeader>or', "<cmd>OGPTRun code_readability_analysis<CR>", { desc = "Code Readability Analysis",  })
-key({ "n", "v" }, '<LocalLeader>of', "<cmd>OGPTRun format-adoc table<CR>", { desc = "Format asciidoc table",  })
+-- --{{{ ogpt https://github.com/huynle/ogpt.nvim
+-- key('n', '<LocalLeader>oo', '<cmd>OGPT<CR>', {desc = 'OGPT'} )
+-- key('n', '<LocalLeader>oa', '<cmd>OGPTActAs<CR>', {desc = 'OGPTActAs'} )
+-- key({ "n", "v" }, '<LocalLeader>oe', "<cmd>OGPTEditWithInstruction<CR>", { desc = "Edit with instruction",  })
+-- key({ "n", "v" }, '<LocalLeader>oc', "<cmd>OGPTRun grammar-append<CR>", { desc = "Grammar Correction",  })
+-- key({ "i" }, '<c-x>', "<esc><cmd>OGPTRun grammar-append<CR>", { desc = "Grammar Correction",  })
+-- key({ "n", "v" }, '<LocalLeader>oC', "<cmd>OGPTRun grammar-append-explain<CR>", { desc = "Grammar Correction with explanation",  })
+-- key({ "n", "v" }, '<LocalLeader>ol', "<cmd>OGPTRun translate-append<CR>", { desc = "Translate to english",  })
+-- key({ "n", "v" }, '<LocalLeader>oL', "<cmd>OGPTRun translate-append polish<CR>", { desc = "Translate to polish",  })
+-- key({ "n", "v" }, '<LocalLeader>ok', "<cmd>OGPTRun keywords<CR>", { desc = "Keywords",  })
+-- key({ "n", "v" }, '<LocalLeader>oj', "<cmd>OGPTRun javdoc<CR>", { desc = "Java documentation",  })
+-- key({ "n", "v" }, '<LocalLeader>ot', "<cmd>OGPTRun add_tests<CR>", { desc = "Add Tests",  })
+-- key({ "n", "v" }, '<LocalLeader>oi', "<cmd>OGPTRun optimize_code<CR>", { desc = "Optimize Code",  })
+-- key({ "n", "v" }, '<LocalLeader>os', "<cmd>OGPTRun summarize<CR>", { desc = "Summarize",  })
+-- key({ "n", "v" }, '<LocalLeader>ob', "<cmd>OGPTRun fix_bugs<CR>", { desc = "Fix Bugs",  })
+-- key({ "n", "v" }, '<LocalLeader>ox', "<cmd>OGPTRun explain_code<CR>", { desc = "Explain Code",  })
+-- key({ "n", "v" }, '<LocalLeader>or', "<cmd>OGPTRun code_readability_analysis<CR>", { desc = "Code Readability Analysis",  })
+-- key({ "n", "v" }, '<LocalLeader>of', "<cmd>OGPTRun format-adoc table<CR>", { desc = "Format asciidoc table",  })
+-- --}}} 
+
+--{{{ gen.nvim https://github.com/David-Kunz/gen.nvim
+
+key('n', '<LocalLeader>oo', '<cmd>Gen<CR>', {desc = 'GPT'} )
+key({ "v" }, '<LocalLeader>oc', ":Gen Enhance_Grammar_Spelling<CR>", { desc = "Grammar Correction",  })
+key({ "i" }, '<c-x>', "<esc>V<cmd>Gen Enhance_Grammar_Spelling<CR>", { desc = "Grammar Correction",  })
+key({ "v" }, '<LocalLeader>oC', "<cmd>Gen grammar-append-explain<CR>", { desc = "Grammar Correction with explanation",  })
+key({ "v" }, '<LocalLeader>ol', "<cmd>Gen translate-append<CR>", { desc = "Translate to english",  })
+key({ "v" }, '<LocalLeader>oL', "<cmd>Gen translate-append polish<CR>", { desc = "Translate to polish",  })
+key({ "v" }, '<LocalLeader>ok', "<cmd>Gen keywords<CR>", { desc = "Keywords",  })
+key({ "v" }, '<LocalLeader>oj', "<cmd>Gen javdoc<CR>", { desc = "Java documentation",  })
+key({ "v" }, '<LocalLeader>ot', "<cmd>Gen add_tests<CR>", { desc = "Add Tests",  })
+key({ "v" }, '<LocalLeader>oi', "<cmd>Gen optimize_code<CR>", { desc = "Optimize Code",  })
+key({ "v" }, '<LocalLeader>os', "<cmd>Gen summarize<CR>", { desc = "Summarize",  })
+key({ "v" }, '<LocalLeader>ob', "<cmd>Gen fix_bugs<CR>", { desc = "Fix Bugs",  })
+key({ "v" }, '<LocalLeader>ox', "<cmd>Gen explain_code<CR>", { desc = "Explain Code",  })
+key({ "v" }, '<LocalLeader>or', "<cmd>Gen code_readability_analysis<CR>", { desc = "Code Readability Analysis",  })
+key({ "v" }, '<LocalLeader>of', "<cmd>Gen format-adoc table<CR>", { desc = "Format asciidoc table",  })
 --}}} 
+
 
 -- COLORSCHEMES {{{
 local function getBackground(hour)
