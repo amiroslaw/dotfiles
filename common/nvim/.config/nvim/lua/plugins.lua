@@ -83,40 +83,24 @@ return {
 		event = "VeryLazy",
 		opts = {
 			-- debug = true, 
-			-- default_provider = {
-			--   name = "ollama",
-			--   api_host = nil,
-			--   api_key = nil,
-			--   model = "mistral:7b",
-			-- },
-   -- api_params = {
-      -- model = "mistral:7b",
-      -- model = {
-      --   -- create a modify url specifically for mixtral to run
-      --   name = "mixtral-8-7b",
-      --   modify_url = function(url)
-      --     -- given a URL, this function modifies the URL specifically to the model
-      --     -- This is useful when you have different models hosted on different subdomains like
-      --     -- https://model1.yourdomain.com/
-      --     -- https://model2.yourdomain.com/
-      --     local new_model = "mixtral-8-7b"
-      --     local host = url:match("https?://([^/]+)")
-      --     local subdomain, domain, tld = host:match("([^.]+)%.([^.]+)%.([^.]+)")
-      --     local _new_url = url:gsub(host, new_model .. "." .. domain .. "." .. tld)
-      --     return _new_url
-      --   end,
-      --   conform_fn = function(params)
-      --     -- Different models might have different instruction format
-      --     -- for example, Mixtral operates on `<s> [INST] Instruction [/INST] Model answer</s> [INST] Follow-up instruction [/INST] `
-      --   end,
-      -- },
-
-      -- temperature = 0.8,
-      -- top_p = 0.99,
-    -- },
-			-- api_key_cmd = 'http://192.168.1.32:11434',
-			-- api_host_cmd = 'http://192.168.1.32:11434',
-			actions_paths = { '~/.config/nvim/custom/ogpt-actions.json'}
+			default_provider = "ollama",
+			providers = {
+			  ollama = {
+				enabled = true,
+				api_host = os.getenv("OLLAMA_API_HOST") or "http://localhost:11434",
+				api_key = os.getenv("OLLAMA_API_KEY") or "",
+				model = {
+				  name = 'llama3:latest',
+				  system_message = nil,
+				},
+			  },
+			},
+			actions_paths = { 
+				'~/.config/nvim/custom/ogpt-actions.json', 
+					  -- default action that comes with lua/ogpt/actions.json
+					  -- debug.getinfo(1, "S").source:sub(2):match("(.*/)") .. "actions.json",
+			},
+			predefined_chat_gpt_prompts = "https://raw.githubusercontent.com/f/awesome-chatgpt-prompts/main/prompts.csv",
 		},
 		dependencies = {
 		  "MunifTanjim/nui.nvim",
@@ -218,7 +202,6 @@ return {
 	},
 	{ 'sbdchd/neoformat', cmd = { 'Neoformat' } },
 	{ 'gennaro-tedesco/nvim-jqx', ft = { 'json', 'yaml' } },
-	{ 'numToStr/Comment.nvim', event = { 'BufReadPost', 'BufNewFile' }, config = true }, -- from v 0.10 won't be necessary 
 	{ 'windwp/nvim-autopairs', event = 'InsertEnter', config = true },
 	{ 'jose-elias-alvarez/null-ls.nvim', branch = 'main', dependencies = { 'nvim-lua/plenary.nvim' } },
 	{ 'NTBBloodbath/rest.nvim', branch = 'main', ft = { 'http' }, dependencies = { 'nvim-lua/plenary.nvim' } }, -- maybe delete
