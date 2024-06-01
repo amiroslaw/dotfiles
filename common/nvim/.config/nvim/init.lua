@@ -620,7 +620,7 @@ local actions = require "telescope.actions"
 
 	-- nmap('<c-s>', '<cmd>Telescope live_grep<cr>')
 	nmap('<c-s>', '<cmd>Telescope egrepify<cr>')
-	nmap('ts', '<cmd>Telescope grep_string<cr>') --  string under your cursor or selection in your current working directory
+	nmap('ts', '<cmd>Telescope grep_string grep_open_files=true<cr>') --  string under your cursor or selection in your current working directory
 	nmap('tp', '<cmd>Telescope find_files<cr>')
 	-- nmap('tp', '<cmd>Telescope find_files find_command=rg,--hidden,--files<cr>') -- with hidden files
 	nmap('to', '<cmd>Telescope oldfiles<cr>')
