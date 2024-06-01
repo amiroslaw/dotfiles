@@ -1,13 +1,18 @@
 #!/bin/luajit
-
 -- TODO 
 -- add more resources - files  
 -- add more methods:  corrections;  
 local HELP = [[
---model -m → override default model
+--ask -a → provide prompt in rofi input
+--text -t → ask about text provided from clipboard 
+--summary -s → summary text from clipboard
+--url -u → perform with text from a website instead of clipboard
 --list -l → choose available model
---summary -s → summary text default from clipboard
---url -u → summary from text on website
+--model -m → override default model
+
+Examples:
+chat.lua -a -l
+chat.lua -s -u="https://en.wikipedia.org/"
 ]]
 
 local function help() print(HELP); os.exit() end
@@ -16,10 +21,10 @@ local OLLAMA_API_HOST = os.getenv 'OLLAMA_API_HOST'
 local termRun = os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'
 local host = OLLAMA_API_HOST and OLLAMA_API_HOST or 'http://localhost:11434'
 local generateCmd = [[ 
-curl %s/api/generate -d '{ "model": "%s", "prompt": "%s", "stream": false }' | jq -r '.response'
+curl --silent --no-buffer  %s/api/generate -d '{ "model": "%s", "prompt": "%s", "stream": false }' | jq -r '.response'
 ]]
-local PROMPT = enum({ summary =  "Summarize (use asciidoc format with lists and bold text if needed) following text: ", 
-					copiedText = '. Answer to that question based to following text: ' })
+local PROMPT = enum({ summary =  "Summarize (use asciidoc format with lists and bold text if needed) following text:\n", 
+					copiedText = '. Answer to that question based to following text:\n' })
 
 local args = cliparse(arg, 'txt')
 
@@ -50,7 +55,7 @@ local function urlToTxt(url)
 end
 
 local function textAnalysis(prompt)
-	if prompt == PROMPT.copiedText then prompt = prompt .. ask() end 
+	if prompt == PROMPT.copiedText then prompt = ask() .. prompt end 
 	if args.url or args.u then
 		local url = args.url and args.url or (args.u and args.u or args.url)
 		prompt = prompt .. urlToTxt(url[1])
@@ -91,7 +96,7 @@ for key,_ in pairs(args) do
 	end
 end
 local ok, prompt = pcall(action)
-print(ok, prompt)
+print(prompt)
 
 if not prompt or prompt == '' or not ok then
 	print('brak')
