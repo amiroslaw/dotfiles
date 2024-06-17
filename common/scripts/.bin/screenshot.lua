@@ -10,7 +10,8 @@ List of the options:
 	--help -h → show help
 
 Examples:
-screenshot.lua active-window -o=clipboard q=9
+screenshot.lua active-window -q=9
+screenshot.lua region -o=clipboard -q=9
 
 -- dependency: rofi, xclip, maim, tesseract for ocr
 -- TODO: choose monitor with resolution label
@@ -116,23 +117,26 @@ local function takeScreen()
 		target = target .. ' -m ' .. quality
 		partialPath = partialPath .. 'Q'
 	end
-	local stat, err
-	local path
+	local stat, err, path
 	run('sleep 0.1')
 	if output=='file' then
 		path = ('%ssc.%s'):format(partialPath, format)
 		local cmd = string.format('maim -f %s %s %q', format, target, path)
 		_, stat, err = run(cmd, "Can't take screenshot")
+	elseif target == 'region' then
+		_, stat, err = run('maim --select | xclip -selection clipboard -target image/png', "Can't take screenshot to clipboard")
 	else -- clipboard doesn't work with webp
-		-- can't combine with selection 
 		-- error handling doesn't work
-		_, stat, err = run('maim -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png', "Can't take screenshot to clipboard")
+		_, stat, err = run('maim '.. target .. ' | xclip -selection clipboard -target image/png', "Can't take screenshot to clipboard")
+		-- _, stat, err = run('maim -i $(xdotool getactivewindow) | xclip -selection clipboard -target image/png', "Can't take screenshot to clipboard")
+	end
+	if not stat then 
+		errorMsg(err)
+		os.exit()
 	end
 	if stat and output == 'file' then
 		local split = split(path, '/')
 		notify('Took screen ' ..  split[#split])
-	else
-		errorMsg(err)
 	end
 end
 
