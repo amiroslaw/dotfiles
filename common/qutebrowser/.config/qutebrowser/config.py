@@ -26,6 +26,7 @@ config.set('content.javascript.enabled', True, 'chrome-devtools://*')
 config.set('content.javascript.enabled', True, 'devtools://*')
 config.set('content.javascript.enabled', True, 'chrome://*/*')
 config.set('content.javascript.enabled', True, 'qute://*/*')
+config.set("content.javascript.clipboard", "access")
 # c.content.unknown_url_scheme_policy = "allow-all"
 # CORS
 config.set('content.local_content_can_access_remote_urls', True)
@@ -112,7 +113,7 @@ config.bind('gb', 'back -t')
 config.bind('J', 'scroll left')
 config.bind('K', 'scroll right')
 
-config.bind('<Ctrl+T>', 'spawn --userscript translate')
+config.bind('<Ctrl+Alt+t>', 'spawn --userscript translate')
 
 config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
 config.bind('M', 'bookmark-add --toggle')
@@ -366,7 +367,6 @@ c.url.searchengines = {
     'dd': 'https://duckduckgo.com/?q={}',
     'b': 'https://search.brave.com/search?q={}',
     'y': 'https://www.youtube.com/results?search_query={}',
-    'p': 'https://piped.kavin.rocks/results?search_query={}',
     'w': 'https://en.wikipedia.org/wiki/{}',
     'wp': 'https://pl.wikipedia.org/wiki/{}',
     'c': 'https://www.ceneo.pl/;szukaj-{}',
@@ -381,14 +381,21 @@ c.url.searchengines = {
     'wa': 'https://www.wolframalpha.com/input/?i={}',
     'syn': 'https://www.thesaurus.com/browse/{}?s=t',
     'm': 'https://maps.google.com/maps?q={}',
-    'gi': 'https://www.google.com/search?q={}&tbm=isch',
+    'o': 'https://www.google.com/search?q={}&tbm=isch',
     'l' :'https://www.deepl.com/en/translator#en/pl/{}',
     'd': 'https://www.diki.pl/slownik-angielskiego?q={}',
     't': 'https://translate.google.pl/?hl=pl#pl/en/{}',
     'cam': 'https://dictionary.cambridge.org/spellcheck/english/?q={}', 
     'sci': 'https://sci-hub.se/{}', 
     'gh': 'https://github.com/search?q={}',
-    'gr': "https://github.com/search?q={}&type=repositories"
+    'gr': "https://github.com/search?q={}&type=repositories",
+    # AI
+    'x': 'https://www.perplexity.ai/search?q={}',
+    'p': 'https://www.phind.com/search?q={}',
+    'h': 'https://felo.ai/search?q={}',
+    'i': 'https://iask.ai/?mode=question&options[detail_level]=concise&q={}',
+    'ie': 'https://iask.ai/?mode=advanced&options[detail_level]=comprehensive&q={}',
+    'u': 'https://you.com/search?fromSearchBar=true&tbm=youchat&q={}'
 }
 
 # ======================= SEARCH bindings ============= {{{
@@ -398,9 +405,9 @@ config.bind('ss', 'spawn -u selection.sh b', 'caret')
 config.bind('sk', 'open -b g {primary} ')
 config.bind('sK', 'open -b g {clipboard} ')
 config.bind('sk', 'spawn -u selection.sh g', 'caret')
-config.bind('si', 'open -b gi {primary} ')
-config.bind('sI', 'open -b gi {clipboard} ')
-config.bind('si', 'spawn -u selection.sh gi', 'caret')
+config.bind('so', 'open -b o {primary} ')
+config.bind('sO', 'open -b o {clipboard} ')
+config.bind('so', 'spawn -u selection.sh o', 'caret')
 config.bind('sm', 'open -b m {primary} ')
 config.bind('sM', 'open -b m {clipboard} ')
 config.bind('sm', 'spawn -u selection.sh m', 'caret')
@@ -410,9 +417,9 @@ config.bind('sb', 'spawn -u selection.sh b', 'caret')
 config.bind('sc', 'open -b c {primary} ')
 config.bind('sC', 'open -b c {clipboard} ')
 config.bind('sc', 'spawn -u selection.sh c', 'caret')
-config.bind('so', 'open -b cc {primary} ')
-config.bind('sO', 'open -b cc {clipboard} ')
-config.bind('so', 'spawn -u selection.sh cc', 'caret')
+config.bind('se', 'open -b cc {primary} ')
+config.bind('sE', 'open -b cc {clipboard} ')
+config.bind('se', 'spawn -u selection.sh cc', 'caret')
 config.bind('sa', 'open -b a {primary} ')
 config.bind('sA', 'open -b a {clipboard} ')
 config.bind('sa', 'spawn -u selection.sh a', 'caret')
@@ -437,6 +444,22 @@ config.bind('sp', 'spawn -u selection.sh p', 'caret')
 config.bind('sd', 'open -b d {primary} ')
 config.bind('sD', 'open -b d {clipboard} ')
 config.bind('sd', 'spawn -u selection.sh d', 'caret')
+# AI 
+config.bind('si', 'open -b i {primary} ')
+config.bind('sI', 'open -b i {clipboard} ')
+config.bind('si', 'spawn -u selection.sh i', 'caret')
+config.bind('sp', 'open -b p {primary} ')
+config.bind('sP', 'open -b p {clipboard} ')
+config.bind('sp', 'spawn -u selection.sh p', 'caret')
+config.bind('sh', 'open -b h {primary} ')
+config.bind('sH', 'open -b h {clipboard} ')
+config.bind('sh', 'spawn -u selection.sh h', 'caret')
+config.bind('sx', 'open -b x {primary} ')
+config.bind('sX', 'open -b x {clipboard} ')
+config.bind('sx', 'spawn -u selection.sh x', 'caret')
+config.bind('su', 'open -b u {primary} ')
+config.bind('sU', 'open -b u {clipboard} ')
+config.bind('su', 'spawn -u selection.sh u', 'caret')
 
 config.bind('sg', 'cmd-set-text --space :open -t site:{url} ')
 
@@ -444,12 +467,12 @@ config.bind('zz', 'spawn -u selection.sh ')
 config.bind('zz', 'spawn -u selection.sh', 'caret')
 config.bind('zZ', 'spawn -u selection.sh {clipboard}')
 config.bind('<Ctrl-s>', 'open -t b {primary} ')
-config.bind('<Ctrl-l>', 'open -t l {primary} ')
-config.bind('<Ctrl-k>', 'open -t d {primary} ')
+config.bind('<Ctrl-t>', 'open -t l {primary} ')
+config.bind('<Ctrl-l>', 'open -t d {primary} ')
 config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh')
 config.bind('<Ctrl-s>', 'open -t {primary} ', 'insert')
-config.bind('<Ctrl-l>', 'open -t l {primary} ', 'insert')
-config.bind('<Ctrl-k>', 'open -t d {primary} ', 'insert')
+config.bind('<Ctrl-t>', 'open -t l {primary} ', 'insert')
+config.bind('<Ctrl-l>', 'open -t d {primary} ', 'insert')
 config.bind('<Ctrl-Shift-s>', 'spawn -u selection.sh', 'insert')
 # }}}
 # }}}

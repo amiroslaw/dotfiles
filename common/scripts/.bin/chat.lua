@@ -23,6 +23,9 @@ local host = OLLAMA_API_HOST and OLLAMA_API_HOST or 'http://localhost:11434'
 local generateCmd = [[ 
 curl --silent --no-buffer  %s/api/generate -d '{ "model": "%s", "prompt": "%s", "stream": false }' | jq -r '.response'
 ]]
+local generateCmdEnc = [[ 
+curl --silent --no-buffer  %s/api/generate --data-raw '{ "model": "%s", "prompt": "%s", "stream": false }' | jq -r '.response'
+]]
 local PROMPT = enum({ summary =  "Summarize (use asciidoc format with lists and bold text if needed) following text:\n", 
 					copiedText = '. Answer to that question based to following text:\n' })
 

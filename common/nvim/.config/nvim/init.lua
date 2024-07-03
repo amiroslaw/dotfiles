@@ -600,7 +600,7 @@ local actions = require "telescope.actions"
 				i = {
 					['<C-j>'] = 'move_selection_next',
 					['<C-k>'] = 'move_selection_previous',
-					['<C-Space>'] = 'select_default',
+					-- ['<C-Space>'] = 'select_default',
 					['<C-w>'] = 'which_key',
 					['<C-n>'] = 'cycle_history_next',
 					['<C-p>'] = 'cycle_history_prev',
@@ -618,8 +618,8 @@ local actions = require "telescope.actions"
 					}
 		}
 
-	-- nmap('<c-s>', '<cmd>Telescope live_grep<cr>')
-	nmap('<c-s>', '<cmd>Telescope egrepify<cr>')
+	nmap('<c-s>', '<cmd>Telescope live_grep<cr>')
+	nmap('<c-a-s>', '<cmd>Telescope egrepify<cr>') -- maybe remove if I can use refine
 	nmap('ts', '<cmd>Telescope grep_string grep_open_files=true<cr>') --  string under your cursor or selection in your current working directory
 	nmap('tp', '<cmd>Telescope find_files<cr>')
 	-- nmap('tp', '<cmd>Telescope find_files find_command=rg,--hidden,--files<cr>') -- with hidden files
