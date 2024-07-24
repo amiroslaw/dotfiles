@@ -133,6 +133,7 @@ vim.opt.iskeyword:append('-') -- words separeted by - will recognise as a one wo
 
 -- SHORTCUTS {{{
 -- map functions {{{
+	-- TODO change nvim_set_keymap to keymap.set and add desc, should I add silent?
 local key = vim.keymap.set
 function map(mode, shortcut, command, opts)
 	local options = { noremap = true, silent = true }
@@ -626,7 +627,7 @@ local actions = require "telescope.actions"
 	nmap('to', '<cmd>Telescope oldfiles<cr>')
 	nmap('tl', '<cmd>Telescope current_buffer_fuzzy_find skip_empty_lines=true<cr>') -- lines in file
 	nmap('tJ', '<cmd>Telescope jumplist sort_lastused=true <cr> ') -- I changed source code for showing only current file, idk if sort_lastused works
-	nmap('ta', '<cmd>Telescope buffers ignore_current_buffer=true sort_mru=true show_all_buffers=false<cr>') -- closed files
+	nmap('ta', '<cmd>Telescope buffers ignore_current_buffer=true sort_mru=true show_all_buffers=false<cr>') -- closed files, and buffers
 	nmap('tq', '<cmd>Telescope quickfix<cr> ') -- quickfix history
 	nmap('td', '<cmd>Telescope diagnostic<cr> ')
 	nmap('tb', '<cmd>Telescope git_branches<cr>')
