@@ -20,7 +20,6 @@ Actions:
 	--help - Show help
 Options:
 	--clip -c → read parameter from clipboard
-	--resume -r → read url from `TMP_PLAY`
 	--save=name -s → save playlist, a name can be provide or it will be generated
 	--input -i → prompt for a name of the playlist
 	--list -L → filter only playlists
@@ -37,26 +36,28 @@ mpv.lua --mpvList queueGroupName --noInput
 
 In order to change stream format and options it's needed to add the profiles `stream` and `stream-popup` into the mpv.conf file.
 For editing - set system env: GUI_EDITOR
-Dependencies: mpv, st, clipster, fd, zenity, rofi, notify-send, yt-dlp, trash-put in optional
+Dependencies: st, clipster, fd, zenity, rofi, notify-send, yt-dlp, trash-put in optional, jq
+	for yt: mpv, pueue
 
-TODO: clean help after qu.lua change
-add support for reading from env
+TODO: 
+add support reading from env
 doesn't clear playlist after abort prompt
 	]]
-
 end
 
-local TMP_PLAYLIST = '/tmp/qb_mpvplaylist.m3u'
-local TMP_PLAY = '/tmp/qb_mpv.m3u'
+local CMD_VIDEO = 'mpv --profile=stream %s'
+local CMD_POPUP = 'mpv --x11-name=videopopup --profile=stream-popup %s'
+local CMD_AUDIO = (os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'):format('audio', 'mpv --profile=stream-audio %s')
+local CMD_QUEUE = {
+	fullscreen = 'pueue add  --label "%s" -g mpv-fullscreen -- ' .. CMD_VIDEO,
+	popup = 'pueue add  --label "%s" -g mpv-popup -- ' .. CMD_POPUP,
+	audio = 'pueue add -e --label "%s" -g mpv-audio -- ' .. CMD_AUDIO
+}
+local GUI_EDITOR = os.getenv('GUI_EDITOR') .. ' %s'
 local DIR_PLAYLISTS = os.getenv 'HOME' .. '/Templates/mpvlists'
 local DIR_ARCHIVE = os.getenv 'HOME' .. '/Templates/mpvlists-archive'
--- local GUI_EDITOR = 'nvim-qt'
 
 local LINK_REGEX = "(https?://([%w_.~!*:@&+$/?%%#-]-)(%w[-.%w]*%.)(%w%w%w?%w?)(:?)(%d*)(/?)([%w_.~!*:@&+$/?%%#=-]*))"
-
-local CMD_VIDEO = 'mpv --profile=stream '
-local CMD_POPUP = 'mpv --x11-name=videopopup --profile=stream-popup '
-local CMD_AUDIO = (os.getenv 'TERM_LT' .. os.getenv 'TERM_LT_RUN'):format('audio', 'mpv --profile=stream-audio')
 
 local function errorMsg(msg)
 	print(msg)
@@ -83,24 +84,10 @@ if args.clip or args.c then
 		errorMsg('Can not read url from the clipboard')
 	end
 end
-if args.resume or args.r then
-	local tmpPlayUrl = readf(TMP_PLAY)
-	if tmpPlayUrl then
-		param = tmpPlayUrl[1]	
-	end
-end
-
-local function getHost()
-	-- local pageUrl = assert(io.open(TMP_PLAYLIST, 'r'):read('*l'), 'Did not read page url') -- reads first line
-	local playlist = readf(TMP_PLAYLIST) 
-	local pageUrl = playlist[#playlist] -- gets last line
-	-- return (pageUrl .. '/'):match '://(.-)/'
-	return pageUrl:match('^%w+://([^/]+)'):gsub('www.', ''):match '([^.]+)'
-end
 
 local function buildName(defaultName)
 	if args.input or args.i then
-		local out, ok, err = run('zenity --entry --text="Playlist name" --entry-text="' .. defaultName .. '"', "Can't run zenity")
+		local out = run('zenity --entry --text="Playlist name" --entry-text="' .. defaultName .. '"', "Can't run zenity")
 		return out[1]
 	end
 	local save = args.save or args.s
@@ -115,46 +102,6 @@ local function buildName(defaultName)
 	end
 
 	return defaultName
-end
-
-local function savePlaylist()
-	if args.save or args.s or args.input or args.i then
-		assert(os.execute('mkdir -p ' .. DIR_PLAYLISTS) == 0, 'Did not create playlist dir ' .. DIR_PLAYLISTS)
-		local defaultName = os.date '%Y-%m-%dT%H%M-' .. getHost()
-		local listName = buildName(defaultName)
-		if listName then
-			assert( os.execute('mv ' .. TMP_PLAYLIST .. ' "' .. DIR_PLAYLISTS .. '/' .. listName .. '.m3u"') == 0, 'Did not move playlist to ' .. DIR_PLAYLISTS)
-		end
-	end
-	assert(os.execute('rm -f ' .. TMP_PLAYLIST) == 0, 'Did not remove playlist')
-end
-
-local function play(url, cmd)
-	local file = assert(io.open(TMP_PLAY, 'w'), 'Could not write to file ' .. TMP_PLAY)
-	file:write(url)
-	file:close()
-
-	local _, ok, err = run(cmd .. TMP_PLAY, 'Error: run mpv: ' .. url)
-	assert(ok, err)
-end
-
-local function list(cmd)
-	local _, ok, err = run(cmd .. TMP_PLAYLIST, 'Error: run mpv list' )
-	assert(ok, err)
-	savePlaylist()
-end
-
-local function push(url)
-	local extinf = ''
-	local out, ok, err = run('yt-dlp -i --print duration,title "' .. url .. '"', "Can't get metadata form: " .. url)
-	print('yt-dlp -i --print duration,title ' .. url, "Can't get metadata form: " .. url)
-	if not ok then
-		log(err, 'WARNING')	
-	end
-	if #out == 2 then
-		extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
-	end
-	assert(io.open(TMP_PLAYLIST, 'a'):write(extinf .. url .. '\n'))
 end
 
 local function renamePlaylist(playlistName)
@@ -202,7 +149,6 @@ local function makeOnline()
 	if not playlistName then
 		return
 	end
-	local playlistInit = {}
 
 	local playlist = M(M.tabulate(M.partition(out,4)))
 						:map(toMetaVideo)
@@ -225,7 +171,7 @@ local function getMetadata(url)
 		log(err, 'WARNING')
 	end
 	if #out == 2 then
-		extinf = '#EXTINF:' .. out[1] .. ',' .. out[2] .. '\n'
+		extinf = ('#EXTINF:%s,%s\n'):format(out[1], out[2])
 	end
 	return extinf .. url
 end
@@ -258,20 +204,15 @@ local function makeQueue(group)
 	notify('Made playlist for ' .. group)
 end
 
-
 local function concatPath(files)
 	local paths = ' '
 	for _,file in ipairs(files) do
-		paths = paths .. '"' .. DIR_PLAYLISTS .. '/' .. file .. '" '
+		paths = paths .. ('"%s/%s" '):format(DIR_PLAYLISTS, file)
 	end
 	return paths
 end
 
-local function buildCmd(selectedElements, cmd)
-	return cmd .. concatPath(selectedElements)
-end
-
-local function delete(selected) 
+local function delete(selected)
 	if os.execute('command -v trash-put') then
 		return 'trash-put ' .. concatPath(selected)
 	else
@@ -292,6 +233,10 @@ local function archive(selected)
 	return 'mv ' .. concatPath(selected) .. ' "' .. DIR_ARCHIVE .. '"'
 end
 
+local function buildCmd(selectedElements, cmd)
+	return cmd:format(concatPath(selectedElements))
+end
+
 -- When selected few playlists, they will be nested.
 -- Multiple option opens videos in playlist but it doesn't hold --x11-name
 -- with too many files, it doesn't work
@@ -303,46 +248,42 @@ local function openPlaylist()
 	end
 
 	local cmd = ('fd --follow --type=f %s --base-directory="%s" --exec stat --format="%%Z %%n" {} \\; | sort -nr | cut -d\' \' -f2-'):format(filetype, DIR_PLAYLISTS)
-	print(cmd)
-	local  playlists, ok, err = run(cmd, "Can't find files" )
+	local  playlists, okFind, err = run(cmd, "Can't find files" )
 
-	assert(ok, err)
+	assert(okFind, err)
 	local prompt = 'default:open video; shift-enter:multi selection; Found:'.. #playlists
 	local keysFun = {
-		['Alt-p'] = {'popup', M.bind2(buildCmd,CMD_POPUP) },
+		['Alt-p'] = {'popup', M.bind2(buildCmd, CMD_POPUP) },
 		['Alt-a'] = {'audio', M.bind2(buildCmd, CMD_AUDIO) },
 		['Alt-n'] = {'rename', rename },
 		['Alt-o'] = {'open folder', function() return 'xdg-open "' .. DIR_PLAYLISTS .. '" &' end },
 		['Alt-d'] = {'delete', delete },
-		['Alt-e'] = {'edit', M.bind2(buildCmd, os.getenv('GUI_EDITOR')) },
+		['Alt-e'] = {'edit', M.bind2(buildCmd, GUI_EDITOR) },
 		['Alt-h'] = {'archive', archive },
 	}
 
 	local selected, keybind = rofiMenu(playlists, {prompt = prompt, keys = keysFun, multi=true, width = '95%'})
 	if not keybind then return end -- cancel
 	if not keysFun[keybind] then -- default
-		local _, ok, err = run(CMD_VIDEO .. concatPath(selected))
+		notify(CMD_VIDEO:format(concatPath(selected)))
+		local _, ok, _ = run(CMD_VIDEO:format(concatPath(selected)))
 		assert(ok, 'Error: Can not play video ')
 	else
-		local cmd = keysFun[keybind][2]
-		local _, ok, err = run(cmd(selected))
+		local _, ok, _ = run(keysFun[keybind][2](selected))
 		assert(ok, 'Error: Can not execute ')
 	end
 end
 
-local function buildPlaylist(selected, vid)
-	return M(selected):map(M.fun.match('^%d+'))
-			:map(function(index) 
-				local i = tonumber(index)
-				return '#EXTINF:' .. vid[i].duration .. ',' .. vid[i].title .. '\n' .. vid[i].url
-				end)
-			:concat('\n'):value()
+local function play(videos, type)
+	for i,_ in ipairs(videos) do
+		os.execute(CMD_QUEUE[type]:format(videos[i].title, videos[i].url))
+	end
 end
 
--- alternative: https://github.com/pystardust/ytfzf 
 local function ytsearch()
 	local query = param and param or rofiInput({prompt = 'Search YT'})
-	local results, ok, err = run('yt-dlp --print original_url,title,duration,channel "ytsearch15:' .. query .. '"', 'Search error: ')
+	-- local results, ok, err = run('yt-dlp --print original_url,title,duration,channel "ytsearch15:' .. query .. '"', 'Search error: ') 15 results
+	local results, ok, err = run('yt-dlp --print original_url,title,duration,channel "ytsearch10:' .. query .. '"', 'Search error: ')
 	assert(ok, err)
 
 	local videos = M(M.tabulate(M.partition(results,4)))
@@ -350,8 +291,8 @@ local function ytsearch()
 
 	local prompt = 'default:open video; shift-enter:multi selection'
 	local keysFun = {
-		['Alt-p'] = {'popup', M.bind2(play,CMD_POPUP) },
-		['Alt-a'] = {'audio', M.bind2(play,CMD_AUDIO) },
+		['Alt-p'] = {'popup', M.bind2(play,'popup') },
+		['Alt-a'] = {'audio', M.bind2(play,'audio') },
 	}
 
 	local descriptions = {}
@@ -362,10 +303,11 @@ local function ytsearch()
 	local selected, keybind = rofiMenu(descriptions, {prompt = prompt, keys = keysFun, multi=true, width = '95%'})
 
 	if not keybind then return end -- cancel
-	local playlist = buildPlaylist(selected, videos)
+	local playlist = M(selected):map(M.fun.match('^%d+'))
+		:map(function(i) return videos[tonumber(i)] end)
+		:value()
 	if not keysFun[keybind] then -- default
-		-- TODO I removed play
-		play(CMD_VIDEO, 'video', playlist)
+		play(playlist, 'fullscreen')
 	else
 		keysFun[keybind][2](playlist)
 	end
@@ -378,8 +320,7 @@ local function metadata()
 	assert(ok, err)
 	local json = jsonish(table.concat(metadata, '\n'))
 	json = json.format.tags
-	local out = { json.COMMENT, json.DATE, json.ARTIST, json.title, json.DESCRIPTION, }
-	print(table.concat(out,'\n'))
+	--local out = { json.COMMENT, json.DATE, json.ARTIST, json.title, json.DESCRIPTION, }
 	-- editor(table.concat(out,'\n'))
 end
 
