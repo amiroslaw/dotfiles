@@ -74,6 +74,8 @@ alias cfw3m='nvim ~/.w3m/keymap'
 #}}}
 
 # {{{ RÓŹNE
+# copy last command
+alias CC='$(fc -l -n -1) | xclip -sel clip'
 alias setup='$EDITOR "$NOTE"/finance/inwestycje/setup.adoc'
 alias weather='curl wttr.in/warszawa'
 alias cl='clear'
@@ -100,8 +102,9 @@ alias monitoroff='xrandr --output DVI-I-0 --off'
 alias _='sudo'
 alias shut='sudo shutdown -h now'
 # get error messages from journalctl
-alias logs='journalctl -b'
-alias logserr="journalctl -p 3 -xb"
+alias log='journalctl -b'
+alias logerr="journalctl -p 3 -xb"
+alias logwatch='journalctl -b -n 200 -f'
 
 alias sysstat='systemctl status '
 alias sysrestart='sudo systemctl restart '
@@ -129,7 +132,6 @@ alias pp='xclip-pastefile'
 alias yy='xclip-copyfile'
 alias cc='xclip-cutfile'
 alias vl='nvim $(ls -tp | grep -v /$ | head -1)'
-alias jj='java -jar'
 alias tor='stty stop undef && stty start undef && screen -x tor'
 alias huliomail='tmpmail -g Huliofff@1secmail.org && tmpmail -r'
 alias ping='prettyping'
@@ -142,7 +144,6 @@ alias stown='stow -nvSt ~ '
 alias stow='stow -vSt ~ '
 alias stowd='stow -vDt ~ '
 alias fm='vifm'
-alias js='~/.sdkman/candidates/java/10.0.1-oracle/bin/jshell'
 alias exodus='~/Exe/program_files/Exodus/Exodus &'
 alias duh='du -sh '
 alias dudepth='du -h --max-depth'
@@ -229,6 +230,10 @@ alias kals='gcalcli search'
 # #}}}
 
 #{{{ Dev
+alias -g jv='java -version'
+alias -g jp='javap -v -l -p -c -s'
+alias js='~/.sdkman/candidates/java/10.0.1-oracle/bin/jshell'
+alias psj='ps aux | grep "[j]ava"'
 alias manative='mvn -Pnative native:compile -Dmaven.test.skip=true'
 # mavend
 alias mai='mvnd install'
@@ -240,6 +245,36 @@ alias mapacct='mvnd clean package -Dmaven.test.skip=true'
 alias mat='mvnd clean package -Dmaven.test.skip=true -DskipTests'
 alias matree='mvn dependency:tree'
 alias mapom='mvn help:effective-pom'
+
+# # docker
+# alias dk='docker'
+# alias dkp='docker ps'
+# alias dkpa='docker ps -a'
+# alias dkpaq='docker ps -a -q'
+# alias dkb='docker build -t'
+# alias dkbnc='docker build --no-cache -t'
+# alias dkr='docker run --rm'
+# alias dkrti='docker run --rm -ti'
+# alias dkrd='docker run -d'
+# alias dkrp8='docker run --rm -p 8080:8080'
+# alias dkrp9='docker run --rm -p 9080:9080'
+# alias dks='docker start'
+# alias dkt='docker stop'
+# alias dktt='docker stop $(docker ps -q)'
+# alias dkk='docker kill'
+# alias dkkk='docker kill $(docker ps -q)'
+# alias dkrm='docker rm'
+# alias dkri='docker rmi'
+# alias dke='docker exec -ti'
+# alias dkl='docker logs -f'
+# alias dki='docker images'
+# alias dkpu='docker pull'
+# alias dkph='docker push'
+# alias dkin='docker inspect'
+# alias dkn='docker network'
+# alias dkc='docker-compose'
+# alias dkcu='docker-compose up'
+# alias dkclean='docker ps -q -a -f status=exited | xargs -r docker rm && docker images -q -f dangling=true | xargs -r docker rmi'
 
 #}}}
 
@@ -257,6 +292,8 @@ alias gfetch='git fetch'
 alias gdiff='git diff'
 alias gpull='git pull origin'
 alias gpush='git push origin'
+alias grebase='git pull --rebase origin'
+alias gstash='git stash save'
 alias gst='git status'  # 'status' is protected name so using 'stat' instead
 alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset'"
 # }}}
@@ -376,7 +413,9 @@ alias lo='f -e libreoffice'
 #}}}
 
 #ZSH
-# {{{ ZSH extensions , open in a app
+# {{{ ZSH extensions 
+# open files based on their extensions in default app
+# devour swallows 
 alias -s {tex,txt,md,adoc,java,html}=nvim
 alias -s html=w3m
 alias -s {avi,mp4,webm,m3u,mkv}='devour mpv --profile stream '
@@ -402,6 +441,7 @@ alias -g SN='| sort -n'
 alias -g L='| less'
 alias -g W='| wc'
 alias -g Jq='| jq .'
+alias -g Fx='| fx'
 alias -g N=' | nvim - +"file /tmp/nvim-pipe$(date +%s)"'
 
 # copy terminal output into clipboard
@@ -420,12 +460,18 @@ alias -g TB="| nc termbin.com 9999" # share output of the terminal
 alias -g COL='| column -t' # format into tabelar 
 alias -g X='| xargs'
 alias -g X0='| xargs -0'  
+alias -g A1="| awk '{print \$1}'"
 # FZF
 alias -g D='$(fd --file=d | fzf)'
 alias -g F='| fzf '
 alias -g H='$(fd --hidden | fzf) '
+
 # env, przy uruchomieniu terminalu od razu wywołuje 
 # alias -g E=" ${(P)$(env | awk -F '=' '{print $1}' | fzf)}"
+# alias -g grep='grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+
+
+
 #}}}
 
 #{{{ FUNCTIONS

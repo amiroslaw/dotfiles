@@ -555,7 +555,7 @@ local bookmarks = {
 }
 local browse = require('browse')
 browse.setup({
-  provider = "google", -- duckduckgo, bing
+  provider = "brave", -- duckduckgo, bing
   bookmarks = bookmarks
 })
 nmap('gs', ':execute "normal viw" | lua require"browse".input_search()<cr>')
