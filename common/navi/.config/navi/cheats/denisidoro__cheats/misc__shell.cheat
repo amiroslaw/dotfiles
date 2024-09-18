@@ -118,7 +118,7 @@ chgrp <group-name-from> <group-name-to>
 % shell Symlinks
 @ util
 # Create symlink
-ln -s <paths> <paths>
+ln -s <paths> <link-name>
 # Update symlink
 ln -sfn <paths> <paths>
 # Remove symlink

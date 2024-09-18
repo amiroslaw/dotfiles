@@ -474,6 +474,18 @@ alias -g H='$(fd --hidden | fzf) '
 
 #}}}
 
+#{{{ Navi
+alias nn='navi'
+# Search using tldr/cheatsh
+alias nc="navi --cheatsh"
+alias nt="navi --tldr"
+# aliases using query 
+navialias() {
+    navi --query "$1" --best-match
+}
+alias nln="navialias 'create symlink'"
+#}}}
+
 #{{{ FUNCTIONS
 # alias mkcd='take'
 take () {
