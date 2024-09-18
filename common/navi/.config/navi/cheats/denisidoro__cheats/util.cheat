@@ -1,0 +1,6 @@
+% util
+
+; doesn't need to be surrounded by quote mark
+$ files: find . -maxdepth 1 -type f --- --expand --multi
+$ dirs: ls -1d */ --- --expand --multi
+$ paths: ls -1 --- --expand --multi
