@@ -3,3 +3,4 @@
 *.zwc
 
 common/nvim/.config/nvim/plugin/packer_compiled.lua
+navi.log

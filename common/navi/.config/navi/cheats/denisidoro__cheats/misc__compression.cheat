@@ -1,0 +1,25 @@
+% compression
+@ util
+
+# Create a tar containing files
+tar cf <name>.tar <dirs>
+
+# Extract the files from a tar
+tar xf <tar_file>
+
+# Create a tar with Gzip compression
+tar czf <name>.tar.gz <dirs> 
+
+# Extract a tar using Gzip
+tar xzf <targz_file>
+
+# Compress file and appends .gz to its name
+gzip <path>
+
+# Decompress compressed file
+gzip -d <gz_file>
+
+$ path: ls
+$ tar_file: ls *.tar
+$ targz_file: ls *.tar.gz
+$ gz_file: ls *.gz
