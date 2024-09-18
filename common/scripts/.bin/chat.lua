@@ -57,6 +57,7 @@ local function urlToTxt(url)
 	return  io.popen(cmd):read '*a'
 end
 
+-- analys form prompt, webpage or clipboard
 local function textAnalysis(prompt)
 	if prompt == PROMPT.copiedText then prompt = ask() .. prompt end 
 	if args.url or args.u then
@@ -102,7 +103,6 @@ local ok, prompt = pcall(action)
 print(prompt)
 
 if not prompt or prompt == '' or not ok then
-	print('brak')
 	os.exit(1)
 end
 

@@ -77,14 +77,13 @@ alias cfw3m='nvim ~/.w3m/keymap'
 # copy last command
 alias CC='$(fc -l -n -1) | xclip -sel clip'
 alias setup='$EDITOR "$NOTE"/finance/inwestycje/setup.adoc'
-alias weather='curl wttr.in/warszawa'
+alias weather='curl wttr.in/warszawa | grep -v "New feature" | grep -v Follow'
 alias cl='clear'
 alias se='sudoedit'
 alias permissionX='sudo chmod -R +x'
 alias zathuraBlist='less ~/.local/share/zathura/bookmarks'
 # grepextend pattern path/.
 alias grepextend='grep -inrC 3'
-alias history-count='cut -f1 -d" " ~/.zhistory | sort | uniq -c | sort -nr | head -n 30'
 alias ifrestart='sudo ifconfig wlp3s0f0u2 down && sudo ifconfig wlp3s0f0u2 up'
 alias psa='ps -A | grep '
 # swallow?
@@ -106,6 +105,7 @@ alias log='journalctl -b'
 alias logerr="journalctl -p 3 -xb"
 alias logwatch='journalctl -b -n 200 -f'
 
+# navi
 alias sysstat='systemctl status '
 alias sysrestart='sudo systemctl restart '
 alias sysstop='sudo systemctl stop '
@@ -121,12 +121,12 @@ alias paclog='grep -iE "installed|upgraded" /var/log/pacman.log | tac | less'
 # alias pacuninstall='paru -Rns $(paru -Qet | awk "{print \$1}" | fzf)'
 # alias pacinfo='paru -Qii $(paru -Qet | awk "{print \$1}" | fzf)'
 # alias pacsearch='pacman -Ss'
-# alias yay='paru'
 # alias pacupdate='sudo pacman -Syyu'
 # alias pacremove='sudo pacman -Rns'
 #}}}
 
 #{{{ Programs alias
+alias nn='navi'
 alias nb='newsboat'
 alias pp='xclip-pastefile'
 alias yy='xclip-copyfile'

@@ -76,6 +76,7 @@ bspc rule -a SpeedCrunch state=floating rectangle=500x500+0+0 center=true
 bspc rule -a Zathura state=tiled
 bspc rule -a KeePassXC  state=floating rectangle=1100x700+0+0 center=true
 bspc rule -a zenity state=floating
+bspc rule -a Qalculate-gtk state=floating
 bspc rule -a yad state=floating
 bspc rule -a menu state=floating
 bspc rule -a Pqiv state=fullscreen
