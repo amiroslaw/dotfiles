@@ -270,6 +270,11 @@ nmap <F7> :MkCd <space>
 nmap cd :mkdir %c:r <cr> 
 nmap <F8> :touch <space> 
 nmap cf :touch %c.txt <space> 
+nmap <A-1> :! mkdir -p 1 && mv %f 1 <cr>
+nmap <A-2> :! mkdir -p 2 && mv %f 2 <cr>
+nmap <A-3> :! mkdir -p 3 && mv %f 3 <cr>
+nmap <A-4> :! mkdir -p 4 && mv %f 4 <cr>
+nmap <A-5> :! mkdir -p 5 && mv %f 5 <cr>
 " nmap <F9> :! setsid -f nvim-qt %f <cr>
 nmap O :! fasd -A %f && nvim-qt %f <cr>
 nmap md :!fasd -A %f && typora %f &<cr>
