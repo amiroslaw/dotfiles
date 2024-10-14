@@ -12,6 +12,13 @@ return {
 	'mhinz/vim-startify', -- start screen
 	{ 'mbbill/undotree', cmd = { 'UndotreeToggle' } },
 	{ 'gbprod/yanky.nvim', config = true },
+	{ "gbprod/substitute.nvim",
+		-- opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		-- }
+	},
 	{ 'lalitmee/browse.nvim',event = 'VeryLazy', dependencies = { 'nvim-telescope/telescope.nvim' } },
 	{ 'amiroslaw/fm-nvim', cmd = { 'Vifm', 'Broot', 'Fzf', 'Ranger', 'Lazygit', 'TaskWarriorTUI' },
 		opts = { app = 'taskwarrior', -- {'taskwarrior', 'todo.txt'}

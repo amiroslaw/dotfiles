@@ -210,7 +210,7 @@ return {
 	-- s('bb', {t '**', f(visual_selection, 1), i(1), t '**'}),
 	s('code', fmt(codeBlock, {
 		c(1, { sn(1, {t '.', i(1, 'title')}), t(''), }),
-		c(2, { t'java', t'lua', t'bash', t'sql' }),
+		c(2, {t'clojure', t'java', t'lua', t'bash', t'sql' }),
 		d(3, clip),
 		i(0)
 		})
@@ -222,7 +222,7 @@ return {
 		})
 	),
 	s('code-md', fmt(codeBlockMd, {
-		c(1, { t('java'), t('lua'), t('bash'), }),
+		c(1, { t('java'), t('clojure'), t('lua'), t('bash'), }),
 		d(2, clip),
 		i(0)
 		})
@@ -230,7 +230,7 @@ return {
 
 	s('code-collapse', fmt(collapsibleCodeBlock, {
 		c(1, { sn(1, {t '.', i(1, 'title')}), t(''), }),
-		c(2, { t('java'), t('lua'), t('bash'), }),
+		c(2, { t('java'), t('clojure'), t('lua'), t('bash'), }),
 		d(3, clip),
 		i(0)
 		})

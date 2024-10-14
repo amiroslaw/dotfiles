@@ -247,8 +247,8 @@ nmap(',k', '<cmd>lua vim.diagnostic.goto_prev() <CR> ')
 nmap('<tab>', 'gt')
 nmap('<s-tab>', 'gT')
 nmap('<C-t>', ':tabnew<CR>')
-nmap('<LocalLeader>ss', ':split<CR>')
-nmap('<LocalLeader>sv', ':vs<CR>')
+-- nmap('<LocalLeader>ss', ':split<CR>')
+-- nmap('<LocalLeader>sv', ':vs<CR>')
 
 -- windows split also in terminal mode
 tmap('<A-h>', '<C-\\><C-N><C-w>h')
@@ -297,7 +297,7 @@ nmap('<LocalLeader>u', 'b~A')
 
 --replace from selection/ substitution, produce error but it's workaround for showing command line mode
 vmap('<A-r>', '"hy:%s/<C-r>h//g<left><left><cmd>')
-vmap('<S-A-r>', '"hy:%s/<C-r>h/^M/g<left><left><cmd>') -- add special char for enter c-v enter
+-- vmap('<S-A-r>', '"hy:%s/<C-r>h/^M/g<left><left><cmd>') -- add special char for enter c-v enter
 nmap('yu', ':let @+ = expand("%:p")<cr>') -- copy current file path and name into clipboard
 -- }}} 
 
@@ -485,7 +485,7 @@ nmap('<F19>', ':Asciidoctor2DOCX<CR>') -- S-F7
 vim.g.asciidoctor_syntax_conceal = 1
 vim.g.asciidoctor_folding = 2
 vim.g.asciidoctor_folding_level = 6
-vim.g.asciidoctor_fenced_languages = { 'java', 'typescript', 'javascript', 'bash', 'html', 'xml', 'lua', 'css', 'sql' } -- 'kotlin' add syntax TODO
+vim.g.asciidoctor_fenced_languages = { 'java', 'typescript', 'javascript', 'bash', 'html', 'xml', 'lua', 'css', 'sql', 'clojure' } -- 'kotlin' add syntax TODO
 -- vim.g.asciidoctor_syntax_indented = 0
 -- vim.g.asciidoctor_fold_options = 0
 vim.g.asciidoctor_img_paste_command = 'xclip -selection clipboard -t image/png -o > %s%s'
@@ -919,6 +919,22 @@ key({ "n", "v" }, '<LocalLeader>ox', "<cmd>OGPTRun explain_code<CR>", { desc = "
 key({ "n", "v" }, '<LocalLeader>or', "<cmd>OGPTRun code_readability_analysis<CR>", { desc = "Code Readability Analysis",  })
 key({ "n", "v" }, '<LocalLeader>of', "<cmd>OGPTRun format-adoc table<CR>", { desc = "Format asciidoc table",  })
 --}}} 
+
+-- {{{  Substitute. nvim  https://github.com/gbprod/substitute.nvim
+require("substitute").setup({
+  on_substitute = require("yanky.integration").substitute(),
+})
+vim.keymap.set("n", '<LocalLeader>s', require('substitute').operator, { noremap = true, desc = 'Substitute [text object]'})
+vim.keymap.set("n", '<LocalLeader>ss', require('substitute').line, { noremap = true, desc ='Substitute - line'})
+vim.keymap.set("n", '<LocalLeader>S', require('substitute').eol, { noremap = true, desc ='Substitute - eol'})
+vim.keymap.set("x", '<LocalLeader>s', require('substitute').visual, { noremap = true, desc ='Substitute'})
+-- range, idk how does it work
+vim.keymap.set("n", '<S-A-r>', require('substitute.range').word, { noremap = true, desc ='Substitute - range under a word'})
+-- vim.keymap.set("n", "<leader>s", require('substitute.range').operator, { noremap = true, desc ='Substitute - range'})
+-- vim.keymap.set("x", "<leader>s", require('substitute.range').visual, { noremap = true, desc ='Substitute - range '})
+-- vim.keymap.set("n", "<leader>ss", require('substitute.range').word, { noremap = true, desc ='Substitute - range under a word'})
+
+--}}}
 
 -- COLORSCHEMES {{{
 local function getBackground(hour)
