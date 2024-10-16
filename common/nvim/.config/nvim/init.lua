@@ -542,10 +542,16 @@ local bookmarks = {
     ['wiki-pl'] = 'https://pl.wikipedia.org/wiki/%s',
     ['wiki-en'] = 'https://en.wikipedia.org/wiki/%s',
     ['arch-wiki'] = 'https://wiki.archlinux.org/?search=%s',
-    ['piped-videos'] = 'https://piped.kavin.rocks/results?search_query=%s',
+    ['videos-brave'] = 'https://search.brave.com/videos?q=%s',
     ['brave'] = 'https://search.brave.com/search?q=%s',
 	["gh"] = "https://github.com/search?q=%s",
 	["gh_repo"] = "https://github.com/search?q=%s&type=repositories",
+    ['AI-perplexity'] = 'https://www.perplexity.ai/search?q=%s',
+    ['AI-phind'] = 'https://www.phind.com/search?q=%s',
+    ['AI-felo'] = 'https://felo.ai/search?q=%s',
+    ['AI-iask'] = 'https://iask.ai/?mode=question&options[detail_level]=concise&q=%s',
+    ['AI-iask-advanced'] = 'https://iask.ai/?mode=advanced&options[detail_level]=comprehensive&q=%s',
+    ['AI-you'] = 'https://you.com/search?fromSearchBar=true&tbm=youchat&q=%s',
 	-- ["github"] = { -- in groups doesn't work selection 
  --      ["name"] = "Group: github",
  --      ["code_search"] = "https://github.com/search?q=%s&type=code",
@@ -648,7 +654,7 @@ local actions = require "telescope.actions"
 
 	-- nmap('tt', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope current_buffer_tags<CR>')
 	-- nmap('T', ':silent !ctags -R . <CR>:redraw!<cr>:Telescope tags<CR>') -- jjjj
-	telescope.load_extension 'heading'
+	telescope.load_extension 'heading' -- doesn't work with many entities 
 	nmap('tt', '<cmd>Telescope heading <cr>')
 	telescope.load_extension 'jumps'
 	nmap('tu', '<cmd>Telescope jumps changes <cr>')
@@ -928,12 +934,15 @@ vim.keymap.set("n", '<LocalLeader>s', require('substitute').operator, { noremap 
 vim.keymap.set("n", '<LocalLeader>ss', require('substitute').line, { noremap = true, desc ='Substitute - line'})
 vim.keymap.set("n", '<LocalLeader>S', require('substitute').eol, { noremap = true, desc ='Substitute - eol'})
 vim.keymap.set("x", '<LocalLeader>s', require('substitute').visual, { noremap = true, desc ='Substitute'})
--- range, idk how does it work
+-- range, idk how does it work it alway apply to a paragraph
 vim.keymap.set("n", '<S-A-r>', require('substitute.range').word, { noremap = true, desc ='Substitute - range under a word'})
--- vim.keymap.set("n", "<leader>s", require('substitute.range').operator, { noremap = true, desc ='Substitute - range'})
--- vim.keymap.set("x", "<leader>s", require('substitute.range').visual, { noremap = true, desc ='Substitute - range '})
--- vim.keymap.set("n", "<leader>ss", require('substitute.range').word, { noremap = true, desc ='Substitute - range under a word'})
+-- vim.keymap.set("n", '<A-r>', function() require('substitute.range').word({range = { motion = '%' }}) end, { noremap = true, desc ='Substitute - word in file'}) -- it doesn't work for whole file 
+--}}}
 
+-- {{{ nvim-autopairs https://github.com/windwp/nvim-autopairs?tab=readme-ov-file#fastwrap
+require('nvim-autopairs').setup({
+    fast_wrap = { map = '<M-t>', },
+})
 --}}}
 
 -- COLORSCHEMES {{{

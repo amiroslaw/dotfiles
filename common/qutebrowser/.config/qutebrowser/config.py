@@ -363,6 +363,7 @@ config.bind('xh', 'download --mhtml')
 c.url.searchengines = {
     'DEFAULT': 'https://search.brave.com/search?q={}',
     # 'DEFAULT': 'https://www.google.com/search?q={}',
+    'v': 'https://search.brave.com/videos?q={}',
     'g': 'https://www.google.com/search?q={}',
     'dd': 'https://duckduckgo.com/?q={}',
     'b': 'https://search.brave.com/search?q={}',
