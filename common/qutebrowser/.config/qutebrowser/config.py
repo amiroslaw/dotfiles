@@ -391,8 +391,8 @@ c.url.searchengines = {
     'gh': 'https://github.com/search?q={}',
     'gr': "https://github.com/search?q={}&type=repositories",
     # AI
-    'x': 'https://www.perplexity.ai/search?q={}',
-    'p': 'https://www.phind.com/search?q={}',
+    'x': 'https://www.perplexity.ai/search?q={}', # ddos 
+    'p': 'https://www.phind.com/search?q={}', # unavailable
     'h': 'https://felo.ai/search?q={}',
     'i': 'https://iask.ai/?mode=question&options[detail_level]=concise&q={}',
     'ie': 'https://iask.ai/?mode=advanced&options[detail_level]=comprehensive&q={}',

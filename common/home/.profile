@@ -41,6 +41,7 @@ export TERM_LT_RUN=' -n "%s" -e %s'
 export BROWSER="qutebrowser"
 # export BROWSER="org.qutebrowser.qutebrowser.desktop"
 export READER="zathura"
+export DOWNGRADE_FROM_ALA=1
 
 # for my scripts
 export VIDEO="smplayer"
