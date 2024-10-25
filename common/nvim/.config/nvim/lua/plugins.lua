@@ -220,6 +220,7 @@ return {
 					'java',
 					'scala',
 					'kotlin',
+					'clojure',
 					'javascript',
 					'typescript',
 					'lua',

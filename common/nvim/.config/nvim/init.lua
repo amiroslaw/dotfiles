@@ -791,6 +791,7 @@ nullLs.setup {
 		formatting.stylua.with {
 			extra_args = { '--config-path', vim.fn.expand '~/.config/stylua/stylua.toml' },
 		},
+		formatting.zprint, -- clojure
 		formatting.prettier,
 		formatting.clang_format.with {
 			filetypes = { 'java', 'asciidoctor' },
