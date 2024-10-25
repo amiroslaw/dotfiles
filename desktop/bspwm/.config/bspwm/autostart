@@ -31,7 +31,8 @@ redshift -l 51.2:22.6 &
 trackball.sh &
 nm-applet &
 nvidia-fan.sh -c ~/.config/nfancurve/config &
-ifconfig wlo1 | awk '/inet / {print $2}' > "$PRIVATE/ip4pc" &
+# ifconfig wlo1 | awk '/inet / {print $2}' > "$PRIVATE/ip4pc" &
+ifconfig enp34s0 | awk '/inet / {print $2}' > "$PRIVATE/ip4pc" &
 kanata -c ~/.config/kanata/kanata.kbd &
 sleep 200 && newsboat -x reload &
 # jeszcze jest parametr do zmiany folderu z modelem
