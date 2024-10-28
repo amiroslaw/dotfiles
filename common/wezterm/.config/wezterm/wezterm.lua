@@ -28,12 +28,13 @@ return { -- Must be in the end
 	default_cursor_style = 'SteadyBar', -- the best in vim
 	font_size = plugins.hostConfig {{'pc', 12}, {'laptop', 11}}, 
 	font = wezterm.font_with_fallback(
-		{ 'FiraCode Nerd Font Mono', 'SauceCodePro Nerd Font Mono',},
+		{ 'Monaspace Radon', -- Argon Xenon Radon
+		'FiraCode Nerd Font Mono', 'SauceCodePro Nerd Font Mono',},
 		{ weight = 'Regular' } -- { weight = 'Medium' }
 	),
 	hide_tab_bar_if_only_one_tab = true,
 	scrollback_lines = 10000,
-	harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }, -- Disable Ligatures, can by set as toggle
+	harfbuzz_features = { 'calt=1', 'clig=0', 'liga=1' }, -- Ligatures, can by set as toggle, calt enables texture healing
 
 	window_background_opacity = 1.0,
 	inactive_pane_hsb = {

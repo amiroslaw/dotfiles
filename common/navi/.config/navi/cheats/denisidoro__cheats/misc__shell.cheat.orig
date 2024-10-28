@@ -1,0 +1,130 @@
+% Shell Directories
+@ util
+
+# List all directory contents sorted by time edited
+ls -alt
+
+# List directory (wildcard matching)
+ls *.<txt>
+
+# List all files of type
+find . -name '*.<txt>' -print
+
+# Remove directory with all contents without prompt
+rm -rf <dirs>
+
+% Shell Files
+@ util
+
+# Make (empty) file
+touch <filename-txt>
+
+# Duplicate file
+cp <paths> <file-copyname>
+
+# Copy/Page folder with content
+cp -a <dirs> <new-folder>
+
+# Move/Rename file
+mv <files> <new-filename-path>
+
+# Move/Rename file and prompt before overwriting an existing file
+mv -i <current-filename> <new-filename>
+
+# Remove files
+rm <files>
+
+# Write to file (will overwrite existing content)
+cat > <files>
+
+# Search for a filename-(not content!) in the current directory
+find <filename-txt>
+
+# Search for a string inside all files in the current directory and subdrectories
+grep -r <string> *
+
+# Search and replace within file
+sed -i s/<original-text>/<new-text>/g <files>
+
+# MD5 hash for files
+md5 <files>
+
+# MD5 hash for folders
+tar c <dirs> | md5sum
+
+# Encrypt file
+openssl enc -aes-256-cbc -e -in <sample-filename-txt> -out <sample-encrypted-txt>
+
+# Decrypt file
+openssl enc -aes-256-cbc -d -in <sample-encrypted> -out <sample-filename>
+
+% Shell Server
+# Access via ssh
+ssh <username_remote>
+
+# Copy file from server to local
+scp <username_remote>:<file-to-send-path> <path-to-recieve>
+
+# Copy file from local to server
+scp <file-to-send> <username_remote>:<where-to-put>
+
+# Escape files with spaces in name like this
+<path-to-file>\\\ <name-png>
+
+$ username_remote: cat ~/.ssh/config | grep -i "host "|sed 's/^[ \t]*//g' | awk '{print $2}'
+
+% Shell Apps
+# Open finder with current folder
+open .
+
+% Shell Variables
+@ util
+
+# Register variable
+export <TESTING>=<Variable-text>
+
+# Echo variable
+echo $<Variable>
+
+# Unset variable
+unset <Variable>
+
+% Shell Output & Redirects
+@ util
+
+# Write to file
+echo <Hello> > <files>
+
+# Append content from a file to another file
+cat <files> >> <files>
+
+# Add the amount of lines, words, and characters to <file2-txt>
+cat <files> | <word-count> | cat > <files>
+
+# Sort the content of a file (like cat)
+sort <files>
+
+# Save to sorted content to a new file
+cat <files> | sort > <sorted-file1-txt>
+
+# Sort and remove duplicates and save to a new file
+sort <files> | uniq > <uniq-file1-txt>
+
+% Shell Permissions
+
+# Change group
+chgrp <group-name-from> <group-name-to>
+
+% shell Symlinks
+@ util
+# Create symlink
+<<<<<<< HEAD
+ln -s <paths> <link-name>
+=======
+ln -s <paths> <paths>
+>>>>>>> refs/rewritten/font
+# Update symlink
+ln -sfn <paths> <paths>
+# Remove symlink
+unlink <paths>
+
