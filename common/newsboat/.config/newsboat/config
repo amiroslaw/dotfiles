@@ -1,5 +1,5 @@
 # o open with handlr
-bind-key t goto-title
+bind-key i goto-title
 bind-key ^O open-all-unread-in-browser
 bind-key j down
 bind-key k up
