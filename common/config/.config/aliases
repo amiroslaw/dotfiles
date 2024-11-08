@@ -132,6 +132,8 @@ alias pp='xclip-pastefile'
 alias yy='xclip-copyfile'
 alias cc='xclip-cutfile'
 alias vl='nvim $(ls -tp | grep -v /$ | head -1)'
+alias vg='grep_open'
+alias vc='changed_files'
 alias tor='stty stop undef && stty start undef && screen -x tor'
 alias huliomail='tmpmail -g Huliofff@1secmail.org && tmpmail -r'
 alias ping='prettyping'
@@ -487,6 +489,19 @@ alias nln="navialias 'create symlink'"
 #}}}
 
 #{{{ FUNCTIONS
+# Runs when tab is pressed after ,
+# I have plugin for it so I don't know, how it will be useful
+_fzf_comprun() {
+    local command=$1
+    shift
+
+    case "$command" in
+    cd) fzf "$@" --preview 'exa -TFl --group-directories-first --icons --git -L 2 --no-user {}' ;;
+    nvim) fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' ;;
+    vim) fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' ;;
+    *) fzf "$@" ;;
+    esac
+}
 # alias mkcd='take'
 take () {
   case "$1" in /*) :;; *) set -- "./$1";; esac
@@ -560,6 +575,53 @@ alias sdku='sdk use'
 alias sdkd='sdk default'
 alias sdkc='sdk current'
 alias sdkup='sdk upgrade'
+
+
+# show files which contain a term
+grep_open() {
+    local editor="$EDITOR"
+    if [ "$EDITOR" = "vim" ] || [ "$EDITOR" = "nvim" ]; then
+        local editor="$EDITOR +/$1 +'norm! n'"
+    fi
+    rg -l "$1" | fzf --bind "enter:execute($editor + {})"
+}
+
+# show staged and unstaged file changes
+changed_files() {
+    git status --short | awk '{print $2}' | fzf \
+        --preview "git diff --cached -- {} | delta --width \$FZF_PREVIEW_COLUMNS && git diff -- {} | \
+        delta --width \$FZF_PREVIEW_COLUMNS && git diff --no-index -- /dev/null {} | delta --width \$FZF_PREVIEW_COLUMNS" \
+        --bind "enter:execute($EDITOR {})"
+}
+
+# review changed files on this branch
+review_changes() {
+    local base_branch="${1:-}"
+
+    if [ -z "$base_branch" ]; then
+        base_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+        [ -z "$base_branch" ] && base_branch="main"
+    fi
+
+    git diff --name-only "$base_branch"...HEAD | fzf \
+        --preview "git diff $base_branch...HEAD -- {} | delta --width \$FZF_PREVIEW_COLUMNS" \
+        --bind "enter:execute($EDITOR {})"
+}
+
+
+# needs github client
+# Show diff for argument PR number for current repo
+pr_diff() {
+    gh pr diff "$1" | delta
+}
+
+# Show PR files for argument PR number for current repo
+pr_files() {
+    gh pr diff "$1" --name-only | fzf \
+        --bind "enter:execute($EDITOR {})"
+}
+
+
 #}}}
 
 #{{{ bindkey

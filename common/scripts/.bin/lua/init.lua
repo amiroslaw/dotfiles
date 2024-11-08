@@ -470,7 +470,7 @@ function dialog(msg, style)
 		if style then
 			msg = applyStyle(msg, style)
 		end
-		os.execute('rofi -e "' .. msg .. '"')
+		os.execute('rofi -markup -e "' .. msg .. '"')
 	end
 end 
 
