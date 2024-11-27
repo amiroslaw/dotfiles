@@ -590,6 +590,7 @@ vim.o.maxmempattern = 3000 -- fix pattern uses more memory than 'maxmempattern',
 local telescope = require 'telescope'
 if telescope then
 local actions = require "telescope.actions"
+local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
 	telescope.setup {
 		defaults = {
 			prompt_prefix = '   ',
@@ -616,6 +617,7 @@ local actions = require "telescope.actions"
 					['<C-CR>'] = actions.file_tab,
 					['<a-a>'] = actions.add_selected_to_qflist,
 					['<a-q>'] = actions.smart_send_to_qflist + actions.open_qflist, -- send all if not selected
+					["<C-space>"] = actions.to_fuzzy_refine, -- is it from telescope-live-grep-args.nvim, with out it refine for grep_word_under_cursor doesn't work?
 						-- ["<cr>"] = function(bufnr) require("telescope.actions.set").edit(bufnr, "tab drop") end  
 					},
 				},
@@ -626,7 +628,8 @@ local actions = require "telescope.actions"
 		}
 
 	nmap('<c-s>', '<cmd>Telescope live_grep<cr>')
-	nmap('<c-a-s>', '<cmd>Telescope egrepify<cr>') -- maybe remove if I can use refine
+	vim.keymap.set("n", "<a-c-s>", live_grep_args_shortcuts.grep_word_under_cursor, { desc = 'Telescope live grep - under cursor'}) -- there is also grep_word_under_cursor_current_buffer
+	vim.keymap.set("v", "<a-c-s>", live_grep_args_shortcuts.grep_visual_selection, { desc = 'Telescope live grep - visual'})
 	nmap('ts', '<cmd>Telescope grep_string grep_open_files=true<cr>') --  string under your cursor or selection in your current working directory
 	nmap('tp', '<cmd>Telescope find_files<cr>')
 	-- nmap('tp', '<cmd>Telescope find_files find_command=rg,--hidden,--files<cr>') -- with hidden files
@@ -662,8 +665,6 @@ local actions = require "telescope.actions"
 	telescope.load_extension 'luasnip'
 	nmap('tU', '<cmd>Telescope luasnip <cr>')
 	telescope.load_extension('smart_open')
-	telescope.load_extension "egrepify"
-	-- { cwd_only = true, } limit to current directory; does not support smart-case
 	nmap('<c-f>', '<cmd>Telescope smart_open <cr>')
 	-- telescope.load_extension("yank_history") 
 	-- nmap('ty', '<cmd>Telescope yank_history <cr>')
