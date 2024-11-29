@@ -22,6 +22,7 @@ export ROFI="$HOME/.config/rofi/scripts"
 export GRAVEYARD="$HOME/.local/share/Trash"
 export SCRIPTS="$HOME/Documents/dotfiles/common/scripts/.bin"
 export LUA_INIT="@$HOME/Documents/dotfiles/common/scripts/.bin/lua/init.lua"
+export BABASHKA_PRELOADS='(load-file (str (System/getenv "HOME") "/Documents/dotfiles/common/scripts/.bin/clj/init.clj"))'
 export ZPLUG_HOME=~/.config/zplug
 
 # Default Apps

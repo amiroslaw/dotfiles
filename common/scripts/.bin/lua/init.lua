@@ -476,7 +476,7 @@ end
 
 --[[
 Shows a rofi string input 
-Returns provided string.
+Returns provided string or false otherwise.
 opt - optional arguments that can be passed via table
 	prompt (string)
 	width (string)- It accepts width with unit. It accepts following units: 80px;80%;80ch
@@ -490,7 +490,7 @@ end
 
 --[[
 Shows the rofi input for a number. Input will be appear until it will get valid type.
-Returns provided value.
+Returns provided value or false otherwise.
 optional arguments that can be passed
 	prompt (string)
 --]]
@@ -504,7 +504,7 @@ function rofiNumberInput(prompt)
 end 
 
 --[[
-Shows a rofi menu. Returns table of the selected options. If custom keys were provided, it will return a keybind a second argument, otherwise 0. If nothing was selected it returns table with empty string and false for output and exit code.
+Shows a rofi menu. Returns table of the selected options. If custom keys were provided, it will return a keybind as a second argument, otherwise 0. If nothing was selected it returns table with empty string and false for output and exit code.
 params:
 entriesTab - Options can be parser form an array (ordered table) or a dictionary.
 opt - optional arguments that can be passed via table
