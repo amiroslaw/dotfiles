@@ -2,7 +2,7 @@
   "grammar-append": {
     "type": "chat",
     "opts": {
-      "template": "Modify the following {{lang}} text to improve only grammar and spelling, don't wrap the answer with quotation marks.:  \n\n{{input}}",
+      "template": "Modify the following {{lang}} text to improve only grammar and spelling. Don't note about 'modified text'. Don't wrap the answer with quotation marks.:  \n\n{{input}}",
       "strategy": "replace",
       "params": {
         "model": "llama3:latest",
@@ -20,7 +20,7 @@
   "grammar-append-explain": {
     "type": "chat",
     "opts": {
-      "template": "Modify the following {{lang}} text to improve only grammar and spelling, don't wrap the answer with quotation marks. Explain nontrivial mistakes.:  \n\n{{input}}",
+      "template": "Modify the following {{lang}} text to improve only grammar and spelling. Don't note about 'modified text'. Don't wrap the answer with quotation marks. Explain nontrivial mistakes.:  \n\n{{input}}",
       "strategy": "replace",
       "params": {
         "model": "llama3:latest",
