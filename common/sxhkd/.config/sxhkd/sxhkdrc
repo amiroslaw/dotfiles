@@ -421,7 +421,8 @@ super + m
 
 # start mpd
 super + shift + m
-	if ! pidof -x mpd; then mpd && mpc update; fi && scratchpad.sh music "$TERM_LT -c music -n music -e ncmpcpp" 
+	if ! pidof -x mpd; then mpd && mpc update; fi && scratchpad.sh music "wezterm start --class music -- rmpc" 
+	#if ! pidof -x mpd; then mpd && mpc update; fi && scratchpad.sh music "$TERM_LT -c music -n music -e ncmpcpp" 
 
 # Changes to next/previous tracks
 super + {comma,period}
