@@ -197,10 +197,10 @@ config.bind(';s', 'hint links userscript doi.py')
 urlCmdHint= 'hint links spawn '
 urlCmdRapid = 'hint --rapid links spawn '
 # AI
-config.bind('alo', 'spawn chat.lua --summary --url="{url}"')
-config.bind('aho', urlCmdHint + 'chat.lua --summary --url="{hint-url}"')
-config.bind('alt', 'spawn chat.lua --text --url="{url}"')
-config.bind('aht', urlCmdHint + 'chat.lua --text --url="{hint-url}"')
+config.bind('alo', 'spawn chat.clj action --action-list --url="{url}" -o scratchpad')
+config.bind('aho', urlCmdHint + 'chat.clj action --action-list --url="{url}" -o scratchpad')
+config.bind('alt', 'spawn chat.clj text --url="{url}" -o scratchpad')
+config.bind('aht', urlCmdHint + 'chat.clj text --url="{url}" -o scratchpad')
 # rdrview
 config.bind('alf', 'spawn -u readermode.lua')
 config.bind('ahf', 'hint links userscript readermode.lua')
@@ -250,6 +250,7 @@ config.bind('alm', 'spawn -v mpv.lua --makeOnline --input "{url}"')
 # }}}
 
 # ======================= COPING OR CREATE ============= {{{
+# TODO: add chat.clj; flag --input
 config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}')
 config.bind('cn', 'spawn -u ~/.bin/note.lua sel {primary}', 'caret')
 config.bind('cN', 'spawn -u ~/.bin/note.lua clip {clipboard}')

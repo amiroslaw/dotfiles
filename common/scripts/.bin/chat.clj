@@ -123,11 +123,12 @@
     (query->display (prompt-input) opts)
     (query->display (str (prompt-input) analyze-text-prompt (get-text opts)) opts)))
 
-(defn- template
+(defn- action
   "Query AI where prompt is based on a template."
   [{opts :opts}]
-  (let [{:keys [actions template]} opts]
-    (match [actions template]
+  (println opts)
+  (let [{:keys [action-list template]} opts]
+    (match [action-list template]
            [true _] (query->display (str (select-template) (get-text opts)) opts)
            [nil :summary] (query->display (str (:summary templates) (get-text opts)) opts)
            [nil t] (query->display (str (t templates) (get-text opts)) opts))))
@@ -163,7 +164,7 @@
                   :default      :summary
                   :default-desc "Summary text"
                   :alias        :t}
-   :actions-list {:desc   "Show available actions in a rofi menu."
+   :action-list {:desc   "Show available actions in a rofi menu."
                   :coerce :boolean
                   :alias  :a}
    ;; maybe add a config file for templates when I need more customisation like model, temperature, language in a json or edn file
@@ -176,11 +177,13 @@
 
 (defn- print-help [_]
   (printf "Chat AI. An helper for interact with ollama. %n%s%s%n
-  Options for `summary` and `text` commands:%n%s%n
-     Examples:
+  Options for `action` and `text` commands:%n%s%n
+  Additional options for `action` command:%n%s%n
+  Examples:
      chat.clj ask -l
      chat.clj text -i 'tell me a joke'
      chat.clj text -p -o display
+     chat.clj action -p -a
      chat.clj action -o scratchpad -t 'summary-adoc' -u='https://en.wikipedia.org/wiki/Polish_hussars'
   %nDefault values can be override via system environment. The set values:
   AI_MODEL = %s
@@ -193,14 +196,17 @@
           (format-cmds! subcommands)
           (cli/format-opts {:spec spec})
           (cli/format-opts {:spec spec-source})
+          (cli/format-opts {:spec spec-template})
           default-model api-host term-run))
 
 (def subcommands
   [{:cmds ["ask"] :desc "Ask AI." :fn ask :spec spec}
    {:cmds ["text"] :desc "Ask about provided text." :fn ask :spec (merge spec spec-source)}
    {:cmds ["action"] :desc "Take an action from a template. If not provided text will be summarised."
-    :fn   template :spec (merge spec spec-source spec-template)}
+    :fn   action :spec (merge spec spec-source spec-template)}
    {:cmds ["help"] :desc "Show help." :fn print-help}])
+
+(cli/dispatch subcommands *command-line-args*)
 
 ;; Testing
 (comment

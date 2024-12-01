@@ -39,9 +39,12 @@ super + {_,shift,ctrl} + z
 super + {_,shift} + Escape
 	{dunstctl close-all,dunstctl history-pop}
 
-# In case bspwmrc fails to execute/you wish have plugged in a new monitor
+#chat
 super + {_,shift,ctrl} + r
-	{chat.lua, chat.lua --list, bspwmrc}
+	{chat.clj ask --output scratchpad, chat.clj action --action-list --output scratchpad, chat.clj ask --list --output scratchpad, }
+
+# In case bspwmrc fails to execute/you wish have plugged in a new monitor
+#bspwmrc
 
 #
 # Window manipulation
@@ -353,9 +356,10 @@ super + c ; {c,g,p,P,r,R,j,J,n,N,k,K,l,L,w,o,O}
 	note.lua clip 1, note.lua clip, \
 	note.lua sel 1, note.lua sel, \
 	note.lua write, \
-	chat.lua --summary, \
-	chat.lua --text
+	chat.clj action --output scratchpad, \
+	chat.clj text --output scratchpad
 	}
+
 # clipboard, paste second from the clipboard or first from selection
 super + {_,shift,ctrl} + v
 	{$ROFI/clipster/roficlip, clipster.lua --next --clipboard, xdotool click --clearmodifiers 2}

@@ -53,7 +53,7 @@
   Parameters:
   - msg: The error message to be displayed and logged.
   - exit: A boolean indicating whether to exit the program after notifying and logging the error. Defaults to false."
-  ([msg] (notify-error! false))
+  ([msg] (notify-error! msg false))
   ([msg exit]
    (sh "notify-send -u critical" "Error:" msg)
    (log! msg :error)
@@ -314,6 +314,7 @@
   (notify! "msg" "body z style czerwone i domyślne " ["domyślne" {" czerwone " "red"}])
   (dialog! "msg z style czerwone i domyślne " ["domyślne" {" czerwone " "red"}])
   (dialog! "msg z \"bez\" style")
+  (notify-error! "error-msg")
 
   (tap> (create-keys-bindings {["Alt-j" "opt title" :stop] ["Alt-q" "stop app" :app]}))
   (def user-options {:prompt "Zmienioe ", :width "50px", :multi "", :msg "<b>hello</b>", :keys ""})
