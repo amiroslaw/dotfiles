@@ -414,7 +414,7 @@ menu-0-2-exec = systemctl suspend
 menu-0-3 = 
 menu-0-3-exec = systemctl poweroff
 menu-0-4 = 
-menu-0-4-exec = xset dpms force off
+menu-0-4-exec = sleep 2 && xset dpms force off
 
 format-background = ${colors.background}
 format-foreground = #ff1a1a

@@ -47,7 +47,7 @@ actions[suspend]="systemctl suspend"
 actions[hibernate]="systemctl hibernate"
 actions[reboot]="systemctl reboot"
 actions[shutdown]="systemctl poweroff"
-actions[screensaver]="xset dpms force off"
+actions[screensaver]="sleep 2 && xset dpms force off"
 
 # By default, ask for confirmation for actions that are irreversible
 confirmations=(reboot shutdown logout)
