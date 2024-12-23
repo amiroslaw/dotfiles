@@ -176,6 +176,7 @@ noremap il :!for f in %f; do  "$f"; done<A-B><A-B><Left>
 
 "local filter; zr to clear
 nmap . =
+" nmap <A-.> zr <cr> mapping with dot, doesn't work
 
 "archive
 "atool don't work with rar?

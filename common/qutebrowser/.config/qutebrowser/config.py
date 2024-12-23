@@ -115,6 +115,7 @@ config.bind('K', 'scroll right')
 
 config.bind('<Ctrl+Alt+t>', 'spawn --userscript translate')
 
+config.bind('ep', 'spawn -u params.clj')
 config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
 config.bind('M', 'bookmark-add --toggle')
 config.bind('<Escape>', 'mode-enter normal ;; jseval -q document.activeElement.blur()', 'insert') # unfocus input
@@ -289,7 +290,7 @@ config.bind('yu', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-format
 
 # ======================= LEADER and SESSION ============= {{{
 config.bind('er', 'config-source')
-config.bind('ep', 'spawn -u jspdfdownload')
+config.bind('eP', 'spawn -u jspdfdownload')
 config.bind('eu', 'edit-url')
 config.bind('ef', "spawn firefox {url}")
 config.bind('eF', "hint links spawn firefox {hint-url}")
