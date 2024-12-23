@@ -1,5 +1,7 @@
 #!/usr/bin/luajit
 
+-- scroll to header with href/anchor
+
 local gumbo = require 'gumbo'
 local quteFifo = os.getenv 'QUTE_FIFO'
 local htmlPath = os.getenv 'QUTE_HTML'

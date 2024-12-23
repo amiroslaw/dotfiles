@@ -57,3 +57,11 @@
   (with-open [writer (io/writer qute-fifo :append true)]
     (.write writer (str "open " new-url))))
 
+;(change-params (first *command-line-args*))
+;(def java "https://allegro.pl/kategoria/informatyka-internet-programowanie-90328?string=java&rok-wydania-od=2010&tematyka=Java&offerTypeBuyNow=1&price_to=50")
+;(def ks "https://allegro.pl/kategoria/ksiazki-7?stan=nowe&jezyk-publikacji=polski&string=nowy%20%C5%9Bwiat")
+;(def ks "https://allegro.pl/kategoria/ksiazki-7?stan=nowe&jezyk-publikacji=polski")
+;(def par "stan=nowe&jezyk-publikacji=polski")
+;(run-dialog (get-params par))
+;(println (change-params ks))
+;(sh "zenity --forms --title='Add reminder' --add-entry=\"When\" --add-entry=\"Message\"  --add-password=\"Confirm Password\" --add-calendar=\"Expires\" ")

@@ -101,7 +101,7 @@ config.bind(',,', 'tab-close')
 
 config.bind('<Alt-s>', ':set spellcheck.languages ["en-US"]', 'insert') 
 config.bind('<Shift-Alt-s>', ':set spellcheck.languages ["pl-PL"]', 'insert')
-config.bind('gj', 'spawn -u headers.lua')
+config.bind('gj', 'spawn -u headers.clj')
 config.bind('gh', 'history -t')
 config.bind('gp', 'open -t ;; process')
 config.bind('gf', 'fullscreen')
