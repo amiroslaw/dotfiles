@@ -707,7 +707,8 @@ cmp.setup {
     },
 	mapping = {
 		-- ['<CR>'] = cmp.mapping(cmp.mapping.confirm { select = true }, { 'i', 'c' }),
-		['<C-l>'] = cmp.mapping(cmp.mapping.confirm { select = true }, { 'i', 'c' }),
+		-- https://github.com/hrsh7th/nvim-cmp/issues/1716 matchSuffix
+		['<C-l>'] = cmp.mapping(cmp.mapping.confirm { select = true, behavior = cmp.ConfirmBehavior.Replace }, { 'i', 'c' }),
 		['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert }, { 'i', 'c' }),
 		['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert }, { 'i', 'c' }),
 		['<C-e>'] = cmp.mapping { i = cmp.mapping.abort(), c = cmp.mapping.close() }, -- cancel autocomplation
@@ -743,6 +744,9 @@ cmp.setup {
 			return item
 		end,
 	},
+	experimental = {
+		ghost_text = true -- like chatgpt virtual text
+	  }
 }
 -- CMD mode - if you are in that mode and put / or : ' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline('/', {
