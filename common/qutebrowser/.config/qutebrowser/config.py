@@ -116,6 +116,7 @@ config.bind('K', 'scroll right')
 config.bind('<Ctrl+Alt+t>', 'spawn --userscript translate')
 
 config.bind('ep', 'spawn -u params.clj')
+config.bind('ee', 'spawn -u search-engine.clj')
 config.bind('<Ctrl+m>', 'spawn --userscript buku.sh')
 config.bind('M', 'bookmark-add --toggle')
 config.bind('<Escape>', 'mode-enter normal ;; jseval -q document.activeElement.blur()', 'insert') # unfocus input
