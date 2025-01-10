@@ -1,6 +1,7 @@
 #!/usr/bin/env bb
 ;; TODO
 ; function guards
+; in rofi-menu keybindings descriptions does't show in msg
 
 (require '[babashka.process :as ps :refer [$ shell process sh]]
          '[clojure.string :as str]
@@ -32,7 +33,7 @@
 (defn- create-keys-bindings [opts]
   (map-indexed (fn [index [keybinding title]]
                  [(format " -kb-custom-%d '%s' " (inc index) keybinding)
-                  (format " <span color='%s'>'%s'</span>:%s " default-color keybinding title)])
+                  (format "<span color='%s'>'%s'</span>:%s " default-color keybinding title)])
                opts))
 
 (defn- add-keys [defaults keys-opt]
@@ -40,12 +41,12 @@
         keybindings (map first keys)
         titles (map second keys)]
     (assoc defaults :keys (str/join " " keybindings)
-                    :msg (str (:msg defaults) "\"" (str/join " " titles) "\""))))
+                    :msg (str (:msg defaults) (str/join " " titles)))))
 
 (defn- combine-options [options]
   (cond-> (merge default-options options)
           (contains? options :multi) (assoc :multi " -multi-select")
-          (or (contains? options :keys) (contains? options :msg)) (assoc :msg (format " -markup -mesg '%s'" (:msg options)))
+          (contains? options :msg) (assoc :msg (str (:msg options) " ")) ;; or change to %n new line
           (contains? options :keys) (add-keys (:keys options))))
 
 (defn notify-error!
@@ -181,11 +182,13 @@
                             (if (contains? options :keys) (vector? (:keys options)) true)]}
    (let [opt (combine-options options)
          height (if (> (count entries) (:height opt)) (:height opt) (count entries))
-         entries (if (string? entries) entries (str/join "\n" entries))] ; todo ? (vec entries) 
+         entries (if (string? entries) entries (str/join "\n" entries)) ; todo ? (vec entries)
+         msg (when (not-empty (:msg opt)) (format " -markup -mesg \"%s\"" (:msg opt)))]
+     (println msg )
      (let [{:keys [exit out]}
            (sh {:in entries}
                (format "rofi %s -monitor -4 -i -l %s -dmenu -p '%s' -theme-str 'window {width:  %s;}' %s %s"
-                       (:multi opt) height (:prompt opt) (:width opt) (:keys opt) (:msg opt)))]
+                       (:multi opt) height (:prompt opt) (:width opt) (:keys opt) msg))]
        (rofi-menu-return out exit)))))
 
 (defn create-dir!
@@ -316,18 +319,21 @@
   (dialog! "msg z \"bez\" style")
   (notify-error! "error-msg")
 
-  (tap> (create-keys-bindings {["Alt-j" "opt title" :stop] ["Alt-q" "stop app" :app]}))
-  (def user-options {:prompt "Zmienioe ", :width "50px", :multi "", :msg "<b>hello</b>", :keys ""})
-  (def user-options {:prompt "Zmienioe ", :width "50px", :multi true, :msg "<b>hello</b>", :keys ""})
-  (def user-options {:prompt "Zmienioe ", :width "50px", :multi true, :msg "<b>hello</b>", :keys {:run ["Alt-j" "opt title"] :stop ["Alt-q" "stop app"]}})
-  (tap> (combine-options user-options))
-
   (tap> (rofi-number-input! "test"))
   (tap> (rofi-input!))
   (tap> (rofi-input! {:prompt "changes" :msg "<b>hello</b>"}))
   (print (notify-error! "err \"msg wit\" q"))
   (tap> (rofi-input! {:prompt "changes"}))
   (print (:out (shell {:out :string} "ls -l")))
+  (editor! "jakiś tekst2")
+  (editor! "/home/miro/t.txt")
+
+;; keys bindings
+  (tap> (create-keys-bindings {["Alt-j" "opt title" :stop] ["Alt-q" "stop app" :app]}))
+  (def user-options {:prompt "Zmienioe ", :width "50px", :multi "", :msg "<b>hello</b>", :keys ""})
+  (def user-options {:prompt "Zmienioe ", :width "50px", :multi true, :msg "<b>hello</b>", :keys ""})
+  (tap> (combine-options user-options))
+
   (tap> (create-keys-bindings [["Alt-j" "opt title" :stop] ["Alt-q" "stop app" :app]]))
   ;(def keys [["Alt-j" "opt title" :run ] ["Alt-q" "stop app" :stop ]])
   (tap> (rofi-menu! ["a" "b" "c"]))
@@ -335,14 +341,12 @@
   (def keys [["Alt-j" "anonymous function" (fn [] (println "fun in keys"))] ["Alt-q" "stop function" :stop]])
   (defn stop-fn [] (println "defined function stop evaluated"))
   (def actions {:stop stop-fn, :run (fn [] (println "function run"))})
-  (def user-options {:prompt "Zmienioe ", :width "50px", :multi true, :msg "<b>hello</b>", :keys keys})
+  (def user-options {:prompt "Zmienioe ", :width "300px", :multi true, :msg "aaa bbb", :keys keys})
   (let [{:keys [out exit]} (rofi-menu! ["a" "b" "c"] user-options)]
     ((last (get keys exit)))                                ;; evaluate function
     ;; functions in separated map
     (((last (get keys exit)) actions))
-    (if (fu? (get keys exit)))                              ;; jak chcemy mieszać
+    ;(if (fu? (get keys exit)))                              ;; jak chcemy mieszać
     )
-  (println (rofi-menu! ["a" "b" "c"] user-options))
-  (editor! "jakiś tekst2")
-  (editor! "/home/miro/t.txt")
+  (tap> (rofi-menu! ["a" "b" "c"] user-options))
   )
