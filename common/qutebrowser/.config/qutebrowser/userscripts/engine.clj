@@ -6,7 +6,7 @@
 ;  engine.clj --selection b
 ;; TODO
 ;; it works but not without qutebrowser
-;; edit search text, use rofi keybinding
+;; edit search text using rofi keybinding?? maybe not - it's better to edit input in nvim from an input in qb
 
 (require '[babashka.process :as ps :refer [$ shell process sh]]
          '[clojure.string :as str]
@@ -38,7 +38,7 @@
 (defn- build-menu [engines]
   (-> engines
       (->> (map #(str/join ": " (extract-text-between-quotes %))))
-      (rofi-menu! {:prompt "Select search engine", :msg "Tip: use c-enter to pass text from input"})
+      (rofi-menu! {:prompt "Select search engine", :msg "Tip: use ctrl-enter to pass text from input"})
       :out
       first))
 
