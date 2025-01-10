@@ -54,8 +54,7 @@
 
 (let [qute-fifo (System/getenv "QUTE_FIFO")
       new-url (change-params (System/getenv "QUTE_URL"))]
-  (with-open [writer (io/writer qute-fifo :append true)]
-    (.write writer (str "open " new-url))))
+  (spit qute-fifo (str "open " new-url) :append true))
 
 ;(change-params (first *command-line-args*))
 ;(def java "https://allegro.pl/kategoria/informatyka-internet-programowanie-90328?string=java&rok-wydania-od=2010&tematyka=Java&offerTypeBuyNow=1&price_to=50")

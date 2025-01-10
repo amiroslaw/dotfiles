@@ -28,10 +28,8 @@
     (System/exit 0)))
 
 (defn- execute-qb-command [command]
-  (println command)
   (let [qute-fifo (System/getenv "QUTE_FIFO")]
-    (with-open [writer (io/writer qute-fifo :append true)]
-      (.write writer command))))
+    (spit qute-fifo command :append true)))
 
 (defn- build-url
   "Builds a URL with a Scroll to Text Fragment"

@@ -45,7 +45,7 @@
 (defn- combine-options [options]
   (cond-> (merge default-options options)
           (contains? options :multi) (assoc :multi " -multi-select")
-          (or (contains? options :keys) (contains? options :msg)) (assoc :msg (str " -markup -mesg " (:msg options)))
+          (or (contains? options :keys) (contains? options :msg)) (assoc :msg (format " -markup -mesg '%s'" (:msg options)))
           (contains? options :keys) (add-keys (:keys options))))
 
 (defn notify-error!
