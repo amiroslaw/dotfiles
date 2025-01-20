@@ -396,8 +396,8 @@ c.url.searchengines = {
     'x': 'https://www.perplexity.ai/search?q={}', # ddos 
     'p': 'https://www.phind.com/search?q={}', # unavailable
     'h': 'https://felo.ai/search?q={}',
-    'i': 'https://iask.ai/?mode=question&options[detail_level]=concise&q={}',
-    'ie': 'https://iask.ai/?mode=advanced&options[detail_level]=comprehensive&q={}',
+    'i': 'https://iask.ai/?mode=pro&options[detail_level]=concise&q={}',
+    'ie': 'https://iask.ai/?mode=pro&options[detail_level]=comprehensive&q={}',
     'u': 'https://you.com/search?fromSearchBar=true&tbm=youchat&q={}'
 }
 
