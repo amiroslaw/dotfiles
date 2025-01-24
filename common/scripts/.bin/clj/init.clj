@@ -151,6 +151,7 @@
     :else (do (notify-error! "Rofi error")                  ; error
               {:out [], :err "Rofi error", :exit false})))
 
+; TODO  with -format i it's possible to return index of selected item and not the string, it could simplifie the script; text with multi-select
 (defn rofi-menu!
   "Displays a menu using the `rofi` command-line tool with the given `entries` and optional `options`.
 

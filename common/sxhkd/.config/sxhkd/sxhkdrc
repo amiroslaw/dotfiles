@@ -39,7 +39,7 @@ super + {_,shift,ctrl} + z
 super + {_,shift} + Escape
 	{dunstctl close-all,dunstctl history-pop}
 
-#chat
+#chat --list → list models
 super + {_,shift,ctrl} + r
 	{chat.clj ask --output scratchpad, chat.clj action --action-list --output scratchpad, chat.clj ask --list --output scratchpad, }
 

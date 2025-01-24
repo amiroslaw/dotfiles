@@ -154,7 +154,7 @@
              :alias  :p}
    :input   {:desc  "Analyse text from terminal argument."
              :alias :i}
-   :url     {:desc     "Analyse text from a page."
+   :url     {:desc     "Analyse text from a web page."
              :validate {:pred url? :ex-msg (fn [m] (str "Not a url: " (:value m)))}
              :alias    :u}})
 
@@ -162,7 +162,7 @@
   {:template     {:desc         "Analyse text from primary clipboard."
                   :coerce       :keyword
                   :default      :summary
-                  :default-desc "Summary text"
+                  :default-desc "Default: Summary text."
                   :alias        :t}
    :action-list {:desc   "Show available actions in a rofi menu."
                   :coerce :boolean
