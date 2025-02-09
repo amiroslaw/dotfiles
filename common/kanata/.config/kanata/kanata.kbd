@@ -114,7 +114,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
   lalt (tap-hold-release 200 200 @apps lalt)
   ;; url (cmd )
 ;; order matters
-	rofi(cmd rofi -modi drun,keys,run,top -show drun -show-icons -sidebar-mode -monitor -4 -matching fuzzy)
+	rofi(cmd rofi -modi drun,keys,run -show drun -show-icons -sidebar-mode -monitor -4 -matching fuzzy)
   qu (cmd qu.lua --menu)
   yt (cmd setsid mpv.lua -o)
   qb (cmd setsid /home/miro/.config/qutebrowser/userscripts/session.sh)

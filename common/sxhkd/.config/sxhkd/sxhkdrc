@@ -373,12 +373,12 @@ super + {shift,ctrl} + c
 # ROFI 
 # ______________    
 
-# rofi top and calc are in aur repo
+# rofi calc are in aur repo, top brakes rofi 
 super + d
 	rofi -modi window,calc,filebrowser -show window -show-icons -sidebar-mode -monitor -4
 
 super + shift + d
-	rofi -modi drun,keys,run,top -show drun -show-icons -sidebar-mode -monitor -4 -matching fuzzy
+	rofi -modi drun,keys,run -show drun -show-icons -sidebar-mode -monitor -4 -matching fuzzy
 
 # mount 
 super + ctrl + d
