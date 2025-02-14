@@ -783,6 +783,7 @@ dict.setup {
 	-- max_number_items = 9,
 	debug = false,
 } 
+-- }}}
 
 -- nullLs {{{
 local nullLs = require 'null-ls'

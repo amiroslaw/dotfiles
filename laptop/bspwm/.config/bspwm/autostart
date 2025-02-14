@@ -12,6 +12,7 @@ xset s noblank &
 xset s noexpose &
 xset c on &
 xset -dpms &
+picom &
 feh --no-fehbg --randomize --recursive --bg-fill /home/miro/Pictures/wall/* &
 trackpoint.sh &
 unclutter &

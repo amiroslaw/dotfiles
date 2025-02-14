@@ -97,7 +97,8 @@ return {
 				api_host = os.getenv("OLLAMA_API_HOST") or "http://localhost:11434",
 				api_key = os.getenv("OLLAMA_API_KEY") or "",
 				model = {
-				  name = 'llama3:latest',
+				  name = 'qwen2.5:3b',
+				  -- name = 'llama3:latest',
 				  system_message = nil,
 				},
 			  },
