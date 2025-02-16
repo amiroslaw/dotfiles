@@ -229,7 +229,7 @@ config.bind('alr', 'spawn url.lua --read "{url}"')
 config.bind('ahs', urlCmdHint+ 'url.lua --speed "{hint-url}"')
 config.bind('als', 'spawn url.lua --speed "{url}"')
 # MEDIA
-config.bind('<Ctrl-w>', 'spawn qu.lua --menu')
+config.bind('<Ctrl-w>', 'spawn db-search.clj --qutebrowser')
 config.bind('<Shift-w>', 'spawn -uv ~/.config/qutebrowser/userscripts/view_in_mpv') # stop video and open in mpv; override qb script
 config.bind('ahv', urlCmdHint + 'url.lua --mpvVideo {hint-url}')
 config.bind('alv', 'spawn url.lua --mpvVideo "{url}"')
