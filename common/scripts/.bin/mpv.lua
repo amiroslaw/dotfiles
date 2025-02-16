@@ -280,6 +280,10 @@ local function play(videos, type)
 	end
 end
 
+-- different way to retrieve data
+-- https://www.youtube.com/results?search_query=$search_term&sp=EgIQAQ%253D%253D - only videos
+-- yt-dlp "$1" -J --flat-playlist --extractor-args youtubetab:approximate_date --playlist-start "$PLAYLIST_START" --playlist-end "$PLAYLIST_END" $PREFERRED_BROWSER || send_notification "Failed to fetch data : ("
+
 local function ytsearch()
 	local query = param and param or rofiInput({prompt = 'Search YT'})
 	-- local results, ok, err = run('yt-dlp --print original_url,title,duration,channel "ytsearch15:' .. query .. '"', 'Search error: ') 15 results

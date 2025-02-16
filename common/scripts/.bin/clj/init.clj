@@ -11,7 +11,7 @@
          '[clojure.core.match :refer [match]]
          )
 
-(def default-options {:prompt "Select", :width "500px", :height 23, :multi "", :msg "", :keys ""})
+(def default-options {:prompt "Select", :width "500px", :height 23, :multi "", :msg "", :keys "", :format "s"})
 (def default-color "#08D9D6")
 
 (timbre/merge-config!
@@ -55,10 +55,25 @@
   - msg: The error message to be displayed and logged.
   - exit: A boolean indicating whether to exit the program after notifying and logging the error. Defaults to false."
   ([msg] (notify-error! msg false))
-  ([msg exit]
+  ([msg exit?]
    (sh "notify-send -u critical" "Error:" msg)
    (log! msg :error)
-   (when exit (System/exit 1))))
+   (when exit? (System/exit 1))))
+
+(defn ps-error-handler! [exit? cmd & args]
+  "Executes a shell command and handles errors.
+  Parameters:
+  - exit?: A boolean indicating whether to exit the program on error.
+  - cmd: The shell command to execute.
+  - args: Additional arguments for the shell command.
+  Returns the output of the command if successful, otherwise logs and notifies the error."
+  (try
+    (let [{:keys [out exit err]} (apply sh cmd args)]
+      (if (zero? exit)
+        out
+        (notify-error! err exit?)))
+    (catch Exception e
+      (notify-error! (.getMessage e) exit?))))
 
 (defn- replace [text pattern color]
   (str/replace text (re-pattern (str pattern)) (format "<span color='%s'>%s</span>" color pattern)))
@@ -151,7 +166,6 @@
     :else (do (notify-error! "Rofi error")                  ; error
               {:out [], :err "Rofi error", :exit false})))
 
-; TODO  with -format i it's possible to return index of selected item and not the string, it could simplifie the script; text with multi-select
 (defn rofi-menu!
   "Displays a menu using the `rofi` command-line tool with the given `entries` and optional `options`.
 
@@ -163,7 +177,8 @@
     - `:height` - An integer specifying the maximum number of visible entries in the menu. Default: 24
     - `:multi` - A boolean indicating whether multiple selections are allowed, default: false
     - `:msg` - A string of strings to display as a message in the menu.
-    - `:keys` - A vector of keybindings for custom actions. It accepts pango markup(html like). Msg should fit in one line otherwise it will show less entries, use width to adjust.
+    - `:keys` - A vector of keybindings for custom actions. It accepts pango markup(html like). Msg should fit in one line otherwise it will show fewer entries, use width to adjust.
+    - `:format` - A character specifying the format of the output. Default: 's' - string. 'i'/'d' - index of the selected item 0/1 based index.
 
   Returns:
   A map with the following keys:
@@ -175,7 +190,7 @@
   Usage:
   ```clojure
   (def keys [[\"Alt-j\" \"anonymous function\" (fn [] (println \"fun in keys\"))] [\"Alt-q\" \"stop function\" :stop]])
-  (def user-options {:prompt \"Prompt name \", :width \"500px\", :multi true, :msg \"message body with <b>html</b>\", :keys keys})
+  (def user-options {:prompt \"Prompt name \", :format \\i :width \"500px\", :multi true, :msg \"message body with <b>html</b>\", :keys keys})
   (rofi-menu! [\"a\" \"b\" \"c\"] user-options)
   ```"
   ([entries] (rofi-menu! entries {}))
@@ -185,11 +200,10 @@
          height (if (> (count entries) (:height opt)) (:height opt) (count entries))
          entries (if (string? entries) entries (str/join "\n" entries)) ; todo ? (vec entries)
          msg (when (not-empty (:msg opt)) (format " -markup -mesg \"%s\"" (:msg opt)))]
-     (println msg )
      (let [{:keys [exit out]}
            (sh {:in entries}
-               (format "rofi %s -monitor -4 -i -l %s -dmenu -p '%s' -theme-str 'window {width:  %s;}' %s %s"
-                       (:multi opt) height (:prompt opt) (:width opt) (:keys opt) msg))]
+               (format "rofi -format %s %s -monitor -4 -i -l %s -dmenu -p '%s' -theme-str 'window {width:  %s;}' %s %s"
+                       (:format opt) (:multi opt) height (:prompt opt) (:width opt) (:keys opt) msg))]
        (rofi-menu-return out exit)))))
 
 (defn create-dir!
@@ -265,12 +279,14 @@
 (defn get-properties!
   "Loads properties from a file at the given path if it is a regular file. It needs to be a java properties file.
   Returns a map with the property names and values."
-  [path]
+  ([path]
   (if (fs/regular-file? path)
     (doto (new java.util.Properties)
       (.load (new java.io.FileInputStream path))
       (.stringPropertyNames))                               ;; TODO maybe convert keys to keywords
     (notify-error! (str "No config file " path))))
+  ([path key]
+   (get (get-properties! path) key)))
 
 (defn format-cmds!
   "Format cmds for subcommands from babashka.cli. It is useful for generating a help option."
@@ -307,9 +323,9 @@
                 })
   (timbre/log! :warn nil "test error")
   (timbre/log! :warn :f "test error")
-  (get (get-properties "/home/miro/t.pro") "topic")
-  (type (get-properties "/home/miro/t.pro"))
-  (type (get-properties "~/t.pro"))
+  (get (get-properties! "/home/miro/t.pro") "topic")
+  (type (get-properties! "/home/miro/t.pro"))
+  (type (get-properties! "~/t.pro"))
   ;; apply-style
   (tap> (apply-style " to powinno być czerwone a to czarne " [{" czerwone " "red", "czarne" "black"}]))
   (tap> (apply-style " to powinno być czerwone a to czarne " [" czerwone " "czarne"]))
@@ -337,8 +353,9 @@
 
   (tap> (create-keys-bindings [["Alt-j" "opt title" :stop] ["Alt-q" "stop app" :app]]))
   ;(def keys [["Alt-j" "opt title" :run ] ["Alt-q" "stop app" :stop ]])
+  (rofi-menu! ["a" "b" "c"] {:format \i})
   (tap> (rofi-menu! ["a" "b" "c"]))
-  (tap> (rofi-menu! ["a" "b" "c"] {:prompt "Zmienioe ", :width "50px", :multi "-multi-select"}))
+  (tap> (rofi-menu! ["a" "b" "c"] {:prompt "Zmienioe ", :width "504px", :multi "-multi-select"}))
   (def keys [["Alt-j" "anonymous function" (fn [] (println "fun in keys"))] ["Alt-q" "stop function" :stop]])
   (defn stop-fn [] (println "defined function stop evaluated"))
   (def actions {:stop stop-fn, :run (fn [] (println "function run"))})

@@ -21,9 +21,7 @@
                 :grammar-explain      "Modify the following text to improve only grammar and spelling. Don't note about 'modified text'. Don't wrap the answer with quotation marks. Explain nontrivial mistakes.:\n\n"
                 :translate-to-english "Translate the following text to English:\n\n",
                 :translate-to-polish  "Translate the following text to Polish:\n\n",})
-(def default-model (if-let [env (System/getenv "AI_MODEL")]
-                     env
-                     "llama3:latest"))
+
 (def api-host (if-let [ollama-env (System/getenv "OLLAMA_API_HOST")]
                 ollama-env
                 "http://localhost:11434"))
@@ -54,34 +52,91 @@
       (System/exit 0)
       input)))
 
-(defn- fetch-models []
-  (as-> (str api-host "/api/tags") p
-        (http/get p {:throw false})
-        (:body p)
-        (json/parse-string p true)
-        (:models p)
-        (map :name p)))
+(defn- http-error-handler [response]
+  (if (not= (:status response) 200)
+    (notify-error! (str "HTTP error: " (:status response) " " (:body response)) true)
+    response))
+
+(def gemini-api-key (let [path (str (System/getenv "HOME") "/Documents/Ustawienia/stow-private/keys.properties")
+                          key (get-properties! path "gemini_api_key")]
+                      (if key key
+                              (notify-error! (str "Gemini API key not found in: \n" path) true))))
+
+(defprotocol Provider
+  (request [this prompt])
+  (models [this])
+  (model [this] "Get model or default provided if nil passed in a record"))
+
+(defrecord Gemini [model]
+  Provider
+  (request [this prompt]
+    (-> (format "https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s" model gemini-api-key)
+        (http/post {:headers {"Content-Type" "application/json"}
+                    :body    (json/generate-string {:contents [{:parts [{:text prompt}]}]})
+                    :throw false
+                    })
+        http-error-handler
+        :body
+        (json/parse-string true)
+        (get-in [:candidates 0 :content :parts 0 :text])
+        (str/trim)))
+  (models [this] [(->Gemini "gemini-2.0-flash") (->Gemini "gemini-2.0-flash-lite-preview-02-05") (->Gemini "gemini-1.5-flash") (->Gemini "gemini-1.5-pro")])
+  (model [this] (or model "gemini-2.0-flash")))
+
+(defrecord Ollama [model]
+  Provider
+  (request [this prompt]
+    (-> (str api-host "/api/generate")
+          (http/post {:body  (json/generate-string {:model model, :prompt prompt, :stream false})
+                        :throw false})
+          http-error-handler
+          :body
+          (json/parse-string true)
+          :response
+          str/trim))
+  (models [this]
+    (as-> (str api-host "/api/tags") p
+          (http/get p {:throw false})
+          (:body p)
+          (json/parse-string p true)
+          (:models p)
+          (map :name p)
+          (map (fn [model] (->Ollama model)) p)
+          ))
+  (model [this]
+    (or model
+      (if-let [env (System/getenv "AI_MODEL")]
+        env
+        "llama3:latest"))))
+
+(def default-model (->Gemini (model (->Gemini nil))))
 
 (defn- rofi-model-list []
-  (-> (fetch-models)
-      (rofi-menu! {:prompt "Select model"})
-      :out
-      first))
+  (let [models (concat (models (->Gemini nil)) (models (->Ollama nil)))
+        selected (-> models
+                     (->> (map #(:model %)))
+                     (rofi-menu! {:prompt "Select model", :format \i})
+                     :out
+                     first)]
+    (if selected
+      (nth models (parse-long selected))
+      (System/exit 0))))
 
-(defn- request-ollama [prompt model-name]
-  (as-> (str api-host "/api/generate") p
-        (http/post p {:body  (json/generate-string {:model model-name, :prompt prompt, :stream false})
-                      :throw false})
-        (:body p)
-        (json/parse-string p true)
-        (:response p)))
+;; czy pobierać z mojej listy czy z api, czy dać parametr z providerem
+(defn- create-model [model-name]
+  (if-let [model (->> (concat (models (->Gemini nil)) (models (->Ollama nil)))
+                      (filter #(= model-name (:model %)))
+                      first)]
+    model
+    (notify-error! (str "Wrong model name: " model-name) true)))
 
 (defn- query-ai [prompt opts]
-  (let [user (:model opts) list (:list opts)]
+  (let [user (:model opts)
+        list (:list opts)]
     (match [user list]
-           [(m :guard some?) false] (request-ollama prompt m)
-           [nil true] (request-ollama prompt (rofi-model-list))
-           :else (request-ollama prompt default-model))))
+           [(m :guard some?) false] (request (create-model m) prompt)
+           [nil true] (request (rofi-model-list) prompt)
+           :else (request default-model prompt))))
 
 (defn- fetch-page-html [url]
   (let [{:keys [exit out]} (sh "rdrview" "-H" "-A" "Mozilla" url "-T" "title")]
@@ -126,7 +181,6 @@
 (defn- action
   "Query AI where prompt is based on a template."
   [{opts :opts}]
-  (println opts)
   (let [{:keys [action-list template]} opts]
     (match [action-list template]
            [true _] (query->display (str (select-template) (get-text opts)) opts)
@@ -159,14 +213,14 @@
              :alias    :u}})
 
 (def spec-template
-  {:template     {:desc         "Analyse text from primary clipboard."
-                  :coerce       :keyword
-                  :default      :summary
-                  :default-desc "Default: Summary text."
-                  :alias        :t}
-   :action-list {:desc   "Show available actions in a rofi menu."
-                  :coerce :boolean
-                  :alias  :a}
+  {:template    {:desc         "Analyse text from primary clipboard."
+                 :coerce       :keyword
+                 :default      :summary
+                 :default-desc "Default: Summary text."
+                 :alias        :t}
+   :action-list {:desc   "Choose from available actions via a rofi menu."
+                 :coerce :boolean
+                 :alias  :a}
    ;; maybe add a config file for templates when I need more customisation like model, temperature, language in a json or edn file
    ;:template-file {:desc     "Analyse text from clipboard - default."
    ;                :default  (str (System/getenv "XDG_CONFIG_HOME") "/chat/template.properties")
@@ -186,7 +240,7 @@
      chat.clj action -p -a
      chat.clj action -o scratchpad -t 'summary-adoc' -u='https://en.wikipedia.org/wiki/Polish_hussars'
   %nDefault values can be override via system environment. The set values:
-  AI_MODEL = %s
+  default model = %s
   OLLAMA_API_HOST = %s
   TERM_LT and TERM_LT_RUN = %s
   %nDependencies:
@@ -197,7 +251,8 @@
           (cli/format-opts {:spec spec})
           (cli/format-opts {:spec spec-source})
           (cli/format-opts {:spec spec-template})
-          default-model api-host term-run))
+          (:model default-model)
+            api-host term-run))
 
 (def subcommands
   [{:cmds ["ask"] :desc "Ask AI." :fn ask :spec spec}
@@ -245,4 +300,7 @@
   (def p (p/open {:launcher :intellij}))
   (tap> :hello)
   (load-file (str (System/getenv "HOME") "/Documents/dotfiles/common/scripts/.bin/clj/init.clj"))
+
+  (deps/add-deps '{:deps {io.github.paintparty/fireworks {:mvn/version "0.10.4"}}})
+  (require '[fireworks.core :refer [? !? ?> !?>]])
   )
