@@ -6,6 +6,7 @@
 ;; add error handling
 (require '[babashka.cli :as cli]
          '[babashka.pods :as pods]
+         '[babashka.fs :as fs]
          '[babashka.process :as ps :refer [$ shell process sh]])
 
 (pods/load-pod 'org.babashka/go-sqlite3 "0.2.7")
@@ -17,7 +18,7 @@
           :query (str "SELECT DISTINCT CASE WHEN INSTR(url, '&') > 0 THEN SUBSTR(url, 1, INSTR(url,'&') -1) ELSE url END as url, strftime('%m-%d', DATETIME(ROUND (atime), 'unixepoch')) as data, title FROM History WHERE url LIKE 'https://www.youtube%' AND url LIKE '%watch?v%' ORDER BY atime DESC LIMIT " db-query-limit)},
          :newsboat
          {:path  (str (System/getenv "HOME") "/.local/share/newsboat/cache.db"),
-          :query (str "SELECT DISTINCT strftime('%m-%d', DATETIME(ROUND(pubDate), 'unixepoch')) as data, title ,url FROM rss_item WHERE url LIKE 'https://www.youtube%' AND unread = 0 ORDER BY pubDate DESC LIMIT " db-query-limit)}})
+          :query (str "SELECT DISTINCT strftime('%m-%d', DATETIME(ROUND(pubDate), 'unixepoch')) as data, author, title ,url FROM rss_item WHERE url LIKE 'https://www.youtube%' AND unread = 1 ORDER BY pubDate DESC LIMIT " db-query-limit)}})
 ;(def tmp-db "/tmp/web-history")
 
 (def term-run (str (System/getenv "TERM_LT") (System/getenv "TERM_LT_RUN")))
@@ -33,20 +34,30 @@
             :audio-q      (str "pueue add -g mpv-audio -- " (:audio tmp))})))
 
 (defn- query-history! [db-name]
-  ;(ps/sh (format "cp %s %s" (pr-str db) (pr-str tmp-db))) ; Copy database as it might be locked and in use from current
-  ;browser
+  {:pre [(keyword? db-name)]}
   (try
     (sql/query (get-in db [db-name :path]) (get-in db [db-name :query]))
     (catch Exception e
       (notify-error! (str "Query database\n" (.getMessage e)) true))))
-;remove-duplicate-urls)
 
-(defn- history->menu [history]
+(defn- trim-col [column]
+  {:post [(string? %)]}
+  (if (nil? column)
+    ""
+    (let [length 20]
+      (if (>= (count column) length)
+        (str " | " (subs column 0 length))
+        (str " | " column (apply str (repeat (- length (count column)) " ")))))))
+
+(defn- history->menu
   "Converts database item to a rofi menu format."
-  (map (fn [row] (str (:data row) " | " (:title row))) history))
+  [history]
+  {:post [(every? string? %)]}
+  (map (fn [row] (str (:data row) (trim-col (:author row)) " | " (:title row))) history))
 
-(defn- items->url [items history]
+(defn- items->url
   "Converts selected menu items to URLs."
+  [items history]
   (->> items
        (map parse-long)
        (map (fn [i] (get history i)))
@@ -104,7 +115,8 @@
 
 (comment
   (count (query-history!))
-  (run (query-history!) video-keys :fullscreen)
+  (run :qutebrowser video-keys :fullscreen)
+  (run :newsboat video-keys :fullscreen)
 
   (deps/add-deps '{:deps {io.github.paintparty/fireworks {:mvn/version "0.10.4"}}})
   (require '[fireworks.core :refer [? !? ?> !?>]])
@@ -121,3 +133,11 @@
               history)))
   nil)
 
+;(defn- query-history! [db-name]
+;  (try
+;    (let [path (str (fs/copy (get-in db [db-name :path]) "/tmp/" {:replace-existing true}))] ; Copy database as it might be locked and in use from current
+;      (sql/query path (get-in db [db-name :query])))
+;    (catch java.nio.file.NoSuchFileException e
+;      (notify-error! (str "No database\n" (.getMessage e)) true))
+;    (catch Exception e
+;      (notify-error! (str "Query database\n" (.getMessage e)) true))))
