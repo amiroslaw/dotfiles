@@ -53,9 +53,11 @@
       input)))
 
 (defn- http-error-handler [response]
-  (if (not= (:status response) 200)
-    (notify-error! (str "HTTP error: " (:status response) " " (:body response)) true)
-    response))
+  (let [status (:status response)
+        body (json/parse-string (:body response) true)]
+    (if (= status 200)
+      body
+      (notify-error! (format "HTTP error: %s\n%s" status body) true))))
 
 (def gemini-api-key (let [path (str (System/getenv "HOME") "/Documents/Ustawienia/stow-private/keys.properties")
                           key (get-properties! path "gemini_api_key")]
@@ -76,8 +78,6 @@
                     :throw false
                     })
         http-error-handler
-        :body
-        (json/parse-string true)
         (get-in [:candidates 0 :content :parts 0 :text])
         (str/trim)))
   (models [this] [(->Gemini "gemini-2.0-flash") (->Gemini "gemini-2.0-flash-lite-preview-02-05") (->Gemini "gemini-1.5-flash") (->Gemini "gemini-1.5-pro")])
@@ -90,8 +90,6 @@
           (http/post {:body  (json/generate-string {:model model, :prompt prompt, :stream false})
                         :throw false})
           http-error-handler
-          :body
-          (json/parse-string true)
           :response
           str/trim))
   (models [this]
@@ -261,7 +259,8 @@
     :fn   action :spec (merge spec spec-source spec-template)}
    {:cmds ["help"] :desc "Show help." :fn print-help}])
 
-(cli/dispatch subcommands *command-line-args*)
+(when (= *file* (System/getProperty "babashka.file"))
+  (cli/dispatch subcommands *command-line-args*))
 
 ;; Testing
 (comment

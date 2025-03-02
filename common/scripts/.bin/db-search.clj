@@ -118,6 +118,8 @@
   (run :qutebrowser video-keys :fullscreen)
   (run :newsboat video-keys :fullscreen)
 
+  (trim-col "apropos clojure")
+
   (deps/add-deps '{:deps {io.github.paintparty/fireworks {:mvn/version "0.10.4"}}})
   (require '[fireworks.core :refer [? !? ?> !?>]])
 

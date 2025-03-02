@@ -32,6 +32,7 @@ export GUI_EDITOR=/usr/bin/nvim-qt
 export OPENER="xdg-open"
 export PAGER="less"
 export MANPAGER="nvim +Man!"
+export DISPLAY=:0
 # TERM is not available 
 export TERMINAL="wezterm"
 export TERM_FONT=" --config font_size=%d "
