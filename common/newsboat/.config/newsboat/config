@@ -120,7 +120,7 @@ macro r set browser "setsid -f url.lua --read" ; open-in-browser-noninteractivel
 macro R set browser "setsid -f url.lua --read" ; open-all-unread-in-browser ; set browser ~/.config/newsboat/link.sh
 macro s set browser "setsid -f url.lua --speed" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 # media - uppercase char add links in a queue and opens them one by one 
-macro j set browser "setsid -f ~/.config/newsboat/video-metadata.lua" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
+macro j set browser "setsid -f yt.clj stats -n -u " ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro p set browser "setsid -f url.lua --mpvPopup" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh
 macro P set browser "setsid -f url.lua --mpvPopup" ; open-all-unread-in-browser-and-mark-read ; set browser ~/.config/newsboat/link.sh
 macro a set browser "setsid -f url.lua --mpvAudio" ; open-in-browser-noninteractively ; set browser ~/.config/newsboat/link.sh

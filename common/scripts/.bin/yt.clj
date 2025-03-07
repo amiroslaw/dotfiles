@@ -8,7 +8,7 @@
          '[clojure.core.match :refer [match]]
          '[babashka.classpath :as cp]
          '[cheshire.core :as json])
-(cp/add-classpath "./clj")
+(cp/add-classpath (str (System/getenv "HOME") "/.bin/clj"))
 (require '[util-media :as media])
 (import '[java.time Duration])
 
