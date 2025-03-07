@@ -27,13 +27,6 @@
                 "http://localhost:11434"))
 (def term-run (str (System/getenv "TERM_LT") (System/getenv "TERM_LT_RUN")))
 (def response-dir "/tmp/clj/")
-(def url-pattern "https?://[^/]+")
-
-(defn url? [url-str]
-  (try (io/as-url url-str)
-       true
-       (catch Exception _
-         false)))
 
 (defn- select-template []
   (if-let [template
@@ -51,13 +44,6 @@
     (if (str/blank? input)
       (System/exit 0)
       input)))
-
-(defn- http-error-handler [response]
-  (let [status (:status response)
-        body (json/parse-string (:body response) true)]
-    (if (= status 200)
-      body
-      (notify-error! (format "HTTP error: %s\n%s" status body) true))))
 
 (def gemini-api-key (let [path (str (System/getenv "HOME") "/Documents/Ustawienia/stow-private/keys.properties")
                           key (get-properties! path "gemini_api_key")]
@@ -77,7 +63,7 @@
                     :body    (json/generate-string {:contents [{:parts [{:text prompt}]}]})
                     :throw false
                     })
-        http-error-handler
+        http-error-handler!
         (get-in [:candidates 0 :content :parts 0 :text])
         (str/trim)))
   (models [this] [(->Gemini "gemini-2.0-flash") (->Gemini "gemini-2.0-flash-lite-preview-02-05") (->Gemini "gemini-1.5-flash") (->Gemini "gemini-1.5-pro")])
@@ -89,7 +75,7 @@
     (-> (str api-host "/api/generate")
           (http/post {:body  (json/generate-string {:model model, :prompt prompt, :stream false})
                         :throw false})
-          http-error-handler
+          http-error-handler!
           :response
           str/trim))
   (models [this]
@@ -257,7 +243,7 @@
    {:cmds ["text"] :desc "Ask about provided text." :fn ask :spec (merge spec spec-source)}
    {:cmds ["action"] :desc "Take an action from a template. If not provided text will be summarised."
     :fn   action :spec (merge spec spec-source spec-template)}
-   {:cmds ["help"] :desc "Show help." :fn print-help}])
+   {:cmds [] :desc "Show help." :fn print-help}])
 
 (when (= *file* (System/getProperty "babashka.file"))
   (cli/dispatch subcommands *command-line-args*))

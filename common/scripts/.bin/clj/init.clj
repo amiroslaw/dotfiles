@@ -305,6 +305,46 @@
                        ([a b] (str a b)))
                      table)))
 
+(def UTF-8 (java.nio.charset.StandardCharsets/UTF_8))
+(def url-pattern "https?://[^/]+")
+(defn url? [url-str]
+  (try (io/as-url url-str)
+       true
+       (catch Exception _
+         false)))
+
+(defn url-params
+  "Parses URL parameters.
+  There are two arities:
+  1. ([url param]) - Returns the value of the specified parameter from the URL.
+  2. ([url]) - Returns a map of all parameters and their values from the URL."
+  ([url param]
+   {:pre  [(url? url) (string? param)]
+    :post [(or (nil? %) (string? %))]}
+   (get (url-params url) param))
+  ([url]
+   {:pre  [(url? url)]
+    :post [(map? %)]}
+   (-> url
+       (str/split #"\?")
+       second
+       (java.net.URLDecoder/decode UTF-8)
+       (str/split #"&")
+       (->> (into {} (map #(str/split % #"=")))))))
+
+(defn http-error-handler!
+  ([response] (http-error-handler! response nil))
+  ([response json-error-path]
+   {:pre [(map? response)]}
+   (let [status (:status response)
+         body (json/parse-string (:body response) true)]
+     (if (= status 200)
+       body
+       (notify-error! (format "HTTP error: %s\n%s" status (get-in body json-error-path body)) false) ;; TODO change to true
+       ))))
+(defn test []
+  (println "test"))
+
 (comment
   (require '[portal.api :as p])
   (add-tap #'p/submit)

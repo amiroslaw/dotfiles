@@ -2,12 +2,15 @@
 ;; TODO
 ;; unique url remove-duplicate-urls has bug; distinct in sql won't work; maybe forget about duplication and check out if timestamps in mpv works
 ;; add copying url, title? to clipboard
-;; maybe add label to pueue - I would have to pass title
+;; maybe add label to pueue - I would have to pass title or query for the title in util-media
 ;; add error handling
 (require '[babashka.cli :as cli]
          '[babashka.pods :as pods]
          '[babashka.fs :as fs]
+         '[babashka.classpath :as cp]
          '[babashka.process :as ps :refer [$ shell process sh]])
+(cp/add-classpath ".bin/clj")
+(require '[util-media :as media])
 
 (pods/load-pod 'org.babashka/go-sqlite3 "0.2.7")
 (require '[pod.babashka.go-sqlite3 :as sql])
@@ -21,17 +24,6 @@
           :query (str "SELECT DISTINCT strftime('%m-%d', DATETIME(ROUND(pubDate), 'unixepoch')) as data, author, title ,url FROM rss_item WHERE url LIKE 'https://www.youtube%' AND unread = 1 ORDER BY pubDate DESC LIMIT " db-query-limit)}})
 ;(def tmp-db "/tmp/web-history")
 
-(def term-run (str (System/getenv "TERM_LT") (System/getenv "TERM_LT_RUN")))
-(def video-keys [["Alt-p" "popup" :popup] ["Alt-v" "fullscreen" :fullscreen] ["Alt-a" "audio" :audio] ["Alt-o" "open in browser" :open] ["Ctrl-Alt-p" "popup q" :popup-q] ["Ctrl-Alt-v" "fullscreen q" :fullscreen-q] ["Ctrl-Alt-a" "audio q" :audio-q]])
-(def actions
-  (let [tmp {:popup      "mpv --x11-name=videopopup --profile=stream-popup"
-             :fullscreen "mpv --profile=stream"
-             :audio      (format term-run "audio" (str "mpv --profile=stream-audio "))
-             :open       "xdg-open"}]
-    (merge tmp
-           {:popup-q      (str "pueue add -g mpv-popup -- " (:popup tmp))
-            :fullscreen-q (str "pueue add -g mpv-fullscreen -- " (:fullscreen tmp))
-            :audio-q      (str "pueue add -g mpv-audio -- " (:audio tmp))})))
 
 (defn- query-history! [db-name]
   {:pre [(keyword? db-name)]}
@@ -44,10 +36,7 @@
   {:post [(string? %)]}
   (if (nil? column)
     ""
-    (let [length 20]
-      (if (>= (count column) length)
-        (str " | " (subs column 0 length))
-        (str " | " column (apply str (repeat (- length (count column)) " ")))))))
+    (str " | " (media/trim-col column 20))))
 
 (defn- history->menu
   "Converts database item to a rofi menu format."
@@ -72,15 +61,20 @@
       {:urls (items->url out history) :action (last (get keys key))}
       (System/exit 0))))
 
-(defn- execute-action! [urls action]
-  (doseq [url urls] (ps-error-handler! false (get actions action) url)))
+(defn- execute-actions!
+  "Execute the specified action for each URL in the list
+  Parameters:
+  - urls: A list of URLs to process
+  - action: The action to execute, which should be a key in the actions map"
+  [urls action]
+  (doseq [url urls] (ps-error-handler! false (get media/actions action) url)))
 
 (defn- run [db keys default]
   (let [history (query-history! db)
         {:keys [urls action]} (rofi-history history keys)]
     (if action
-      (execute-action! urls action)
-      (execute-action! urls default))))
+      (execute-actions! urls action)
+      (execute-actions! urls default))))
 
 (def spec {:spec
            {:qutebrowser {:alias :q
@@ -100,14 +94,14 @@
    - quetebrowser, newsbout, rofi, mpv
    - optional: pueue"
           (cli/format-opts spec)
-          term-run
+          (media/term-run)
           (get-in db [:qutebrowser :path])
           (get-in db [:newsboat :path])))
 
 (defn- menu [opts]
   (cond
-    (opts :qutebrowser) (run :qutebrowser video-keys :fullscreen)
-    (opts :newsboat) (run :newsboat video-keys :fullscreen)
+    (opts :qutebrowser) (run :qutebrowser media/rofi-keys :fullscreen)
+    (opts :newsboat) (run :newsboat media/rofi-keys :fullscreen)
     (opts :help) (print-help)
     :else (print-help)))
 
@@ -115,8 +109,8 @@
 
 (comment
   (count (query-history!))
-  (run :qutebrowser video-keys :fullscreen)
-  (run :newsboat video-keys :fullscreen)
+  (run :qutebrowser (media/rofi-keys) :fullscreen)
+  (run :newsboat (media/rofi-keys) :fullscreen)
 
   (trim-col "apropos clojure")
 
