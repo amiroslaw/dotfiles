@@ -1,5 +1,4 @@
 #!/usr/bin/env bb
-;; TODO maybe add label to pueue - I would have to pass title or query for the title in util-media
 (require '[babashka.process :as ps :refer [$ shell process sh]]
          '[clojure.string :as str]
          '[babashka.cli :as cli]
@@ -34,27 +33,35 @@
         date (first (str/split (:publishedAt snippet) #"T"))]
     (format "%s | %s | %s" date (media/trim-col (:channelTitle snippet)) (:title snippet))))
 
-(defn- items->url
-  "Converts selected menu items to URLs."
+(defn- response->video [res]
+  {:pre  [(map? res)]
+   :post [(map? %)]}
+  (let [title (get-in res [:snippet :title])
+        id (get-in res [:id :videoId])]
+    {:url (str "https://www.youtube.com/watch?v=" id), :title title}))
+;; TODO add safe subs
+;(if (<= (count title) 50)
+;  title
+;  (subs title 50))
+
+(defn- rofi-selections->videos
+  "Converts selected menu items to maps with URL and title."
   [items response]
   (->> items
        (map parse-long)
        (map (fn [i] (get response i)))
-       (map :id)
-       (map :videoId)
-       (map (fn [id] (str "https://www.youtube.com/watch?v=" id)))))
+       (map response->video)))
 
-(defn- rofi-videos [response]
+(defn- rofi-video-menu [response]
   {:pre  [(vector? response) (every? map? response)]
    :post [(map? %)]}
   (let [menu (map item->menu response)
         {:keys [out key exit]}
         (-> menu
-            (rofi-menu! {:prompt "Select video", :width "80%", :format \i, :keys media/rofi-keys, :multi true, :msg "<b>fullscreen</b>: default action; <b>*q</b>: add to pueue\n"}))]
+            (rofi-menu! {:prompt "Select video", :width "80%", :format \i, :keys media/rofi-keys, :multi true, :msg "default action: <b>fullscreen</b>"}))]
     (if exit
       {:items out, :key key}
-      ;(System/exit 0) ;; todo uncomment
-      )))
+      (System/exit 0))))
 
 (defn- fetch-videos [query]
   (when-not (string? query)
@@ -64,12 +71,11 @@
            "&q=" query
            "&part=snippet"
            "&fields=items(id(videoId),snippet(title,channelTitle,publishedAt,description))"
-           "&maxResults=3"
+           "&maxResults=30"
            "&type=video"
            "&safeSearch=moderate"                           ;; none, moderate, strict
            "&videoDimension=2d")
-      (http/get {:throw false                               ;; todo switch to true
-                 })
+      (http/get {:throw false})
       (http-error-handler! [:error :message])
       :items))
 
@@ -87,33 +93,24 @@
     (java.net.URLEncoder/encode query UTF-8)))
 
 (defn- execute-actions!
-  "Execute the specified action for each URL in the list
+  "Execute the specified action for each video in the list
   Parameters:
-  - urls: A list of URLs to process
+  - videos: A list of videos to process
   - action: The action to execute, which should be a key in the actions map"
-  [urls action]
-  (doseq [url urls] (ps-error-handler! false (get media/actions action) url)))
-
-(defn- search-videos
-  [{opts :opts}]
-  (let [response (fetch-videos (query opts))
-        {:keys [items key]} (rofi-videos response)
-        urls (items->url items response)
-        action (last (get media/rofi-keys key))]
-    (if action
-      (execute-actions! urls action)
-      (execute-actions! urls :fullscreen-q))))
+  [videos action]
+  {:pre [(seq? videos) (keyword? action)]}
+  (doseq [video videos]
+    (ps-error-handler! false (format (get media/actions action) (:title video)) (:url video))))
 
 (defn- fetch-metadata
   [video-id]
   {:pre [(string? video-id)]}
   (-> (str "https://www.googleapis.com/youtube/v3/videos"
            "?key=" yt-api-key
-           "&id=" video-id ;; can take multiple ids
+           "&id=" video-id                                  ;; can take multiple ids
            "&part=snippet,contentDetails,statistics"
            "&fields=items(id,snippet(title,channelTitle,publishedAt,description,liveBroadcastContent),contentDetails(duration),statistics(viewCount,likeCount,commentCount))")
-      (http/get {:throw false                               ;; todo switch to true
-                 })
+      (http/get {:throw false})
       (http-error-handler! [:error :message])
       :items))
 
@@ -158,6 +155,20 @@
       (notify! text-status)
       (println text-status))))
 
+(defn- rofi-videos [response]
+  {:pre [(vector? response) (every? map? response)]}
+  (let [{:keys [items key]} (rofi-video-menu response)
+        videos (rofi-selections->videos items response)
+        action (last (get media/rofi-keys key))]
+    (case action
+      nil (execute-actions! videos :fullscreen)
+      :metadata (do (doseq [v videos] (metadata {:opts {:notify true :url (:url v)}})) (rofi-videos response))
+      (execute-actions! videos action))))
+
+(defn- search-videos
+  [{opts :opts}]
+  (rofi-videos (fetch-videos (query opts))))
+
 ;; TODO
 (defn- playlist
   [{opts :opts}]
@@ -174,7 +185,7 @@
   {:notify {:desc   "Create notification with a video status."
             :coerce :boolean
             :alias  :n}
-  :url     {:desc     "Take a URL from terminal argument."
+   :url    {:desc     "Take a URL from terminal argument."
             :validate {:pred url? :ex-msg (fn [m] (str "Not a url: " (:value m)))}
             :alias    :u}})
 
@@ -187,7 +198,7 @@
              :alias  :p}})
 
 (defn- print-help [_]
-(printf "A script that interacts with YouTube API.  %n%s%n
+  (printf "A script that interacts with YouTube API.  %n%s%n
 Options for providing input for all commands:%n%s%n
 Options for `search` command:%n%s%n
 Options for `stats` command:%n%s%n
@@ -200,10 +211,10 @@ Examples:
 TERM_LT and TERM_LT_RUN = %s
 %nDependencies:
  - clipster, rofi "
-        (format-cmds! subcommands)
-        (cli/format-opts {:spec spec-source})
-        (cli/format-opts {:spec spec-search})
-        (cli/format-opts {:spec spec-stats})
+          (format-cmds! subcommands)
+          (cli/format-opts {:spec spec-source})
+          (cli/format-opts {:spec spec-search})
+          (cli/format-opts {:spec spec-stats})
           media/term-run))
 
 (def subcommands
@@ -225,7 +236,6 @@ TERM_LT and TERM_LT_RUN = %s
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=uJx06_o1AJY"]) ; short
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=xKqK8AR2W4U"]) ;; online
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=dus7vXctRBE"]) ;; wspierający ended stream
-  (tap> (fetch-metadata ["dus7vXctRBE"]))                   ;; wspierający ended stream
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=rItfOh3qnfs"]) ;; scheduled
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=h2WdKyX0zMg"]) ;; support
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=3JZ_D3ELwOQ" "-u" "https://www.youtube.com/watch?v=3JZ_D3ELwOQ"])

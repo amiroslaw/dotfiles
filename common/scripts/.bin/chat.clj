@@ -13,7 +13,8 @@
 
 (declare subcommands)
 
-(def analyze-text-prompt ". Answer to that question based to following text:\n\n")
+(def paste-prompt "Paste this prompt on the top of your answer. ")
+(def analyze-text-prompt (str ". " paste-prompt "Answer to that question based to following text:\n\n"))
 (def templates {:summary              "Summarize following text:\n\n",
                 :summary-short        "Summarize following text, be concise:\n\n"
                 :summary-adoc         "Summarize (use asciidoc format with lists and bold text if needed) following text:\n\n",
@@ -159,7 +160,7 @@
   "Query AI with provided input."
   [{:keys [dispatch opts]}]
   (if (some #{"ask"} dispatch)
-    (query->display (prompt-input) opts)
+    (query->display (str paste-prompt (prompt-input)) opts)
     (query->display (str (prompt-input) analyze-text-prompt (get-text opts)) opts)))
 
 (defn- action
