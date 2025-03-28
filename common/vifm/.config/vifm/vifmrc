@@ -547,7 +547,6 @@ fileviewer *[^/],.*[^/] bat --color always --plain %c
 " show all bookmarks
 nmap bb :marks <cr> 
 " :mark mark /full/directory/path [filename]
-mark / /
 mark a /tmp
 mark A /etc/apt
 mark b /home/miro/.bin

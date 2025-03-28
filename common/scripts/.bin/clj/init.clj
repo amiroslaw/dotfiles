@@ -342,8 +342,6 @@
        body
        (notify-error! (format "HTTP error: %s\n%s" status (get-in body json-error-path body)) false) ;; TODO change to true
        ))))
-(defn test []
-  (println "test"))
 
 (comment
   (require '[portal.api :as p])

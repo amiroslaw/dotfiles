@@ -24,8 +24,8 @@
    :popup      "pueue add -g mpv-popup --label '%s' -- mpv --x11-name=videopopup --profile=stream-popup"
    :fullscreen "pueue add -g mpv-fullscreen --label '%s' -- mpv --profile=stream"
    :audio      (str "pueue add -g mpv-audio --label '%s' -- " (format term-run "audio" (str "mpv --profile=stream-audio ")))
-   :dl-video   (str "pueue add --escape -g dl-video --label '%s' -- yt-dlp --embed-metadata -o '" yt-dir "%(title)s.%(ext)s' ")
-   :dl-audio   (str "pueue add --escape -g dl-audio --label '%s' -- yt-dlp --embed-metadata -f bestaudio -x --audio-format mp3 -o '" audio-dir "%(title)s.%(ext)s' ")
+   :dl-video   (str "pueue add --escape -g dl-video --label '%s' -- yt-dlp --embed-metadata -f bestvideo[height<=1440] -o '" yt-dir "%%(title)s.%%(ext)s' ") ;; TODO it doesnt' work
+   :dl-audio   (str "pueue add --escape -g dl-audio --label '%s' -- yt-dlp --embed-metadata -f bestaudio -x --audio-format mp3 -o '" audio-dir "%%(title)s.%%(ext)s' ")
    :open       "xdg-open"})
 
 (defn- trim-col
