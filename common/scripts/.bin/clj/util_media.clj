@@ -28,6 +28,11 @@
    :dl-audio   (str "pueue add --escape -g dl-audio --label '%s' -- yt-dlp --embed-metadata -f bestaudio -x --audio-format mp3 -o '" audio-dir "%%(title)s.%%(ext)s' ")
    :open       "xdg-open"})
 
+(defn- cmd-from-action
+  "Get the command from the action map based on the action key"
+  [action label]
+  (format (get actions action) (clojure.string/escape label {\' "`"})))
+
 (defn- trim-col
   "Trim a column to a specified length, padding with spaces if necessary
  Parameters:

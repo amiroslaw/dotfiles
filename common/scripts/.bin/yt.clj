@@ -6,14 +6,18 @@
          '[clojure.java.io :as io]
          '[clojure.core.match :refer [match]]
          '[babashka.classpath :as cp]
+         '[clojure.java.io :as io]
          '[cheshire.core :as json])
 (cp/add-classpath (str (System/getenv "HOME") "/.bin/clj"))
 (require '[util-media :as media])
 (import '[java.time Duration])
-
+;; TODO refactoring: convert rest to entity with unified fields - title, channel, date, description, videoId
+;; playlist and fetch-videos should return the same entity
 (declare subcommands)
 (def UTF-8 (java.nio.charset.StandardCharsets/UTF_8))
 
+(def base-url "https://www.googleapis.com/youtube/v3/")
+(def yt-watch-url "https://www.youtube.com/watch?v=")
 (def yt-api-key (let [path (str (System/getenv "HOME") "/Documents/Ustawienia/stow-private/keys.properties")
                       key (get-properties! path "yt_api_key")]
                   (if key key
@@ -37,8 +41,9 @@
   {:pre  [(map? res)]
    :post [(map? %)]}
   (let [title (get-in res [:snippet :title])
-        id (get-in res [:id :videoId])]
-    {:url (str "https://www.youtube.com/watch?v=" id), :title title}))
+        id-from-playlist (get-in res [:snippet :resourceId :videoId])
+        id (get-in res [:id :videoId] id-from-playlist)]
+    {:url (str yt-watch-url id), :title title}))
 ;; TODO add safe subs
 ;(if (<= (count title) 50)
 ;  title
@@ -66,7 +71,7 @@
 (defn- fetch-videos [query]
   (when-not (string? query)
     (System/exit 0))
-  (-> (str "https://www.googleapis.com/youtube/v3/search"
+  (-> (str base-url "search"
            "?key=" yt-api-key
            "&q=" query
            "&part=snippet"
@@ -100,14 +105,14 @@
   [videos action]
   {:pre [(seq? videos) (keyword? action)]}
   (doseq [video videos]
-    (ps-error-handler! false (format (get media/actions action) (:title video)) (:url video))))
+    (ps-error-handler! false (media/cmd-from-action action (:title video)) (:url video))))
 
 (defn- fetch-metadata
-  [video-id]
-  {:pre [(string? video-id)]}
-  (-> (str "https://www.googleapis.com/youtube/v3/videos"
+  [video-ids]
+  {:pre [(string? video-ids)]}
+  (-> (str base-url "videos"
            "?key=" yt-api-key
-           "&id=" video-id                                  ;; can take multiple ids
+           "&id=" video-ids                                 ;; can take multiple ids
            "&part=snippet,contentDetails,statistics"
            "&fields=items(id,snippet(title,channelTitle,publishedAt,description,liveBroadcastContent),contentDetails(duration),statistics(viewCount,likeCount,commentCount))")
       (http/get {:throw false})
@@ -137,20 +142,25 @@
    :post [(string? %)]}
   (first (str/split s #"T")))
 
+(defn- format-metadata [meta]
+  {:post [(string? %)]}
+  (if-not meta
+    "\uD83D\uDED1 Private video"
+    (format "%s - %s \n%s | %s | %s \n%s \uD83D\uDC4D | %s \uDB80\uDD99 | %s \uDB82\uDC5F \n\n%s"
+            (:title (:snippet meta))
+            (:channelTitle (:snippet meta))
+            (format-duration (:duration (:contentDetails meta)))
+            (format-date (:publishedAt (:snippet meta)))
+            (live-status meta)
+            (:likeCount (:statistics meta))
+            (or (:viewCount (:statistics meta)) "0")
+            (:commentCount (:statistics meta))
+            (:description (:snippet meta)))))
+
 (defn- metadata
   [{opts :opts}]
   (let [data-list (fetch-metadata (url-params (:url opts) "v"))
-        data (first data-list)
-        text-status (format "%s - %s \n%s | %s | %s \n%s \uD83D\uDC4D | %s \uDB80\uDD99 | %s \uDB82\uDC5F \n\n%s"
-                            (:title (:snippet data))
-                            (:channelTitle (:snippet data))
-                            (format-duration (:duration (:contentDetails data)))
-                            (format-date (:publishedAt (:snippet data)))
-                            (live-status data)
-                            (:likeCount (:statistics data))
-                            (or (:viewCount (:statistics data)) "0")
-                            (:commentCount (:statistics data))
-                            (:description (:snippet data)))]
+        text-status (format-metadata (first data-list))]
     (if (:notify opts)
       (notify! text-status)
       (println text-status))))
@@ -169,10 +179,50 @@
   [{opts :opts}]
   (rofi-videos (fetch-videos (query opts))))
 
-;; TODO
+(defn- fetch-playlist [id]
+  {:pre  [(string? id)]
+   :post [(vector? %)]}
+  (-> (str base-url "playlistItems"
+           "?key=" yt-api-key
+           "&playlistId=" id
+           "&part=snippet"                                  ;; status is for live
+           ;"&fields=items(snippet(resourceId(videoId)))"
+           "&fields=items(snippet(title,channelTitle,publishedAt,description,resourceId))"
+           "&maxResults=50")
+      (http/get {:throw false})
+      (http-error-handler! [:error :message])
+      :items))
+
+(defn- format-m3u-item [meta]
+  (let [url (str yt-watch-url (:id meta))
+        title (get-in meta [:snippet :title] "-")
+        duration (get-in meta [:contentDetails :duration])
+        seconds (if duration (.toSeconds (Duration/parse duration)) -1)]
+    (format "#EXTINF:%d,%s%n%s%n" seconds title url)))
+
+(defn- create-playlist [playlist]
+  (let [m3u-items (->> playlist
+                       (map :snippet)
+                       (map :resourceId)
+                       (map :videoId)
+                       (str/join ",")
+                       fetch-metadata
+                       (map format-m3u-item))
+        playlist-title (rofi-input! {:prompt "Playlist title"})]
+    (with-open [wrtr (io/writer (str playlist-title ".m3u"))]
+      (.write wrtr (str "#EXTM3U\n"))
+      (.write wrtr (format "#PLAYLIST: %s\n" playlist-title))
+      (doseq [line m3u-items]
+        (.write wrtr line)))))
+
 (defn- playlist
   [{opts :opts}]
-  (println opts))
+  (let [list-id (url-params (:url opts) "list")
+        playlist (fetch-playlist list-id)]
+    (if (:m3u opts)
+      (tap> (create-playlist playlist))
+      (rofi-videos playlist)
+      )))
 
 (def spec-search
   {:input {:desc   "Provide search string query in rofi input. Default if not provided a different option."
@@ -185,9 +235,19 @@
   {:notify {:desc   "Create notification with a video status."
             :coerce :boolean
             :alias  :n}
-   :url    {:desc     "Take a URL from terminal argument."
+   :url    {:desc     "Take a URL from terminal argument."  ;; TODO allow multiple urls
             :validate {:pred url? :ex-msg (fn [m] (str "Not a url: " (:value m)))}
             :alias    :u}})
+
+(def spec-playlist
+  {:url {:desc     "Take a URL from terminal argument."
+         :validate {:pred url? :ex-msg (fn [m] (str "Not a url: " (:value m)))}
+         :alias    :u}
+   :m3u {:desc   "Create m3u playlist from a Youtube playlist."
+         :coerce :boolean
+         :alias  :m}}) ;; TODO add saving path
+         ;;
+;local DIR_PLAYLISTS = os.getenv 'HOME' .. '/Templates/mpvlists'
 
 (def spec-source
   {:clip    {:desc   "Take a URL from clipboard - default."
@@ -202,11 +262,13 @@
 Options for providing input for all commands:%n%s%n
 Options for `search` command:%n%s%n
 Options for `stats` command:%n%s%n
+Options for `palylist` command:%n%s%n
 Examples:
    yt.clj search --query 'babashka'
    yt.clj search --input
    yt.clj search --clip
    yt.clj stats --notify -u='https://www.youtube.com/watch?v=hoCk655vgtc'
+   yt.clj playlist --m3u --clip
 %nDefault values can be override via system environment. The values:
 TERM_LT and TERM_LT_RUN = %s
 %nDependencies:
@@ -219,7 +281,7 @@ TERM_LT and TERM_LT_RUN = %s
 
 (def subcommands
   [{:cmds ["search"] :desc "Search videos." :fn search-videos :spec (merge spec-search spec-source)}
-   {:cmds ["playlist"] :desc "Create playlist (m3u) from the url." :fn playlist :spec spec-source}
+   {:cmds ["playlist"] :desc "List a Youtube playlist in rofi menu (default) or create (m3u) playlist." :fn playlist :spec (merge spec-playlist spec-source)}
    {:cmds ["stats"] :desc "Retrieve metadata form the video." :fn metadata :spec (merge spec-source spec-stats)}
    {:cmds [] :desc "Show help." :fn print-help}])
 
@@ -238,6 +300,8 @@ TERM_LT and TERM_LT_RUN = %s
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=dus7vXctRBE"]) ;; wspierający ended stream
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=rItfOh3qnfs"]) ;; scheduled
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=h2WdKyX0zMg"]) ;; support
+  (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=QrAEubM4f6o"]) ;; private
+
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=3JZ_D3ELwOQ" "-u" "https://www.youtube.com/watch?v=3JZ_D3ELwOQ"])
   (cli/dispatch subcommands ["playlist"])
   (cli/dispatch subcommands ["text" "-u" wiki "-l"])
@@ -246,7 +310,11 @@ TERM_LT and TERM_LT_RUN = %s
   (cli/dispatch subcommands ["search" "-i"])
   (cli/dispatch subcommands ["search" "-p"])
   (notify! "Hello world")
-  (url-params "https://www.youtube.com/watch?v=3JZ_D3ELwOQ&t=testk" "v")
+  (url-params "https://www.youtube.com/watch?v=XYmWdNlikNw&list=PLyvQyFCJcBAELIjEHFZECH6pfcywBqTBT" "list")
+  (cli/dispatch subcommands ["playlist" "-m" "-u" "https://www.youtube.com/watch?v=XYmWdNlikNw&list=PLyvQyFCJcBAELIjEHFZECH6pfcywBqTBT"])
+  (tap>
+    (fetch-playlist "PLyvQyFCJcBAELIjEHFZECH6pfcywBqTBT")
+    )
   (query {:clip true})
   (query {:query "clojure query"})
   (response->menu (cli/dispatch subcommands ["search" "-q" "clojure"]))
@@ -264,7 +332,6 @@ TERM_LT and TERM_LT_RUN = %s
                        :publishedAt  "2025-02-26T08:22:19Z"
                        :title        "Alex Engelberg guests on Apropos Clojure 2025-02-25"}})
   (trim-col "apropos clojure")
-  (item->menu item)
 
   ;; Replace with your duration string
   (def duration-str "PT1H30M15S")
@@ -282,6 +349,14 @@ TERM_LT and TERM_LT_RUN = %s
   (tap> :hello)
   (load-file (str (System/getenv "HOME") "/Documents/dotfiles/common/scripts/.bin/clj/init.clj"))
 
+  (deps/add-deps '{:deps {dev.weavejester/hashp {:mvn/version "0.3.0"}}})
+  (require 'hashp.preload)
+
   (deps/add-deps '{:deps {io.github.paintparty/fireworks {:mvn/version "0.10.4"}}})
   (require '[fireworks.core :refer [? !? ?> !?>]])
+
+
+  (def my-vector ["Line 1" "Line 2" "Line 3"])
+  (fs/write-lines "output.txt" my-vector)
+
   )

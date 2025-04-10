@@ -9,12 +9,12 @@
          '[babashka.fs :as fs]
          '[babashka.classpath :as cp]
          '[babashka.process :as ps :refer [$ shell process sh]])
-(cp/add-classpath ".bin/clj")
+(cp/add-classpath (str (System/getenv "HOME") "/.bin/clj"))
 (require '[util-media :as media])
 
 (pods/load-pod 'org.babashka/go-sqlite3 "0.2.7")
 (require '[pod.babashka.go-sqlite3 :as sql])
-;(pods/load-pod "./pod-babashka-go-sqlite3")
+
 (def db-query-limit 500)
 (def db {:qutebrowser
          {:path  (str (System/getenv "HOME") "/.local/share/qutebrowser/history.sqlite"),
@@ -22,8 +22,6 @@
          :newsboat
          {:path  (str (System/getenv "HOME") "/.local/share/newsboat/cache.db"),
           :query (str "SELECT DISTINCT strftime('%m-%d', DATETIME(ROUND(pubDate), 'unixepoch')) as data, author, title ,url FROM rss_item WHERE url LIKE 'https://www.youtube%' AND unread = 1 ORDER BY pubDate DESC LIMIT " db-query-limit)}})
-;(def tmp-db "/tmp/web-history")
-
 
 (defn- query-history! [db-name]
   {:pre [(keyword? db-name)]}
@@ -44,13 +42,12 @@
   {:post [(every? string? %)]}
   (map (fn [row] (str (:data row) (trim-col (:author row)) " | " (:title row))) history))
 
-(defn- items->url
-  "Converts selected menu items to URLs."
+(defn- items->videos
+  "Converts selected menu items to video entries."
   [items history]
   (->> items
        (map parse-long)
-       (map (fn [i] (get history i)))
-       (map :url)))
+       (map (fn [i] (select-keys (get history i) [:url :title])))))
 
 (defn- rofi-history [history keys]
   (let [{:keys [out key exit]}
@@ -58,23 +55,23 @@
             history->menu
             (rofi-menu! {:prompt "Select video", :width "80%", :format \i, :keys keys, :multi true, :msg "<b>fullscreen</b>: default action; <b>*q</b>: add to pueue\n"}))]
     (if exit
-      {:urls (items->url out history) :action (last (get keys key))}
+      {:videos (items->videos out history) :action (last (get keys key))}
       (System/exit 0))))
 
 (defn- execute-actions!
-  "Execute the specified action for each URL in the list
+  "Execute the specified action for each URL from the video list
   Parameters:
-  - urls: A list of URLs to process
+  - videos: A list of the videos
   - action: The action to execute, which should be a key in the actions map"
-  [urls action]
-  (doseq [url urls] (ps-error-handler! false (get media/actions action) url)))
+  [videos action]
+  (doseq [video videos] (ps-error-handler! false (media/cmd-from-action action (:title video)) (:url video))))
 
 (defn- run [db keys default]
   (let [history (query-history! db)
-        {:keys [urls action]} (rofi-history history keys)]
+        {:keys [videos action]} (rofi-history history keys)]
     (if action
-      (execute-actions! urls action)
-      (execute-actions! urls default))))
+      (execute-actions! videos action)
+      (execute-actions! videos default))))
 
 (def spec {:spec
            {:qutebrowser {:alias :q
@@ -82,6 +79,7 @@
             :newsboat    {:alias :n
                           :desc  "Search youtube videos from newsboat database"}
             :help        {:alias :h :desc "Print this help"}}})
+
 (defn- print-help []
   (printf "A script for searching links from database.
   Options:%n%s
@@ -94,7 +92,7 @@
    - quetebrowser, newsbout, rofi, mpv
    - optional: pueue"
           (cli/format-opts spec)
-          (media/term-run)
+          media/term-run
           (get-in db [:qutebrowser :path])
           (get-in db [:newsboat :path])))
 
@@ -109,8 +107,8 @@
 
 (comment
   (count (query-history!))
-  (run :qutebrowser (media/rofi-keys) :fullscreen)
-  (run :newsboat (media/rofi-keys) :fullscreen)
+  (run :qutebrowser media/rofi-keys :fullscreen)
+  (run :newsboat media/rofi-keys :fullscreen)
 
   (trim-col "apropos clojure")
 
@@ -127,7 +125,7 @@
                       (swap! unique-urls conj url)
                       true))))
               history)))
-  nil)
+  )
 
 ;(defn- query-history! [db-name]
 ;  (try
