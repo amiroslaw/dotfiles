@@ -12,7 +12,7 @@
 # super + ctrl + f 
 # unused 
 # b - balance
- 
+
 # make sxhkd reload its configuration files:
 super + Home
 	pkill -USR1 -x sxhkd
@@ -457,3 +457,11 @@ super + shift + {comma,period}
 # -------------------------------------------------------------------------
 	# { gksu net-restart.sh, \
 	# nmcli device wifi connect $(awk '\{print $1\}' $PRIVATE/wifi) password $(awk '\{print $2\}' $PRIVATE/wifi)}
+
+# expand/contract a window 
+#alt + control + shift + {h,j,k,l}
+#  bspc node -z {left -20 0 || bspc node -z right -20 0, \
+#                bottom 0 20 || bspc node -z top 0 20,\
+#                top 0 -20 || bspc node -z bottom 0 -20,\
+#                right 20 0 || bspc node -z left 20 0}
+
