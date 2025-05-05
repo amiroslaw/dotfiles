@@ -195,8 +195,33 @@ return {
 	{ 'godlygeek/tabular', cmd = { 'Tab' } }, -- do wyrównywania np w tabelach http://vimcasts.org/episodes/aligning-text-with-tabular-vim/ :Tab /| ft = { 'markdown', 'asciidoctor' }
 	{ 'majutsushi/tagbar', cmd = 'TagbarToggle' },
 	--}}}
+	--{{{ LSP
+      { 'williamboman/mason.nvim', opts = {} },
+        -- "williamboman/mason-lspconfig.nvim",
+        -- "WhoIsSethDaniel/mason-tool-installer.nvim",
+	--}}}
 
 	--{{{ Code
+	{ 'sbdchd/neoformat', cmd = { 'Neoformat' } },
+	{ 'stevearc/conform.nvim',
+	  opts = {
+		formatters_by_ft = {
+		  css = { "prettier" },
+		  scss = { "prettier" },
+		  html = { "prettier" },
+		  javascript = { "prettier" },
+		  json = { "prettier" },
+		  lua = { "stylua" },
+		  markdown = { "prettier" },
+		  clojure = { "zprint" },
+		  asciidoctor = { "zprint" },
+		  shfmt = { "bash" },
+		  ktfmt = { "kotlin" },
+		  -- asciidoctor = { "zprint", "clang-format" },
+		  java = { "clang-format" },
+		},
+	  },
+	},
 	{ 'lewis6991/gitsigns.nvim', event = { 'BufReadPre', 'BufNewFile' } },
 	'kylechui/nvim-surround',
 	{ "roobert/surround-ui.nvim",
@@ -206,13 +231,13 @@ return {
 	{ "sustech-data/wildfire.nvim",
 		event = "VeryLazy",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
-		opts =  { filetype_exclude = { "qf", 'asciidoctor' }, } -- exclude unil treesitter will support asciidoc
+		opts =  { filetype_exclude = { "qf" }, } -- exclude unil treesitter will support asciidoc
 	},
-	{ 'sbdchd/neoformat', cmd = { 'Neoformat' } },
 	{ 'gennaro-tedesco/nvim-jqx', ft = { 'json', 'yaml' } },
 	{ 'windwp/nvim-autopairs', event = 'InsertEnter', config = true },
-	{ 'jose-elias-alvarez/null-ls.nvim', branch = 'main', dependencies = { 'nvim-lua/plenary.nvim' } },
+	-- { 'jose-elias-alvarez/null-ls.nvim', branch = 'main', dependencies = { 'nvim-lua/plenary.nvim' } },
 	{ 'NTBBloodbath/rest.nvim', branch = 'main', ft = { 'http' }, dependencies = { 'nvim-lua/plenary.nvim' } }, -- maybe delete
+	{'nvim-treesitter/nvim-treesitter-context'},
 	{ 'nvim-treesitter/nvim-treesitter',
 		build = ':TSUpdate',
 		config = function()
@@ -239,6 +264,7 @@ return {
 					'vim',
 					'dockerfile',
 				}, -- TSInstall css html; "asciidoc" doesn't support yet
+					-- 'asciidoc',
 				auto_install = true,
 				highlight = {
 					enable = true,
