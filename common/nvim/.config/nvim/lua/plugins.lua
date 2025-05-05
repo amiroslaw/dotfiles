@@ -44,7 +44,7 @@ return {
 			  return "\\<" .. str
 			end,
 		  },
-		modes = { 
+		modes = {
 			char = { jump_labels = true, -- for actions d/y
 			keys = { "f", "F", ";", "," }, -- removed t and T
 			}
@@ -57,7 +57,7 @@ return {
 		{ "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
 		{ "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
 		{ "<a-f>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-		{ "<a-g>", mode = { "n", "o", "x" }, function() require("flash").jump( { 
+		{ "<a-g>", mode = { "n", "o", "x" }, function() require("flash").jump( {
 			  search = { mode = "search", max_length = 0 },
 			  label = { after = { 0, 0 } },
 			  pattern = "^"
@@ -72,18 +72,18 @@ return {
 			{ 'crispgm/telescope-heading.nvim' },
 			{ 'nvim-lua/plenary.nvim' },
 			{ 'amiroslaw/telescope-jumps.nvim' },
-			{ "benfowler/telescope-luasnip.nvim",   module = "telescope._extensions.luasnip",}, 
+			{ "benfowler/telescope-luasnip.nvim",   module = "telescope._extensions.luasnip",},
 			{ "nvim-telescope/telescope-live-grep-args.nvim" , version = "^1.0.0", },
 			-- { 'gbprod/yanky.nvim'},
 		},
 	},
-	{ 'nvim-telescope/telescope-fzf-native.nvim', 
+	{ 'nvim-telescope/telescope-fzf-native.nvim',
 		build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
 		dependencies = 'nvim-telescope/telescope.nvim',
 	},
 	{ 'danielfalk/smart-open.nvim', branch = '0.2.x', dependencies = { 'kkharji/sqlite.lua' } },
 	{ "chrisgrieser/nvim-origami",
-		event = "BufReadPost", 
+		event = "BufReadPost",
 		opts = true,
 	},
 	{ "huynle/ogpt.nvim",
@@ -103,8 +103,8 @@ return {
 				},
 			  },
 			},
-			actions_paths = { 
-				'~/.config/nvim/custom/ogpt-actions.json', 
+			actions_paths = {
+				'~/.config/nvim/custom/ogpt-actions.json',
 					  -- default action that comes with lua/ogpt/actions.json
 					  -- debug.getinfo(1, "S").source:sub(2):match("(.*/)") .. "actions.json",
 			},
@@ -145,7 +145,7 @@ return {
 	},
 	{ "L3MON4D3/LuaSnip",
 		version = "2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-		event = 'InsertEnter', 
+		event = 'InsertEnter',
 		-- install jsregexp (optional!).
 		build = "make install_jsregexp", 
 		-- dependencies = 'honza/vim-snippets',  -- remove if can't exclude

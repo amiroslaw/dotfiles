@@ -368,7 +368,7 @@ require("nvim-surround").setup({
 				add = { {vim.fn.getreg("+") .. "["},{ "]"} }
 			},
             ["L"] =  {
-				add = {"", "[" .. vim.fn.getreg("+") .. "]"} 
+				add = {"", "[" .. vim.fn.getreg("+") .. "]"}
 			}
     },
 })
@@ -627,7 +627,7 @@ local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
 					},
 				},
 			},
-			pickers = { 
+			pickers = {
 				buffers = { mappings = { i = { ["<CR>"] = actions.select_tab_drop } } },-- go to tab if open
 					}
 		}
@@ -741,7 +741,7 @@ cmp.setup {
 				luasnip = '',
 				nvim_lsp = '',
 				nvim_lua = '',
-				path = '',
+			path = '',
 				calc = '',
 				dictionary = '',
 			})[entry.source.name]
