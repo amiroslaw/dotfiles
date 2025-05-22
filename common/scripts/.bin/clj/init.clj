@@ -295,7 +295,7 @@
           (transduce (comp (filter (comp seq :cmds))
                            (map (fn format-row
                                   [{:keys [cmds desc]}]
-                                  (format "  %s %s %n"
+                                  (format "  %s: %s %n"
                                           (str/join " " cmds)
                                           (if (empty? desc) ""
                                                             desc)))))

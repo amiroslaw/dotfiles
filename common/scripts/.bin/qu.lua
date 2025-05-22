@@ -131,7 +131,7 @@ local function jobList(group)
 		-- ['kill'] = killQueue,
 		-- ['delete'] = resetQueue,
 		-- [false] = restartQueue,
-	} 
+	}
 	local jobs = M(out):filter(M.fun.contains('^%s%d'))
 					:value()
 	local selected, keybind = rofiMenu(jobs, { prompt = 'Default action:restart', multi = true, width = '70%', keys = keys})
