@@ -253,12 +253,13 @@
          suffix (if-let [suffix (:suffix opts)]
                   suffix
                   default-scratchpad-suffix)]
+     (println term-cmd)
      (if (fs/regular-file? txt)
        (sh (format term-cmd name (str "nvim " txt)))
        (do (create-dir! dir)
            (let [file (.toString (fs/create-temp-file {:dir dir :prefix prefix :suffix suffix}))]
              (spit file txt)
-             (sh term-cmd name "nvim" file)))))
+             (sh (format term-cmd name "nvim") file)))))
    ))
 
 (defn editor!

@@ -277,6 +277,7 @@ TERM_LT and TERM_LT_RUN = %s
           (cli/format-opts {:spec spec-source})
           (cli/format-opts {:spec spec-search})
           (cli/format-opts {:spec spec-stats})
+          (cli/format-opts {:spec spec-playlist})
           media/term-run))
 
 (def subcommands

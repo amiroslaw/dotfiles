@@ -1,6 +1,8 @@
 .git
 .gitignore
 *.zwc
+.lsp
+.clj-kondo
 
 common/nvim/.config/nvim/plugin/packer_compiled.lua
 navi.log
