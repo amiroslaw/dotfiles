@@ -11,7 +11,7 @@ Actions that manage playlists can take `--save[=playlistName]` or `--input` opti
 
 Actions:
 	--makeLocal -l → Create playlist (m3u) from the directories in current location 
-	--makeOnline -m → Create playlist (m3u) from the url
+	--makeOnline -m → Create playlist (m3u) from the yt playlist url
 	--makeQueue -q → Create playlist (m3u) from a queue
 	--open -o [--list] [dir] → Open and manage videos or playlists
 	--rename -n [dir] → Change name of the last playlist

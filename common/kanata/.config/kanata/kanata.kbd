@@ -115,7 +115,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
   ;; url (cmd )
 ;; order matters
 	rofi(cmd rofi -modi drun,keys,run -show drun -show-icons -sidebar-mode -monitor -4 -matching fuzzy)
-  qu (cmd qu.lua --menu)
+  qu (cmd qu.clj menu)
   yt (cmd setsid mpv.lua -o)
   qb (cmd setsid /home/miro/.config/qutebrowser/userscripts/session.sh)
   pom (cmd sh -c "task sync && pomodoro.lua add -n")
