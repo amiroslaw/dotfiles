@@ -286,6 +286,7 @@ config.bind('cI', 'hint --rapid images download')
 
 config.bind('pc', 'open -t {primary}')
 config.bind('pC', 'open -t {clipboard}')
+config.bind('ys', 'spawn -u share-highlight.clj')
 config.bind('yu', 'yank inline {url:pretty}[{title}]') # “yank asciidoc-formatted link”
 # }}}
 
