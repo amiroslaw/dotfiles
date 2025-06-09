@@ -12,20 +12,29 @@
       (str/replace "-", "%2D")
       (str/replace "+" "%20")))
 
-(defn- create-text-fragment [trimmed]
-  (if (< (count trimmed) 11)
-    (encode-text trimmed)
-    (str (encode-text (take 4 trimmed)) "," (encode-text (take-last 4 trimmed)))))
+(defn- create-text-fragment [txt]
+  (let [words (str/split txt #"\s+")]
+    (if (< (count words) 11)
+      (encode-text words)
+      (str (encode-text (take 4 words)) "," (encode-text (take-last 4 words))))))
 
-(defn- build-url [url selection]
-  {:pre [(url? url) (string? selection)] :post [(string? %)]}
-  (let [words (str/split selection #" ")
-        trimmed (rest (pop words))]
-    (format "%s#:~:text=%s" url (create-text-fragment trimmed))))
+(defn extract-match [text selection]
+  (let [words (str/split text #"\s+")
+        sel-words (str/split selection #"\s+")]
+    (->> (partition (count sel-words) 1 words)              ;; Sliding window of selection size
+         (map #(str/join " " %))
+         (filter #(every? (fn [sel-word] (str/includes? % sel-word)) sel-words))
+         first)))
+
+(defn- build-url [url selection page]
+  {:pre [(url? url) (string? selection) (string? page)] :post [(string? %)]}
+  (let [match (extract-match page selection)]
+    (format "%s#:~:text=%s" url (create-text-fragment match))))
 
 (let [qute-url (System/getenv "QUTE_URL")
-      selected-text (System/getenv "QUTE_SELECTED_TEXT") ;; or (ps-error-handler! true "clipster -p -o")
-      url (build-url qute-url selected-text)]
+      page (slurp (System/getenv "QUTE_TEXT"))
+      selected-text (System/getenv "QUTE_SELECTED_TEXT")    ;; or (ps-error-handler! true "clipster -p -o")
+      url (build-url qute-url selected-text page)]
   (notify! url)
   (sh {:in url} "clipster -c "))
 
@@ -41,4 +50,8 @@
                   ;(ps-error-handler! true "clipster -p -o")
                   )
        } "clipster -c ")
+
+  (def text "Lisp is a functional programming language. Clojure is a functional programming language.")
+  (def selection "sp is a functional prog")
+
   )
