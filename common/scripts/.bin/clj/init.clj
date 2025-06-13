@@ -281,11 +281,11 @@
   "Loads properties from a file at the given path if it is a regular file. It needs to be a java properties file.
   Returns a map with the property names and values."
   ([path]
-  (if (fs/regular-file? path)
-    (doto (new java.util.Properties)
-      (.load (new java.io.FileInputStream path))
-      (.stringPropertyNames))                               ;; TODO maybe convert keys to keywords
-    (notify-error! (str "No config file " path))))
+   (if (fs/regular-file? path)
+     (doto (new java.util.Properties)
+       (.load (new java.io.FileInputStream path))
+       (.stringPropertyNames))                              ;; TODO maybe convert keys to keywords
+     (notify-error! (str "No config file " path))))
   ([path key]
    (get (get-properties! path) key)))
 
@@ -317,21 +317,19 @@
 (defn url-params
   "Parses URL parameters.
   There are two arities:
-  1. ([url param]) - Returns the value of the specified parameter from the URL.
-  2. ([url]) - Returns a map of all parameters and their values from the URL."
+  1. ([url param]) - Returns the value of the specified parameter from the URL or nil.
+  2. ([url]) - Returns a map of all parameters and their values from the URL or nil if no parameters."
   ([url param]
    {:pre  [(url? url) (string? param)]
     :post [(or (nil? %) (string? %))]}
    (get (url-params url) param))
   ([url]
-   {:pre  [(url? url)]
-    :post [(map? %)]}
-   (-> url
-       (str/split #"\?")
-       second
-       (java.net.URLDecoder/decode UTF-8)
-       (str/split #"&")
-       (->> (into {} (map #(str/split % #"=")))))))
+   {:pre  [(url? url)]}
+   (if-let [params (second (str/split url #"\?"))]
+     (-> params
+         (java.net.URLDecoder/decode UTF-8)
+         (str/split #"&")
+         (->> (into {} (map #(str/split % #"="))))))))
 
 (defn http-error-handler!
   ([response] (http-error-handler! response nil))
@@ -384,7 +382,7 @@
   (editor! "jakiś tekst2")
   (editor! "/home/miro/t.txt")
 
-;; keys bindings
+  ;; keys bindings
   (tap> (create-keys-bindings {["Alt-j" "opt title" :stop] ["Alt-q" "stop app" :app]}))
   (def user-options {:prompt "Zmienioe ", :width "50px", :multi "", :msg "<b>hello</b>", :keys ""})
   (def user-options {:prompt "Zmienioe ", :width "50px", :multi true, :msg "<b>hello</b>", :keys ""})

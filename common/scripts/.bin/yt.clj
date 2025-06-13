@@ -157,9 +157,17 @@
             (:commentCount (:statistics meta))
             (:description (:snippet meta)))))
 
+(defn- url->id [url]
+  {:post [(string? %)]}
+  (cond
+    (not (url? url)) (notify-error! (str "Not a valid URL: " url) true)
+    (url-params url "v") (url-params url "v")
+    (str/includes? url "/shorts/") (last (str/split url #"/"))
+    :else (notify-error! (str "No video ID found in URL: " url) true)))
+
 (defn- metadata
   [{opts :opts}]
-  (let [data-list (fetch-metadata (url-params (:url opts) "v"))
+  (let [data-list (fetch-metadata (url->id (:url opts)))
         text-status (format-metadata (first data-list))]
     (if (:notify opts)
       (notify! text-status)
@@ -246,7 +254,6 @@
    :m3u {:desc   "Create m3u playlist from a Youtube playlist."
          :coerce :boolean
          :alias  :m}}) ;; TODO add saving path
-         ;;
 ;local DIR_PLAYLISTS = os.getenv 'HOME' .. '/Templates/mpvlists'
 
 (def spec-source
@@ -267,7 +274,7 @@ Examples:
    yt.clj search --query 'babashka'
    yt.clj search --input
    yt.clj search --clip
-   yt.clj stats --notify -u='https://www.youtube.com/watch?v=hoCk655vgtc'
+   yt.clj stats --notify -u 'https://www.youtube.com/watch?v=hoCk655vgtc'
    yt.clj playlist --m3u --clip
 %nDefault values can be override via system environment. The values:
 TERM_LT and TERM_LT_RUN = %s
@@ -296,7 +303,9 @@ TERM_LT and TERM_LT_RUN = %s
 
   (cli/dispatch subcommands ["stats" "-n" "-u" "https://www.youtube.com/watch?v=3JZ_D3ELwOQ"])
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=uXi8PXU2oS4"]) ; short
-  (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=uJx06_o1AJY"]) ; short
+  (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/shorts/Gs0GpLx75rQ"]) ; short
+  (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/Gs0GpLx75rQ"]) ; no id
+
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=xKqK8AR2W4U"]) ;; online
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=dus7vXctRBE"]) ;; wspierający ended stream
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=rItfOh3qnfs"]) ;; scheduled
