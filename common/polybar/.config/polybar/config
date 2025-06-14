@@ -160,7 +160,8 @@ ramp-used-7 = █
 type = internal/date
 interval = 60
 # doesn't work
-click-right = notify-send -t 9000 "$(cal)"
+click-right = naivecalendar.sh
+click-middle = notify-send -t 9000 "$(cal)"
 
 label = %date% %time%
 date = ""
