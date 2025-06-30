@@ -79,6 +79,7 @@ r { command(zenity --entry | xargs -I {} mv $1 {}.png); }
 <Alt>5 { command(-mkdir 5; cat | xargs -I {} mv {} 5); }
 ;<Alt>x { command(- | xargs -I {} xclip-cutfile {}); }
  
+; g jump like in vim `f`
 ; WARNING some commands do not work
 @MONTAGE {
 	l { montage_mode_shift_x(1); } 

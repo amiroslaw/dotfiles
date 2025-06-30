@@ -47,6 +47,8 @@
             "?":       ShowHelp,
             "I":       ShowCurrentSongInfo,
             "O":       ShowOutputs,
+            //"u":       Update,
+            //"U":       Rescan,
         },
         navigation: {
             "k":       Up,
