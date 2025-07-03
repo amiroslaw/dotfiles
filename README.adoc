@@ -20,73 +20,85 @@ For managing my dots I use https://www.gnu.org/software/stow/manual/stow.html[st
 
 .File hierarchy
 ....
- ├── common
- │  ├── alacritty
- │  ├── bottom
- │  ├── broot
- │  ├── btop
- │  ├── config
- │  ├── ctags
- │  ├── dunst
- │  ├── easystroke
- │  ├── feh
- │  ├── fzf
- │  ├── git
- │  ├── gtk
- │  ├── home
- │  ├── ideavim
- │  ├── kitty
- │  ├── lazygit
- │  ├── local
- │  ├── mozilla
- │  ├── mpv
- │  ├── ncmpcpp
- │  ├── nvim
- │  ├── picom
- │  ├── polybar
- │  ├── pqiv
- │  ├── qutebrowser
- │  ├── rofi
- │  ├── rofi-buku
- │  ├── scripts
- │  ├── smplayer
- │  ├── stylua
- │  ├── sxhkd
- │  ├── sxiv
- │  ├── task
- │  ├── tealdeer
- │  ├── tg
- │  ├── timewarrior
- │  ├── vifm
- │  ├── vim
- │  ├── wezterm
- │  └── zsh
- ├── desktop
- │  ├── alacritty
- │  ├── bspwm
- │  ├── config
- │  ├── home
- │  ├── mpd
- │  ├── nfancurve
- │  ├── polybar
- │  ├── rtorrent
- │  ├── scripts
- │  └── zsh
- ├── laptop
- │  ├── alacritty
- │  ├── bspwm
- │  ├── config
- │  ├── home
- │  ├── mpd
- │  ├── polybar
- │  ├── rtorrent
- │  ├── scripts
- │  └── zsh
- ├── old
- │  ├── i3
- │  ├── scripts
- │  └── tmux
- └── system
-    └── hibernate
+├── common
+│   ├── broot
+│   ├── btop
+│   ├── config
+│   ├── ctags
+│   ├── dunst
+│   ├── feh
+│   ├── fonts
+│   ├── fzf
+│   ├── git
+│   ├── gtk
+│   ├── home
+│   ├── ideavim
+│   ├── kanata
+│   ├── lazygit
+│   ├── local
+│   ├── mozilla
+│   ├── mpd
+│   ├── mpv
+│   ├── navi
+│   ├── nchat
+│   ├── ncmpcpp
+│   ├── newsboat
+│   ├── nvim
+│   ├── picom
+│   ├── polybar
+│   ├── pqiv
+│   ├── pueue
+│   ├── qutebrowser
+│   ├── rmpc
+│   ├── rofi
+│   ├── rofi-buku
+│   ├── scripts
+│   ├── smplayer
+│   ├── stylua
+│   ├── sxhkd
+│   ├── sxiv
+│   ├── task
+│   ├── tealdeer
+│   ├── tg
+│   ├── timewarrior
+│   ├── user-daemon
+│   ├── vifm
+│   ├── w3m
+│   ├── wezterm
+│   ├── ytfzf
+│   └── zsh
+├── desktop
+│   ├── bspwm
+│   ├── config
+│   ├── home
+│   ├── mpd
+│   ├── nfancurve
+│   ├── polybar
+│   ├── rtorrent
+│   ├── scripts
+│   ├── task
+│   └── zsh
+├── laptop
+│   ├── bspwm
+│   ├── config
+│   ├── home
+│   ├── mpd
+│   ├── polybar
+│   ├── rtorrent
+│   ├── scripts
+│   ├── task
+│   └── zsh
+├── old
+│   ├── alacritty
+│   ├── alacritty-desktop
+│   ├── alacritty-laptop
+│   ├── bottom
+│   ├── easystroke
+│   ├── i3
+│   ├── kitty
+│   ├── scripts
+│   ├── tmux
+│   ├── vim
+│   └── xrandr
 ....
 
