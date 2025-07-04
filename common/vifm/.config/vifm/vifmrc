@@ -112,7 +112,7 @@ set confirm-=delete
 set statusline="  %T%= %A %10u:%-7g %15E %20d  "
 " set statusline=#statusbar#fmt " plugin but with error
 
-autocmd DirEnter * !fasd -A %d %i
+autocmd DirEnter * !fasder -A %d %i
 
 " Use ripgrep instead of grep wiht smart case
 set grepprg=rg\ --color=never\ -SHn\ %i\ %a\ %s
@@ -129,16 +129,16 @@ nmap <C-s> :grep <space>
                 " \| let $FZF_PICK = term('fd | fzf --preview-window 40% --preview "bat --style=numbers --color=always --line-range :500 {}" 2>/dev/tty')
 nmap <C-f> :fzfFind <cr> 
 command! fzfFind : set noquickview
-                \| let $FZF_PICK = term('fd | fzf --preview "bat --style=numbers --color=always --line-range :500 {}" 2>/dev/tty')
-                \| if $FZF_PICK != ''
-                \|     execute 'goto' fnameescape($FZF_PICK)
+                \| let $PICK = term('fd | fzf --preview "bat --style=numbers --color=always --line-range :500 {}" 2>/dev/tty')
+                \| if $PICK != ''
+                \|     execute 'goto' fnameescape($PICK)
                 \| endif
 nmap <A-f> :fzfCdh <cr>
 command! fzfCdh :execute 'cd' fnameescape(term('fd --hidden --type d | fzf 2> /dev/tty'))
 " grep -v cache - remove cache dir
 nmap <C-j> :fzfFasd <cr> 
 command! fzfFasd : set noquickview
-                \| let $PICK = term('fasd -Rld | fzf 2>/dev/tty')
+                \| let $PICK = term('fasder -Rld | fzf 2>/dev/tty')
                 \| if $PICK != ''
                 \|     execute 'cd ' fnameescape($PICK)
                 \| endif
@@ -277,8 +277,8 @@ nmap <A-3> :! mkdir -p 3 && mv %f 3 <cr>
 nmap <A-4> :! mkdir -p 4 && mv %f 4 <cr>
 nmap <A-5> :! mkdir -p 5 && mv %f 5 <cr>
 " nmap <F9> :! setsid -f nvim-qt %f <cr>
-nmap O :! fasd -A %f && nvim-qt %f <cr>
-nmap md :!fasd -A %f && typora %f &<cr>
+nmap O :! fasder -A %f && nvim-qt %f <cr>
+nmap md :!fasder -A %f && typora %f &<cr>
 
 "COMAND VIFM
 " shortcut list
@@ -417,7 +417,7 @@ filextype {*.mobi,*.epub,*azw3,*azw,*pobi}
 		\ xreader %f %i,
 		" \ bookworm %f %i,
 
-filetype {*.md,*.txt,*.adoc,*.lua,*.csv,*.java,*.ts,*.css,*.js,*.ks} fasd -A %f && nvim %f
+filetype {*.md,*.txt,*.adoc,*.lua,*.csv,*.java,*.ts,*.css,*.js,*.ks} fasder -A %f && nvim %f
 filextype *.md,*.txt
         \ {Open with typora}
         \ typora %f %i,

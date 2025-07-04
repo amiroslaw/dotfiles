@@ -65,8 +65,6 @@ if ! zgenom saved; then
 	zgenom ohmyzsh plugins/colored-man-pages
 	zgenom ohmyzsh plugins/taskwarrior
 	zgenom ohmyzsh plugins/dirhistory
-	# zgenom ohmyzsh plugins/fasd # has error
-	# zgenom load wookayin/fzf-fasd # i have my own fzf bindings
 	zgenom load lincheney/fzf-tab-completion # breaks some completions
 	zgenom load zsh-users/zsh-completions
 	zgenom load zsh-users/zsh-autosuggestions
@@ -103,14 +101,6 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
-fasd_cache="$HOME/.cache/fasd-init-bash"
-if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
-  fasd --init posix-alias zsh-hook zsh-ccomp zsh-ccomp-install \
-    zsh-wcomp zsh-wcomp-install >| "$fasd_cache"
-fi
-source "$fasd_cache"
-unset fasd_cache
-
 # shuf -n 1 $CONFIG/logs/dictionary/enpl-dictionary.txt
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
@@ -126,3 +116,12 @@ source ~/.config/zgenom/sources/lincheney/fzf-tab-completion/___/zsh/fzf-zsh-com
 bindkey '^I' fzf_completion
 
 eval $(thefuck --alias)
+
+# fasder
+# rest functins are in aliase or fzf config 
+_fasder_preexec() {
+  { eval "fasder --proc $(fasder --sanitize $2)"; } >> /dev/null 2>&1
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook preexec _fasder_preexec
+

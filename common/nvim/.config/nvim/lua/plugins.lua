@@ -9,6 +9,7 @@ return {
 	{ 'mg979/vim-visual-multi', branch = 'master' },
 	{ "tpope/vim-repeat", event = "VeryLazy" },
 	'chentoast/marks.nvim',
+	'wyne/fasder.nvim', -- adds file to fasder index
 	'mhinz/vim-startify', -- start screen
 	{ 'mbbill/undotree', cmd = { 'UndotreeToggle' } },
 	{ 'gbprod/yanky.nvim', config = true },

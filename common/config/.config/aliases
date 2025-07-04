@@ -137,7 +137,6 @@ alias vc='changed_files'
 alias tor='stty stop undef && stty start undef && screen -x tor'
 alias huliomail='tmpmail -g Huliofff@1secmail.org && tmpmail -r'
 alias ping='prettyping'
-alias neofetch='fastfetch'
 alias rest='wuzz'
 # alias viswap_rm= 'rm ~/.local/share/nvim/swap/*'
 # alias viswap='rm ~/.local/share/nvim/swap/*'
@@ -159,6 +158,9 @@ alias drag-pull='dragon-pull.sh'
 alias open='xdg-open '
 alias op='xdg-open '
 alias di='dua interactive'
+# replace
+alias fasd='fasder' 
+alias neofetch='fastfetch'
 #}}}
 
 #{{{ Organization
@@ -390,31 +392,6 @@ fo() {
 
 # }}}
 
-# {{{ FASD
-# fasd search from last opened files, paths
-# im and select a file will open in sxiv
-
-v () {
-	fasd -A "$1" 
-	nvim "$1"
-}
-alias vim='v'
-alias n='f -e nvim' 
-alias i='f -e sxiv'  
-alias p='f -e zathura'  
-alias lo='f -e libreoffice'  
-
-### default
-# from oh-my-zsh v; o; 
-# alias a='fasd -a'        # any  
-# alias d='fasd -d'        # directory  
-# alias f='fasd -f'        # file  
-# alias s='fasd -si'       # show / search / select  
-# alias sd='fasd -sid'     # interactive directory selection  
-# alias sf='fasd -sif'     # interactive file selection  
-# alias z='fasd_cd -d'     # cd, same functionality as j in autojump  
-# alias zz='fasd_cd -d -i' # cd with interactive selection  
-#}}}
 
 #ZSH
 # {{{ ZSH extensions 
@@ -437,7 +414,7 @@ alias -g R='!-1'
 # append all previous arguments: new_string old_arguments
 alias -g A='!*'
 
-alias -g jj='java -jar'
+# alias -g jj='java -jar'
 alias -g G='| grep'
 alias -g H='| head'
 alias -g T='| tail'
@@ -510,9 +487,18 @@ take () {
   mkdir -p "$1" && cd "$1"
   }
 
-# deep broot cd "I'm feeling lucky" of broot
+# "I'm feeling lucky" 
+# deep broot cd of broot
 function c {
     br -h --only-folders --cmd "$1;:cd"
+}
+# fasder
+jj () {
+	if [ "$#" -gt 0 ]; then
+		cd "$(fasder -de 'printf %s' "$@")" || return 1
+	else
+		cd -
+	fi
 }
 
 wypakuj () {
