@@ -246,13 +246,18 @@ alias E='fzf_open_hidden'
 
 fzf_fasd_open() {
 	zle -I;
- FZF_CMD="fzf $FZF_DEFAULT_OPTS $FZF_FILE_OPTS --query="$1" --exit-0 --expect=alt-o,ctrl-e --prompt='fasd: alt-o→open;else→edit >'"
-  IFS=$'\n' out=("$(eval "fasd -Rfl | $FZF_CMD" )")
+ FZF_CMD="fzf $FZF_DEFAULT_OPTS $FZF_FILE_OPTS --query="$1" --no-sort --exit-0 --expect=alt-o,ctrl-e --prompt='fasder: alt-o→open;else→edit >'"
+  IFS=$'\n' out=("$(eval "fasder -Rfl | $FZF_CMD" )")
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   if [ -n "$file" ]; then
+	echo "$file" | xargs -r fasder --add
+	echo "Selection: $file"
     [ "$key" = alt-o ] && devour xdg-open "$file" || ${EDITOR:-vim} "$file"
-  fi
+	else
+		echo "No selection made"
+		return 1
+	fi
 }
 zle     -N   fzf_fasd_open
 bindkey '\eo' fzf_fasd_open
@@ -260,11 +265,13 @@ alias o='fzf_fasd_open'
 
 fzf_fasd_cd() {
 	zle -I;
-  IFS=$'\n' dir=("$(fasd -Rdl | fzf --query="$1" --exit-0 )")
+  IFS=$'\n' dir=("$(fasd -Rdl | fzf --query="$1" --exit-0 --no-sort +m)")
   if [[ -z "$dir" ]]; then
+	echo "No selection made"
     zle redisplay
     return 0
   fi
+	echo "$dir" | xargs -r fasder --add
   zle push-line # Clear buffer. Auto-restored on next prompt.
   BUFFER="cd -- ${(q)dir}"
   zle accept-line
@@ -275,8 +282,20 @@ fzf_fasd_cd() {
 }
 zle     -N   fzf_fasd_cd;
 bindkey '\ej' fzf_fasd_cd
-
-alias j='fzf_fasd_cd'
+# fzf_fasd_cd doesn't work for alias 
+j () {
+	local selection
+	# +m no multi
+	selection=$(fasder -Rdl "$@" | fzf -1 -0 --no-sort +m --height=10)
+	if [[ -n "$selection" ]]; then
+		echo "Selection: $selection"
+		echo "$selection" | xargs -r fasder --add
+		cd "$selection" || return 1
+	else
+		echo "No selection made"
+		return 1
+	fi
+}
 
 FZF_ALIAS_OPTS=${FZF_ALIAS_OPTS:-"--preview-window up:3:hidden:wrap"}
 
