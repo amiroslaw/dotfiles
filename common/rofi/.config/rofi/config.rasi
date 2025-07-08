@@ -1,4 +1,4 @@
-@theme "gruvbox-light"
+//@theme "gruvbox-light"
 /* @theme "one-light" */
 
 configuration {
@@ -103,3 +103,5 @@ kb-remove-to-eol: "";
 /*	me-accept-entry: "MouseDPrimary";*/
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 
+//@theme "/usr/share/rofi/themes/Arc.rasi"
+@theme "/home/miro/.config/rofi/themes/squared-everforest.rasi"
