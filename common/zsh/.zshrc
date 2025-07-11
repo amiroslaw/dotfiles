@@ -65,6 +65,7 @@ if ! zgenom saved; then
 	zgenom ohmyzsh plugins/colored-man-pages
 	zgenom ohmyzsh plugins/taskwarrior
 	zgenom ohmyzsh plugins/dirhistory
+	zgenom ohmyzsh plugins/chezmoi
 	zgenom load lincheney/fzf-tab-completion # breaks some completions
 	zgenom load zsh-users/zsh-completions
 	zgenom load zsh-users/zsh-autosuggestions
