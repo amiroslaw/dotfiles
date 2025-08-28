@@ -60,12 +60,12 @@ source "${HOME}/.config/zgenom/zgenom.zsh"
 if ! zgenom saved; then
 	# zgenom ohmyzsh #adds all aliases
 	zgenom ohmyzsh plugins/sudo 
+	zgenom ohmyzsh romkatv/powerlevel10k
 	zgenom ohmyzsh plugins/history 
 	zgenom ohmyzsh plugins/web-search 
 	zgenom ohmyzsh plugins/colored-man-pages
 	zgenom ohmyzsh plugins/taskwarrior
 	zgenom ohmyzsh plugins/dirhistory
-	zgenom ohmyzsh plugins/chezmoi
 	zgenom load lincheney/fzf-tab-completion # breaks some completions
 	zgenom load zsh-users/zsh-completions
 	zgenom load zsh-users/zsh-autosuggestions
