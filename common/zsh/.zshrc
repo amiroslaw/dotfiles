@@ -126,3 +126,4 @@ _fasder_preexec() {
 autoload -Uz add-zsh-hook
 add-zsh-hook preexec _fasder_preexec
 
+source <(yt.clj completions)

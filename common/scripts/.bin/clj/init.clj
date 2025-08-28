@@ -60,6 +60,7 @@
    (log! msg :error)
    (when exit? (System/exit 1))))
 
+  ;; TODO  rename to run but run! is taken, maybe change to signature: cmd as string and exit? as optional 
 (defn ps-error-handler! [exit? cmd & args]
   "Executes a shell command and handles errors.
   Parameters:
@@ -158,6 +159,14 @@
 (defn- lines->vec [string]
   (vec (str/split-lines string)))
 
+(defn rofi-indexes->inputs 
+  "Helper for rofi-menu that returns indexes → format -i. Converts selected menu items"
+  [selected-menu-items inputs]
+    {:pre [(sequential? selected-menu-items) (sequential? inputs)] :post [(seq? %)]}
+  (->> selected-menu-items
+       (map parse-long)
+       (map #(nth inputs %))))
+
 (defn- rofi-menu-return [selected exit]
   (cond
     (= 0 exit) {:out (lines->vec selected), :exit true}
@@ -194,6 +203,11 @@
   (rofi-menu! [\"a\" \"b\" \"c\"] user-options)
   ```"
   ([entries] (rofi-menu! entries {}))
+  ;; TODO 
+  ;; maybe returning :out-str → converted list to string, it would be good for non multiple menu selection 
+  ; add prompt param
+  ; ([entries prompt] (rofi-menu! entries {:prompt (format "%s: (%d)" prompt (count entries))}))
+  ; ([entries prompt options] {:pre [(map? options)
   ([entries options] {:pre [(map? options)
                             (if (contains? options :keys) (vector? (:keys options)) true)]}
    (let [opt (combine-options options)
@@ -202,7 +216,7 @@
          msg (when (not-empty (:msg opt)) (format " -markup -mesg \"%s\"" (:msg opt)))]
      (let [{:keys [exit out]}
            (sh {:in entries}
-               (format "rofi -format %s %s -monitor -4 -i -l %s -dmenu -p '%s' -theme-str 'window {width:  %s;}' %s %s"
+               (format "rofi -format %s %s -case-smart -monitor -4 -i -l %s -dmenu -p '%s' -theme-str 'window {width:  %s;}' %s %s"
                        (:format opt) (:multi opt) height (:prompt opt) (:width opt) (:keys opt) msg))]
        (rofi-menu-return out exit)))))
 
@@ -279,7 +293,7 @@
 
 (defn get-properties!
   "Loads properties from a file at the given path if it is a regular file. It needs to be a java properties file.
-  Returns a map with the property names and values."
+  Returns a map with the property names and values. List has to be split by ','"
   ([path]
    (if (fs/regular-file? path)
      (doto (new java.util.Properties)
@@ -307,7 +321,7 @@
                      table)))
 
 (def UTF-8 (java.nio.charset.StandardCharsets/UTF_8))
-(def url-pattern "https?://[^/]+")
+(def url-pattern "https?://[^/]+") ; should't it be [^\\s]
 (defn url? [url-str]
   (try (io/as-url url-str)
        true
@@ -341,6 +355,93 @@
        body
        (notify-error! (format "HTTP error: %s\n%s" status (get-in body json-error-path body)) false) ;; TODO change to true
        ))))
+
+(defn- trim-col
+  "Trim a column to a specified length, padding with spaces if necessary
+ Parameters:
+ - column: The string to trim
+ - length: The desired length of the output string (default is 20)
+ Returns:
+ - A string of the specified length"
+  ([column] {:post [(string? %)]}
+   (trim-col column 20))
+  ([column length] {:post [(string? %)]}
+   (let [current-length (count column)]
+     (if (>= current-length length)
+       (str (subs column 0 length))
+       (str column (apply str (repeat (- length current-length) " ")))))))
+
+(defn- transform-subcmd
+  "Transforms a subcommand map from cli lib into a standardized format."
+  [subcmd]
+  {:pre [(map? subcmd)] :post [(map? %)]}
+  (let [{:keys [cmds spec desc]} subcmd
+        opts (if spec
+               (mapv (fn [[k v]]
+                       {:name (name k)
+                        :opt-desc (:desc v)
+                        :coerce (:coerce v)})
+                     spec)
+               [])]
+    {:cmd (first cmds), :desc (or desc ""), :opts opts}))
+
+(defn- format-opt
+  "Formats a single option for Zsh completion."
+  [{:keys [name opt-desc coerce]}]
+  {:pre [(string? name) (string? opt-desc)] :post [(string? %)]}
+  (let [action (match [coerce]
+                      [:int] ":Int:"
+                      [:long] ":Long:"
+                      [:double] ":Double:"
+                      [(_ :guard #(number? %))] ":Number:" ;; maybe not needed previous
+                      [:boolean] ""
+                      [:paths] ":Filename:_files"
+                      [(_ :guard #(vector? %))] ":Filename:_files"
+                      :else ":String:")]
+    (format "'--%s[%s]%s'" name opt-desc action)))
+
+(defn- format-subcmd
+  "Builds list of commands and arguments for Zsh completion."
+  [{:keys [cmd desc opts]}]
+  (let [command (format "'%s:%s'" (or cmd " ") desc)
+        opt (str/join " " (map format-opt opts))
+        arg (format "%s) _arguments %s ;;" (or cmd "*") opt)]
+    {:cmd command :arg arg}))
+
+(defn- format-completion
+  "Formats a Zsh completion script for a list of subcommands."
+  [subcmds]
+  {:pre [(sequential? subcmds)] :post [(string? %)]}
+  (let [file-name-with-ext (fs/file-name *file*)
+        file-name (first (fs/split-ext file-name-with-ext))
+        completion (map format-subcmd subcmds)
+        cmds (str/join " " (mapv :cmd completion))
+        args (str/join "\n" (mapv :arg completion))]
+    (format
+      "_%1$s() {
+        local -a commands=(%2$s)
+        local state line
+        _arguments -C '1:command:->cmds' '*::arg:->args'
+        case $state in
+          cmds) _describe 'command' commands ;;
+          args)
+            case $line[1] in
+              %3$s
+            esac
+          ;;
+        esac
+        }
+      compdef _%1$s %4$s" file-name cmds args file-name-with-ext)))
+
+;; TODO add support for other shells
+(defn completion!
+  "Generates and prints Zsh completion scripts for a list of subcommands."
+  [subcmds _]
+  {:pre [(sequential? subcmds) (every? map? subcmds)]}
+  (->> subcmds
+       (map transform-subcmd)
+       format-completion
+       print))
 
 (comment
   (require '[portal.api :as p])

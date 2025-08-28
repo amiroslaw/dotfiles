@@ -3,7 +3,6 @@
          '[clojure.string :as str]
          '[babashka.cli :as cli]
          '[babashka.http-client :as http]
-         '[clojure.java.io :as io]
          '[clojure.core.match :refer [match]]
          '[babashka.classpath :as cp]
          '[clojure.java.io :as io]
@@ -12,16 +11,19 @@
 (require '[util-media :as media])
 (import '[java.time Duration])
 ;; TODO refactoring: convert rest to entity with unified fields - title, channel, date, description, videoId
-;; playlist and fetch-videos should return the same entity
+;; not all options implemented spec-source - clip, primary, maybe it is not needed
+
 (declare subcommands)
 (def UTF-8 (java.nio.charset.StandardCharsets/UTF_8))
 
 (def base-url "https://www.googleapis.com/youtube/v3/")
 (def yt-watch-url "https://www.youtube.com/watch?v=")
-(def yt-api-key (let [path (str (System/getenv "PRIVATE") "/keys.properties")
-                      key (get-properties! path "yt_api_key")]
-                  (if key key
-                          (notify-error! (str "YT API key not found in: \n" path) true))))
+
+(defn- get-property [key]
+  {:pre [(string? key)] :post [(string? %)]}
+  (-> (str (System/getenv "PRIVATE") "/keys.properties")
+      (get-properties! key)
+      (or (notify-error! (str "Key not found: \n" key) false))))
 
 (defn- prompt-input []
   {:post [(string? %)]}
@@ -30,53 +32,49 @@
       (System/exit 0)
       input)))
 
-(defn- item->menu [item]
-  {:pre  [(map? item)]
-   :post [(string? %)]}
-  (let [snippet (:snippet item)
-        date (first (str/split (:publishedAt snippet) #"T"))]
-    (format "%s | %s | %s" date (media/trim-col (:channelTitle snippet)) (:title snippet))))
+;; todo, change to clipcat
+(defn- clipboard [type]
+  {:pre [(string? type)]}
+  (ps-error-handler! true (str "clipster --output -m '' --" type)))
 
-(defn- response->video [res]
-  {:pre  [(map? res)]
-   :post [(map? %)]}
-  (let [title (get-in res [:snippet :title])
-        id-from-playlist (get-in res [:snippet :resourceId :videoId])
-        id (get-in res [:id :videoId] id-from-playlist)]
-    {:url (str yt-watch-url id), :title title}))
-;; TODO add safe subs
-;(if (<= (count title) 50)
-;  title
-;  (subs title 50))
+;; Data Fetching
+(defn- fetch-playlist [id]
+  {:pre  [(string? id)]
+   :post [(vector? %)]}
+  (-> (str base-url "playlistItems"
+           "?key=" (get-property "yt_api_key")
+           "&playlistId=" id
+           "&part=snippet"                                  ;; status is for live
+           ;"&fields=items(snippet(resourceId(videoId)))"
+           "&fields=items(snippet(title,channelTitle,publishedAt,description,resourceId))"
+           "&maxResults=50")
+      (http/get {:throw false})
+      (http-error-handler! [:error :message])
+      :items))
 
-(defn- rofi-selections->videos
-  "Converts selected menu items to maps with URL and title."
-  [items response]
-  (->> items
-       (map parse-long)
-       (map (fn [i] (get response i)))
-       (map response->video)))
-
-(defn- rofi-video-menu [response]
-  {:pre  [(vector? response) (every? map? response)]
-   :post [(map? %)]}
-  (let [menu (map item->menu response)
-        {:keys [out key exit]}
-        (-> menu
-            (rofi-menu! {:prompt "Select video", :width "80%", :format \i, :keys media/rofi-keys, :multi true, :msg "default action: <b>fullscreen</b>"}))]
-    (if exit
-      {:items out, :key key}
-      (System/exit 0))))
+(defn- fetch-user-playlists
+  "Fetches playlists from the user's channel."
+  [channel-id]
+  {:pre [(string? channel-id)] :post [(vector? %)]}
+  (-> (str base-url "playlists"
+           "?key=" (get-property "yt_api_key")
+           "&channelId=" channel-id
+           "&part=snippet"
+           "&fields=items(id,snippet(title,description))"
+           "&maxResults=50") ;; default is 5, max is 50
+      (http/get {:throw false})
+      (http-error-handler! [:error :message])
+      :items))
 
 (defn- fetch-videos [query]
   (when-not (string? query)
     (System/exit 0))
   (-> (str base-url "search"
-           "?key=" yt-api-key
+           "?key=" (get-property "yt_api_key")
            "&q=" query
            "&part=snippet"
            "&fields=items(id(videoId),snippet(title,channelTitle,publishedAt,description))"
-           "&maxResults=30"
+           "&maxResults=50"
            "&type=video"
            "&safeSearch=moderate"                           ;; none, moderate, strict
            "&videoDimension=2d")
@@ -84,34 +82,11 @@
       (http-error-handler! [:error :message])
       :items))
 
-(defn- clipboard [type]
-  {:pre [(string? type)]}
-  (ps-error-handler! true (str "clipster --output -m '' --" type)))
-
-(defn- query [opts]
-  (let [query (match [opts]
-                     [{:query q}] q
-                     [{:clip _}] (clipboard "clip")
-                     [{:primary _}] (clipboard "primary")
-                     [{:url u}] u
-                     :else (prompt-input))]
-    (java.net.URLEncoder/encode query UTF-8)))
-
-(defn- execute-actions!
-  "Execute the specified action for each video in the list
-  Parameters:
-  - videos: A list of videos to process
-  - action: The action to execute, which should be a key in the actions map"
-  [videos action]
-  {:pre [(seq? videos) (keyword? action)]}
-  (doseq [video videos]
-    (ps-error-handler! false (media/cmd-from-action action (:title video)) (:url video))))
-
 (defn- fetch-metadata
   [video-ids]
   {:pre [(string? video-ids)]}
   (-> (str base-url "videos"
-           "?key=" yt-api-key
+           "?key=" (get-property "yt_api_key")
            "&id=" video-ids                                 ;; can take multiple ids
            "&part=snippet,contentDetails,statistics"
            "&fields=items(id,snippet(title,channelTitle,publishedAt,description,liveBroadcastContent),contentDetails(duration),statistics(viewCount,likeCount,commentCount))")
@@ -119,6 +94,7 @@
       (http-error-handler! [:error :message])
       :items))
 
+;; METADATA
 (defn- live-status [meta]
   {:post [(string? %)]}
   (match [(:liveBroadcastContent (:snippet meta)) (:viewCount (:statistics meta))]
@@ -146,16 +122,19 @@
   {:post [(string? %)]}
   (if-not meta
     "\uD83D\uDED1 Private video"
-    (format "%s - %s \n%s | %s | %s \n%s \uD83D\uDC4D | %s \uDB80\uDD99 | %s \uDB82\uDC5F \n\n%s"
-            (:title (:snippet meta))
-            (:channelTitle (:snippet meta))
-            (format-duration (:duration (:contentDetails meta)))
-            (format-date (:publishedAt (:snippet meta)))
-            (live-status meta)
-            (:likeCount (:statistics meta))
-            (or (:viewCount (:statistics meta)) "0")
-            (:commentCount (:statistics meta))
-            (:description (:snippet meta)))))
+    (let [{:keys [snippet contentDetails statistics]} meta
+          {:keys [title channelTitle publishedAt description liveBroadcastContent]} snippet
+          {:keys [duration]} contentDetails
+          {:keys [viewCount likeCount commentCount]} statistics]
+      (format "%s - %s \n%s | %s | %s \n%s \uD83D\uDC4D | %s \uDB80\uDD99 | %s \uDB82\uDC5F \n\n%s"
+              title channelTitle
+              (format-duration duration)
+              (format-date publishedAt)
+              (live-status meta)
+              likeCount
+              (or viewCount "0")
+              commentCount
+              description))))
 
 (defn- url->id [url]
   {:post [(string? %)]}
@@ -173,6 +152,76 @@
       (notify! text-status)
       (println text-status))))
 
+(defn- item->menu [item]
+  {:pre  [(map? item)] :post [(string? %)]}
+  (let [snippet (:snippet item)
+        date (first (str/split (:publishedAt snippet) #"T"))]
+    (format "%s | %s | %s" date (media/trim-col (:channelTitle snippet)) (:title snippet))))
+
+(defn- response->video [res]
+  {:pre  [(map? res)] :post [(map? %)]}
+  (let [title (get-in res [:snippet :title])
+        id-from-playlist (get-in res [:snippet :resourceId :videoId])
+        id (get-in res [:id :videoId] id-from-playlist)]
+    {:url (str yt-watch-url id), :title title}))
+;; TODO add safe subs
+;(if (<= (count title) 50)
+;  title
+;  (subs title 50))
+
+(defn- rofi-selections->videos
+  "Converts selected menu items to maps with URL and title."
+  [items response]
+  (->> (rofi-indexes->inputs items response)
+       (map response->video)))
+
+(defn- rofi-video-menu [response]
+  {:pre  [(vector? response) (every? map? response)]
+   :post [(map? %)]}
+  (let [menu (map item->menu response)
+        {:keys [out key exit]}
+        (-> menu
+            (rofi-menu! {:prompt "Select video", :width "80%", :format \i, :keys media/rofi-keys, :multi true, :msg "default action: <b>fullscreen</b>"}))]
+    (if exit
+      {:items out, :key key}
+      (System/exit 0))))
+
+(defn- response->playlist [res]
+  {:pre  [(map? res)] :post [(map? %)]}
+  (let [title (get-in res [:snippet :title])
+        desc (get-in res [:snippet :description])
+        id (:id res)]
+    {:id id, :title title, :desc desc}))
+
+(defn- rofi-playlists-menu [response]
+  {:pre  [(sequential? response)] :post [(sequential? %)]}
+  (let [menu response
+        {:keys [out exit]}
+        (-> menu
+            (rofi-menu! {:prompt "Select playlist", :width "80%", :format \i }))]
+    (if exit
+      out
+      (System/exit 0))))
+
+(defn- query [opts]
+  (let [query (match [opts]
+                     [{:query q}] q
+                     [{:clip _}] (clipboard "clip")
+                     [{:primary _}] (clipboard "primary")
+                     [{:url u}] u
+                     :else (prompt-input))]
+    (java.net.URLEncoder/encode query UTF-8)))
+
+(defn- execute-actions!
+  "Execute the specified action for each video in the list
+  Parameters:
+  - videos: A list of videos to process
+  - action: The action to execute, which should be a key in the actions map"
+  [videos action]
+  {:pre [(seq? videos) (keyword? action)]}
+  (doseq [video videos]
+    (ps-error-handler! false (media/cmd-from-action action (:title video)) (:url video))))
+
 (defn- rofi-videos [response]
   {:pre [(vector? response) (every? map? response)]}
   (let [{:keys [items key]} (rofi-video-menu response)
@@ -182,24 +231,6 @@
       nil (execute-actions! videos :fullscreen)
       :metadata (do (doseq [v videos] (metadata {:opts {:notify true :url (:url v)}})) (rofi-videos response))
       (execute-actions! videos action))))
-
-(defn- search-videos
-  [{opts :opts}]
-  (rofi-videos (fetch-videos (query opts))))
-
-(defn- fetch-playlist [id]
-  {:pre  [(string? id)]
-   :post [(vector? %)]}
-  (-> (str base-url "playlistItems"
-           "?key=" yt-api-key
-           "&playlistId=" id
-           "&part=snippet"                                  ;; status is for live
-           ;"&fields=items(snippet(resourceId(videoId)))"
-           "&fields=items(snippet(title,channelTitle,publishedAt,description,resourceId))"
-           "&maxResults=50")
-      (http/get {:throw false})
-      (http-error-handler! [:error :message])
-      :items))
 
 (defn- format-m3u-item [meta]
   (let [url (str yt-watch-url (:id meta))
@@ -223,14 +254,35 @@
       (doseq [line m3u-items]
         (.write wrtr line)))))
 
+(defn- select-user-playlist [id]
+  {:pre [(string? id)]}
+  (let [response (fetch-user-playlists id)
+        playlists (map response->playlist response)
+        rofi-items (map #(format "%s\t | %s" (:title %)   (first (str/split (:desc %) #"\n")) ) playlists)
+        selected (rofi-playlists-menu rofi-items)
+        playlist (rofi-indexes->inputs selected playlists)]
+    (:id (first playlist))))
+
 (defn- playlist
   [{opts :opts}]
-  (let [list-id (url-params (:url opts) "list")
+  (let [list-id (match [opts]
+                     [{:url u}] (url-params u "list")
+                     [{:channel _}] (select-user-playlist (get-property "yt_channels"))
+                     [{:channel-id i}] (select-user-playlist i)
+                     :else  (notify-error! "No playlist URL or channel ID provided" false))
         playlist (fetch-playlist list-id)]
     (if (:m3u opts)
-      (tap> (create-playlist playlist))
-      (rofi-videos playlist)
-      )))
+      (create-playlist playlist)
+      (rofi-videos playlist))))
+
+(defn- search-videos
+  [{opts :opts}]
+  (rofi-videos (fetch-videos (query opts))))
+
+(defn- url-spec [desc]
+  {:desc  desc
+   :validate {:pred url? :ex-msg (fn [m] (str "Not a url: " (:value m)))}
+   :alias    :u})
 
 (def spec-search
   {:input {:desc   "Provide search string query in rofi input. Default if not provided a different option."
@@ -240,17 +292,19 @@
            :alias :q}})
 
 (def spec-stats
-  {:notify {:desc   "Create notification with a video status."
+  {:url (url-spec "The URL of the video.");; TODO allow multiple urls
+  :notify {:desc   "Create notification with a video status."
             :coerce :boolean
-            :alias  :n}
-   :url    {:desc     "Take a URL from terminal argument."  ;; TODO allow multiple urls
-            :validate {:pred url? :ex-msg (fn [m] (str "Not a url: " (:value m)))}
-            :alias    :u}})
+            :alias  :n}})
 
 (def spec-playlist
-  {:url {:desc     "Take a URL from terminal argument."
-         :validate {:pred url? :ex-msg (fn [m] (str "Not a url: " (:value m)))}
-         :alias    :u}
+  {:url (url-spec    "Take a URL from terminal argument.")
+   :channel-id  {:desc  "Get the channel playlists, provide the channel id."
+          :validate {:pred string? :ex-msg (fn [m] (str "Not a string: " (:value m)))}
+          :alias    :d}
+   :channel  {:desc "Get the channel playlists. Script will fetch its id from the key `yt_channels` in the properties file ."
+              :coerce :boolean
+              :alias  :h}
    :m3u {:desc   "Create m3u playlist from a Youtube playlist."
          :coerce :boolean
          :alias  :m}}) ;; TODO add saving path
@@ -265,7 +319,7 @@
              :alias  :p}})
 
 (defn- print-help [_]
-  (printf "A script that interacts with YouTube API.  %n%s%n
+  (printf "A script that interacts with YouTube API.  %n%s
 Options for providing input for all commands:%n%s%n
 Options for `search` command:%n%s%n
 Options for `stats` command:%n%s%n
@@ -276,6 +330,8 @@ Examples:
    yt.clj search --clip
    yt.clj stats --notify -u 'https://www.youtube.com/watch?v=hoCk655vgtc'
    yt.clj playlist --m3u --clip
+   yt.clj playlist -d UCX6b17PVsYBQ0ip5gyeme-Q
+  source <(yt.clj completions)  → source zsh completions
 %nDefault values can be override via system environment. The values:
 TERM_LT and TERM_LT_RUN = %s
 %nDependencies:
@@ -289,17 +345,15 @@ TERM_LT and TERM_LT_RUN = %s
 
 (def subcommands
   [{:cmds ["search"] :desc "Search videos." :fn search-videos :spec (merge spec-search spec-source)}
-   {:cmds ["playlist"] :desc "List a Youtube playlist in rofi menu (default) or create (m3u) playlist." :fn playlist :spec (merge spec-playlist spec-source)}
+   {:cmds ["playlist"] :desc "List a Youtube playlist in rofi menu (default) or create (m3u) playlist." :fn playlist :spec spec-playlist}
    {:cmds ["stats"] :desc "Retrieve metadata form the video." :fn metadata :spec (merge spec-source spec-stats)}
    {:cmds [] :desc "Show help." :fn print-help}])
 
 (when (= *file* (System/getProperty "babashka.file"))
-  (cli/dispatch subcommands *command-line-args*))
+  (cli/dispatch (conj subcommands {:cmds ["completions"] :fn (partial completion! subcommands)}) *command-line-args*))
 
-;; Testing
 (comment
   (cli/dispatch subcommands ["help"])
-  (first (str/split "2014-02-12T02:49:55Z" #"T"))
 
   (cli/dispatch subcommands ["stats" "-n" "-u" "https://www.youtube.com/watch?v=3JZ_D3ELwOQ"])
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=uXi8PXU2oS4"]) ; short
@@ -314,19 +368,15 @@ TERM_LT and TERM_LT_RUN = %s
 
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=3JZ_D3ELwOQ" "-u" "https://www.youtube.com/watch?v=3JZ_D3ELwOQ"])
   (cli/dispatch subcommands ["playlist"])
-  (cli/dispatch subcommands ["text" "-u" wiki "-l"])
+  (cli/dispatch subcommands ["playlist" "-d" "UCX6b17PVsYBQ0ip5gyeme-Q"])
+  ;;
   (cli/dispatch subcommands ["search" "-q" "short black animation"])
   (cli/dispatch subcommands ["search" "-q" "clojure"])
   (cli/dispatch subcommands ["search" "-i"])
   (cli/dispatch subcommands ["search" "-p"])
-  (notify! "Hello world")
+
   (url-params "https://www.youtube.com/watch?v=XYmWdNlikNw&list=PLyvQyFCJcBAELIjEHFZECH6pfcywBqTBT" "list")
   (cli/dispatch subcommands ["playlist" "-m" "-u" "https://www.youtube.com/watch?v=XYmWdNlikNw&list=PLyvQyFCJcBAELIjEHFZECH6pfcywBqTBT"])
-  (tap>
-    (fetch-playlist "PLyvQyFCJcBAELIjEHFZECH6pfcywBqTBT")
-    )
-  (query {:clip true})
-  (query {:query "clojure query"})
   (response->menu (cli/dispatch subcommands ["search" "-q" "clojure"]))
   (def res [{:id      {:videoId "MF-A46cTYUY"}
              :snippet {:publishedAt  "2025-02-26T08:22:19Z"
@@ -345,9 +395,10 @@ TERM_LT and TERM_LT_RUN = %s
 
   ;; Replace with your duration string
   (def duration-str "PT1H30M15S")
-  (println (format-duration nil))
   (println (format-duration "PT4M14S"))
   (println (format-duration "2024-02-26T08:22:19Z"))
+  (? (completion subcommands nil))
+  (? (first subcommands))
   )
 
 (comment
@@ -364,9 +415,4 @@ TERM_LT and TERM_LT_RUN = %s
 
   (deps/add-deps '{:deps {io.github.paintparty/fireworks {:mvn/version "0.10.4"}}})
   (require '[fireworks.core :refer [? !? ?> !?>]])
-
-
-  (def my-vector ["Line 1" "Line 2" "Line 3"])
-  (fs/write-lines "output.txt" my-vector)
-
   )

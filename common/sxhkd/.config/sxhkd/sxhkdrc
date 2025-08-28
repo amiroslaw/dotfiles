@@ -208,9 +208,9 @@ super + F{1,2,3,4,5,6,7,8,9,10,11,12}
 
 # youtube
 super + {_,shift,ctrl} + y
-	{ mpv.lua -o, \
-	qu.clj menu, \
-	yt.clj search --input }
+	{ yt.clj playlist --channel , \
+		mpv.lua -o , \
+		yt.clj search --input }
 	#$TERM_LT -n ytfzf -e ytfzf }
 
 # internet
