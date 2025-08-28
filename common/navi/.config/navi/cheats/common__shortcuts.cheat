@@ -1,0 +1,13 @@
+% shortcuts
+@ util
+
+# start gemini
+npx https://github.com/google-gemini/gemini-cli
+
+# ffmpeg increase volume; double around 2-3
+ffmpeg -i <file> -af "speechnorm,volume=<double>" "<base>-loud.<ext>"
+
+$ file: find . -maxdepth 1 -type f --- --expand
+$ base: basename <file> .<ext>
+$ ext: echo "<file>" | bb -o '(str/trim (last (str/split (slurp *in*) #"\.")))'
+# $ ext: echo "<file>" | awk -F. '{print $NF}' # doesn't trim
