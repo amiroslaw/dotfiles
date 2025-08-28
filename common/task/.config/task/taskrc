@@ -121,7 +121,7 @@ include dark-blue-256.theme
 #include no-color.theme
 news.version=3.1.0
 
-sync.local.server_dir=~/Documents/Ustawienia/stow-private/task/
+sync.local.server_dir=~/Documents/Ustawienia/private/task/
 include ~/.config/task/extrc
 # include ~/Documents/Ustawienia/stow-private/task/wingtask/wingtask-config
 # include ~/Documents/Ustawienia/stow-private/task/test/wingtask-config

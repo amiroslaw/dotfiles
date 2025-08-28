@@ -46,7 +46,7 @@
       (System/exit 0)
       input)))
 
-(def gemini-api-key (let [path (str (System/getenv "HOME") "/Documents/Ustawienia/stow-private/keys.properties")
+(def gemini-api-key (let [path (str (System/getenv "PRIVATE") "/keys.properties")
                           key (get-properties! path "gemini_api_key")]
                       (if key key
                               (notify-error! (str "Gemini API key not found in: \n" path) true))))

@@ -18,7 +18,7 @@
 
 (def base-url "https://www.googleapis.com/youtube/v3/")
 (def yt-watch-url "https://www.youtube.com/watch?v=")
-(def yt-api-key (let [path (str (System/getenv "HOME") "/Documents/Ustawienia/stow-private/keys.properties")
+(def yt-api-key (let [path (str (System/getenv "PRIVATE") "/keys.properties")
                       key (get-properties! path "yt_api_key")]
                   (if key key
                           (notify-error! (str "YT API key not found in: \n" path) true))))

@@ -394,7 +394,7 @@ nmap('<leader>M', '<Cmd>WindowsToggleAutowidth<CR>')
 nmap('<leader>m', '<Cmd>WindowsMaximize<CR>') -- }}} 
 
 -- calendar.vim {{{
-vim.cmd 'source ~/Documents/Ustawienia/stow-private/calendar.vim'
+vim.cmd 'source ~/Documents/Ustawienia/private/calendar.vim'
 vim.g.calendar_google_calendar = 1
 vim.g.calendar_google_task = 1
 vim.g.calendar_first_day = 'monday'
