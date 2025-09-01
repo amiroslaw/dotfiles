@@ -4,10 +4,21 @@
 # start gemini
 npx https://github.com/google-gemini/gemini-cli
 
+# qr code - provide content or select clipboard
+eval "<content>" | qrencode -t UTF8
+$ clip-op: echo -e "clip\nselect"
+$ clip:  bb -o '(case "<clip-op>" "clip" "clipster -oc" "select" "clipster -op" "echo <clip-op>")'
+# echo 'qrencode -t UTF8 "$(<clip>)"'
+#
+# echo <content> | curl -F-=\<- qrenco.de
+
 # ffmpeg increase volume; double around 2-3
 ffmpeg -i <file> -af "speechnorm,volume=<double>" "<base>-loud.<ext>"
 
-$ file: find . -maxdepth 1 -type f --- --expand
+$ file: find . -maxdepth 1 -type f 
 $ base: basename <file> .<ext>
-$ ext: echo "<file>" | bb -o '(str/trim (last (str/split (slurp *in*) #"\.")))'
+# split filename and extention
+$ ext:  bb -o '(str/trim (last (str/split "<file>" #"\.")))'
+# $ file: find . -maxdepth 1 -type f --- --expand
+# $ ext: echo "<file>" | bb -o '(str/trim (last (str/split (slurp *in*) #"\.")))'
 # $ ext: echo "<file>" | awk -F. '{print $NF}' # doesn't trim

@@ -17,6 +17,7 @@ List of the actions:
 		--mpvFullscreen, -f add to a queue and open it in a fullscreen window
 		--mpvAudio, -a add to a queue and open it in as a audio
 		--mpvVideo, -v play video in a fullscreen window
+		--qr, -q generate qr code
 		--help -h - show help
 
 List of the options:
@@ -163,6 +164,13 @@ local function gallery(linkTab)
 	M(linkTab):each(M.bindn(execQueue, cmd, 'dl-gallery'))
 end
 
+local function qr(linkTab)
+	local cmd = ('qrencode -t UTF8 "%s" ')
+	for _, link in ipairs(linkTab) do
+		os.execute(cmd:format(link))
+	end
+end
+
 --------------------------------------------------
 --                    yt-dlp                    --
 --------------------------------------------------
@@ -239,6 +247,7 @@ local options = {
 	["mpvFullscreen"]= mpvFullscreen, ["f"]= mpvFullscreen,
 	["mpvAudio"]= mpvAudio, ["a"]= mpvAudio,
 	["mpvVideo"]= mpvVideo, ["v"]= mpvVideo,
+	["qr"]= qr, ["q"]= qr,
 	["h"]= help, ["help"]= help,
 }
 
