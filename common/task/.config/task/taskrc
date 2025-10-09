@@ -90,18 +90,32 @@ urgency.tags.coefficient=0 # Just because its tagged/annotated doesn't mean its 
 #                       TUI
 # -------------------------------------------------------------------------
 uda.taskwarrior-tui.task-report.next.filter=stat:pending
+# there is context switcher but it has move views like `completed`
 uda.taskwarrior-tui.shortcuts.1=~/.config/task/scripts/tui.lua view
 uda.taskwarrior-tui.shortcuts.2=~/.config/task/scripts/tui.lua add-tag
+# tags can be added by H M L keyshorts
 uda.taskwarrior-tui.shortcuts.3=~/.config/task/scripts/tui.lua priority
 uda.taskwarrior-tui.shortcuts.4=~/.config/task/scripts/tui.lua add-project
 uda.taskwarrior-tui.shortcuts.5=~/.config/task/scripts/tui.lua rm-inbox
+# open urls
 uda.taskwarrior-tui.shortcuts.6=~/.config/task/scripts/tui.lua url
 uda.taskwarrior-tui.shortcuts.7=~/.config/task/scripts/tui.lua rm-tag
+# there is native duplicate task y
 uda.taskwarrior-tui.shortcuts.8=~/.config/task/scripts/tui.lua duplicate
 uda.taskwarrior-tui.shortcuts.9=task sync
-# 0 can't be bind
-# doesn't work
-uda.taskwarrior-tui.keyconfig.shortcut1=n
+# add a done task
+uda.taskwarrior-tui.keyconfig.log=D
+# 0 can't be bind ??
+# If ther are custom shortcut keys, 1-9 won't be available 
+uda.taskwarrior-tui.keyconfig.shortcut1=C
+uda.taskwarrior-tui.keyconfig.shortcut2=T
+uda.taskwarrior-tui.keyconfig.shortcut3=P
+uda.taskwarrior-tui.keyconfig.shortcut4=p
+uda.taskwarrior-tui.keyconfig.shortcut5=i
+uda.taskwarrior-tui.keyconfig.shortcut6=l
+uda.taskwarrior-tui.keyconfig.shortcut7=r
+uda.taskwarrior-tui.keyconfig.shortcut8=Y
+uda.taskwarrior-tui.keyconfig.shortcut9=n
 
 
 # Color theme (uncomment one to use)

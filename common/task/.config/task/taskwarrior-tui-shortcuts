@@ -1,0 +1,69 @@
+
+uda.taskwarrior-tui.keyconfig.quit=q
+uda.taskwarrior-tui.keyconfig.refresh=r
+uda.taskwarrior-tui.keyconfig.go-to-bottom=G
+uda.taskwarrior-tui.keyconfig.go-to-top=g
+uda.taskwarrior-tui.keyconfig.down=j
+uda.taskwarrior-tui.keyconfig.up=k
+uda.taskwarrior-tui.keyconfig.page-down=J
+uda.taskwarrior-tui.keyconfig.page-up=K
+uda.taskwarrior-tui.keyconfig.delete=x
+uda.taskwarrior-tui.keyconfig.done=d
+uda.taskwarrior-tui.keyconfig.start-stop=s
+uda.taskwarrior-tui.keyconfig.quick-tag=t
+uda.taskwarrior-tui.keyconfig.undo=u
+uda.taskwarrior-tui.keyconfig.edit=e
+uda.taskwarrior-tui.keyconfig.modify=m
+uda.taskwarrior-tui.keyconfig.shell=!
+uda.taskwarrior-tui.keyconfig.log=l
+uda.taskwarrior-tui.keyconfig.add=a
+uda.taskwarrior-tui.keyconfig.annotate=A
+uda.taskwarrior-tui.keyconfig.filter=/
+uda.taskwarrior-tui.keyconfig.zoom=z
+uda.taskwarrior-tui.keyconfig.context-menu=c
+uda.taskwarrior-tui.keyconfig.next-tab=]
+uda.taskwarrior-tui.keyconfig.previous-tab=[
+
+	H: add priority H
+	M: add priority M
+	L: add priority L
+
+Default shortcuts:
+    a: task add {string}                 - Add new task                                                   
+    d: task {selected} done              - Mark task as done                                              
+    e: task {selected} edit              - Open selected task in editor                                   
+    y: task {selected} duplicate         - Duplicate tasks                                                
+    j: {selected+=1}                     - Move down in task report                                       
+    k: {selected-=1}                     - Move up in task report                                         
+    J: {selected+=pageheight}            - Move page down in task report                                  
+    K: {selected-=pageheight}            - Move page up in task report                                    
+    g: {selected=first}                  - Go to top                                                      
+    G: {selected=last}                   - Go to bottom                                                   
+    l: task log {string}                 - Log new task                                                   
+    m: task {selected} modify {string}   - Modify selected task                                           
+    q: exit                              - Quit                                                           
+    s: task {selected} start/stop        - Toggle start and stop                                          
+    t: task {selected} +{tag}/-{tag}     - Toggle {uda.taskwarrior-tui.quick-tag.name} (default: `next`)  
+    u: task undo                         - Undo                                                           
+    v: {toggle mark on selected}         - Toggle mark on selected                                        
+    V: {toggle marks on all tasks}       - Toggle marks on all tasks in current filter report             
+    x: task {selected} delete            - Delete                                                         
+    z: toggle task info                  - Toggle task info view                                          
+    A: task {selected} annotate {string} - Annotate current task                                          
+    Ctrl-e: scroll down task details     - Scroll task details view down one line                         
+    Ctrl-y: scroll up task details       - Scroll task details view up one line                           
+    !: {string}                          - Custom shell command                                           
+    1-9: {string}                        - Run user defined shortcuts                                     
+    :: {task id}                         - Jump to task id                                                
+    c: context switcher menu             - Open context switcher menu                                     
+    ?: help                              - Help menu                                                      
+Keybindings for context switcher:                                                                         
+    j: {selected+=1}                     - Move forward a context                                         
+    k: {selected-=1}                     - Move back a context                                            
+    Enter: task context {selected}       - Select highlighted context                                     
+                                                                                                          
+Keybindings for calendar:                                                                                 
+    j: {selected+=1}                     - Move forward a year in calendar                                
+    k: {selected-=1}                     - Move back a year in calendar                                   
+    J: {selected+=10}                    - Move forward a decade in calendar                              
+    K: {selected-=10}                    - Move back a decade in calendar                                 

@@ -5,7 +5,7 @@
 npx https://github.com/google-gemini/gemini-cli
 
 # qr code - provide content or select clipboard
-eval "<content>" | qrencode -t UTF8
+eval "<clip>" | qrencode -t UTF8
 $ clip-op: echo -e "clip\nselect"
 $ clip:  bb -o '(case "<clip-op>" "clip" "clipster -oc" "select" "clipster -op" "echo <clip-op>")'
 # echo 'qrencode -t UTF8 "$(<clip>)"'
