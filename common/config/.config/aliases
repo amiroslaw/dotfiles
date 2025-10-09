@@ -341,15 +341,30 @@ alias ......='cd ../../../../..'
 #}}}
 
 #{{{ list of the files/directories
-alias l='eza --icons'
-alias la='eza --icons -la'
-alias ll='eza --icons -l' #long
-alias lt='eza --icons --tree'
-alias lr='eza --icons --recurse'
-alias ld='eza --only-dirs'
-alias treeh='tree -Ch'
-# sort by size
-alias lls='eza --icons -l -ssize --reverse'
+
+# --no-columns --icons-use-file-color
+#--no-classify --no-files-counter - no file counter
+# alias l='clifm --list-and-quit --no-clear-screen --no-eln --no-classify --no-files-counter --light-mode'
+alias l='clifm --list-and-quit --no-clear-screen --no-eln --light-mode'
+alias la='clifm --list-and-quit --no-clear-screen --no-eln --light-mode -a'
+alias ld='clifm --list-and-quit --no-clear-screen --no-eln --light-mode --only-dirs'
+alias ll='clifm --list-and-quit --no-clear-screen --no-eln --no-classify --no-files-counter --light-mode -l --prop-fields="pIGsm"'
+alias lld='clifm --list-and-quit --no-clear-screen --no-eln --disk-usage-analyzer -l --prop-fields="pIGsm" --only-dirs'
+alias llu='clifm --list-and-quit --no-clear-screen --no-eln --light-mode --full-dir-size -l --prop-fields="pIGsm"'
+alias lls='clifm --list-and-quit --no-clear-screen --no-eln --no-classify --no-files-counter -l --prop-fields="pIGsm" --sort=size'
+alias llS='clifm --list-and-quit --no-clear-screen --no-eln --no-classify --no-files-counter  -l --prop-fields="pIGsm" --sort-reverse'
+alias llb='clifm --list-and-quit --no-clear-screen --no-eln --no-classify --no-files-counter -l --prop-fields="pIGsb" --sort=btime' # sort by birth time
+       
+# alias lls='eza --icons -l -ssize --reverse' # sort by size
+# alias l='eza --icons'
+# alias la='eza --icons -la'
+# alias ll='eza --icons -l' #long
+# alias lt='eza --icons --tree'
+# alias lr='eza --icons --recurse'
+# alias ld='eza --only-dirs'
+# alias lls='eza --icons -l -ssize --reverse' # sort by size
+
+alias lt='tree -Ch'
 alias brs='br --sizes'
 alias brh='br --hidden'
 #}}}
