@@ -346,14 +346,15 @@ alias ......='cd ../../../../..'
 #--no-classify --no-files-counter - no file counter
 # alias l='clifm --list-and-quit --no-clear-screen --no-eln --no-classify --no-files-counter --light-mode'
 alias l='clifm --list-and-quit --no-clear-screen --no-eln --light-mode'
+alias ls='clifm --list-and-quit --no-clear-screen --no-eln --no-truncate-names --light-mode'
 alias la='clifm --list-and-quit --no-clear-screen --no-eln --light-mode -a'
 alias ld='clifm --list-and-quit --no-clear-screen --no-eln --light-mode --only-dirs'
-alias ll='clifm --list-and-quit --no-clear-screen --no-eln --no-classify --no-files-counter --light-mode -l --prop-fields="pIGsm"'
-alias lld='clifm --list-and-quit --no-clear-screen --no-eln --disk-usage-analyzer -l --prop-fields="pIGsm" --only-dirs'
-alias llu='clifm --list-and-quit --no-clear-screen --no-eln --light-mode --full-dir-size -l --prop-fields="pIGsm"'
-alias lls='clifm --list-and-quit --no-clear-screen --no-eln --no-classify --no-files-counter -l --prop-fields="pIGsm" --sort=size'
-alias llS='clifm --list-and-quit --no-clear-screen --no-eln --no-classify --no-files-counter  -l --prop-fields="pIGsm" --sort-reverse'
-alias llb='clifm --list-and-quit --no-clear-screen --no-eln --no-classify --no-files-counter -l --prop-fields="pIGsb" --sort=btime' # sort by birth time
+alias ll='clifm --list-and-quit --no-clear-screen --no-eln  --no-truncate-names --no-classify --no-files-counter --light-mode -l --prop-fields="pIGsmx"'
+alias lld='clifm --list-and-quit --no-clear-screen --no-eln --no-truncate-names --disk-usage-analyzer -l --prop-fields="pIGsmx" --only-dirs'
+alias llu='clifm --list-and-quit --no-clear-screen --no-eln --no-truncate-names --light-mode --full-dir-size -l --prop-fields="pIGsmx"'
+alias lls='clifm --list-and-quit --no-clear-screen --no-eln --no-truncate-names --no-classify --no-files-counter -l --prop-fields="pIGsmx" --sort=size'
+alias llS='clifm --list-and-quit --no-clear-screen --no-eln --no-truncate-names --no-classify --no-files-counter  -l --prop-fields="pIGsmx" --sort-reverse'
+alias llb='clifm --list-and-quit --no-clear-screen --no-eln --no-truncate-names --no-classify --no-files-counter -l --prop-fields="pIGsb" --sort=btime' # sort by birth time
        
 # alias lls='eza --icons -l -ssize --reverse' # sort by size
 # alias l='eza --icons'

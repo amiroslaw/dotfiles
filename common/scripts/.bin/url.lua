@@ -153,7 +153,7 @@ end
 
 local function wget(linkTab)
 	os.execute('mkdir -p ' .. WGET_DIR)
-	local cmd = ('pueue add -- wget -P "%s" '):format(WGET_DIR)
+	local cmd = ('pueue add -- wget --xattr -P "%s" '):format(WGET_DIR)
 	M(linkTab):each(M.bindn(execQueue, cmd, 'default'))
  -- -U "Mozilla"
 end
@@ -185,7 +185,7 @@ end
 
 local function dlAudio(linkTab)
 	os.execute('mkdir -p ' .. AUDIO_DIR)
-	local cmdDlp = 'yt-dlp -q --embed-metadata -f bestaudio -x --audio-format mp3 -o "' .. AUDIO_DIR .. '%%(title)s.%%(ext)s" '
+	local cmdDlp = 'yt-dlp -q --xattrs --embed-metadata -f bestaudio -x --audio-format mp3 -o "' .. AUDIO_DIR .. '%%(title)s.%%(ext)s" '
 	local cmd = 'pueue add --escape --label "%s" -g dl-audio -- ' .. cmdDlp
 	M(linkTab):map(getTitle)
 		:each(M.bindn(execQueue, cmd, 'dl-audio'))
@@ -193,7 +193,7 @@ end
 
 local function dlVideo(linkTab)
 	os.execute('mkdir -p ' .. YT_DIR)
-	local cmdDlp = "yt-dlp -q --embed-metadata -f 'bestvideo[height<=1440]+bestaudio/best' -o '" .. YT_DIR .. "%%(title)s.%%(ext)s' "
+	local cmdDlp = "yt-dlp -q --xattrs --embed-metadata --embed-subs --embed-thumbnail -f 'bestvideo[height<=1440]+bestaudio/best' -o '" .. YT_DIR .. "%%(title)s.%%(ext)s' "
 	local cmd = 'pueue add --escape --label "%s" -g dl-video -- ' .. cmdDlp
 	M(linkTab):map(getTitle)
 		:each(M.bindn(execQueue, cmd, 'dl-video'))

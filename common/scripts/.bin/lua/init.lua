@@ -536,7 +536,7 @@ function rofiMenu(entriesTab, options)
 		lines = opt.height
 	end
 
-	local selected, _, err, code= run('echo "' .. entries .. '" | rofi -monitor -4 -i ' .. opt.multi .. ' -l ' .. lines .. ' -dmenu -p "' .. opt.prompt .. '" -theme-str "window {width:  ' .. opt.width .. ';}" ' .. opt.keys .. opt.msg)
+	local selected, _, err, code= run('echo "' .. entries .. '" | rofi -monitor -4 -case-smart -i ' .. opt.multi .. ' -l ' .. lines .. ' -dmenu -p "' .. opt.prompt .. '" -theme-str "window {width:  ' .. opt.width .. ';}" ' .. opt.keys .. opt.msg)
 	-- local _, selected, err, code= run('echo "' .. entries .. '" | rofi -monitor -4 -i ' .. opt.multi .. ' -l ' .. lines .. ' -sep "' .. SEP .. '" -dmenu -p "' .. opt.prompt .. '" -theme-str "window {width:  ' .. opt.width .. ';}" ' .. opt.keys .. opt.msg)
 
 	-- rofi returns error code for hooks and returns error code for not selecting - it would be a rofi error

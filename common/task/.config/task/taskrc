@@ -102,7 +102,7 @@ uda.taskwarrior-tui.shortcuts.6=~/.config/task/scripts/tui.lua url
 uda.taskwarrior-tui.shortcuts.7=~/.config/task/scripts/tui.lua rm-tag
 # there is native duplicate task y
 uda.taskwarrior-tui.shortcuts.8=~/.config/task/scripts/tui.lua duplicate
-uda.taskwarrior-tui.shortcuts.9=task sync
+uda.taskwarrior-tui.shortcuts.9=sh -c 'task sync && notify-send "Synced taskwarrior"'
 # add a done task
 uda.taskwarrior-tui.keyconfig.log=D
 # 0 can't be bind ??

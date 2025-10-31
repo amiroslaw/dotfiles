@@ -127,3 +127,4 @@ autoload -Uz add-zsh-hook
 add-zsh-hook preexec _fasder_preexec
 
 source <(yt.clj completions)
+# source <(clipcat.clj completions)
