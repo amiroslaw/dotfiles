@@ -19,7 +19,7 @@ local options = require 'mp.options'
 o = {
     key = "b",
     path = "subliminal",    -- absolute path to subliminal if not on PATH
-    languages = "en,pl-PL", -- list of IETF languages to search
+    languages = "en,pl", -- list of IETF languages to search
     forceutf8 = true,       -- Force subtitles to be saved as utf-8
     forcedownload = true,  -- Force download of all languages requested
 
