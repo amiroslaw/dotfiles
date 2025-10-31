@@ -27,7 +27,6 @@ map('q', act { ClearScrollback = 'ScrollbackOnly' }, 'CTRL') -- leave one page
 mapCS('Backspace', act { ClearScrollback = 'ScrollbackOnly' }) -- leave one page
 mapCS('q', act { ClearScrollback = 'ScrollbackAndViewport' })
 mapCS('\\', act { ClearScrollback = 'ScrollbackAndViewport' })
-mapCS('r', 'SpawnWindow')
 mapCS('Enter', 'SpawnWindow') -- stopped work in new version
 -- Scroll
 mapCS('j', act { ScrollByLine = 1 })
@@ -38,9 +37,9 @@ mapCS('u', act { ScrollByPage = -1 })
 mapCS('?', act { SplitVertical = { domain = 'CurrentPaneDomain' } })
 mapCS(':', act { SplitHorizontal = { domain = 'CurrentPaneDomain' } })
 mapCS('w', act { CloseCurrentPane = { confirm = false } })
-mapCS('m', 'TogglePaneZoomState') -- maximalize, the default is c-s-z
-mapCS('n', act { ActivatePaneDirection = 'Next' })
+mapCS('z', 'TogglePaneZoomState') -- default
 mapCS('p', act { ActivatePaneDirection = 'Prev' })
+mapCS('n', act { ActivatePaneDirection = 'Next' })
 -- mapCS('N', act { ActivatePaneDirection = 'Down' })
 -- Tabs
 mapCS('s', act { SpawnTab = 'CurrentPaneDomain' })
@@ -50,10 +49,11 @@ mapCS('Tab', act { ActivateTabRelative = 1 })
 -- Modes X,Space, O, U, E
 -- mapCS('o', 'ShowLauncher')
 mapCS('>', act.CharSelect { copy_on_select = true, copy_to = 'ClipboardAndPrimarySelection' }) -- emoji
-mapCS('e', act { ShowLauncherArgs = { flags = 'FUZZY|LAUNCH_MENU_ITEMS' } })
-map('F1', act { ShowLauncherArgs = { flags = 'FUZZY|KEY_ASSIGNMENTS' } }, 'ALT')
--- map('F8', act { ShowLauncherArgs = { flags = 'FUZZY|WORKSPACES' } }, 'ALT')
- -- action = wezterm.action.ActivateCommandPalette,
+mapCS('e', act { ShowLauncherArgs = {title= 'Launch menu', flags = 'FUZZY|LAUNCH_MENU_ITEMS' } })
+-- map('F1', act { ShowLauncherArgs = { flags = 'FUZZY|KEY_ASSIGNMENTS' } }, 'ALT')
+map('F1', act.ActivateCommandPalette, 'ALT')
+map('F9', act { ShowLauncherArgs = {title= 'Tabs', flags = 'FUZZY|TABS' } }, 'ALT')
+-- action = wezterm.action.ActivateCommandPalette,
 -- Custom Actions
 mapCS('o', act { EmitEvent = 'trigger-vim-with-scrollback' })
 mapCS('a', plugins.openUrl)
@@ -129,6 +129,14 @@ local key_tables = {
 		{ key = 'Escape', action = 'PopKeyTable' },
 	}
 }
+
+-- alternative kes for Workspaces:  w, s, <, r
+map('F8', act { ShowLauncherArgs = { flags = 'FUZZY|WORKSPACES' } }, 'ALT') -- not important with sessionizer plugin
+mapCS('{', act { SwitchWorkspaceRelative = -1 })
+mapCS('}', act { SwitchWorkspaceRelative = 1 })
+mapCS('i', plugins.sessionizer.show(plugins.smart_workspace_switcher_replica)) 
+mapCS('u', plugins.newWorkspace )
+mapCS('m', plugins.history.switch_to_most_recent_workspace)
 
 return {
 	keys = keys,

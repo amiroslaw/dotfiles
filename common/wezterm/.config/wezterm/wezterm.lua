@@ -32,7 +32,10 @@ return { -- Must be in the end
 		'FiraCode Nerd Font Mono', 'SauceCodePro Nerd Font Mono',},
 		{ weight = 'Regular' } -- { weight = 'Medium' }
 	),
-	hide_tab_bar_if_only_one_tab = true,
+	enable_tab_bar = true,
+	-- hide_tab_bar_if_only_one_tab = false,
+	default_workspace = "main",
+	enable_scroll_bar = true,
 	scrollback_lines = 10000,
 	harfbuzz_features = { 'calt=1', 'clig=0', 'liga=1' }, -- Ligatures, can by set as toggle, calt enables texture healing
 
@@ -47,12 +50,11 @@ return { -- Must be in the end
 		top = '0.2cell',
 		bottom = '0.2cell',
 	},
-	default_workspace = "main",
 	color_scheme = plugins.getColorscheme 'Poimandres Storm',
-	use_fancy_tab_bar = false,
-	enable_scroll_bar = true,
 	window_close_confirmation = 'NeverPrompt',
-	enable_wayland = false,
+	use_fancy_tab_bar = false,
+	-- enable_wayland = false,
+	enable_wayland = true,
 	freetype_load_target = 'HorizontalLcd', -- freetype_load_target = "Light",
 	warn_about_missing_glyphs = false,
 	launch_menu = launch_menu,
@@ -61,7 +63,7 @@ return { -- Must be in the end
 	keys = bindings.keys,
 	leader = bindings.leader,
 	mouse_bindings = bindings.mouse_bindings,
-	automatically_reload_config = false,
+	automatically_reload_config = true,
 	key_tables = bindings.key_tables,
 	-- 'kanagawabones', 'Dracula (Official)'
 	-- https://wezfurlong.org/wezterm/colorschemes/d/index.html

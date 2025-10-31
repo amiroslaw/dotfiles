@@ -1,4 +1,5 @@
 local wezterm = require 'wezterm'
+local act = wezterm.action
 
 -- return list of files
 local function scandir(directory)
@@ -10,11 +11,64 @@ local function scandir(directory)
 	return t
 end
 
+-- sessionizer
+
+local sessionizer = wezterm.plugin.require "https://github.com/mikkasendke/sessionizer.wezterm"
+local history = wezterm.plugin.require "https://github.com/mikkasendke/sessionizer-history.git"
+
+local session_scheme = {
+    options = {
+        prompt = "Workspaces ('/' to fzf): ",
+		always_fuzzy = false,
+        callback = history.Wrapper(sessionizer.DefaultCallback)
+    },
+    {
+        sessionizer.AllActiveWorkspaces { filter_current = true, filter_default = false },
+        processing = sessionizer.for_each_entry(function(entry)
+            entry.label = wezterm.format {
+                { Text = "󱂬 : " .. entry.label },
+            }
+        end)
+    },
+	-- bookmarks, ORDER IS IMPORTANT
+    wezterm.home_dir .. "/Code",
+	{ label = "@chezmoi", id = wezterm.home_dir .. "/.local/share/chezmoi" }, -- bookmark with a label
+    wezterm.plugin.require "https://github.com/amiroslaw/sessionizer-fasder.git".Fasder {},
+	-- fd search
+    -- sessionizer.FdSearch(wezterm.home_dir .. "/Code"),
+    processing = sessionizer.for_each_entry(function(entry)
+        entry.label = entry.label:gsub(wezterm.home_dir, "~")
+    end),
+}
+local newWorkspace = act.PromptInputLine {
+      description = wezterm.format {
+        { Attribute = { Intensity = 'Bold' } },
+        { Foreground = { AnsiColor = 'Fuchsia' } },
+        { Text = 'Enter name for new workspace' },
+      },
+      action = wezterm.action_callback(function(window, pane, line)
+        if line then
+          window:perform_action(
+            act.SwitchToWorkspace {
+              name = line,
+            },
+            pane )
+        end
+      end), }
+
 return {
+	-- sessions
+	sessionizer = sessionizer,
+	history = history,
+	newWorkspace = newWorkspace,	
+smart_workspace_switcher_replica = session_scheme,
 	-- status in table bar
-	wezterm.on('update-right-status', function(window, pane)
+	-- https://wezterm.org/config/lua/window-events/update-right-status.html
+	-- wezterm.on('update-right-status', function(window, pane)
+	wezterm.on('update-status', function(window, pane)
 	  -- Workspace name
-	  local stat = window:active_workspace()
+	  -- I can trim that
+	  local stat = window:active_workspace():gsub(wezterm.home_dir, "~")
 	  local stat_color = "#bb9af7"
 	  -- It's a little silly to have workspace name all the time
 	  -- Utilize this to display LDR or current key table name
@@ -25,23 +79,25 @@ return {
 	  if window:leader_is_active() then
 		 stat = 'leader ❗'
 		stat_color = "#f7768e"
-	  end
-	  -- Current working directory - doesn't work
-	  local basename = function(s)
-		local splits ={}
-		for token in s:gmatch("([^/]+)") do
-		   table.insert(splits, token)
-		end
-		return splits[#splits]
-	  end
-	  -- CWD and CMD could be nil (e.g. viewing log using Ctrl-Alt-l). Not a big deal, but check in case
-	  local cwd = pane:get_current_working_dir()
-	  cwd = cwd and basename(cwd) or ""
-	  -- Current command
-	  -- local cmd = pane:get_foreground_process_name()
-	  -- cmd = cmd and basename(cmd) or ""
-
+	 end
+	  local cmd = pane:get_foreground_process_name()
+	  cmd = cmd and cmd:match("([^/]+)$") or ""	
 	local time = wezterm.strftime '%m-%d %H:%M'
+
+		--  Current working directory - doesn't work - brakes status
+		--  local basename = function(s)
+		-- local splits ={}
+		-- for token in s:gmatch("([^/]+)") do
+		--    table.insert(splits, token)
+		-- end
+		-- return splits[#splits]
+		--  end
+		--  -- CWD and CMD could be nil (e.g. viewing log using Ctrl-Alt-l). Not a big deal, but check in case
+		--  local cwd = pane:get_current_working_dir()
+		--  cwd = cwd and basename(cwd) or ""
+		--  -- Current command
+		--  -- local cmd = pane:get_foreground_process_name()
+		--  -- cmd = cmd and basename(cmd) or ""
 
 	  window:set_right_status(wezterm.format({
 		-- Wezterm has a built-in nerd fonts
@@ -49,16 +105,16 @@ return {
 		{ Foreground = { Color = stat_color } },
 		{ Text = "  " },
 		{ Text = wezterm.nerdfonts.oct_table .. "  " .. stat },
-		{ Foreground = { Color = "#e0af68" } },
 		{ Text = " | " },
-		{ Text = wezterm.nerdfonts.md_folder .. "  " .. cwd },
-		-- { Text = " | " },
-		-- { Foreground = { Color = "#e0af68" } },
-		-- { Text = wezterm.nerdfonts.fa_code .. "  " .. cmd },
+		{ Foreground = { Color = "#e0af68" } },
+		{ Text = wezterm.nerdfonts.fa_code .. "  " .. cmd },
 		"ResetAttributes",
 		{ Text = " | " },
 		{ Text = wezterm.nerdfonts.md_clock .. "  " .. time },
 		{ Text = "  " },
+		-- { Foreground = { Color = "#e0af68" } },
+		-- { Text = " | " },
+		-- { Text = wezterm.nerdfonts.md_folder .. "  " .. cwd },
 	  }))
 	end),
 
