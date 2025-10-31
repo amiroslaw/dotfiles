@@ -1,1 +1,0 @@
-/home/miro/Documents/Ustawienia/sync/rofi/scripts/power.py
