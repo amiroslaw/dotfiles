@@ -53,8 +53,8 @@ return { -- Must be in the end
 	color_scheme = plugins.getColorscheme 'Poimandres Storm',
 	window_close_confirmation = 'NeverPrompt',
 	use_fancy_tab_bar = false,
-	-- enable_wayland = false,
-	enable_wayland = true,
+	enable_wayland = false,
+	-- enable_wayland = true,
 	freetype_load_target = 'HorizontalLcd', -- freetype_load_target = "Light",
 	warn_about_missing_glyphs = false,
 	launch_menu = launch_menu,
@@ -63,8 +63,12 @@ return { -- Must be in the end
 	keys = bindings.keys,
 	leader = bindings.leader,
 	mouse_bindings = bindings.mouse_bindings,
-	automatically_reload_config = true,
+	automatically_reload_config = false,
 	key_tables = bindings.key_tables,
+	window_decorations = "INTEGRATED_BUTTONS|RESIZE",
+	integrated_title_button_style = "Gnome",
+	integrated_title_buttons = { 'Close' },
+	-- integrated_title_buttons = { 'Hide', 'Maximize', 'Close' }
 	-- 'kanagawabones', 'Dracula (Official)'
 	-- https://wezfurlong.org/wezterm/colorschemes/d/index.html
 	-- disable_default_key_bindings = true,

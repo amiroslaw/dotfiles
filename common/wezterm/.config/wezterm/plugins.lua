@@ -61,7 +61,7 @@ return {
 	sessionizer = sessionizer,
 	history = history,
 	newWorkspace = newWorkspace,	
-smart_workspace_switcher_replica = session_scheme,
+	smart_workspace_switcher_replica = session_scheme,
 	-- status in table bar
 	-- https://wezterm.org/config/lua/window-events/update-right-status.html
 	-- wezterm.on('update-right-status', function(window, pane)
@@ -80,9 +80,9 @@ smart_workspace_switcher_replica = session_scheme,
 		 stat = 'leader ❗'
 		stat_color = "#f7768e"
 	 end
-	  local cmd = pane:get_foreground_process_name()
-	  cmd = cmd and cmd:match("([^/]+)$") or ""	
-	local time = wezterm.strftime '%m-%d %H:%M'
+	 local cmd = pane:get_foreground_process_name()
+	 cmd = cmd and cmd:match("([^/]+)$") or ""	
+	-- local time = wezterm.strftime '%m-%d %H:%M'
 
 		--  Current working directory - doesn't work - brakes status
 		--  local basename = function(s)
@@ -108,16 +108,17 @@ smart_workspace_switcher_replica = session_scheme,
 		{ Text = " | " },
 		{ Foreground = { Color = "#e0af68" } },
 		{ Text = wezterm.nerdfonts.fa_code .. "  " .. cmd },
-		"ResetAttributes",
-		{ Text = " | " },
-		{ Text = wezterm.nerdfonts.md_clock .. "  " .. time },
-		{ Text = "  " },
+		-- "ResetAttributes",
+		-- { Text = " | " },
+		-- { Text = wezterm.nerdfonts.md_clock .. "  " .. time },
+		-- { Text = "  " },
 		-- { Foreground = { Color = "#e0af68" } },
 		-- { Text = " | " },
 		-- { Text = wezterm.nerdfonts.md_folder .. "  " .. cwd },
 	  }))
 	end),
 
+	-- custom
 	wezterm.on('trigger-vim-with-scrollback', function(window, pane)
 		-- pane:get_logical_lines_as_text([nlines])
 		-- scrollback_rows the total number of lines in the scrollback and viewport - all text (set in scrollback_lines)

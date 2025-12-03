@@ -346,7 +346,7 @@ alias ......='cd ../../../../..'
 #--no-classify --no-files-counter - no file counter
 # alias l='clifm --list-and-quit --no-clear-screen --no-eln --no-classify --no-files-counter --light-mode'
 alias l='clifm --list-and-quit --no-clear-screen --no-eln --light-mode'
-alias ls='clifm --list-and-quit --no-clear-screen --no-eln --no-truncate-names --light-mode'
+alias lf='clifm --list-and-quit --no-clear-screen --no-eln --no-truncate-names --light-mode'
 alias la='clifm --list-and-quit --no-clear-screen --no-eln --light-mode -a'
 alias ld='clifm --list-and-quit --no-clear-screen --no-eln --light-mode --only-dirs'
 alias ll='clifm --list-and-quit --no-clear-screen --no-eln  --no-truncate-names --no-classify --no-files-counter --light-mode -l --prop-fields="pIGsmx"'
