@@ -36,7 +36,7 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 	command = [[set filetype=text]],
 })
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
-	pattern = { 'qutebrowser-editor-*', 'tmpcompose.txt', '/tmp/txt/*' },
+	pattern = { 'qutebrowser-editor-*', 'compose.txt', '/tmp/*.md', '/tmp/txt/*' },
 	command = [[setlocal spell spelllang=en | startinsert]],
 })
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
@@ -128,6 +128,18 @@ vim.wo.cursorline = true
 vim.wo.cursorcolumn = true
 
 vim.opt.iskeyword:append('-') -- words separeted by - will recognise as a one word
+
+-- diff mode
+vim.opt.diffopt = {
+"internal",
+"filler",
+"closeoff",
+"context:12",
+"algorithm:histogram",
+"linematch:200",
+"indent-heuristic",
+"iwhite" -- I toggle this one, it doesn't fit all cases.
+}
 
 -- }}} 
 
@@ -351,11 +363,11 @@ nmap('<a-f>', ':Neoformat! java astyle <CR>')
 
 --""""""""""""""""""
 -- https://github.com/is0n/fm-nvim
-nmap(',g', ':Lazygit <cr>')
 nmap('<leader>w', ':TaskWarriorTUI <cr>')
 nmap('<F3>', ':Vifm<CR>')
 nmap('<leader>n', ':Vifm<CR>')
 nmap('<leader>N', ':Ranger<CR>')
+-- nmap(',g', ':Lazygit <cr>') -- neogit
 
 --""""""""""""""""""
 -- surround
@@ -793,7 +805,7 @@ dict.setup {
 require('gitsigns').setup {
 	on_attach = function(bufnr)
 		local gs = package.loaded.gitsigns
-		-- Navigation
+		-- Navigation in diff-mode there are [c ]c
 		vim.keymap.set('n', ',n', function()
 			if vim.wo.diff then
 				return ',n'
@@ -814,19 +826,105 @@ require('gitsigns').setup {
 			return '<Ignore>'
 		end, { expr = true, buffer = bufnr })
 		-- can be convert to  vim.keymap.set
-		-- Actions
 		nmap(',r', ':Gitsigns reset_hunk<CR>')
 		vmap(',r', ':Gitsigns reset_hunk<CR>')
-		nmap(',s', '<cmd>Gitsigns preview_hunk<CR>')
-		nmap(',d', '<cmd>Gitsigns diffthis<CR>')
+		nmap(',v', '<cmd>Gitsigns preview_hunk_inline<CR>')
+		-- nmap(',d', '<cmd>Gitsigns diffthis<CR>')
 		nmap(',D', '<cmd>lua require"gitsigns".diffthis("~")<CR>')
 		nmap(',t', '<cmd>Gitsigns toggle_deleted<CR>')
+		nmap(',l', '<cmd>Gitsigns setloclist<CR>') -- quickfix setqflist
 
 		-- Text object
 		omap('oh', ':<C-U>Gitsigns select_hunk<CR>')
 		xmap('oh', ':<C-U>Gitsigns select_hunk<CR>')
 	end,
 } -- }}} 
+
+--{{{ diffview https://github.com/sindrets/diffview.nvim
+local actions = require("diffview.actions")
+local function toggle_diffview(cmd)
+  if next(require("diffview.lib").views) == nil then
+    vim.cmd(cmd)
+    vim.cmd("DiffviewToggleFiles")
+  else
+    vim.cmd("DiffviewClose")
+  end
+end
+key('n', ',h', function() toggle_diffview('DiffviewFileHistory') end,  {desc = 'Diffview view history files in repo.'} )
+key('n', ',F', function() toggle_diffview('DiffviewFileHistory %') end,  {desc = 'Diffview view history for the current file.'} )
+key('n', ',f', function() toggle_diffview('DiffviewFileHistory % --base=LOCAL') end,  {desc = 'Diffview view history for the current file. Local base.'} )
+key('n', ',d', function() toggle_diffview('DiffviewOpen') end,  {desc = 'Diffview'} )
+key('n', ',m', function() toggle_diffview('DiffviewOpen master') end,  {desc = 'Diffview master'} )
+
+require("diffview").setup({
+  enhanced_diff_hl = true, -- See |diffview-config-enhanced_diff_hl|
+  use_icons = true,         -- Requires nvim-web-devicons
+  show_help_hints = true,   -- Show hints for how to open the help panel
+  watch_index = true,       -- Update views and index buffers when the git index changes.
+  view = { -- For more info, see |diffview-config-view.x.layout|.
+    --    |'diff3_horizontal' |'diff3_mixed' |'diff4_mixed'
+    merge_tool = {
+      layout = "diff3_horizontal",
+      disable_diagnostics = true,   -- Temporarily disable diagnostics for diff buffers while in the view.
+      winbar_info = true,           -- See |diffview-config-view.x.winbar_info|
+    },
+  },
+
+  keymaps = {
+    disable_defaults = false, -- Disable the default keymaps
+    view = {
+      -- The `view` bindings are active in the diff buffers, only when the current
+      -- tabpage is a Diffview.
+      { "n", ",p",      "[c"    ,                  { desc = "jump to the previous conflict" } },
+      { "n", ",n",         "]c" ,                  { desc = "jump to the next conflict" } },
+      { "n", "[x",          actions.prev_conflict,                  { desc = "In the merge-tool: jump to the previous conflict" } },
+      { "n", "]x",          actions.next_conflict,                  { desc = "In the merge-tool: jump to the next conflict" } },
+    },
+  },
+}) --}}} 
+
+--{{{ neogit https://github.com/NeogitOrg/neogit
+local neogit = require('neogit')
+key("n", ",g", neogit.open, { desc = "Open Neogit UI" })
+key("n", ",hp", "<cmd>Neogit pull<CR>", { desc = "Neogit pull" })
+key("n", ",hP", "<cmd>Neogit push<CR>", { desc = "Neogit push" })
+key("n", ",c", "<cmd>Neogit commit<CR>", { desc = "Neogit commit" })
+key("n", ",b", ":Telescope git_branches<CR>", { desc = "Neogit push" }, {silent = true, noremap = true})
+key("n", ",al", function()
+  neogit.actions.stage.stage_all()
+  neogit.open({ "commit" })
+end, { desc = "Stage all files and commit" })
+
+key("n", ",au", function()
+  local msg = vim.fn.input("Commit message: ")
+  if msg ~= "" then
+    vim.fn.system("git add -u")
+    vim.fn.system("git commit -m " .. vim.fn.shellescape(msg))
+    print("Committed with message: " .. msg)
+  else
+    print("Commit aborted: no message provided")
+  end
+end, { desc = "Stage all untracked files and commit with prompt" })
+
+key("n", ",as", function()
+  local msg = vim.fn.input("Stash message: ")
+  if msg ~= "" then
+    vim.fn.system("git stash push -m " .. vim.fn.shellescape(msg))
+    print("Stashed with message: " .. msg)
+  else
+    print("Stash aborted: no message provided")
+  end
+end, { desc = "Stash all untracked files" })
+
+key("n", ",aa", function()
+	vim.fn.system("git add -u")
+	vim.fn.system("git commit --amend --no-edit")
+	print("Amended last commit with staged changes (message unchanged)")
+end, { desc = "Stage tracked files and amend commit" })
+
+neogit.setup {
+graph_style = "kitty",
+} --}}} 
 
 -- translate {{{
 --https://github.com/uga-rosa/translate.nvim
@@ -855,6 +953,7 @@ nmap('<LocalLeader>cf', '<Plug>(grammarous-fixit)', { noremap = false }) --	Fix 
  -- }}} 
 
 -- nap-nvim {{{
+-- Quickly jump between next and previous NeoVim buffer, tab, file, spell, change list, jump list quickfix, diagnostic, etc. 
 require("nap").setup({
     next_prefix = "<a-o>",
     prev_prefix = "<a-i>",
@@ -919,13 +1018,13 @@ key({ "n", "v" }, '<LocalLeader>of', "<cmd>OGPTRun format-adoc table<CR>", { des
 require("substitute").setup({
   on_substitute = require("yanky.integration").substitute(),
 })
-vim.keymap.set("n", '<LocalLeader>s', require('substitute').operator, { noremap = true, desc = 'Substitute [text object]'})
-vim.keymap.set("n", '<LocalLeader>ss', require('substitute').line, { noremap = true, desc ='Substitute - line'})
-vim.keymap.set("n", '<LocalLeader>S', require('substitute').eol, { noremap = true, desc ='Substitute - eol'})
-vim.keymap.set("x", '<LocalLeader>s', require('substitute').visual, { noremap = true, desc ='Substitute'})
+key("n", '<LocalLeader>s', require('substitute').operator, { noremap = true, desc = 'Substitute [text object]'})
+key("n", '<LocalLeader>ss', require('substitute').line, { noremap = true, desc ='Substitute - line'})
+key("n", '<LocalLeader>S', require('substitute').eol, { noremap = true, desc ='Substitute - eol'})
+key("x", '<LocalLeader>s', require('substitute').visual, { noremap = true, desc ='Substitute'})
 -- range, idk how does it work it alway apply to a paragraph
-vim.keymap.set("n", '<S-A-r>', require('substitute.range').word, { noremap = true, desc ='Substitute - range under a word'})
--- vim.keymap.set("n", '<A-r>', function() require('substitute.range').word({range = { motion = '%' }}) end, { noremap = true, desc ='Substitute - word in file'}) -- it doesn't work for whole file 
+key("n", '<S-A-r>', require('substitute.range').word, { noremap = true, desc ='Substitute - range under a word'})
+-- key("n", '<A-r>', function() require('substitute.range').word({range = { motion = '%' }}) end, { noremap = true, desc ='Substitute - word in file'}) -- it doesn't work for whole file 
 --}}}
 
 -- {{{ nvim-autopairs https://github.com/windwp/nvim-autopairs?tab=readme-ov-file#fastwrap
@@ -960,48 +1059,49 @@ group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 			mode = mode or 'n'
 			vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
 		end
+		-- HELP
+		-- hover on fun - doc and params list
 		map('grs', vim.lsp.buf.signature_help, '[S]ignature help')
 		map('grh', vim.lsp.buf.hover, '[H]over')
 
 		-- Rename the variable under your cursor.
 		map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
 
-		-- Execute a code action, usually your cursor needs to be on top of an error
-		-- or a suggestion from your LSP for this to activate.
-		map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
-
-		-- Find references for the word under your cursor.
-		map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-
-		-- Jump to the implementation of the word under your cursor.
-		--  Useful when your language has ways of declaring types without an actual implementation.
-		map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-
+		-- JUMP
 		-- Jump to the definition of the word under your cursor.
 		--  This is where a variable was first declared, or where a function is defined, etc.
 		--  To jump back, press <C-t>.
 		map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-
+		-- Find references for the word under your cursor.
+		map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+		-- Jump to the implementation of the word under your cursor.
+		--  Useful when your language has ways of declaring types without an actual implementation.
+		map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
 		-- WARN: This is not Goto Definition, this is Goto Declaration.
 		--  For example, in C this would take you to the header.
 		map('grd', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
+		-- FIND
 		-- Fuzzy find all the symbols in your current document.
 		--  Symbols are things like variables, functions, types, etc.
 		map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
-
 		-- Fuzzy find all the symbols in your current workspace.
 		--  Similar to document symbols, except searches over your entire project.
 		map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
+
+		-- Diagnostic
+		map('gre', require('telescope.builtin').diagnostics, 'Show [E]rrors')
+		map(',j', function() vim.diagnostic.jump({count= 1,float = true}) end, 'Go to next error')
+		map(',k', function() vim.diagnostic.jump({count= -1,float = true}) end, 'Go to prev error')
+
+		-- Execute a code action, usually your cursor needs to be on top of an error
+		-- or a suggestion from your LSP for this to activate.
+		map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
 		-- Jump to the type of the word under your cursor.
 		--  Useful when you're not sure what type a variable is and you want to see
 		--  the definition of its *type*, not where it was *defined*.
 		map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
-		-- Diagnostic
-		map('gre', require('telescope.builtin').diagnostics, 'Show [E]rrors')
-		map(',j', function() vim.diagnostic.jump({count= 1,float = true}) end, 'Go to next error')
-		map(',k', function() vim.diagnostic.jump({count= -1,float = true}) end, 'Go to prev error')
   end,
 })
 
@@ -1035,6 +1135,19 @@ vim.diagnostic.config({
 -- 		end,
 -- 	},
 })
+
+-- nvim-treesitter
+require'nvim-treesitter.configs'.setup {
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<C-CR>",       -- Start selection
+      node_incremental = "<C-CR>",     -- Expand to next node
+      scope_incremental = "<A-CR>",    -- Expand to next scope
+      node_decremental = "<C-BS>",     -- Shrink selection (c - backspace)
+    },
+  },
+}
 
 -- można nadpisać z folderu lsp
 -- vim.lsp.config('luals', {

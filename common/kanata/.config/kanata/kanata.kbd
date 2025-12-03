@@ -35,7 +35,7 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
 )
 
 (deflayer base
-  @grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  @grv  @1    @2    @3    @4    @5    @6    @7    @8    @9    @0    @-    @=    bspc
   tab  q    w     e    r    t    y    u    i    o    p    [    ]    \
   @cap  @alt_a   @met_s	@ctl_d @sft_f g   @chh @chj @ctl_k @met_l @alt_; '    ret
   @lsft z    x    c    v    b    n    m    ,    .    /    @rsft
@@ -72,6 +72,24 @@ linux-dev (/dev/input/by-id/usb-Microsoft_Microsoft®_2.4GHz_Transceiver_v9.0-ev
   ;; spc (one-shot 500 (layer-while-held numbers))
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                  shortcuts                   ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defalias ;; symbols on hold
+  grv (t! hold grv S-`)
+  0 (t! hold 0 S-0)
+  1 (t! hold 1 S-1)
+  2 (t! hold 2 S-2)
+  3 (t! hold 3 S-3)
+  4 (t! hold 4 S-4)
+  5 (t! hold 5 S-5)
+  6 (t! hold 6 S-6)
+  7 (t! hold 7 S-7)
+  8 (t! hold 8 S-8)
+  9 (t! hold 9 S-9)
+  = (t! hold = S-=)
+  - (t! hold - S--))
+;; HOMEROW
 (defalias
   ;; maybe tap-hold-press
 	alt_a (tap-hold 200 200 a lalt)

@@ -4,15 +4,20 @@
 #  / __/ / /_/ __/
 # /_/   /___/_/ key-bindings.zsh
 # Fork from https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh
+#
+# generated from fzf --zsh, to have `**` -smart completion queses what to complete - proc/dir/file
 
 # -------------------------------------------------------------------------
 #                       shortcuts
 # -------------------------------------------------------------------------
-# ALT-p - path both file and directory
+# ALT-p - Paste the selected file and dir path(s) into the command line
+# ALT-P - Paste the selected file and dir path(s) into the command line include hidden
 # ALT-f - Paste the selected file path(s) into the command line
-# ALT-F - Paste the selected file path(s) into the command line  with hidden
-# ALT-d - cd into the selected directory
-# ALT-D - cd into the selected directory with hidden
+# ALT-F - Paste the selected file path(s) into the command line include hidden
+# ALT-c - cd into the selected directory
+# ALT-C - cd into the selected directory with hidden
+# ALT-d - Print selected directories
+# ALT-D - Print selected directories with hidden
 # ALT-o - Open or edit the file
 # ALT-O - Open or edit the file with hidden
 # ALT-e - Open or edit the file from fasd
@@ -25,20 +30,26 @@
 # ALT-m - fzm fzf-marks
 
 # bindkey '\ef' → alt '^F' ctr
+#
+# TODO __fzfcmd is not necessary, delete it, i don't use tmux
+# also it repeats a lot idk why I don't use __fsel in fzf-cd-widget
+# aliases doesn't work
 
 # global
 # export FZF_DEFAULT_OPTS='--height 80% --layout=reverse --border --bind tab:down,shift-tab:up,alt-j:down,alt-k:up,alt-l:accept,ctrl-a:select-all+accept' problem with selection in multi 
 export FZF_DEFAULT_OPTS='--height 80% --multi --layout=reverse --cycle --info=inline-right --border --bind alt-j:down,alt-k:up,alt-l:accept,ctrl-a:select-all+accept'
 export FZF_DEFAULT_COMMAND='fd'
 
-# TODO add --exclude for git, node_module target ....
-export FZF_PATH_COMMAND='fd'
-export FZF_FILE_COMMAND='fd --type f'
-export FZF_HIDDEN_FILE_COMMAND='fd --hidden --type f'
-export FZF_DIR_COMMAND='fd --type d'
-export FZF_HIDDEN_DIR_COMMAND='fd --hidden --type d'
-export FZF_FILE_OPTS='--preview "bat --style=numbers --color=always --line-range :500 {}"'
-# export FZF_DIR_OPTS
+export FZF_PATH_COMMAND='fd -E node_modules -E target --max-depth 1'
+export FZF_HIDDEN_PATH_COMMAND='fd -E .git -E node_modules -E target --max-depth 1 --hidden'
+export FZF_FILE_COMMAND='fd -E node_modules -E target --type f'
+export FZF_HIDDEN_FILE_COMMAND='fd -E .git -E node_modules -E target --hidden --type f'
+export FZF_DIR_COMMAND='fd -E node_modules -E target --type d'
+export FZF_HIDDEN_DIR_COMMAND='fd -E .git -E node_modules -E target --hidden --type d'
+# export FZF_FILE_OPTS='--preview "bat --style=numbers --color=always --line-range :500 {}"'
+# if not supported iterm protocol change to sixel timg -p s 
+export FZF_VIEW_ALL_OPTS='--preview "if [ -d {} ]; then tree -C -L 1 {}; elif [[ {} =~ \.(jpg|jpeg|png|gif|bmp|webp|avif|svg|tiff|ico)$ ]]; then timg -p i -g 60x30 {} 2>/dev/null || echo \"Image: {}\"; else bat --style=numbers --color=always --line-range :500 {}; fi"'
+export FZF_FILE_OPTS='--preview "if [[ {} =~ \.(jpg|jpeg|png|gif|bmp|webp|avif|svg|tiff|ico)$ ]]; then timg -p i -g 60x30 {} 2>/dev/null || echo \"Image: {}\"; else bat --style=numbers --color=always --line-range :500 {}; fi"'
 CMD=''
 OPTS=''
 
@@ -67,6 +78,10 @@ fi
 
 # Key bindings
 # ------------
+__fzfcmd() {
+  [ -n "$TMUX_PANE" ] && { [ "${FZF_TMUX:-0}" != 0 ] || [ -n "$FZF_TMUX_OPTS" ]; } &&
+    echo "fzf-tmux ${FZF_TMUX_OPTS:--d${FZF_TMUX_HEIGHT:-40%}} -- " || echo "fzf"
+}
 
 # ALT-F - Paste the selected file path(s) into the command line
 __fsel() {
@@ -84,11 +99,6 @@ __fsel() {
   return $ret
 }
 
-__fzfcmd() {
-  [ -n "$TMUX_PANE" ] && { [ "${FZF_TMUX:-0}" != 0 ] || [ -n "$FZF_TMUX_OPTS" ]; } &&
-    echo "fzf-tmux ${FZF_TMUX_OPTS:--d${FZF_TMUX_HEIGHT:-40%}} -- " || echo "fzf"
-}
-
 fzf-file-widget() {
 	CMD="$FZF_FILE_COMMAND"
 	OPTS="$FZF_FILE_OPTS"
@@ -99,7 +109,7 @@ fzf-file-widget() {
 }
 zle     -N   fzf-file-widget
 bindkey '\ef' fzf-file-widget
-alias f='fzf-file-widget'
+# alias f='fzf-file-widget'
 
 fzf-hidden-file-widget() {
 	CMD="$FZF_HIDDEN_FILE_COMMAND"
@@ -115,6 +125,7 @@ bindkey '\eF' fzf-hidden-file-widget
 
 fzf-path-widget() {
 	CMD="$FZF_PATH_COMMAND"
+	OPTS="$FZF_VIEW_ALL_OPTS"
   LBUFFER="${LBUFFER}$(__fsel)"
   local ret=$?
   zle reset-prompt
@@ -123,7 +134,18 @@ fzf-path-widget() {
 zle     -N   fzf-path-widget
 bindkey '\ep' fzf-path-widget
 
-# ALT-D - cd into the selected directory
+fzf-path-hidden-widget() {
+	CMD="$FZF_HIDDEN_PATH_COMMAND"
+	OPTS="$FZF_VIEW_ALL_OPTS"
+  LBUFFER="${LBUFFER}$(__fsel)"
+  local ret=$?
+  zle reset-prompt
+  return $ret
+}
+zle     -N   fzf-path-hidden-widget
+bindkey '\eP' fzf-path-hidden-widget
+
+# ALT-c - cd into the selected directory
 fzf-cd-widget() {
   local cmd="${FZF_DIR_COMMAND:-"command find -L . -mindepth 1 \\( -path '*/\\.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune \
     -o -type d -print 2> /dev/null | cut -b3-"}"
@@ -142,10 +164,10 @@ fzf-cd-widget() {
   return $ret
 }
 zle     -N    fzf-cd-widget
-bindkey '\ed' fzf-cd-widget
-alias d='fzf-cd-widget'
+bindkey '\ec' fzf-cd-widget
+# alias c='fzf-cd-widget'
 
-# ALT-Shift-D - cd into the selected directory with hidden dirs
+# ALT-Shift-C - cd into the selected directory with hidden dirs
 fzf-cd-hidden-widget() {
   local cmd="${FZF_HIDDEN_DIR_COMMAND:-"command find -L . -mindepth 1 \\( -path '*/\\.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune \
     -o -type d -print 2> /dev/null | cut -b3-"}"
@@ -164,8 +186,31 @@ fzf-cd-hidden-widget() {
   return $ret
 }
 zle     -N    fzf-cd-hidden-widget
-bindkey '\eD' fzf-cd-hidden-widget
-alias D='fzf-cd-hidden-widget'
+bindkey '\eC' fzf-cd-hidden-widget
+# alias C='fzf-cd-hidden-widget'
+
+fzf-print-dirs-widget() {
+	CMD="$FZF_DIR_COMMAND"
+	OPTS="$FZF_CD_OPTS"
+  LBUFFER="${LBUFFER}$(__fsel)"
+  local ret=$?
+  zle reset-prompt
+  return $ret
+}
+zle     -N    fzf-print-dirs-widget
+bindkey '\ed' fzf-print-dirs-widget
+
+# ALT-D - Print selected directories with hidden
+fzf-print-hidden-dirs-widget() {
+	CMD="$FZF_HIDDEN_DIR_COMMAND"
+	OPTS="$FZF_CD_OPTS"
+  LBUFFER="${LBUFFER}$(__fsel)"
+  local ret=$?
+  zle reset-prompt
+  return $ret
+}
+zle     -N    fzf-print-hidden-dirs-widget
+bindkey '\eD' fzf-print-hidden-dirs-widget
 
 # ALT-H - Paste the selected command from history into the command line
 fzf-history-widget() {
@@ -185,7 +230,7 @@ fzf-history-widget() {
 }
 zle     -N   fzf-history-widget
 bindkey '\eh' fzf-history-widget
-alias h='fzf-history-widget'
+# alias h='fzf-history-widget'
 
 # -------------------------------------------------------------------------
 #                       CUSTOM
@@ -228,7 +273,7 @@ fzf_open() {
 }
 zle     -N   fzf_open;
 bindkey '\ee' fzf_open
-alias E='fzf_open'
+# alias e='fzf_open'
 
 fzf_open_hidden() {
 	zle -I;
@@ -242,7 +287,7 @@ fzf_open_hidden() {
 }
 zle     -N   fzf_open_hidden;
 bindkey '\eE' fzf_open_hidden
-alias E='fzf_open_hidden'
+# alias E='fzf_open_hidden'
 
 fzf_fasd_open() {
 	zle -I;

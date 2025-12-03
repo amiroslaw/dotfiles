@@ -6,12 +6,14 @@
 	; pager = difftool | less
 	autocrlf = input
 	editor = nvim
-[merge]
-	tool = meld
-; https://difftastic.wilfred.me.uk/git.html
+[difftool]
+  prompt = false
 [diff]
-	; tool = meld
-	tool = difftastic
+	tool = diffview
+[merge]
+	tool = diffview
+; for orgi file
+	keepBackup = true
 [interactive]
     diffFilter = delta --color-only
 [difftool "meld"]
@@ -19,16 +21,25 @@
 [mergetool "meld"]
 	cmd = meld --auto-merge "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
 	trustExitCode = true
+[difftool "diffview"]
+	cmd = nvim -c \"DiffviewOpen\"
+[mergetool "diffview"]
+	cmd = nvim -c \"DiffviewOpen\"
+[difftool "nvimdiff"]
+	cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [mergetool "nvim"]
     cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[mergetool "nvimtabs"]
+	layout = BASE,MERGED + BASE,LOCAL + BASE, REMOTE
 [difftool "difftastic"]
+; https://difftastic.wilfred.me.uk/git.html
 	cmd = difft "$LOCAL" "$REMOTE"
-[pager]
-	difftool = true
-[difftool]
-	prompt = false
+# [pager]
+	# difftool = true
 [alias]
 	showext = show --ext-diff
 # `git dft` is less to type than `git difftool`.
 [alias]
 	dft = difftool
+
+# vim: ft=cfg

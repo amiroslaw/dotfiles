@@ -135,7 +135,7 @@ map('F8', act { ShowLauncherArgs = { flags = 'FUZZY|WORKSPACES' } }, 'ALT') -- n
 mapCS('{', act { SwitchWorkspaceRelative = -1 })
 mapCS('}', act { SwitchWorkspaceRelative = 1 })
 mapCS('i', plugins.sessionizer.show(plugins.smart_workspace_switcher_replica)) 
-mapCS('u', plugins.newWorkspace )
+mapCS('b', plugins.newWorkspace )
 mapCS('m', plugins.history.switch_to_most_recent_workspace)
 
 return {

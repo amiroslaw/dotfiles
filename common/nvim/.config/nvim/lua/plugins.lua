@@ -204,6 +204,22 @@ return {
 
 	--{{{ Code
 	{ 'sbdchd/neoformat', cmd = { 'Neoformat' } },
+  {
+    "Olical/conjure",
+    ft = { "clojure", "fennel", "lua"},
+    lazy = true,
+    dependencies = { "PaterJason/cmp-conjure" },
+  },
+  {
+    "PaterJason/cmp-conjure",
+    lazy = true,
+    config = function()
+      local cmp = require("cmp")
+      local config = cmp.get_config()
+      table.insert(config.sources, { name = "conjure" })
+      return cmp.setup(config)
+    end,
+  },
 	{ 'stevearc/conform.nvim',
 	  opts = {
 		formatters_by_ft = {
@@ -224,6 +240,8 @@ return {
 	  },
 	},
 	{ 'lewis6991/gitsigns.nvim', event = { 'BufReadPre', 'BufNewFile' } },
+	{ "NeogitOrg/neogit", lazy = true, cmd = "Neogit", },
+	{ 'sindrets/diffview.nvim', event = 'VeryLazy', },
 	'kylechui/nvim-surround',
 	{ "roobert/surround-ui.nvim",
 		dependencies = { "kylechui/nvim-surround", "folke/which-key.nvim", },
@@ -332,6 +350,7 @@ return {
 	--}}}
 	--{{{ COLORSCHEMES and Syntax
 	'baskerville/vim-sxhkdrc',
+	'kmonad/kmonad-vim',
 	'rafi/awesome-vim-colorschemes', -- https://vimcolorschemes.com/rafi/awesome-vim-colorschemes
 	-- not used
 	{ 'dracula/vim', lazy = false, priority = 1000, name = 'dracula', enabled = false },
