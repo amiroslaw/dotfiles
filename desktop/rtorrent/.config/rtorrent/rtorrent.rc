@@ -11,7 +11,7 @@ session = /media/multimedia/Downloads/.pobierane
 dht = on
 
 ## UDP port to use for DHT.
-dht_port = 6881
+# dht.override_port.set = 6881
 # Gdzie będą ściągane pliki;
 
 directory = /media/multimedia/Downloads
