@@ -66,6 +66,7 @@ local function execQueue(cmd, group, url)
 	if type(url) == 'string' then
 		cmd = (cmd .. ' "%s"'):format(url)
 		assert(os.execute(cmd) == 0, 'Can not run: ' .. cmd)
+		-- assert(os.execute(cmd), 'Can not run: ' .. cmd)
 		return
 	end
 	local url, title = next(url)
