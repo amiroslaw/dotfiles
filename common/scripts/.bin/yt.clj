@@ -1,12 +1,14 @@
 #!/usr/bin/env bb
 (require '[babashka.process :as ps :refer [$ shell process sh]]
+        '[clojure.edn :as edn]
          '[clojure.string :as str]
+         '[clojure.test :refer [is]]
+         '[babashka.fs :as fs]
          '[babashka.cli :as cli]
          '[babashka.http-client :as http]
          '[clojure.core.match :refer [match]]
          '[babashka.classpath :as cp]
-         '[clojure.java.io :as io]
-         '[cheshire.core :as json])
+         '[clojure.java.io :as io])
 (cp/add-classpath (str (System/getenv "HOME") "/.bin/clj"))
 (require '[util-media :as media])
 (import '[java.time Duration])
@@ -18,6 +20,21 @@
 
 (def base-url "https://www.googleapis.com/youtube/v3/")
 (def yt-watch-url "https://www.youtube.com/watch?v=")
+(def cache-dir (str (fs/temp-dir) "/yt-cache"))
+
+(defn- read-cache [cache-file]
+  (when (fs/exists? cache-file)
+    (edn/read-string (slurp cache-file))))
+
+(defn- get-cached-data [id cache-file fetch-fn]
+  (fs/create-dirs cache-dir)
+  (let [cache-path (str cache-dir cache-file)
+        cache (read-cache cache-path)]
+    (or (get cache id)
+        (let [fetched-items (fetch-fn id)
+              new-cache (assoc cache id fetched-items)]
+          (spit cache-path (pr-str new-cache))
+          fetched-items))))
 
 (defn- get-property [key]
   {:pre [(string? key)] :post [(string? %)]}
@@ -35,7 +52,8 @@
 ;; todo, change to clipcat
 (defn- clipboard [type]
   {:pre [(string? type)]}
-  (ps-error-handler! true (str "clipster --output -m '' --" type)))
+  (ps-error-handler! true (str "clipcat.clj " type)))
+  ; (ps-error-handler! true (str "clipster --output -m '' --" type)))
 
 ;; Data Fetching
 (defn- fetch-playlist [id]
@@ -156,7 +174,7 @@
   {:pre  [(map? item)] :post [(string? %)]}
   (let [snippet (:snippet item)
         date (first (str/split (:publishedAt snippet) #"T"))]
-    (format "%s | %s | %s" date (media/trim-col (:channelTitle snippet)) (:title snippet))))
+    (format "%s | %s | %s" date (trim-col (:channelTitle snippet)) (:title snippet))))
 
 (defn- response->video [res]
   {:pre  [(map? res)] :post [(map? %)]}
@@ -229,8 +247,9 @@
         action (last (get media/rofi-keys key))]
     (case action
       nil (execute-actions! videos :fullscreen)
-      :metadata (do (doseq [v videos] (metadata {:opts {:notify true :url (:url v)}})) (rofi-videos response))
-      (execute-actions! videos action))))
+      :metadata (doseq [v videos] (metadata {:opts {:notify true :url (:url v)}}))
+      (execute-actions! videos action)))
+  (rofi-videos response))
 
 (defn- format-m3u-item [meta]
   (let [url (str yt-watch-url (:id meta))
@@ -256,7 +275,7 @@
 
 (defn- select-user-playlist [id]
   {:pre [(string? id)]}
-  (let [response (fetch-user-playlists id)
+  (let [response (get-cached-data id "/channels.edn" fetch-user-playlists)
         playlists (map response->playlist response)
         rofi-items (map #(format "%s\t | %s" (:title %)   (first (str/split (:desc %) #"\n")) ) playlists)
         selected (rofi-playlists-menu rofi-items)
@@ -270,7 +289,7 @@
                      [{:channel _}] (select-user-playlist (get-property "yt_channels"))
                      [{:channel-id i}] (select-user-playlist i)
                      :else  (notify-error! "No playlist URL or channel ID provided" false))
-        playlist (fetch-playlist list-id)]
+        playlist (get-cached-data list-id "/playlists.edn" fetch-playlist)]
     (if (:m3u opts)
       (create-playlist playlist)
       (rofi-videos playlist))))
@@ -353,6 +372,24 @@ TERM_LT and TERM_LT_RUN = %s
   (cli/dispatch (conj subcommands {:cmds ["completions"] :fn (partial completion! subcommands)}) *command-line-args*))
 
 (comment
+  (require '[babashka.deps :as deps])
+  (deps/add-deps '{:deps {djblue/portal {:mvn/version "0.58.1"}}})
+  (require '[portal.api :as p])
+  (add-tap #'p/submit)
+  (def p (p/open {:launcher :intellij}))
+  (tap> :hello)
+  (load-file (str (System/getenv "HOME") "/Documents/dotfiles/common/scripts/.bin/clj/init.clj"))
+
+
+  (deps/add-deps '{:deps {dev.weavejester/hashp {:mvn/version "0.3.0"}}})
+  (require 'hashp.preload)
+
+  (deps/add-deps '{:deps {io.github.paintparty/fireworks {:mvn/version "0.10.4"}}})
+  (require '[fireworks.core :refer [? !? ?> !?>]])
+( deps/add-deps '{:deps {philoskim/debux {:mvn/version "0.9.1"}}})
+(require '[debux.core :refer [dbg dbgn]])
+  )
+(comment
   (cli/dispatch subcommands ["help"])
 
   (cli/dispatch subcommands ["stats" "-n" "-u" "https://www.youtube.com/watch?v=3JZ_D3ELwOQ"])
@@ -369,6 +406,7 @@ TERM_LT and TERM_LT_RUN = %s
   (cli/dispatch subcommands ["stats" "-u" "https://www.youtube.com/watch?v=3JZ_D3ELwOQ" "-u" "https://www.youtube.com/watch?v=3JZ_D3ELwOQ"])
   (cli/dispatch subcommands ["playlist"])
   (cli/dispatch subcommands ["playlist" "-d" "UCX6b17PVsYBQ0ip5gyeme-Q"])
+  (cli/dispatch subcommands ["playlist" "-u" "https://www.youtube.com/playlist?list=PLZWMav2s1MZRr93uiz6vjEWCdXL93QzGz"])
   ;;
   (cli/dispatch subcommands ["search" "-q" "short black animation"])
   (cli/dispatch subcommands ["search" "-q" "clojure"])
@@ -398,21 +436,21 @@ TERM_LT and TERM_LT_RUN = %s
   (println (format-duration "PT4M14S"))
   (println (format-duration "2024-02-26T08:22:19Z"))
   (? (completion subcommands nil))
-  (? (first subcommands))
+
+'(edn/read (.PushbackReader. (io/reader (io/file "/tmp/foo.edn"))))'
+(edn/read-string (slurp (str (System/getenv "HOME") "/.config/clj-kondo/config.edn")))
+(def data {:name "Alice" :age 30 :languages ["Clojure" "Python"]})
+(spit "data.edn" (pr-str data))
+(edn/read-string (slurp "data.edn"))
+(get data :name)
+; user playlist "&fields=items(id,snippet(title,description))"
+; playlist  "&fields=items(snippet(title,channelTitle,publishedAt,description,resourceId))"
+; TODO merge cache for playlists and channels 
+; playlis
+; {"UCX6b17PVsYBQ0ip5gyeme-Q" channel-id
+   ; [{:id "PL8dPuuaLjXtMDCIyvFA5gbgd9AOsRGOr0", :snippet {:title "Futures of AI Mini-Series", :description "desc"}}]
+;  playlistItems
+; {"PLZWMav2s1MZRr93uiz6vjEWCdXL93QzGz" playlist id
+   ; [{:snippet {:publishedAt "2025-12-03T14:01:01Z", :title "Kovid Goyal: Linux, Window Managers, and GitHub Controversies", :description "desc", :channelTitle "linkarzu", :resourceId {:kind "youtube#video", :videoId "SY8L-cj4x6k"}}}
   )
 
-(comment
-  (require '[babashka.deps :as deps])
-  (deps/add-deps '{:deps {djblue/portal {:mvn/version "0.58.1"}}})
-  (require '[portal.api :as p])
-  (add-tap #'p/submit)
-  (def p (p/open {:launcher :intellij}))
-  (tap> :hello)
-  (load-file (str (System/getenv "HOME") "/Documents/dotfiles/common/scripts/.bin/clj/init.clj"))
-
-  (deps/add-deps '{:deps {dev.weavejester/hashp {:mvn/version "0.3.0"}}})
-  (require 'hashp.preload)
-
-  (deps/add-deps '{:deps {io.github.paintparty/fireworks {:mvn/version "0.10.4"}}})
-  (require '[fireworks.core :refer [? !? ?> !?>]])
-  )
