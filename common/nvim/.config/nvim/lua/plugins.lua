@@ -34,7 +34,6 @@ return {
 	},
 	{ 'folke/which-key.nvim',
 		event = 'VeryLazy',
-		opts = { spelling = { enabled = true, sugesstions = 20, ignore_missing = true }, },
 	},
 	'liangxianzhe/nap.nvim', -- jumps between buffer, tab, file, quickfix
 	{ "folke/flash.nvim",
